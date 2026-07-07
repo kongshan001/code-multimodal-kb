@@ -1,0 +1,2 @@
+# 代码侧评测零 LLM、轻依赖。重依赖（deepeval 等）留到文档侧 task 3.x。
+pytest>=8

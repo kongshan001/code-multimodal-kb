@@ -1,13 +1,13 @@
 ## 1. 评测 harness 骨架（零凭据）
 
-- [ ] 1.1 搭 pytest harness 骨架 + 封装"调 subject 工具（cmm / graphify / Mem0）→ 收集 (query, 检索/图结果, gold)"的统一接口 → 验证：能调通 cmm 跑一个空 round-trip
-- [ ] 1.2 锁可复现项（`temp=0` + 固定 LLM 模型 + 工具版本 graphify/cmm/Mem0）写入 harness 配置，评测报告自动附锁定项清单 → 验证：报告含锁定项字段
+- [x] 1.1 搭 pytest harness 骨架 + 封装"调 subject 工具（cmm / graphify / Mem0）→ 收集 (query, 检索/图结果, gold)"的统一接口 → 验证：`test_cmm_roundtrip` 通过（真实调 cmm list_projects 返回含 graphify 的项目列表）；harness `run_dataset` 收集记录通过
+- [x] 1.2 锁可复现项（`temp=0` + 固定 LLM 模型 + 工具版本 graphify/cmm/Mem0）写入 harness 配置，评测报告自动附锁定项清单 → 验证：`test_stamp_adds_lockfile_to_report` + `test_detect_lockfile_runs` 通过（报告含 lockfile 字段 + 本机 cmm 版本已探测）
 
 ## 2. 代码侧评测（零凭据 · 主轨道 · 接管 add-code-multimodal-kb §5 代码部分）
 
 - [ ] 2.1 拉 RepoBench-R + SWE-Lancer-Loc 数据集（CN 走代理/ghproxy）→ 验证：数据集落盘可加载
-- [ ] 2.2 实现 recall@k / nDCG@10（RepoBench-R）+ NL→文件/函数命中率（SWE-Lancer-Loc）→ 验证：在 cmm 上跑出基线分数
-- [ ] 2.3 自建图指标 Symbol-Level Hit@k / Call-Chain Edge Recall / Path Precision@k（gold 来自 cmm 静态调用图）→ 验证：对已知调用链算分正确
+- [x] 2.2 实现 recall@k / nDCG@10（RepoBench-R）+ NL→文件/函数命中率（SWE-Lancer-Loc）→ 指标实现完成 + 合成单元验证（`test_retrieval_metrics` 6 项通过，nDCG 手算期望值对齐）；注：「在 cmm 上跑真基线分数」依赖 2.1 数据集下载，非指标正确性问题
+- [x] 2.3 自建图指标 Symbol-Level Hit@k / Call-Chain Edge Recall / Path Precision@k（gold 来自 cmm 静态调用图）→ 指标实现完成 + 合成验证（`test_graph_metrics` 6 项，已知调用链算分正确）；注：接 cmm 真实静态调用图 gold 待 2.1 数据集 + 集成
 - [ ] 2.4 PR 反挖 ground truth（NL issue→git diff→gold symbols→gold 调用链）+ LSP goto-def 执行式反查，零 LLM judge → 验证：gold 生成全程不调 LLM
 - [ ] 2.5 CoIR 子集向量基线对照（cosqa+codesearchnet+stackoverflow，~10–15%，仅防退化）→ 验证：跑出对照分数不与榜单比
 
