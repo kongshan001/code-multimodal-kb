@@ -1,9 +1,9 @@
 ## 1. Stage 0：边界落地与文件记忆加固（零凭据·零新工具）
 
-- [ ] 1.1 把 D1 四层归属规则 + 判定测试（"忘了这条 agent 会不会被纠正"）写入 `CLAUDE.md` 作为强制纪律
-- [ ] 1.2 给文件记忆设分类纪律：每条 fact 的 frontmatter `type` 限定为 user/feedback/project/reference 之一；为 MEMORY.md 索引设容量上限规则
-- [ ] 1.3 建决策→情景锚机制：决策型 memory 条目 MUST 附带 git commit 或 tasks 条目引用
-- [ ] 1.4 端到端验证 Stage 0 → 验证：新会话启动时相关偏好被正确铺垫；构造 4 条候选事实（客观/程序/事件/主观各一）按判定测试全部正确路由
+- [x] 1.1 把 D1 四层归属规则 + 判定测试（"忘了这条 agent 会不会被纠正"）写入 `CLAUDE.md` 作为强制纪律 — 新建项目级 `CLAUDE.md`（repo 根，git 跟踪），含四层归属表 + 判定测试金句 + 范围边界
+- [x] 1.2 给文件记忆设分类纪律：每条 fact 的 frontmatter `type` 限定为 user/feedback/project/reference 之一；为 MEMORY.md 索引设容量上限规则 — 写入项目 `CLAUDE.md`「分类纪律」(type 四选一, 无匹配则拒) +「容量上限」(~20 条, 超限降级为按需召回, Stage 1 后失效)；实测 MEMORY.md 现 3 条远低于上限
+- [x] 1.3 建决策→情景锚机制：决策型 memory 条目 MUST 附带 git commit 或 tasks 条目引用 — 规则入 `CLAUDE.md`「决策锚」；演示: 新写 `memory/agent-memory-approach.md` (type: project) 锚 commit `daf359b` + tasks §2，并在 MEMORY.md 加索引行
+- [x] 1.4 端到端验证 Stage 0 → 验证：新会话启动时相关偏好被正确铺垫；构造 4 条候选事实（客观/程序/事件/主观各一）按判定测试全部正确路由 — 铺垫: MEMORY.md 本会话已注入上下文（2 条原条目可见），新条目下会话生效；路由 4 案全对：①"cmm search_code ~112ms"→否→KB/cmm ②"部署 cmm 步骤"→否→程序/runbook ③"7/7 完成 task 4.1"→否→情景/commit 6ae72e5 ④"用户偏好全局工具"→**是**→memory/✓；实测 memory/ 仅含 project/feedback（主观），无客观/程序/情景泄漏
 
 ## 2. Stage 1：Mem0 / OpenMemory MCP 接入（凭据门控·与 doc-side KB 共享解锁）
 
