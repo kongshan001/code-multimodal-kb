@@ -6,7 +6,7 @@
 ## 2. 代码侧评测（零凭据 · 主轨道 · 接管 add-code-multimodal-kb §5 代码部分）
 
 - [ ] 2.1 拉 RepoBench-R + SWE-Lancer-Loc 数据集（CN 走代理/ghproxy）→ 验证：数据集落盘可加载。注：首基线已用 architecture-derived gold 跑通（见 2.2）；RepoBench HF 需 token(401) + completion/issue→file 范式与 cmm 符号检索不直接对口，留作 scale-up
-- [x] 2.2 实现 recall@k / nDCG@10（RepoBench-R）+ NL→文件/函数命中率（SWE-Lancer-Loc）→ 指标实现 + 合成验证（6 测试）**且已在 cmm 上跑出真基线**：`python -m eval.run_code_baseline` 对 graphify 21-query gold 集，recall@1/3/5/10 = 0.476/0.667/**0.762**/0.81（报告 `eval/reports/code-baseline-findings.md`）。注：gold 用 architecture-derived（非 RepoBench 全量），见 2.1/2.4
+- [x] 2.2 实现 recall@k / nDCG@10（RepoBench-R）+ NL→文件/函数命中率（SWE-Lancer-Loc）→ 指标实现 + 合成验证（6 测试）**且已在真实目标仓库跑出基线**：graphify strict@5=0.762；**Godot core/（13504 节点真实 C++）strict@5=0.0 / broad@5=0.692**（双指标：strict 在大 C++ 因粒度错配失效，broad+归一化为公平刻度）。报告 `eval/reports/code-baseline-{graphify,godot}-findings.md`。注：gold 用 architecture-derived（非 RepoBench 全量 / PR 反挖），见 2.1/2.4
 - [x] 2.3 自建图指标 Symbol-Level Hit@k / Call-Chain Edge Recall / Path Precision@k（gold 来自 cmm 静态调用图）→ 指标实现完成 + 合成验证（`test_graph_metrics` 6 项，已知调用链算分正确）；注：接 cmm 真实静态调用图 gold 待 2.1 数据集 + 集成
 - [ ] 2.4 PR 反挖 ground truth（NL issue→git diff→gold symbols→gold 调用链）+ LSP goto-def 执行式反查，零 LLM judge → 验证：gold 生成全程不调 LLM。注：首基线暂用 cmm `get_architecture` 实测符号的 architecture-derived gold 替代（零 LLM，已跑出 recall@5=0.762）；PR 反挖需目标仓库 git 历史，留作 gold 硬化 scale-up
 - [ ] 2.5 CoIR 子集向量基线对照（cosqa+codesearchnet+stackoverflow，~10–15%，仅防退化）→ 验证：跑出对照分数不与榜单比

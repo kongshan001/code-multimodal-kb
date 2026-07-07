@@ -2,6 +2,15 @@
 
 本仓库**无源码**，只承载 OpenSpec 变更与部署文档：给 agent（Claude Code 等）接入 **知识库**（代码 + 多模态文档）与 **记忆**（跨会话主观记忆）能力。沿用在 `add-code-multimodal-kb` 确立的原则：**复用成熟 MCP + 注册到 agent，不建网关、不引平台外壳、几乎零自建代码**。
 
+## 目标靶子（B 模式 · 真实落地）
+
+KB / 记忆 / 评测不再停在 infra——**指向真实靶子才算被证明**：
+- **代码库**：[Godot](https://github.com/godotengine/godot) `4.7-stable`（~1M+ LOC C++，百万行级真实引擎 → cmm 的考场）
+- **文档语料**：Godot 官方文档（docs.godotengine.org，待 LLM 凭据由 graphify 建图）
+- **成功场景**：agent 能在 Godot 代码 + 文档上准确回答「X 在哪实现 / 谁调用 / 文档怎么说」，评测给出真实 recall@k
+
+策略：**分片优先**——先 index `core/` 证 cmm 吃得下真实 Godot C++ → 建 Godot gold → 真 recall@k → scale up，不盲全量。
+
 ## 进行中的变更
 
 | 变更 | 进度 | 主题 | 状态 |

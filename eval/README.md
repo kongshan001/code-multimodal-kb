@@ -23,10 +23,12 @@ python -m pytest eval/ -v
 
 - ✅ 1.1 harness 骨架（cmm round-trip smoke 通过）
 - ✅ 1.2 可复现 lockfile（报告盖印 + 版本探测）
-- ✅ 2.2 检索指标（recall@k / hit_rate / nDCG@k，合成验证）
+- ✅ 2.2 检索指标（recall@k / hit_rate / nDCG@k，合成验证）+ **双指标（strict / broad+归一化）**
 - ✅ 2.3 图指标（Symbol Hit@k / Call-Chain Edge Recall / Path Precision@k，合成验证）
-- ⏳ 2.1 数据集下载（RepoBench-R + SWE-Lancer-Loc，CN 走代理）—— 接口已留 `subjects.cmm_search`，TODO
-- ⏳ 2.4 PR gold 反挖（需目标仓库 index 进 cmm）—— `harness.run_dataset` 已备，TODO
+- ✅ 真基线：graphify（strict@5=0.762）+ **Godot core/**（strict@5=0.0 / broad@5=0.692）→ 报告 `reports/`
+- ⏳ 2.1 RepoBench/SWE-Lancer 全量（HF 需 token + 范式不对口，留作 scale-up）
+- ⏳ 2.4 PR 反挖 gold（比类名 gold 更硬，留作 gold 硬化）
 - ⏳ 2.5 CoIR 向量基线对照 —— TODO
+- 🔬 发现驱动的改进项：接 cmm `semantic_query`（救概念盲区）、broad 作主指标、scale up index
 
 > 文档侧(§3) / 记忆侧(§4) 评测卡 LLM 凭据，与 doc-side KB / Memory Stage 1 共享解锁。
