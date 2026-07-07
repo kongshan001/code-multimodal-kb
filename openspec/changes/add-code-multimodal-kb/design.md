@@ -23,6 +23,7 @@
 - 不做 ColPali 视觉页级检索（多模态 = 跨文档理解，抽取式够用）
 - graphify 不处理代码（代码归 codebase-memory-mcp，避免重复建图）
 - 不自研索引 / 知识图谱 / embedding / 视觉模型
+- 不服务非 agent 消费方（webapp / 产品 HTTP 客户端 / 内部 wiki）——MCP 只能被 MCP client 调用；若未来需产品功能集成，另起 change（届时自建薄 HTTP 网关或上 RAGFlow / Dify 外壳）
 
 ## Decisions
 
@@ -56,7 +57,7 @@ graphify --mcp        ─┘
 
 ### 决策 4：NL 检索流程（agent 翻译 + 工具检索）
 
-两个 MCP server 均不含 LLM，**NL→查询的翻译由 agent 负责，工具只跑图查询**。
+**查询阶段**两个 MCP server 均不调 LLM——NL→查询由 agent 翻译、工具只跑图 / 结构查询；但 **graphify 建图阶段依赖 LLM**（Part B 语义抽取，默认 host agent，可选 Gemini backend），故无 LLM 凭据环境建不了文档图。
 
 **路由三分**：
 
@@ -66,12 +67,13 @@ graphify --mcp        ─┘
 | 纯文档（「文档怎么描述 X」） | graphify |
 | 设计↔代码（「文档写的 X 代码在哪」） | graphify 锚定概念 → codebase-memory-mcp 落代码 |
 
-**NL → 代码的 4 步翻译**（retrieve-then-narrow 循环）：
+**代码侧主路 = codebase-memory-mcp 的 `semantic_query`**（自带 nomic-embed-code 向量 + 11 信号混合打分，**直接处理词汇不匹配**，无需 agent brainstorm 同义词）。仅当 `semantic_query` 空召回时走结构兜底（retrieve-then-narrow）：
 
 1. **抽取**：从 NL 抽候选标识符 / 概念 / 动词
-2. **同义扩展**：brainstorm 代码可能的命名（结构检索不做语义匹配，这步是兜底）
-3. **检索**：符号搜索 / 模糊名匹配 → 候选符号
-4. **收窄**：用调用链 / 引用 / 类型 确认
+2. **符号检索**：符号搜索 / 模糊名匹配 → 候选符号
+3. **收窄**：用调用链 / 引用 / 类型 确认
+
+（文档侧 graphify 无向量，靠其自身 `query` 词汇扩展 + BFS/DFS；词汇不匹配风险集中在文档侧，见已知短板。）
 
 **graphify 间接桥**：`graphify query` 把模糊概念变成文档图里的**具名实体** → 拿该标识符喂 codebase-memory-mcp 定位实现 + 调用链。
 
