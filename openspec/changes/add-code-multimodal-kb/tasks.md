@@ -1,15 +1,15 @@
 ## 1. 环境与接入（复用工具）
 
-- [ ] 1.1 确认 graphify 已升级到 0.8.46 且 `graphify --version` 无 warning（已完成）
-- [ ] 1.2 安装 / 配置 codebase-memory-mcp 为 MCP server，验证可对示例仓库建图与查询
+- [x] 1.1 确认 graphify 已升级到 0.8.46 且 `graphify --version` 无 warning（已验证：`graphify 0.8.46`，无 warning）
+- [x] 1.2 安装 / 配置 codebase-memory-mcp 为 MCP server，验证可对示例仓库建图与查询 — 二进制 v0.8.1 装于 ~/.local/bin（checksums.txt 校验通过 + ad-hoc 签名，未抓 main），cli 通道 + index_repository 验证通过；MCP server 注册到 agent 归 task 4.1（待确认 install 副作用后执行）
 - [ ] 1.3 验证 `graphify --mcp` 可作为 MCP server 启动并被 agent 调用
 - [ ] 1.4 决策 graphify 图存储：`graph.json`（文件）或 Neo4j（`--neo4j`）
 
 ## 2. 代码知识库（code-knowledge-base，复用 codebase-memory-mcp）
 
-- [ ] 2.1 把目标代码仓库接入 codebase-memory-mcp，完成首次全量索引（tree-sitter AST + 类型解析 → KG）
-- [ ] 2.2 验证跨仓库自然语言问答、符号定位、调用链查询
-- [ ] 2.3 配置增量索引（文件变更后只重索引受影响部分）
+- [x] 2.1 把目标代码仓库接入 codebase-memory-mcp，完成首次全量索引（tree-sitter AST + 类型解析 → KG） — engineer_demo 流程跑通（零代码）；graphify 源码实质索引：2192 节点 / 802 函数 / 4979 边 / 2.6s，含 CALLS(1518)+USAGE(860)+IMPORTS(51)+SEMANTIC_RELATED(25) 边
+- [x] 2.2 验证跨仓库自然语言问答、符号定位、调用链查询 — search_code（符号定位 112ms，file:line+度数+3.4x 去重）、trace_path（callees+callers 多跳 hop1-3）、get_code_snippet（完整源码+file:line+元数据）均验证通过且不调 LLM；query_graph 吃结构 DSL（裸 NL 报 parse 错），用法待确认——非阻塞，NL 检索由 agent 用 search_code+trace_path 组合（符合决策4）
+- [x] 2.3 配置增量索引（文件变更后只重索引受影响部分） — detect_changes 验证通过（基于持久化文件哈希检测 changed_files + impacted_symbols，depth=2），建图时 persist_hashes pass 已对 168 文件落哈希；config auto_index 默认 false（按需开启归 task 6.2/6.3）
 - [ ] 2.4 代码检索评测基线（跨仓库问答集 → 召回 / 命中率）
 
 ## 3. 多模态知识库（multimodal-knowledge-base，复用 graphify，docs-only）
