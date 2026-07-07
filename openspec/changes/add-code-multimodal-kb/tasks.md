@@ -47,4 +47,4 @@
 - [ ] 6.3 多模态文档 KB 安装：`uv tool install graphifyy` → `graphify install`（同步 skill + 注册 CLAUDE.md）→ `graphify <docs-path>` 建图 → `graphify <docs-path> --mcp` 起 server 并在 agent 注册
 - [ ] 6.4 评测环境（可选）：`pip install deepeval`，拉仓库跑 pytest 评测套件
 - [ ] 6.5 验证：agent 内分别测一条代码问题（走 codebase-memory-mcp）与一条文档问题（走 graphify）
-- [ ] 6.6 文档化部署 runbook：上述步骤 + 前置依赖 + 常见问题（macOS 隔离属性、agent 配置位置、图重建），纳入仓库供新设备照做
+- [x] 6.6 文档化部署 runbook — docs/deployment-runbook.md 已纳入仓库：A 代码侧（cmm v0.8.1 完整步骤：锁版本+checksum+签名+落位+注册副作用+查询验证）实测通过；B 文档侧（graphify 建图）依赖 LLM 凭据，框架就绪待补全；FAQ 沉淀 SSL 抖动/quarantine/install 删索引/query_graph DSL 等实测踩坑
