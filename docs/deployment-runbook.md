@@ -3,6 +3,7 @@
 > **状态**：A 代码侧（codebase-memory-mcp）已于 2026-07-07 在 macOS x86_64 实测通过；
 > B 文档侧（graphify）依赖 LLM 凭据，建图步骤待实测后补全。
 > 对应 OpenSpec change：`add-code-multimodal-kb`（tasks §6）。
+> **范围**：仅 KB；agent 记忆层（Mem0）部署见 `add-agent-memory` task 5.1（待 Stage 1 / LLM 凭据）。
 
 ## 0. 前置（task 6.1）
 
