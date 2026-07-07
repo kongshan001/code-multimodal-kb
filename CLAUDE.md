@@ -2,6 +2,18 @@
 
 本仓库是**规格仓库**（承载 openspec 变更：`add-code-multimodal-kb`、`add-agent-memory`），无源码。所有产出是 spec / 设计 / 文档 / 配置；改动一律提交 main + push（带 Co-Authored-By）。
 
+## 铁则：新需求一律走 OpenSpec
+
+**所有非琐碎需求 MUST 经 OpenSpec 推进**——先 spec 后码，不直接写实现、不口头推进：
+
+| 阶段 | 做什么 | skill |
+|---|---|---|
+| 探索 / 调研 | 想清楚再动 | `openspec-explore` |
+| 立项 | 生成 proposal / design / specs / tasks | `openspec-propose` |
+| 实施 | 逐 task 落地，完成的带验证证据 | `openspec-apply-change` |
+
+**例外**（可直接做，不必开变更）：单行修复、笔误、读文件、回答问题、跑命令、整理文档。
+
 ## Memory 纪律（来自 `add-agent-memory` D1）
 
 记忆是独立于 KB / skills / git 的**一层**。每遇到一条候选事实，先按四层归属路由，再决定写入哪：
