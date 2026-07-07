@@ -18,3 +18,6 @@
 
 # OS
 Thumbs.db
+
+# MCP / tool artifacts
+.playwright-mcp/
