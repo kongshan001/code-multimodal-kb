@@ -1,0 +1,669 @@
+{
+  "subject": "cmm.semantic",
+  "target": "godot",
+  "project": "Users-ks_128-Documents-godot-src-core",
+  "n": 26,
+  "aggregate": {
+    "mean_recall@1": 0.231,
+    "mean_broad_recall@1": 0.769,
+    "mean_recall@3": 0.269,
+    "mean_broad_recall@3": 0.846,
+    "mean_recall@5": 0.308,
+    "mean_broad_recall@5": 0.846,
+    "mean_recall@10": 0.308,
+    "mean_broad_recall@10": 0.846
+  },
+  "per_query": [
+    {
+      "query": "string format",
+      "gold": [
+        "vformat"
+      ],
+      "retrieved_top5": [
+        "path_to_file",
+        "erase_message",
+        "_write_to_str",
+        "translate_plural",
+        "add_message"
+      ],
+      "keywords": [
+        "string",
+        "format"
+      ],
+      "recall@1": 0.0,
+      "broad_recall@1": 0.0,
+      "recall@3": 0.0,
+      "broad_recall@3": 0.0,
+      "recall@5": 0.0,
+      "broad_recall@5": 0.0,
+      "recall@10": 0.0,
+      "broad_recall@10": 0.0
+    },
+    {
+      "query": "int to string",
+      "gold": [
+        "itos"
+      ],
+      "retrieved_top5": [
+        "compare",
+        "operator==",
+        "are_spans_equal",
+        "should_ignore_device",
+        "operator!="
+      ],
+      "keywords": [
+        "int",
+        "string"
+      ],
+      "recall@1": 0.0,
+      "broad_recall@1": 0.0,
+      "recall@3": 0.0,
+      "broad_recall@3": 0.0,
+      "recall@5": 0.0,
+      "broad_recall@5": 0.0,
+      "recall@10": 0.0,
+      "broad_recall@10": 0.0
+    },
+    {
+      "query": "delete object free memory",
+      "gold": [
+        "memdelete"
+      ],
+      "retrieved_top5": [
+        "delete_allocation",
+        "_delete_temp",
+        "_delete_temp",
+        "get_temp_dir",
+        "get_local_scene"
+      ],
+      "keywords": [
+        "delete",
+        "object",
+        "free",
+        "memory"
+      ],
+      "recall@1": 0.0,
+      "broad_recall@1": 0.0,
+      "recall@3": 0.0,
+      "broad_recall@3": 0.0,
+      "recall@5": 0.0,
+      "broad_recall@5": 0.0,
+      "recall@10": 0.0,
+      "broad_recall@10": 0.0
+    },
+    {
+      "query": "a star pathfinding",
+      "gold": [
+        "AStar"
+      ],
+      "retrieved_top5": [
+        "set_region",
+        "operator()",
+        "_get_point",
+        "get_region",
+        "clear"
+      ],
+      "keywords": [
+        "star",
+        "pathfinding"
+      ],
+      "recall@1": 0.0,
+      "broad_recall@1": 1.0,
+      "recall@3": 0.0,
+      "broad_recall@3": 1.0,
+      "recall@5": 0.0,
+      "broad_recall@5": 1.0,
+      "recall@10": 0.0,
+      "broad_recall@10": 1.0
+    },
+    {
+      "query": "operating system abstraction",
+      "gold": [
+        "OS"
+      ],
+      "retrieved_top5": [
+        "floorf",
+        "floori",
+        "smits_intersect_ray",
+        "lstrip",
+        "sarray"
+      ],
+      "keywords": [
+        "operating",
+        "system"
+      ],
+      "recall@1": 0.0,
+      "broad_recall@1": 0.0,
+      "recall@3": 0.0,
+      "broad_recall@3": 0.0,
+      "recall@5": 0.0,
+      "broad_recall@5": 0.0,
+      "recall@10": 0.0,
+      "broad_recall@10": 0.0
+    },
+    {
+      "query": "color",
+      "gold": [
+        "Color"
+      ],
+      "retrieved_top5": [
+        "Color",
+        "operator+",
+        "operator+=",
+        "operator-=",
+        "operator<"
+      ],
+      "keywords": [
+        "color"
+      ],
+      "recall@1": 1.0,
+      "broad_recall@1": 1.0,
+      "recall@3": 1.0,
+      "broad_recall@3": 1.0,
+      "recall@5": 1.0,
+      "broad_recall@5": 1.0,
+      "recall@10": 1.0,
+      "broad_recall@10": 1.0
+    },
+    {
+      "query": "vector2",
+      "gold": [
+        "Vector2"
+      ],
+      "retrieved_top5": [
+        "operator+",
+        "operator*=",
+        "operator/=",
+        "operator==",
+        "operator!="
+      ],
+      "keywords": [
+        "vector2"
+      ],
+      "recall@1": 0.0,
+      "broad_recall@1": 1.0,
+      "recall@3": 0.0,
+      "broad_recall@3": 1.0,
+      "recall@5": 0.0,
+      "broad_recall@5": 1.0,
+      "recall@10": 0.0,
+      "broad_recall@10": 1.0
+    },
+    {
+      "query": "vector3",
+      "gold": [
+        "Vector3"
+      ],
+      "retrieved_top5": [
+        "min",
+        "max",
+        "operator+",
+        "direction_to",
+        "sign"
+      ],
+      "keywords": [
+        "vector3"
+      ],
+      "recall@1": 0.0,
+      "broad_recall@1": 1.0,
+      "recall@3": 0.0,
+      "broad_recall@3": 1.0,
+      "recall@5": 0.0,
+      "broad_recall@5": 1.0,
+      "recall@10": 0.0,
+      "broad_recall@10": 1.0
+    },
+    {
+      "query": "quaternion",
+      "gold": [
+        "Quaternion"
+      ],
+      "retrieved_top5": [
+        "operator==",
+        "operator!=",
+        "operator*",
+        "operator-",
+        "operator+="
+      ],
+      "keywords": [
+        "quaternion"
+      ],
+      "recall@1": 0.0,
+      "broad_recall@1": 1.0,
+      "recall@3": 0.0,
+      "broad_recall@3": 1.0,
+      "recall@5": 0.0,
+      "broad_recall@5": 1.0,
+      "recall@10": 0.0,
+      "broad_recall@10": 1.0
+    },
+    {
+      "query": "rect2",
+      "gold": [
+        "Rect2"
+      ],
+      "retrieved_top5": [
+        "Rect2",
+        "grow",
+        "grow_individual",
+        "grow_side",
+        "operator=="
+      ],
+      "keywords": [
+        "rect2"
+      ],
+      "recall@1": 1.0,
+      "broad_recall@1": 1.0,
+      "recall@3": 1.0,
+      "broad_recall@3": 1.0,
+      "recall@5": 1.0,
+      "broad_recall@5": 1.0,
+      "recall@10": 1.0,
+      "broad_recall@10": 1.0
+    },
+    {
+      "query": "json",
+      "gold": [
+        "JSON"
+      ],
+      "retrieved_top5": [
+        "get_type",
+        "PList",
+        "get_resource_type",
+        "get_data",
+        "Resource"
+      ],
+      "keywords": [
+        "json"
+      ],
+      "recall@1": 0.0,
+      "broad_recall@1": 0.0,
+      "recall@3": 0.0,
+      "broad_recall@3": 1.0,
+      "recall@5": 0.0,
+      "broad_recall@5": 1.0,
+      "recall@10": 0.0,
+      "broad_recall@10": 1.0
+    },
+    {
+      "query": "image",
+      "gold": [
+        "Image"
+      ],
+      "retrieved_top5": [
+        "get_format",
+        "_get_data",
+        "~ImageFormatLoader",
+        "is_compressed",
+        "get_format_name"
+      ],
+      "keywords": [
+        "image"
+      ],
+      "recall@1": 0.0,
+      "broad_recall@1": 1.0,
+      "recall@3": 0.0,
+      "broad_recall@3": 1.0,
+      "recall@5": 0.0,
+      "broad_recall@5": 1.0,
+      "recall@10": 0.0,
+      "broad_recall@10": 1.0
+    },
+    {
+      "query": "resource loader",
+      "gold": [
+        "ResourceLoader"
+      ],
+      "retrieved_top5": [
+        "ResourceLoader",
+        "ResourceFormatImporter",
+        "remove_importer",
+        "get_resource",
+        "get_singleton"
+      ],
+      "keywords": [
+        "resource",
+        "loader"
+      ],
+      "recall@1": 1.0,
+      "broad_recall@1": 1.0,
+      "recall@3": 1.0,
+      "broad_recall@3": 1.0,
+      "recall@5": 1.0,
+      "broad_recall@5": 1.0,
+      "recall@10": 1.0,
+      "broad_recall@10": 1.0
+    },
+    {
+      "query": "resource saver",
+      "gold": [
+        "ResourceSaver"
+      ],
+      "retrieved_top5": [
+        "~ResourceFormatSaver",
+        "get_singleton",
+        "ResourceFormatImporter",
+        "ResourceSaver",
+        "remove_importer"
+      ],
+      "keywords": [
+        "resource",
+        "saver"
+      ],
+      "recall@1": 0.0,
+      "broad_recall@1": 1.0,
+      "recall@3": 0.0,
+      "broad_recall@3": 1.0,
+      "recall@5": 1.0,
+      "broad_recall@5": 1.0,
+      "recall@10": 1.0,
+      "broad_recall@10": 1.0
+    },
+    {
+      "query": "file access",
+      "gold": [
+        "FileAccess"
+      ],
+      "retrieved_top5": [
+        "~FileAccess",
+        "~FileAccessEncrypted",
+        "~FileAccessCompressed",
+        "DirAccessPack",
+        "close"
+      ],
+      "keywords": [
+        "file",
+        "access"
+      ],
+      "recall@1": 0.0,
+      "broad_recall@1": 1.0,
+      "recall@3": 0.0,
+      "broad_recall@3": 1.0,
+      "recall@5": 0.0,
+      "broad_recall@5": 1.0,
+      "recall@10": 0.0,
+      "broad_recall@10": 1.0
+    },
+    {
+      "query": "directory access",
+      "gold": [
+        "DirAccess"
+      ],
+      "retrieved_top5": [
+        "has_directory",
+        "exists",
+        "fix_path",
+        "fix_path",
+        "_erase_recursive"
+      ],
+      "keywords": [
+        "directory",
+        "access"
+      ],
+      "recall@1": 0.0,
+      "broad_recall@1": 0.0,
+      "recall@3": 0.0,
+      "broad_recall@3": 1.0,
+      "recall@5": 0.0,
+      "broad_recall@5": 1.0,
+      "recall@10": 0.0,
+      "broad_recall@10": 1.0
+    },
+    {
+      "query": "message queue",
+      "gold": [
+        "MessageQueue"
+      ],
+      "retrieved_top5": [
+        "has_messages",
+        "get_max_buffer_usage",
+        "set_print_error_messages",
+        "send_message",
+        "_put_msg"
+      ],
+      "keywords": [
+        "message",
+        "queue"
+      ],
+      "recall@1": 0.0,
+      "broad_recall@1": 1.0,
+      "recall@3": 0.0,
+      "broad_recall@3": 1.0,
+      "recall@5": 0.0,
+      "broad_recall@5": 1.0,
+      "recall@10": 0.0,
+      "broad_recall@10": 1.0
+    },
+    {
+      "query": "engine",
+      "gold": [
+        "Engine"
+      ],
+      "retrieved_top5": [
+        "Engine",
+        "~Engine",
+        "Engine",
+        "~EngineProfiler",
+        "unbind"
+      ],
+      "keywords": [
+        "engine"
+      ],
+      "recall@1": 1.0,
+      "broad_recall@1": 1.0,
+      "recall@3": 2.0,
+      "broad_recall@3": 1.0,
+      "recall@5": 2.0,
+      "broad_recall@5": 1.0,
+      "recall@10": 2.0,
+      "broad_recall@10": 1.0
+    },
+    {
+      "query": "main loop",
+      "gold": [
+        "MainLoop"
+      ],
+      "retrieved_top5": [
+        "get_main_loop",
+        "~MainLoop",
+        "_bind_methods",
+        "initialize",
+        "iteration_end"
+      ],
+      "keywords": [
+        "main",
+        "loop"
+      ],
+      "recall@1": 0.0,
+      "broad_recall@1": 1.0,
+      "recall@3": 0.0,
+      "broad_recall@3": 1.0,
+      "recall@5": 0.0,
+      "broad_recall@5": 1.0,
+      "recall@10": 0.0,
+      "broad_recall@10": 1.0
+    },
+    {
+      "query": "undo redo",
+      "gold": [
+        "UndoRedo"
+      ],
+      "retrieved_top5": [
+        "~UndoRedo",
+        "redo",
+        "has_redo",
+        "has_undo",
+        "is_merging"
+      ],
+      "keywords": [
+        "undo",
+        "redo"
+      ],
+      "recall@1": 0.0,
+      "broad_recall@1": 1.0,
+      "recall@3": 0.0,
+      "broad_recall@3": 1.0,
+      "recall@5": 0.0,
+      "broad_recall@5": 1.0,
+      "recall@10": 0.0,
+      "broad_recall@10": 1.0
+    },
+    {
+      "query": "node path",
+      "gold": [
+        "NodePath"
+      ],
+      "retrieved_top5": [
+        "get_names",
+        "get_name",
+        "simplified",
+        "operator!=",
+        "~NodePath"
+      ],
+      "keywords": [
+        "node",
+        "path"
+      ],
+      "recall@1": 0.0,
+      "broad_recall@1": 1.0,
+      "recall@3": 0.0,
+      "broad_recall@3": 1.0,
+      "recall@5": 0.0,
+      "broad_recall@5": 1.0,
+      "recall@10": 0.0,
+      "broad_recall@10": 1.0
+    },
+    {
+      "query": "string name",
+      "gold": [
+        "StringName"
+      ],
+      "retrieved_top5": [
+        "~StringName",
+        "operator==",
+        "operator!=",
+        "operator bool() const",
+        "indent"
+      ],
+      "keywords": [
+        "string",
+        "name"
+      ],
+      "recall@1": 0.0,
+      "broad_recall@1": 1.0,
+      "recall@3": 0.0,
+      "broad_recall@3": 1.0,
+      "recall@5": 0.0,
+      "broad_recall@5": 1.0,
+      "recall@10": 0.0,
+      "broad_recall@10": 1.0
+    },
+    {
+      "query": "random number generator",
+      "gold": [
+        "RandomNumberGenerator"
+      ],
+      "retrieved_top5": [
+        "RandomNumberGenerator",
+        "rand_weighted",
+        "randomize",
+        "randfn",
+        "randf"
+      ],
+      "keywords": [
+        "random",
+        "number",
+        "generator"
+      ],
+      "recall@1": 1.0,
+      "broad_recall@1": 1.0,
+      "recall@3": 1.0,
+      "broad_recall@3": 1.0,
+      "recall@5": 1.0,
+      "broad_recall@5": 1.0,
+      "recall@10": 1.0,
+      "broad_recall@10": 1.0
+    },
+    {
+      "query": "crypto",
+      "gold": [
+        "Crypto"
+      ],
+      "retrieved_top5": [
+        "is_server",
+        "_bind_methods",
+        "_bind_methods",
+        "_bind_methods",
+        "_bind_methods"
+      ],
+      "keywords": [
+        "crypto"
+      ],
+      "recall@1": 0.0,
+      "broad_recall@1": 1.0,
+      "recall@3": 0.0,
+      "broad_recall@3": 1.0,
+      "recall@5": 0.0,
+      "broad_recall@5": 1.0,
+      "recall@10": 0.0,
+      "broad_recall@10": 1.0
+    },
+    {
+      "query": "translation server",
+      "gold": [
+        "TranslationServer"
+      ],
+      "retrieved_top5": [
+        "TranslationServer",
+        "clear",
+        "operator==",
+        "_bind_methods",
+        "get_language_name"
+      ],
+      "keywords": [
+        "translation",
+        "server"
+      ],
+      "recall@1": 1.0,
+      "broad_recall@1": 1.0,
+      "recall@3": 1.0,
+      "broad_recall@3": 1.0,
+      "recall@5": 1.0,
+      "broad_recall@5": 1.0,
+      "recall@10": 1.0,
+      "broad_recall@10": 1.0
+    },
+    {
+      "query": "http client",
+      "gold": [
+        "HTTPClient"
+      ],
+      "retrieved_top5": [
+        "HTTPClientTCP",
+        "~RemoteFilesystemClient",
+        "~HTTPClient",
+        "get_connection",
+        "_remove_file"
+      ],
+      "keywords": [
+        "http",
+        "client"
+      ],
+      "recall@1": 0.0,
+      "broad_recall@1": 1.0,
+      "recall@3": 0.0,
+      "broad_recall@3": 1.0,
+      "recall@5": 0.0,
+      "broad_recall@5": 1.0,
+      "recall@10": 0.0,
+      "broad_recall@10": 1.0
+    }
+  ],
+  "lockfile": {
+    "temperature": 0.0,
+    "llm_model": "",
+    "cmm_version": "0.8.1",
+    "graphify_version": "0.8.46",
+    "mem0_version": ""
+  }
+}

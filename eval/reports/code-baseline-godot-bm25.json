@@ -1,17 +1,17 @@
 {
-  "subject": "cmm.search_code",
+  "subject": "cmm.bm25",
   "target": "godot",
   "project": "Users-ks_128-Documents-godot-src-core",
   "n": 26,
   "aggregate": {
-    "mean_recall@1": 0.0,
-    "mean_broad_recall@1": 0.385,
-    "mean_recall@3": 0.0,
-    "mean_broad_recall@3": 0.577,
-    "mean_recall@5": 0.0,
-    "mean_broad_recall@5": 0.692,
-    "mean_recall@10": 0.038,
-    "mean_broad_recall@10": 0.731
+    "mean_recall@1": 0.462,
+    "mean_broad_recall@1": 0.846,
+    "mean_recall@3": 0.5,
+    "mean_broad_recall@3": 0.846,
+    "mean_recall@5": 0.5,
+    "mean_broad_recall@5": 0.846,
+    "mean_recall@10": 0.5,
+    "mean_broad_recall@10": 0.885
   },
   "per_query": [
     {
@@ -20,11 +20,11 @@
         "vformat"
       ],
       "retrieved_top5": [
-        "sprintf",
-        "write_enum_type",
-        "write_doc",
-        "write_interface",
-        "write_function_type"
+        "format",
+        "format_number",
+        "_get_string",
+        "get_unicode_string",
+        "save_unicode_string"
       ],
       "recall@1": 0.0,
       "broad_recall@1": 0.0,
@@ -41,11 +41,11 @@
         "itos"
       ],
       "retrieved_top5": [
-        "compare_value",
-        "_pack",
-        "load_string",
-        "open",
-        "type_string"
+        "to_int",
+        "_to_int",
+        "hex_to_int",
+        "bin_to_int",
+        "as_int"
       ],
       "recall@1": 0.0,
       "broad_recall@1": 0.0,
@@ -61,7 +61,13 @@
       "gold": [
         "memdelete"
       ],
-      "retrieved_top5": [],
+      "retrieved_top5": [
+        "operator delete",
+        "delete_allocation",
+        "free_static",
+        "free",
+        "free_aligned_static"
+      ],
       "recall@1": 0.0,
       "broad_recall@1": 0.0,
       "recall@3": 0.0,
@@ -76,30 +82,42 @@
       "gold": [
         "AStar"
       ],
-      "retrieved_top5": [],
+      "retrieved_top5": [
+        "~AStar3D",
+        "clear",
+        "_solve",
+        "clear",
+        "_solve"
+      ],
       "recall@1": 0.0,
-      "broad_recall@1": 0.0,
+      "broad_recall@1": 1.0,
       "recall@3": 0.0,
-      "broad_recall@3": 0.0,
+      "broad_recall@3": 1.0,
       "recall@5": 0.0,
-      "broad_recall@5": 0.0,
+      "broad_recall@5": 1.0,
       "recall@10": 0.0,
-      "broad_recall@10": 0.0
+      "broad_recall@10": 1.0
     },
     {
       "query": "operating system abstraction",
       "gold": [
         "OS"
       ],
-      "retrieved_top5": [],
+      "retrieved_top5": [
+        "get_system_fonts",
+        "get_system_dir",
+        "get_system_dir",
+        "get_system_fonts",
+        "get_system_ca_certificates"
+      ],
       "recall@1": 0.0,
-      "broad_recall@1": 0.0,
+      "broad_recall@1": 1.0,
       "recall@3": 0.0,
-      "broad_recall@3": 0.0,
+      "broad_recall@3": 1.0,
       "recall@5": 0.0,
-      "broad_recall@5": 0.0,
+      "broad_recall@5": 1.0,
       "recall@10": 0.0,
-      "broad_recall@10": 0.0
+      "broad_recall@10": 1.0
     },
     {
       "query": "color",
@@ -107,19 +125,19 @@
         "Color"
       ],
       "retrieved_top5": [
-        "hash_compare",
-        "html",
-        "initialize",
-        "_create_root",
-        "get_named_color_count"
+        "Color",
+        "find_named_color",
+        "get_named_color",
+        "get_named_color_count",
+        "get_named_color_name"
       ],
-      "recall@1": 0.0,
-      "broad_recall@1": 0.0,
-      "recall@3": 0.0,
+      "recall@1": 1.0,
+      "broad_recall@1": 1.0,
+      "recall@3": 1.0,
       "broad_recall@3": 1.0,
-      "recall@5": 0.0,
+      "recall@5": 1.0,
       "broad_recall@5": 1.0,
-      "recall@10": 0.0,
+      "recall@10": 1.0,
       "broad_recall@10": 1.0
     },
     {
@@ -128,19 +146,19 @@
         "Vector2"
       ],
       "retrieved_top5": [
-        "max",
-        "min",
-        "hash_compare",
-        "initialize",
-        "distance_squared_to"
+        "Vector2",
+        "angle",
+        "length",
+        "normalize",
+        "normalized"
       ],
-      "recall@1": 0.0,
+      "recall@1": 1.0,
       "broad_recall@1": 1.0,
-      "recall@3": 0.0,
+      "recall@3": 1.0,
       "broad_recall@3": 1.0,
-      "recall@5": 0.0,
+      "recall@5": 1.0,
       "broad_recall@5": 1.0,
-      "recall@10": 0.0,
+      "recall@10": 1.0,
       "broad_recall@10": 1.0
     },
     {
@@ -149,19 +167,19 @@
         "Vector3"
       ],
       "retrieved_top5": [
-        "hash_compare",
-        "initialize",
-        "min",
-        "get_opaque_pointer",
-        "_register_variant_builtin_methods_array"
+        "Vector3",
+        "rotate",
+        "rotated",
+        "snap",
+        "snapped"
       ],
-      "recall@1": 0.0,
-      "broad_recall@1": 0.0,
-      "recall@3": 0.0,
+      "recall@1": 1.0,
+      "broad_recall@1": 1.0,
+      "recall@3": 1.0,
       "broad_recall@3": 1.0,
-      "recall@5": 0.0,
+      "recall@5": 1.0,
       "broad_recall@5": 1.0,
-      "recall@10": 0.0,
+      "recall@10": 1.0,
       "broad_recall@10": 1.0
     },
     {
@@ -170,19 +188,19 @@
         "Quaternion"
       ],
       "retrieved_top5": [
-        "hash_compare",
-        "interpolate_with",
-        "get_rotation_quaternion",
-        "write",
-        "set_quaternion_scale"
+        "Quaternion",
+        "length",
+        "normalize",
+        "normalized",
+        "inverse"
       ],
-      "recall@1": 0.0,
-      "broad_recall@1": 0.0,
-      "recall@3": 0.0,
+      "recall@1": 1.0,
+      "broad_recall@1": 1.0,
+      "recall@3": 1.0,
       "broad_recall@3": 1.0,
-      "recall@5": 0.0,
+      "recall@5": 1.0,
       "broad_recall@5": 1.0,
-      "recall@10": 0.0,
+      "recall@10": 1.0,
       "broad_recall@10": 1.0
     },
     {
@@ -191,19 +209,19 @@
         "Rect2"
       ],
       "retrieved_top5": [
-        "get_rect2i",
-        "get_opaque_pointer",
-        "get_rect2",
-        "gdextension_variant_get_ptr_internal_getter",
-        "intersects_transformed"
+        "Rect2",
+        "intersects",
+        "encloses",
+        "intersection",
+        "merge"
       ],
-      "recall@1": 0.0,
+      "recall@1": 1.0,
       "broad_recall@1": 1.0,
-      "recall@3": 0.0,
+      "recall@3": 1.0,
       "broad_recall@3": 1.0,
-      "recall@5": 0.0,
+      "recall@5": 1.0,
       "broad_recall@5": 1.0,
-      "recall@10": 0.0,
+      "recall@10": 1.0,
       "broad_recall@10": 1.0
     },
     {
@@ -213,10 +231,10 @@
       ],
       "retrieved_top5": [
         "_stringify",
-        "check_formatting",
-        "_register_variant_builtin_methods_string",
-        "json_escape",
-        "_to_native"
+        "parse",
+        "stringify",
+        "_add_indent",
+        "_get_token"
       ],
       "recall@1": 0.0,
       "broad_recall@1": 1.0,
@@ -233,19 +251,19 @@
         "Image"
       ],
       "retrieved_top5": [
-        "crop_from_point",
-        "_get_color_at_ofs",
-        "_set_color_at_ofs",
-        "remove_image_format_loader",
-        "detect_used_channels"
+        "Image",
+        "validate_3d_image",
+        "compute_image_metrics",
+        "_get_dst_image_size",
+        "get_image_data_size"
       ],
-      "recall@1": 0.0,
+      "recall@1": 1.0,
       "broad_recall@1": 1.0,
-      "recall@3": 0.0,
+      "recall@3": 1.0,
       "broad_recall@3": 1.0,
-      "recall@5": 0.0,
+      "recall@5": 1.0,
       "broad_recall@5": 1.0,
-      "recall@10": 0.0,
+      "recall@10": 1.0,
       "broad_recall@10": 1.0
     },
     {
@@ -256,9 +274,9 @@
       "retrieved_top5": [
         "add_resource_format_loader",
         "remove_resource_format_loader",
+        "_find_custom_resource_format_loader",
         "add_custom_resource_format_loader",
-        "add_resource_format_loader",
-        "remove_resource_format_loader"
+        "~ResourceFormatLoader"
       ],
       "recall@1": 0.0,
       "broad_recall@1": 1.0,
@@ -277,9 +295,9 @@
       "retrieved_top5": [
         "add_resource_format_saver",
         "remove_resource_format_saver",
-        "remove_resource_format_saver",
-        "add_resource_format_saver",
-        "_find_custom_resource_format_saver"
+        "_find_custom_resource_format_saver",
+        "add_custom_resource_format_saver",
+        "~ResourceFormatSaver"
       ],
       "recall@1": 0.0,
       "broad_recall@1": 1.0,
@@ -296,11 +314,11 @@
         "FileAccess"
       ],
       "retrieved_top5": [
-        "fix_path",
-        "load_image",
-        "_load_resource_pack",
-        "_add_file",
-        "gdextension_setup_interface"
+        "~FileAccess",
+        "~FileAccessCompressed",
+        "~FileAccessEncrypted",
+        "FileAccessPack",
+        "FileAccessZip"
       ],
       "recall@1": 0.0,
       "broad_recall@1": 1.0,
@@ -317,7 +335,11 @@
         "DirAccess"
       ],
       "retrieved_top5": [
-        "_load_resource_pack"
+        "add_directory",
+        "has_directory",
+        "try_open_directory",
+        "list_directory",
+        "list_directory"
       ],
       "recall@1": 0.0,
       "broad_recall@1": 0.0,
@@ -326,7 +348,7 @@
       "recall@5": 0.0,
       "broad_recall@5": 0.0,
       "recall@10": 0.0,
-      "broad_recall@10": 0.0
+      "broad_recall@10": 1.0
     },
     {
       "query": "message queue",
@@ -334,17 +356,17 @@
         "MessageQueue"
       ],
       "retrieved_top5": [
-        "clear",
-        "statistics",
-        "flush_output",
-        "_read_in",
+        "MessageQueue",
+        "~MessageQueue",
+        "CallQueue",
+        "~CallQueue",
         "flush"
       ],
-      "recall@1": 0.0,
+      "recall@1": 1.0,
       "broad_recall@1": 1.0,
-      "recall@3": 0.0,
+      "recall@3": 1.0,
       "broad_recall@3": 1.0,
-      "recall@5": 0.0,
+      "recall@5": 1.0,
       "broad_recall@5": 1.0,
       "recall@10": 1.0,
       "broad_recall@10": 1.0
@@ -355,20 +377,20 @@
         "Engine"
       ],
       "retrieved_top5": [
-        "Callable",
-        "unref",
-        "_load_settings_text",
-        "_ensure_load_progress",
-        "open"
+        "Engine",
+        "~Engine",
+        "Engine",
+        "print_header",
+        "add_singleton"
       ],
-      "recall@1": 0.0,
-      "broad_recall@1": 0.0,
-      "recall@3": 0.0,
-      "broad_recall@3": 0.0,
-      "recall@5": 0.0,
-      "broad_recall@5": 0.0,
-      "recall@10": 0.0,
-      "broad_recall@10": 0.0
+      "recall@1": 1.0,
+      "broad_recall@1": 1.0,
+      "recall@3": 2.0,
+      "broad_recall@3": 1.0,
+      "recall@5": 2.0,
+      "broad_recall@5": 1.0,
+      "recall@10": 2.0,
+      "broad_recall@10": 1.0
     },
     {
       "query": "main loop",
@@ -376,18 +398,18 @@
         "MainLoop"
       ],
       "retrieved_top5": [
-        "set_locale",
-        "initialize_gdextensions",
-        "_parse_input_event_impl",
-        "start",
-        "_unload_extension_internal"
+        "~MainLoop",
+        "get_main_loop",
+        "_register_main_loop_callbacks",
+        "initialize",
+        "process"
       ],
       "recall@1": 0.0,
-      "broad_recall@1": 0.0,
+      "broad_recall@1": 1.0,
       "recall@3": 0.0,
-      "broad_recall@3": 0.0,
+      "broad_recall@3": 1.0,
       "recall@5": 0.0,
-      "broad_recall@5": 0.0,
+      "broad_recall@5": 1.0,
       "recall@10": 0.0,
       "broad_recall@10": 1.0
     },
@@ -397,7 +419,11 @@
         "UndoRedo"
       ],
       "retrieved_top5": [
-        "object/undo_redo.h"
+        "_redo",
+        "redo",
+        "undo",
+        "~UndoRedo",
+        "discard_redo"
       ],
       "recall@1": 0.0,
       "broad_recall@1": 1.0,
@@ -414,19 +440,19 @@
         "NodePath"
       ],
       "retrieved_top5": [
-        "initialize",
-        "_find_resources",
-        "get_opaque_pointer",
+        "NodePath",
+        "~NodePath",
+        "get_node_path",
         "init_node_path",
-        "get_node_path"
+        "rel_path_to"
       ],
-      "recall@1": 0.0,
-      "broad_recall@1": 0.0,
-      "recall@3": 0.0,
-      "broad_recall@3": 0.0,
-      "recall@5": 0.0,
+      "recall@1": 1.0,
+      "broad_recall@1": 1.0,
+      "recall@3": 1.0,
+      "broad_recall@3": 1.0,
+      "recall@5": 1.0,
       "broad_recall@5": 1.0,
-      "recall@10": 0.0,
+      "recall@10": 1.0,
       "broad_recall@10": 1.0
     },
     {
@@ -435,19 +461,19 @@
         "StringName"
       ],
       "retrieved_top5": [
-        "encode_variant",
-        "decode_variant",
-        "keycode_get_string",
-        "get_string_name",
-        "initialize"
+        "StringName",
+        "~StringName",
+        "is_node_unique_name",
+        "String",
+        "operator=="
       ],
-      "recall@1": 0.0,
-      "broad_recall@1": 0.0,
-      "recall@3": 0.0,
-      "broad_recall@3": 0.0,
-      "recall@5": 0.0,
+      "recall@1": 1.0,
+      "broad_recall@1": 1.0,
+      "recall@3": 1.0,
+      "broad_recall@3": 1.0,
+      "recall@5": 1.0,
       "broad_recall@5": 1.0,
-      "recall@10": 0.0,
+      "recall@10": 1.0,
       "broad_recall@10": 1.0
     },
     {
@@ -456,17 +482,19 @@
         "RandomNumberGenerator"
       ],
       "retrieved_top5": [
-        "open_and_parse",
-        "create_id",
-        "math/random_number_generator.h"
+        "RandomNumberGenerator",
+        "randomize",
+        "randi",
+        "randf",
+        "randfn"
       ],
-      "recall@1": 0.0,
-      "broad_recall@1": 0.0,
-      "recall@3": 0.0,
+      "recall@1": 1.0,
+      "broad_recall@1": 1.0,
+      "recall@3": 1.0,
       "broad_recall@3": 1.0,
-      "recall@5": 0.0,
+      "recall@5": 1.0,
       "broad_recall@5": 1.0,
-      "recall@10": 0.0,
+      "recall@10": 1.0,
       "broad_recall@10": 1.0
     },
     {
@@ -475,16 +503,16 @@
         "Crypto"
       ],
       "retrieved_top5": [
-        "create_id",
-        "register_core_types",
-        "unregister_core_types",
-        "~ResourceUID",
-        "crypto"
+        "create",
+        "hmac_digest",
+        "_bind_methods",
+        "load_default_certificates",
+        "constant_time_compare"
       ],
       "recall@1": 0.0,
-      "broad_recall@1": 0.0,
+      "broad_recall@1": 1.0,
       "recall@3": 0.0,
-      "broad_recall@3": 0.0,
+      "broad_recall@3": 1.0,
       "recall@5": 0.0,
       "broad_recall@5": 1.0,
       "recall@10": 0.0,
@@ -496,19 +524,19 @@
         "TranslationServer"
       ],
       "retrieved_top5": [
-        "io/resource_loader.cpp",
-        "string/translation_domain.cpp",
-        "string/translation_server.compat.inc",
-        "string/translation_server.h",
-        "string/ustring.cpp"
+        "TranslationServer",
+        "add_translation",
+        "remove_translation",
+        "has_translation",
+        "get_translation_object"
       ],
-      "recall@1": 0.0,
-      "broad_recall@1": 0.0,
-      "recall@3": 0.0,
+      "recall@1": 1.0,
+      "broad_recall@1": 1.0,
+      "recall@3": 1.0,
       "broad_recall@3": 1.0,
-      "recall@5": 0.0,
+      "recall@5": 1.0,
       "broad_recall@5": 1.0,
-      "recall@10": 0.0,
+      "recall@10": 1.0,
       "broad_recall@10": 1.0
     },
     {
@@ -517,8 +545,11 @@
         "HTTPClient"
       ],
       "retrieved_top5": [
-        "io/http_client.h",
-        "io/http_client_tcp.h"
+        "~HTTPClient",
+        "HTTPClientTCP",
+        "set_http_proxy",
+        "_get_http_data",
+        "set_http_proxy"
       ],
       "recall@1": 0.0,
       "broad_recall@1": 1.0,

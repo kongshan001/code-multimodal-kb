@@ -29,6 +29,6 @@ python -m pytest eval/ -v
 - ⏳ 2.1 RepoBench/SWE-Lancer 全量（HF 需 token + 范式不对口，留作 scale-up）
 - ⏳ 2.4 PR 反挖 gold（比类名 gold 更硬，留作 gold 硬化）
 - ⏳ 2.5 CoIR 向量基线对照 —— TODO
-- 🔬 发现驱动的改进项：接 cmm `semantic_query`（救概念盲区）、broad 作主指标、scale up index
+- 🔬 三路检索已进 harness（grep/bm25/semantic）：**Godot broad@5 grep 0.692 → BM25 0.846（+22%），strict@5 0.0→0.5**，实证修正 design 决策4（BM25 主路）。报告 `reports/retrieval-comparison-godot.md`
 
 > 文档侧(§3) / 记忆侧(§4) 评测卡 LLM 凭据，与 doc-side KB / Memory Stage 1 共享解锁。

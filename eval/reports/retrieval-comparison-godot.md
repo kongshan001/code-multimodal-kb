@@ -10,6 +10,16 @@
 
 三路共同硬限：**代码里完全不出现的概念词**（如 `pathfinding`，AStar 代码用的是 `path`/`get_point_path`）→ 三路全败，必须靠 **agent NL→关键词翻译**（decision 4 的 agent 翻译层仍是必需）。
 
+## 全量量化（26 query × 三路，broad recall 归一化）
+
+| method | broad@1 | broad@5 | broad@10 | strict@5 |
+|---|---|---|---|---|
+| grep（search_code）| 0.346 | 0.692 | 0.731 | 0.0 |
+| **bm25（search_graph query）** | **0.846** | **0.846** | 0.885 | **0.5** |
+| semantic（search_graph semantic_query，naive 关键词）| 0.769 | 0.846 | 0.846 | 0.308 |
+
+**BM25 胜出**：broad@5 从 grep 的 0.692 提到 **0.846**（+22% 相对），strict@5 从 **0.0 → 0.5**（BM25 真返回类/类型节点，不再只返回方法群）。semantic 在 broad@5 追平但 broad@1 与 strict 落后。**修正后架构（BM25 主路）在 Godot 上 broad@5=0.846**，闭环量化验证。
+
 ## 5 条概念盲区对比（gold 取自真实 Godot 符号）
 
 | 概念 query | gold | grep `search_code` | semantic_query | **BM25 `search_graph query`** |
