@@ -79,6 +79,8 @@ graphify --mcp        ─┘
 
 **已知短板（修正）**：codebase-memory-mcp 自带 `semantic_query`（内置 nomic-embed-code + 11 信号混合打分，零 API key），**代码侧词汇不匹配风险低**；真正的风险在 graphify 文档侧（纯图遍历、无向量），靠 graphify 自身词汇扩展 + agent 兜底。若文档侧评测召回不足，再考虑补文档向量——**代码侧无需另建向量索引**。
 
+> **▶ 评测实证修正（2026-07，Godot core/ moderate 索引）**：三路检索对比 5 条 grep 全盲的概念 query —— **BM25（`search_graph query=`）最优（~3-4/5 命中正确概念符号）**，`semantic_query` 仅在关键词=代码 token 时有效（`["os"]`→OS 0.999；`["operating","system"]`→废），grep 全盲。**主路应改以 BM25 为先**，semantic 作 token-相似兜底；三者都无法桥接"代码里完全不出现的概念词"（`pathfinding`→AStar），**agent NL→关键词翻译层仍不可省**。详见 `add-evaluation-baseline/eval/reports/retrieval-comparison-godot.md`。
+
 ### 决策 5：图存储 = 默认 graph.json（前置决策，非 Open Question）
 
 部署形态依赖此选择（Neo4j 需 JVM + 独立服务，会推翻「单机零依赖」承诺），故前置拍板（审核 B1）：**默认用 graphify 的 `graph.json`（文件）**，零额外依赖、契合单机自托管；**仅当单机压测超阈值**（节点数过多或查询并发打满文件加载）才切 Neo4j（`--neo4j`）。task 1.4 先做 graph.json 压测定阈值。
