@@ -1,0 +1,439 @@
+{
+  "subject": "cmm.search_code",
+  "target": "graphify",
+  "n": 21,
+  "aggregate": {
+    "mean_recall@1": 0.476,
+    "hit_rate@1": 0.476,
+    "mean_recall@3": 0.667,
+    "hit_rate@3": 0.667,
+    "mean_recall@5": 0.762,
+    "hit_rate@5": 0.762,
+    "mean_recall@10": 0.81,
+    "hit_rate@10": 0.81
+  },
+  "per_query": [
+    {
+      "query": "id construction",
+      "gold": [
+        "_make_id"
+      ],
+      "retrieved_top5": [],
+      "recall@1": 0.0,
+      "hit@1": 0.0,
+      "recall@3": 0.0,
+      "hit@3": 0.0,
+      "recall@5": 0.0,
+      "hit@5": 0.0,
+      "recall@10": 0.0,
+      "hit@10": 0.0
+    },
+    {
+      "query": "build graph from json",
+      "gold": [
+        "build_from_json"
+      ],
+      "retrieved_top5": [
+        "__getattr__"
+      ],
+      "recall@1": 0.0,
+      "hit@1": 0.0,
+      "recall@3": 0.0,
+      "hit@3": 0.0,
+      "recall@5": 0.0,
+      "hit@5": 0.0,
+      "recall@10": 0.0,
+      "hit@10": 0.0
+    },
+    {
+      "query": "graph file size cap",
+      "gold": [
+        "check_graph_file_size_cap"
+      ],
+      "retrieved_top5": [
+        "check_graph_file_size_cap",
+        "_rebuild_code",
+        "to_json",
+        "_load_graph",
+        "_load_global_graph"
+      ],
+      "recall@1": 1.0,
+      "hit@1": 1.0,
+      "recall@3": 1.0,
+      "hit@3": 1.0,
+      "recall@5": 1.0,
+      "hit@5": 1.0,
+      "recall@10": 1.0,
+      "hit@10": 1.0
+    },
+    {
+      "query": "security",
+      "gold": [
+        "check_graph_file_size_cap"
+      ],
+      "retrieved_top5": [
+        "detect_backend",
+        "to_json",
+        "_rebuild_code",
+        "write_callflow_html",
+        "download_audio"
+      ],
+      "recall@1": 0.0,
+      "hit@1": 0.0,
+      "recall@3": 0.0,
+      "hit@3": 0.0,
+      "recall@5": 0.0,
+      "hit@5": 0.0,
+      "recall@10": 0.0,
+      "hit@10": 0.0
+    },
+    {
+      "query": "classify file",
+      "gold": [
+        "classify_file"
+      ],
+      "retrieved_top5": [
+        "detect",
+        "classify_file"
+      ],
+      "recall@1": 0.0,
+      "hit@1": 0.0,
+      "recall@3": 1.0,
+      "hit@3": 1.0,
+      "recall@5": 1.0,
+      "hit@5": 1.0,
+      "recall@10": 1.0,
+      "hit@10": 1.0
+    },
+    {
+      "query": "xlsx to markdown",
+      "gold": [
+        "xlsx_to_markdown"
+      ],
+      "retrieved_top5": [
+        "xlsx_to_markdown",
+        "detect",
+        "convert_office_file",
+        "count_words",
+        "convert_google_workspace_file"
+      ],
+      "recall@1": 1.0,
+      "hit@1": 1.0,
+      "recall@3": 1.0,
+      "hit@3": 1.0,
+      "recall@5": 1.0,
+      "hit@5": 1.0,
+      "recall@10": 1.0,
+      "hit@10": 1.0
+    },
+    {
+      "query": "google workspace",
+      "gold": [
+        "convert_google_workspace_file"
+      ],
+      "retrieved_top5": [
+        "_with_frontmatter",
+        "main",
+        "_run_gws_export",
+        "detect",
+        "convert_google_workspace_file"
+      ],
+      "recall@1": 0.0,
+      "hit@1": 0.0,
+      "recall@3": 0.0,
+      "hit@3": 0.0,
+      "recall@5": 1.0,
+      "hit@5": 1.0,
+      "recall@10": 1.0,
+      "hit@10": 1.0
+    },
+    {
+      "query": "call llm",
+      "gold": [
+        "_call_llm"
+      ],
+      "retrieved_top5": [
+        "_call_llm",
+        "_llm_tiebreak",
+        "_label_batch_with_retry"
+      ],
+      "recall@1": 1.0,
+      "hit@1": 1.0,
+      "recall@3": 1.0,
+      "hit@3": 1.0,
+      "recall@5": 1.0,
+      "hit@5": 1.0,
+      "recall@10": 1.0,
+      "hit@10": 1.0
+    },
+    {
+      "query": "backend api key",
+      "gold": [
+        "_get_backend_api_key"
+      ],
+      "retrieved_top5": [
+        "_get_backend_api_key",
+        "_call_llm",
+        "detect_backend",
+        "extract_files_direct",
+        "_resolve_triage_backend"
+      ],
+      "recall@1": 1.0,
+      "hit@1": 1.0,
+      "recall@3": 1.0,
+      "hit@3": 1.0,
+      "recall@5": 1.0,
+      "hit@5": 1.0,
+      "recall@10": 1.0,
+      "hit@10": 1.0
+    },
+    {
+      "query": "fetch arxiv",
+      "gold": [
+        "_fetch_arxiv"
+      ],
+      "retrieved_top5": [
+        "_fetch_arxiv",
+        "ingest",
+        "ingest.py"
+      ],
+      "recall@1": 1.0,
+      "hit@1": 1.0,
+      "recall@3": 1.0,
+      "hit@3": 1.0,
+      "recall@5": 1.0,
+      "hit@5": 1.0,
+      "recall@10": 1.0,
+      "hit@10": 1.0
+    },
+    {
+      "query": "transcribe audio",
+      "gold": [
+        "transcribe"
+      ],
+      "retrieved_top5": [
+        "ingest",
+        "graphify reference: transcribe video and audio",
+        "graphify reference: transcribe video and audio",
+        "graphify reference: transcribe video and audio",
+        "graphify reference: transcribe video and audio"
+      ],
+      "recall@1": 0.0,
+      "hit@1": 0.0,
+      "recall@3": 0.0,
+      "hit@3": 0.0,
+      "recall@5": 0.0,
+      "hit@5": 0.0,
+      "recall@10": 0.0,
+      "hit@10": 0.0
+    },
+    {
+      "query": "score nodes",
+      "gold": [
+        "_score_nodes"
+      ],
+      "retrieved_top5": [
+        "_score_nodes",
+        "suggest_questions",
+        "cohesion_score",
+        "_query_graph_text",
+        "cluster"
+      ],
+      "recall@1": 1.0,
+      "hit@1": 1.0,
+      "recall@3": 1.0,
+      "hit@3": 1.0,
+      "recall@5": 1.0,
+      "hit@5": 1.0,
+      "recall@10": 1.0,
+      "hit@10": 1.0
+    },
+    {
+      "query": "query graph text",
+      "gold": [
+        "_query_graph_text"
+      ],
+      "retrieved_top5": [
+        "_query_graph_text",
+        "main",
+        "_build_server",
+        "_GEMINI_HOOK",
+        "_OPENCODE_PLUGIN_JS"
+      ],
+      "recall@1": 1.0,
+      "hit@1": 1.0,
+      "recall@3": 1.0,
+      "hit@3": 1.0,
+      "recall@5": 1.0,
+      "hit@5": 1.0,
+      "recall@10": 1.0,
+      "hit@10": 1.0
+    },
+    {
+      "query": "rebuild code",
+      "gold": [
+        "_rebuild_code"
+      ],
+      "retrieved_top5": [
+        "build_from_json",
+        "_agents_install",
+        "gemini_install",
+        "_rebuild_code",
+        "claude_install"
+      ],
+      "recall@1": 0.0,
+      "hit@1": 0.0,
+      "recall@3": 0.0,
+      "hit@3": 0.0,
+      "recall@5": 1.0,
+      "hit@5": 1.0,
+      "recall@10": 1.0,
+      "hit@10": 1.0
+    },
+    {
+      "query": "suggest questions",
+      "gold": [
+        "suggest_questions"
+      ],
+      "retrieved_top5": [
+        "suggest_questions",
+        "_rebuild_code",
+        "generate",
+        "_build_server",
+        "main"
+      ],
+      "recall@1": 1.0,
+      "hit@1": 1.0,
+      "recall@3": 1.0,
+      "hit@3": 1.0,
+      "recall@5": 1.0,
+      "hit@5": 1.0,
+      "recall@10": 1.0,
+      "hit@10": 1.0
+    },
+    {
+      "query": "cross community surprises",
+      "gold": [
+        "_cross_community_surprises"
+      ],
+      "retrieved_top5": [
+        "surprising_connections",
+        "_cross_community_surprises",
+        "_cross_file_surprises"
+      ],
+      "recall@1": 0.0,
+      "hit@1": 0.0,
+      "recall@3": 1.0,
+      "hit@3": 1.0,
+      "recall@5": 1.0,
+      "hit@5": 1.0,
+      "recall@10": 1.0,
+      "hit@10": 1.0
+    },
+    {
+      "query": "derive sections from communities",
+      "gold": [
+        "derive_sections_from_communities"
+      ],
+      "retrieved_top5": [
+        "write_callflow_html",
+        "derive_sections_from_communities"
+      ],
+      "recall@1": 0.0,
+      "hit@1": 0.0,
+      "recall@3": 1.0,
+      "hit@3": 1.0,
+      "recall@5": 1.0,
+      "hit@5": 1.0,
+      "recall@10": 1.0,
+      "hit@10": 1.0
+    },
+    {
+      "query": "write callflow html",
+      "gold": [
+        "write_callflow_html"
+      ],
+      "retrieved_top5": [
+        "write_callflow_html",
+        "_rebuild_code",
+        "main",
+        "main"
+      ],
+      "recall@1": 1.0,
+      "hit@1": 1.0,
+      "recall@3": 1.0,
+      "hit@3": 1.0,
+      "recall@5": 1.0,
+      "hit@5": 1.0,
+      "recall@10": 1.0,
+      "hit@10": 1.0
+    },
+    {
+      "query": "pick text",
+      "gold": [
+        "pick_text"
+      ],
+      "retrieved_top5": [
+        "pick_text",
+        "write_callflow_html",
+        "format_node_refs",
+        "generate_overview_cards",
+        "generate_section_cards"
+      ],
+      "recall@1": 1.0,
+      "hit@1": 1.0,
+      "recall@3": 1.0,
+      "hit@3": 1.0,
+      "recall@5": 1.0,
+      "hit@5": 1.0,
+      "recall@10": 1.0,
+      "hit@10": 1.0
+    },
+    {
+      "query": "load graph",
+      "gold": [
+        "load_graph"
+      ],
+      "retrieved_top5": [
+        "write_callflow_html",
+        "_load_graph",
+        "_rebuild_code",
+        "_build_server",
+        "_load_global_graph"
+      ],
+      "recall@1": 0.0,
+      "hit@1": 0.0,
+      "recall@3": 0.0,
+      "hit@3": 0.0,
+      "recall@5": 0.0,
+      "hit@5": 0.0,
+      "recall@10": 1.0,
+      "hit@10": 1.0
+    },
+    {
+      "query": "deduplicate entities",
+      "gold": [
+        "deduplicate_entities"
+      ],
+      "retrieved_top5": [
+        "build",
+        "deduplicate_entities"
+      ],
+      "recall@1": 0.0,
+      "hit@1": 0.0,
+      "recall@3": 1.0,
+      "hit@3": 1.0,
+      "recall@5": 1.0,
+      "hit@5": 1.0,
+      "recall@10": 1.0,
+      "hit@10": 1.0
+    }
+  ],
+  "lockfile": {
+    "temperature": 0.0,
+    "llm_model": "",
+    "cmm_version": "0.8.1",
+    "graphify_version": "0.8.46",
+    "mem0_version": ""
+  }
+}
