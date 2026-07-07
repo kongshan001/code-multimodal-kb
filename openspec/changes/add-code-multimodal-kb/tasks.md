@@ -21,7 +21,7 @@
 
 ## 4. Agent 注册与联调
 
-- [ ] 4.1 把 codebase-memory-mcp 与 graphify（`--mcp`）注册到 Claude Code / Cursor 的 MCP 配置
+- [x] 4.1 把 codebase-memory-mcp 与 graphify（`--mcp`）注册到 Claude Code / Cursor 的 MCP 配置 — cmm 已注册到 Claude Code（~/.claude.json + ~/.claude/.mcp.json）+ Codex/OpenCode/VS Code，含 PreToolUse(Grep/Glob 增强)+SessionStart hooks + codebase-memory skill；graphify-mcp 注册走 graphify install 归 task 6.3（依赖文档图 → LLM 凭据）；本机未装 Cursor 故跳过；改前配置已备份 /tmp/cmm-config-backup 可回滚
 - [ ] 4.2 端到端联调：同一 agent 会话内分别用两路回答代码问题与文档问题
 - [ ] 4.3 处理两个 MCP server 的工具命名 / 优先级冲突
 
