@@ -83,7 +83,7 @@ codebase-memory-mcp cli detect_changes   '{"project":"<名>"}'                  
 
 > `query_graph` 吃**结构化 DSL**，不接裸自然语言（裸 NL 报 `expected token type 0`）。NL 检索由 agent 用 `search_code`+`trace_path` 组合完成（design 决策 4）。
 
-## B. 多模态文档知识库 · graphify 🟡 待 LLM 凭据
+## B. 多模态文档知识库 · graphify ✅ 已验证（BigModel/GLM 后端）
 
 来源：graphify（uv tool `graphifyy`，docs-only，**建图标 LLM backend**）。
 
@@ -92,13 +92,17 @@ uv tool install graphifyy          # 已装 v0.8.46
 graphify --version                 # → 0.8.46，无 warning
 ```
 
-**建图（task 3.1，⚠️ 依赖 LLM 凭据）**：
+**建图（task 3.1，✅ 已跑通）**——复用环境里 BigModel（智谱）的 Anthropic-compatible 端点，无需另备 Anthropic key：
 
 ```bash
-graphify <纯文档目录>              # Part B 语义抽取，需 ANTHROPIC/OPENAI/GEMINI API key
+export ANTHROPIC_API_KEY=<BigModel key>                              # 复用 ~/.claude.json openspace 的 OPENSPACE_LLM_API_KEY
+export ANTHROPIC_BASE_URL=https://open.bigmodel.cn/api/anthropic     # graphify claude backend 读 ANTHROPIC_BASE_URL（非 ANTHROPIC_BASE）
+export ANTHROPIC_MODEL=glm-4.6                                       # 覆盖默认 claude 模型名（glm-4.5-air 亦可；glm-4-air 易 429）
+graphify <纯文档目录>           # Part A 代码自动跳过；Part B 语义抽取走 BigModel
 ```
 
-> 无 LLM 凭据环境建不了文档图（design 已知约束）。**待凭据就绪后补全本节实测。**
+> 实测（3 个 Godot 小文档，2026-07-08）：`found 0 code, 3 docs` → graph.json 13 节点/12 边/4 社区，~$0.027。抽取节点正确（`Node / Node2D / Signal / Vector2 / _ready / connect / emit_signal / add_child …`）。
+> **凭据墙已破**：这一把 key 同时解锁文档侧 KB + memory Stage 1（Mem0）+ 文档评测（LLM judge），不再卡。
 
 **起 MCP server（task 1.3，入口是独立命令 `graphify-mcp`，非 `graphify --mcp`）**：
 
