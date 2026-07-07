@@ -53,4 +53,4 @@
 #### Scenario: 设计概念定位到代码
 
 - **WHEN** 提问「架构文档写的订单状态机，代码在哪实现」
-- **THEN** 先经 graphify 在文档图命中 `OrderStateMachine` 概念节点，再由 codebase-memory-mcp 定位该符号的代码实现与调用链
+- **THEN** graphify 命中相关概念节点 → **经其 `source_location` 抽出真实代码标识符**（不靠节点显示名，避免跨设备命名漂移）→ 喂 codebase-memory-mcp 定位实现与调用链

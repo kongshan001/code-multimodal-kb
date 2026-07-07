@@ -77,10 +77,16 @@ graphify --mcp        ─┘
 
 **已知短板（修正）**：codebase-memory-mcp 自带 `semantic_query`（内置 nomic-embed-code + 11 信号混合打分，零 API key），**代码侧词汇不匹配风险低**；真正的风险在 graphify 文档侧（纯图遍历、无向量），靠 graphify 自身词汇扩展 + agent 兜底。若文档侧评测召回不足，再考虑补文档向量——**代码侧无需另建向量索引**。
 
+### 决策 5：图存储 = 默认 graph.json（前置决策，非 Open Question）
+
+部署形态依赖此选择（Neo4j 需 JVM + 独立服务，会推翻「单机零依赖」承诺），故前置拍板（审核 B1）：**默认用 graphify 的 `graph.json`（文件）**，零额外依赖、契合单机自托管；**仅当单机压测超阈值**（节点数过多或查询并发打满文件加载）才切 Neo4j（`--neo4j`）。task 1.4 先做 graph.json 压测定阈值。
+
 ## Risks / Trade-offs
 
 - **依赖两个相对新的图范式工具** → codebase-memory-mcp 27.2K★ 较成熟；graphify 社区较小，需关注维护活跃度，必要时可回退自建代码索引。
 - **graphify 语义抽取消耗 LLM token** → 用 `--update` 增量 + 缓存；评估切 Gemini 后端降本。
+- **graphify 语义抽取非确定**（LLM 生成）→ 多设备/跨时间图不一致、评测不可复现、cross-tool anchoring 脆弱（同概念不同机器命名不同）。缓解（审核 B2）：**锁 `temp=0 + 固定 LLM 模型 + graphify 版本`** 并记入评测报告；anchoring **经 `source_location` 抽真实代码标识符**，不靠节点显示名裸传递。无 LLM 凭据环境建不了文档图（已知约束）。
+- **文档内嵌代码块污染图**（审核 M6）→ 设计文档/论文里的代码片段会被 Part B 抽成「符号」节点，与 codebase-memory-mcp 真实符号混淆、`source_location` 跳到 markdown 代码块。缓解：graphify 抽取 prompt 约定「只抽领域概念不抽代码符号」+ 节点标 `provenance`（doc_inline_code vs source_code）。
 - **两路结果靠 agent 自己整合（无网关融合）** → 在 agent 能力范围内可接受；若日后发现整合不稳，再补薄层（届时按需引入，非现在）。
 - **图检索对「精确片段召回」弱于向量** → 当前场景为关系梳理，可接受；未来若有精确召回需求再补向量路径。
 
@@ -134,6 +140,5 @@ graphify 语义抽取非确定（见 Risks），评测基线可复现**必须先
 
 ## Open Questions
 
-1. graphify 图存储：`graph.json`（文件）还是 Neo4j（`--neo4j`）？影响查询并发与维护。
-2. graphify 增量更新走 `--update`（手动）/ `--watch`（自动）/ post-commit hook 哪种？
-3. 两个 MCP server 在 agent 配置里的工具命名 / 优先级如何避免冲突？
+1. graphify 增量更新走 `--update`（手动 / post-commit hook 触发）——`--watch` 是 AST-only（不跑 Part B 语义），不适用 docs-only。
+2. 两个 MCP server 在 agent 配置里的工具命名 / 优先级如何避免冲突？（Claude Code 用 `mcp__<server>__<tool>` 前缀无冲突，其他 client 待验证）
