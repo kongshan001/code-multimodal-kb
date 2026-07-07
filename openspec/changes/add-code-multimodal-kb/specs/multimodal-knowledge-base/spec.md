@@ -40,3 +40,12 @@
 
 - **WHEN** 基于多模态图生成回答
 - **THEN** 每条引用包含来源文档与位置，可跳转到原文档对应处
+
+### Requirement: Provenance separation for inline code
+
+文档内嵌代码块（markdown code fence / 伪代码 / SQL）SHALL 不被抽成与真实源码混淆的代码符号节点；被抽取的实体 SHALL 标注来源类型，使「文档示例」与「真实代码」可区分（审核 M6）。
+
+#### Scenario: 文档代码块不污染图
+
+- **WHEN** 一篇设计文档含 ```python 代码示例
+- **THEN** graphify 不把这些代码符号当作领域实体入图，或给它们标 `provenance=doc_inline_code`，引用回溯跳到文档位置而非真实源码

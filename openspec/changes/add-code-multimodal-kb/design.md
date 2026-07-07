@@ -138,7 +138,7 @@ graphify 语义抽取非确定（见 Risks），评测基线可复现**必须先
 
 ## 部署：其他设备接入
 
-两个核心工具都是**单机自包含**（codebase-memory-mcp 单静态二进制、零依赖；graphify 为 uv tool），**安装器自动配置 agent**，所以新设备接入 =「下载 → install → 建图」。**无需共享状态同步**——图索引从源码/文档在本机重建（`~/.cache/codebase-memory-mcp/`、`graphify-out/`），仅评测测试集与 agent 配置随 git / 仓库走。具体步骤见 tasks.md §6。
+两个核心工具都是**单机自包含**（codebase-memory-mcp 单静态二进制、零依赖；graphify 为 uv tool），**安装器自动配置 agent**，所以新设备接入 =「下载 → install → 建图」。**无需共享状态同步**——图索引从源码/文档在本机重建（`~/.cache/codebase-memory-mcp/`、`graphify-out/`），仅评测测试集与 agent 配置随 git / 仓库走。**版本锁定 + CN 可达性**（审核 M7）：codebase-memory-mcp 锁定具体 release（非 main）并校验 checksum；`raw.githubusercontent.com` 在 CN 默认不可达，走代理（本机 `127.0.0.1:7897`）或 ghproxy 镜像。具体步骤见 tasks.md §6。
 
 ## Open Questions
 

@@ -43,7 +43,7 @@
 ## 6. 其他设备接入 / 环境部署
 
 - [ ] 6.1 前置确认：macOS/Linux/Windows + 支持 MCP 的 agent（Claude Code / Cursor / Codex 等）+ Python & uv（graphify）+ Python（DeepEval）
-- [ ] 6.2 代码 KB 安装：`curl -fsSL https://raw.githubusercontent.com/DeusData/codebase-memory-mcp/main/install.sh | bash`（自动识别 agent 并写入 MCP 配置，重启 agent 生效）；按需 `codebase-memory-mcp config set auto_index true`
+- [ ] 6.2 代码 KB 安装：**锁定具体 release 版本（非 main）+ 校验 checksum** 后再 install（避免 `curl|bash` 抓 main 导致版本漂移 / 供应链风险）；CN 网络用代理（本机 `127.0.0.1:7897`）或 ghproxy 镜像拉 install.sh；安装器自动识别 agent 写 MCP 配置；按需 `codebase-memory-mcp config set auto_index true`
 - [ ] 6.3 多模态文档 KB 安装：`uv tool install graphifyy` → `graphify install`（同步 skill + 注册 CLAUDE.md）→ `graphify <docs-path>` 建图 → `graphify <docs-path> --mcp` 起 server 并在 agent 注册
 - [ ] 6.4 评测环境（可选）：`pip install deepeval`，拉仓库跑 pytest 评测套件
 - [ ] 6.5 验证：agent 内分别测一条代码问题（走 codebase-memory-mcp）与一条文档问题（走 graphify）
