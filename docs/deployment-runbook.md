@@ -2,21 +2,22 @@
 
 > **状态（2026-07-08）**：A 代码侧 ✅、B 文档侧 ✅ 均在真实 Godot 上实测通过；LLM 凭据墙已破（复用环境 BigModel/GLM key）。
 > 对应 OpenSpec change：`add-code-multimodal-kb`（tasks §6）。
-> **范围**：KB（代码 + 文档）；agent 记忆层（Mem0）见 `add-agent-memory` Stage 1（凭据已解锁）。
+> **范围**：KB（代码 + 文档）+ 记忆（Mem0，§D）；均由跨平台 `setup-kb.py` 一键接入。
 
-## 快速接入（一键脚本 · 新设备/新项目通用）
+## 快速接入（一键脚本 · 跨平台 macOS / Linux / Windows）
 
-`setup-kb.sh` 把本 runbook 全流程封装成一条命令：
+`setup-kb.py`（Python，工具链本就 Python，**Win 原生可跑**）把本 runbook 全流程封装成一条命令：
 
 ```bash
-# 新设备先 git clone 本仓库，再：
-./setup-kb.sh --code <代码目录> --docs <文档目录> --name <项目名> [--cmm-mode moderate] [--no-memory]
+# 新设备先 git clone 本仓库，再（Win/Mac/Linux 通用）：
+python3 setup-kb.py --code <代码目录> --docs <文档目录> --name <项目名> [--cmm-mode moderate] [--no-memory]
 ```
 
-自动：precheck → LLM backend（默认复用环境 BigModel key）→ cmm index 代码 → graphify 建文档图 → agent MCP 注册 → 验证。
-- 记忆层（Mem0）需 Docker，V1 未自动化（`--no-memory` 跳过；手动见 `add-agent-memory` §2）。
+自动 6 步：precheck → LLM backend（默认复用环境 BigModel key）→ cmm index 代码 → graphify 建文档图 → [Mem0 docker compose] → agent MCP 注册 + 验证。
+- 已实测：1-4 + 6 步在全新靶子上真跑零 bug（cmm index + graphify 建图 + 注册）。
+- Mem0（第 5 步）现已自动化（`deploy/mem0/docker-compose.yml`，需 Docker；`--no-memory` 跳过）—— ⚠ **未在本机实测**（本机无 Docker），见 §D。
 - graphify-mcp 注册需 venv 装 `mcp` extra（失败见 §B 末）。
-- 下文 §0–§C 是全手工步骤/排错；本脚本是它们的封装。
+- 下文 §0–§D 是全手工步骤/排错；本脚本是它们的封装。（旧 `setup-kb.sh` 已由 `.py` 取代。）
 
 ## 0. 前置（task 6.1）
 
@@ -132,6 +133,19 @@ graphify-mcp <graph_path>          # 默认 stdio；--transport http 可起 HTTP
 pip install deepeval               # 文档答案质量（faithfulness/G-Eval）
 # 代码侧 harness / 数据集（RepoBench-R、SWE-Lancer-Loc）见 change tasks §5
 ```
+
+## D. 记忆层 · Mem0 自托管（Docker，可选）
+
+`setup-kb.py` 第 5 步拉起 `deploy/mem0/docker-compose.yml`（3 容器：API + pg/pgvector + Neo4j，按 [mem0.ai self-host 指南](https://mem0.ai/blog/self-host-mem0-docker)）。
+
+```bash
+docker compose -f deploy/mem0/docker-compose.yml --env-file deploy/mem0/.env up -d --build  # 首次 ~500MB / 2-5min
+# API 就绪后访问 http://localhost:8888/docs
+```
+
+- **LLM backend**：`deploy/mem0/.env` 填 `OPENAI_API_KEY`（官方默认）；或装 Ollama 全本地（见 `.env.example` 注释）。
+- **agent MCP 接入**：Mem0 self-host 是 **REST 不是 MCP**；装 `mem0-mcp`（或 OpenMemory MCP）指向本 backend，再 `claude mcp add`。
+- ⚠ **未在本机实测**（本机无 Docker）：compose 按官方指南、`docker compose up` 标准；需在 Docker 环境验证一遍后回填本节。
 
 ## 验证清单（task 6.5）
 
