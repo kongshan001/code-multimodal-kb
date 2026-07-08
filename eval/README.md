@@ -31,5 +31,6 @@ python -m pytest eval/ -v
 - ⏳ 2.5 CoIR 向量基线对照 —— TODO
 - 🔬 三路检索已进 harness（grep/bm25/semantic）：**Godot broad@5 grep 0.692 → BM25 0.846（+22%），strict@5 0.0→0.5**，实证修正 design 决策4（BM25 主路）。报告 `reports/retrieval-comparison-godot.md`
 - ✅ **文档侧（凭据解锁）**：graphify+BigModel 建 Godot 17-doc 子集图（72 节点/32 边）→ `query` 跨文档检索 recall@5=**0.70**；漏点=方法节点↔概念节点连边弱。报告 `reports/doc-baseline-godot-findings.md`
+- ✅ **跨工具 anchoring**：graphify 文档概念 → cmm 代码定位，8/8 = **100%** 端到端（design 核心差异化：文档↔代码双向定位，整条 KB 链路验证）。`reports/crosstool-baseline-godot.json`
 
 > 文档侧(§3) / 记忆侧(§4) 评测卡 LLM 凭据，与 doc-side KB / Memory Stage 1 共享解锁。
