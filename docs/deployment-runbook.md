@@ -1,9 +1,22 @@
 # 代码 + 多模态知识库 · 部署 Runbook
 
-> **状态**：A 代码侧（codebase-memory-mcp）已于 2026-07-07 在 macOS x86_64 实测通过；
-> B 文档侧（graphify）依赖 LLM 凭据，建图步骤待实测后补全。
+> **状态（2026-07-08）**：A 代码侧 ✅、B 文档侧 ✅ 均在真实 Godot 上实测通过；LLM 凭据墙已破（复用环境 BigModel/GLM key）。
 > 对应 OpenSpec change：`add-code-multimodal-kb`（tasks §6）。
-> **范围**：仅 KB；agent 记忆层（Mem0）部署见 `add-agent-memory` task 5.1（待 Stage 1 / LLM 凭据）。
+> **范围**：KB（代码 + 文档）；agent 记忆层（Mem0）见 `add-agent-memory` Stage 1（凭据已解锁）。
+
+## 快速接入（一键脚本 · 新设备/新项目通用）
+
+`setup-kb.sh` 把本 runbook 全流程封装成一条命令：
+
+```bash
+# 新设备先 git clone 本仓库，再：
+./setup-kb.sh --code <代码目录> --docs <文档目录> --name <项目名> [--cmm-mode moderate] [--no-memory]
+```
+
+自动：precheck → LLM backend（默认复用环境 BigModel key）→ cmm index 代码 → graphify 建文档图 → agent MCP 注册 → 验证。
+- 记忆层（Mem0）需 Docker，V1 未自动化（`--no-memory` 跳过；手动见 `add-agent-memory` §2）。
+- graphify-mcp 注册需 venv 装 `mcp` extra（失败见 §B 末）。
+- 下文 §0–§C 是全手工步骤/排错；本脚本是它们的封装。
 
 ## 0. 前置（task 6.1）
 
