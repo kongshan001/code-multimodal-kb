@@ -1,0 +1,198 @@
+{
+  "subject": "graphify.query",
+  "target": "godot-docs-subset",
+  "graph": "/Users/ks_128/Documents/godot-docs-subset/graphify-out/graph.json",
+  "n": 10,
+  "aggregate": {
+    "mean_recall@1": 0.217,
+    "mean_recall@3": 0.6,
+    "mean_recall@5": 0.7,
+    "mean_recall@100": 0.833
+  },
+  "per_query": [
+    {
+      "query": "how do nodes communicate with signals",
+      "gold": [
+        "Signals Concept"
+      ],
+      "retrieved_top5": [
+        "Area2D Class",
+        "Signals Concept",
+        "How to Read the Godot API Documentation",
+        "Nodes and Scene Instances Documentation"
+      ],
+      "n_returned": 4,
+      "recall@1": 0.0,
+      "recall@3": 1.0,
+      "recall@5": 1.0,
+      "recall@100": 1.0
+    },
+    {
+      "query": "vector normalization and dot product",
+      "gold": [
+        "Dot Product",
+        "Vector Normalization",
+        "Vector2 Class"
+      ],
+      "retrieved_top5": [
+        "Dot Product",
+        "2D Collision Detection",
+        "Vector2 Class",
+        "Plane Class",
+        "Vector Normalization"
+      ],
+      "n_returned": 7,
+      "recall@1": 0.333,
+      "recall@3": 0.667,
+      "recall@5": 1.0,
+      "recall@100": 1.0
+    },
+    {
+      "query": "node lifecycle ready callback",
+      "gold": [
+        "Node Class",
+        "_ready Callback"
+      ],
+      "retrieved_top5": [
+        "Resource Class",
+        "PackedScene Class",
+        "Node Class",
+        "SceneTree Class",
+        "Viewport Class"
+      ],
+      "n_returned": 6,
+      "recall@1": 0.0,
+      "recall@3": 0.5,
+      "recall@5": 0.5,
+      "recall@100": 0.5
+    },
+    {
+      "query": "per-frame process physics update",
+      "gold": [
+        "_physics_process Virtual Function",
+        "_process Virtual Function"
+      ],
+      "retrieved_top5": [
+        "_physics_process Virtual Function",
+        "_process Virtual Function",
+        "Idle and Physics Processing Documentation"
+      ],
+      "n_returned": 3,
+      "recall@1": 0.5,
+      "recall@3": 1.0,
+      "recall@5": 1.0,
+      "recall@100": 1.0
+    },
+    {
+      "query": "attach child node get node path",
+      "gold": [
+        "add_child Method",
+        "get_node Method"
+      ],
+      "retrieved_top5": [
+        "Node Class",
+        "Resource Class",
+        "SceneTree Class",
+        "PackedScene Class",
+        "_ready Callback"
+      ],
+      "n_returned": 9,
+      "recall@1": 0.0,
+      "recall@3": 0.0,
+      "recall@5": 0.0,
+      "recall@100": 0.5
+    },
+    {
+      "query": "load a resource",
+      "gold": [
+        "Resource Class",
+        "load Function"
+      ],
+      "retrieved_top5": [
+        "Node Class",
+        "Resource Class",
+        "SceneTree Class",
+        "get_node Method",
+        "PackedScene Class"
+      ],
+      "n_returned": 7,
+      "recall@1": 0.0,
+      "recall@3": 0.5,
+      "recall@5": 0.5,
+      "recall@100": 1.0
+    },
+    {
+      "query": "global singleton autoload",
+      "gold": [
+        "Singleton Pattern"
+      ],
+      "retrieved_top5": [
+        "Singletons (Autoload) Documentation",
+        "Singleton Pattern"
+      ],
+      "n_returned": 2,
+      "recall@1": 0.0,
+      "recall@3": 1.0,
+      "recall@5": 1.0,
+      "recall@100": 1.0
+    },
+    {
+      "query": "bezier curve path",
+      "gold": [
+        "Cubic Bezier Curve",
+        "Curve2D Class",
+        "Quadratic Bezier Curve"
+      ],
+      "retrieved_top5": [
+        "Curve2D Class",
+        "Path2D Class",
+        "Bezier Tessellation",
+        "Path3D Class",
+        "Curve3D Class"
+      ],
+      "n_returned": 6,
+      "recall@1": 0.333,
+      "recall@3": 0.333,
+      "recall@5": 0.333,
+      "recall@100": 0.333
+    },
+    {
+      "query": "matrix rotation transform 2d 3d",
+      "gold": [
+        "Matrix Rotation",
+        "Transform2D Class",
+        "Transform3D Class"
+      ],
+      "retrieved_top5": [
+        "Vector2 Class",
+        "Vector Math Documentation",
+        "Quaternion Struct",
+        "Matrix Rotation",
+        "Transform3D Class"
+      ],
+      "n_returned": 7,
+      "recall@1": 0.0,
+      "recall@3": 0.0,
+      "recall@5": 0.667,
+      "recall@100": 1.0
+    },
+    {
+      "query": "random number generation noise",
+      "gold": [
+        "RandomNumberGenerator Class"
+      ],
+      "retrieved_top5": [
+        "RandomNumberGenerator Class",
+        "Weighted Random Probability",
+        "Crypto Class",
+        "FastNoiseLite Class",
+        "Shuffle Bag Pattern"
+      ],
+      "n_returned": 7,
+      "recall@1": 1.0,
+      "recall@3": 1.0,
+      "recall@5": 1.0,
+      "recall@100": 1.0
+    }
+  ]
+}

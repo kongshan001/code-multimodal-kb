@@ -14,10 +14,10 @@
 
 ## 3. 多模态知识库（multimodal-knowledge-base，复用 graphify，docs-only）
 
-- [ ] 3.1 对设计文档 / 论文 / 技术资料 / 图片建图：**指向纯文档目录**（代码不进 graphify，Part A 自动空跑）
-- [ ] 3.2 验证跨文档理解：`query`（BFS/DFS）、`path`（概念间最短路径）、`explain`（节点解释）+ `source_location` 引用
+- [x] 3.1 对设计文档 / 论文 / 技术资料 / 图片建图：**指向纯文档目录**（代码不进 graphify，Part A 自动空跑）— ✅ 凭据墙破（复用环境 BigModel/GLM key，runbook B 已沉淀）；Godot 17 篇 .rst 子集 → graphify 0.8.46 + glm-4.6 建图 **72 节点/32 边/40 社区/$0.22**，抽取节点正确（Vector2/Node/Signals/Transform2D/_ready…）
+- [ ] 3.2 验证跨文档理解：`query`（BFS/DFS）、`path`（概念间最短路径）、`explain`（节点解释）+ `source_location` 引用 — `query` BFS 已验证（recall@5=0.70，graphify 自动从 NL 选对起始节点）；`path`/`explain` 待测
 - [ ] 3.3 配置增量更新（`--update` / `--watch` / post-commit hook 三选一）+ LLM token 成本控制（评估 Gemini 后端）
-- [ ] 3.4 跨文档理解评测基线
+- [x] 3.4 跨文档理解评测基线 — ✅ `eval/run_doc_baseline.py` + `gold_docs.py`（10 概念查询，gold=建图实测节点）→ recall@1/3/5/all=0.217/0.6/**0.70**/0.833；漏点根因=方法节点↔概念节点连边偏弱（报告 `eval/reports/doc-baseline-godot-findings.md`）
 
 ## 4. Agent 注册与联调
 
