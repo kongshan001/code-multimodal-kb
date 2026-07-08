@@ -73,7 +73,12 @@ fi
 
 # [6/6] agent MCP 注册 + 验证
 echo "=== [6/6] agent MCP 注册 ==="
-run codebase-memory-mcp install -y || echo "  ℹ cmm install 跳过（已注册 / 见 runbook §A.4）"
+# cmm install 是每设备一次的全局操作（有副作用/可能重建索引），仅未注册时才跑
+if claude mcp list 2>/dev/null | grep -q "codebase-memory-mcp"; then
+  echo "  ℹ cmm 已注册到 agent，跳过 install（每设备一次）"
+else
+  run codebase-memory-mcp install -y || echo "  ℹ cmm install 失败（见 runbook §A.4）"
+fi
 if [[ -n "$DOCS" ]]; then
   GRAPH_JSON="$DOCS/graphify-out/graph.json"
   if [[ -f "$GRAPH_JSON" ]]; then
