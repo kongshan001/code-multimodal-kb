@@ -313,7 +313,7 @@ def step_memory_local(a: argparse.Namespace) -> None:
         sh([claude, "mcp", "add", "-s", "user", "mem0", "--", sys.executable, str(wrapper)],
            dry=a.dry_run, check=False)
         print("  ✓ Mem0 本地 MCP 注册（重启 Claude Code 后 mcp__mem0-local__* 可用）")
-        print("  ⚠ 实验性：首跑 add/search 会调 BigModel；config 调整见 deploy/mem0-local/mem0_mcp_server.py 顶部")
+        print("  ✅ 本地(Ollama+qdrant)路线已实测通过(add→search)；首跑 pip 装 mem0ai/qdrant-client/ollama。Docker 路线未测。")
 
 
 def run_pipeline(a: argparse.Namespace) -> None:

@@ -17,8 +17,8 @@
 ## 🔶 进行中 / 待验证
 
 - **Mem0 记忆层（`add-agent-memory` Stage 1）**
-  - Docker compose（`deploy/mem0/`）已写，按官方指南 —— ⚠ **未实测**（本机无 Docker；用户 Win 暂不支持 Docker）
-  - 无 Docker 路线（`mem0-open-mcp` + 本地 Qdrant/Chroma + litellm BigModel）已调研，见 runbook §D —— ⚠ 未实测
+  - Docker compose（`deploy/mem0/`）已写，按官方指南 —— ⚠ 未实测（本机无 Docker；用户 Win 暂不支持 Docker）
+  - 无 Docker 路线（Ollama + qdrant-local，`deploy/mem0-local/`）—— ✅ **已实测通过**（add→search 闭环，`_test.py`）
 - **graphify-mcp 注册**：venv 缺 `mcp` extra（`uv tool install --force graphifyy --with mcp`，网络）；agent 暂用 `graphify query` CLI
 - **文档检索 path/explain**（kb task 3.2）：`query` 已验，path/explain 待测
 
