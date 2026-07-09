@@ -152,16 +152,62 @@ def step_register(a: argparse.Namespace) -> None:
                     print("  ℹ graphify-mcp 注册失败（venv 需 mcp extra：uv tool install --force graphifyy --with mcp）")
 
 
+def _ask(prompt: str, default: str = "", required: bool = False, validate=None) -> str:
+    """交互式单项录入。回车=用 default；required/validate 校验。"""
+    while True:
+        suffix = f" [{default}]" if default != "" else ""
+        try:
+            val = input(f"{prompt}{suffix}: ").strip()
+        except EOFError:
+            val = default
+        if not val:
+            val = default
+        if required and not val:
+            print("  x 必填"); continue
+        if validate and val and not validate(val):
+            print("  x 无效或路径不存在"); continue
+        return val
+
+
+def interactive_args(dry_run: bool) -> argparse.Namespace:
+    print("=== KB+Memory 交互式接入（回车=采用方括号默认）===")
+    code = _ask("[1/6] 代码目录（必填）", required=True,
+                validate=lambda p: pathlib.Path(p).is_dir())
+    name = _ask("[2/6] 项目名", default=pathlib.Path(code).name, required=True)
+    docs = _ask("[3/6] 文档目录（可选，回车跳过）", default="",
+                validate=lambda p: not p or pathlib.Path(p).is_dir())
+    mem = _ask("[4/6] 启用记忆层 Mem0？需 Docker [y/N]", default="n").lower().startswith("y")
+    key = _ask("[5/6] LLM key（回车=复用环境 BigModel 默认）", default="")
+    mode = _ask("[6/6] cmm 模式 fast/moderate/full", default="moderate")
+    if mode not in ("fast", "moderate", "full"):
+        mode = "moderate"
+    a = argparse.Namespace(
+        code=pathlib.Path(code),
+        docs=pathlib.Path(docs) if docs else None,
+        name=name, cmm_mode=mode, no_memory=not mem, dry_run=dry_run,
+        llm_key=key or None, llm_base=None, llm_model=None)
+    print(f"\n-> 确认: code={a.code} docs={a.docs or '<无>'} name={a.name} "
+          f"memory={'on' if mem else 'off'} mode={mode}")
+    if input("  开始接入？[Y/n]: ").strip().lower().startswith("n"):
+        sys.exit("已取消")
+    return a
+
+
 def main() -> None:
-    ap = argparse.ArgumentParser(description="KB+Memory 便捷接入（跨平台）")
-    ap.add_argument("--code", type=pathlib.Path, required=True)
+    ap = argparse.ArgumentParser(description="KB+Memory 便捷接入（跨平台，支持 --interactive）")
+    ap.add_argument("-i", "--interactive", action="store_true", help="交互式逐项录入（Win .bat 入口）")
+    ap.add_argument("--code", type=pathlib.Path)
     ap.add_argument("--docs", type=pathlib.Path)
-    ap.add_argument("--name", required=True)
+    ap.add_argument("--name")
     ap.add_argument("--cmm-mode", default="moderate", choices=["fast", "moderate", "full"])
     ap.add_argument("--no-memory", action="store_true")
     ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--llm-key"); ap.add_argument("--llm-base"); ap.add_argument("--llm-model")
     a = ap.parse_args()
+    if a.interactive:
+        a = interactive_args(a.dry_run)
+    elif not a.code or not a.name:
+        ap.error("非交互模式需 --code <目录> --name <项目名>（或用 --interactive / setup-kb.bat）")
 
     if not a.code.is_dir():
         sys.exit(f"✗ 代码目录不存在: {a.code}")

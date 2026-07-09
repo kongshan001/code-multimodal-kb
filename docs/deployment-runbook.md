@@ -13,6 +13,12 @@
 python3 setup-kb.py --code <代码目录> --docs <文档目录> --name <项目名> [--cmm-mode moderate] [--no-memory]
 ```
 
+**或交互式**（双击 / 逐项录入，回车用默认；不想手拼参数时用）：
+- **Windows**：双击 `setup-kb.bat`（或命令行 `setup-kb.bat`）
+- macOS / Linux：`./setup-kb.sh`
+- 任意平台：`python3 setup-kb.py --interactive`
+逐项问：代码目录、项目名、文档目录(可跳)、是否启 Mem0、LLM key、cmm 模式，确认后执行。
+
 自动 6 步：precheck → LLM backend（默认复用环境 BigModel key）→ cmm index 代码 → graphify 建文档图 → [Mem0 docker compose] → agent MCP 注册 + 验证。
 - 已实测：1-4 + 6 步在全新靶子上真跑零 bug（cmm index + graphify 建图 + 注册）。
 - Mem0（第 5 步）现已自动化（`deploy/mem0/docker-compose.yml`，需 Docker；`--no-memory` 跳过）—— ⚠ **未在本机实测**（本机无 Docker），见 §D。
