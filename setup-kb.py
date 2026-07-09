@@ -56,8 +56,8 @@ def step_precheck(a: argparse.Namespace) -> None:
     need("codebase-memory-mcp")
     if a.docs:
         need("graphify")
-    if not a.no_memory and not shutil.which("docker"):
-        print("  ⚠ 未找到 docker —— Mem0 Docker 阶段将自动跳过（Win 无 Docker 常见；无 Docker 路线见 runbook §D，或 --no-memory）")
+    if getattr(a, "memory_mode", "none") == "docker" and not shutil.which("docker"):
+        print("  ⚠ 未找到 docker —— Mem0 Docker 阶段将跳过（用 --memory-mode local 走无 Docker 路线）")
     print("  ✓ 工具就位")
 
 
@@ -218,7 +218,8 @@ def interactive_args(dry_run: bool) -> argparse.Namespace:
     name = _ask("[2/6] 项目名", default=pathlib.Path(code).name, required=True)
     docs = _ask("[3/6] 文档目录（可选，回车跳过）", default="",
                 validate=lambda p: not p or pathlib.Path(p).is_dir())
-    mem = _ask("[4/6] 启用记忆层 Mem0？需 Docker [y/N]", default="n").lower().startswith("y")
+    mmode = _ask("[4/6] 记忆层？[n]无 / docker / local(无Docker·推荐)", default="n").lower()
+    memory_mode = mmode if mmode in ("docker", "local") else "none"
     key = _ask("[5/6] LLM key（回车=复用环境 BigModel 默认）", default="")
     mode = _ask("[6/6] cmm 模式 fast/moderate/full", default="moderate")
     if mode not in ("fast", "moderate", "full"):
@@ -226,7 +227,8 @@ def interactive_args(dry_run: bool) -> argparse.Namespace:
     a = argparse.Namespace(
         code=pathlib.Path(code),
         docs=pathlib.Path(docs) if docs else None,
-        name=name, cmm_mode=mode, no_memory=not mem, dry_run=dry_run,
+        name=name, cmm_mode=mode, memory_mode=memory_mode, no_memory=(memory_mode == "none"),
+        dry_run=dry_run,
         llm_key=key or None, llm_base=None, llm_model=None)
     print(f"\n-> 确认: code={a.code} docs={a.docs or '<无>'} name={a.name} "
           f"memory={'on' if mem else 'off'} mode={mode}")
@@ -293,6 +295,27 @@ def interactive_delete() -> None:
     print(f"  => 已删除 {project}")
 
 
+def step_memory_local(a: argparse.Namespace) -> None:
+    print("=== [5/6] 记忆层 (Mem0 本地 · 无 Docker) ===")
+    try:
+        import mem0  # noqa: F401
+        import chromadb  # noqa: F401
+    except ImportError:
+        extra = "（dry-run 跳过安装）" if a.dry_run else "（~200MB，1-3min）"
+        print(f"  装 mem0ai chromadb mcp {extra}")
+        if not a.dry_run:
+            subprocess.run([sys.executable, "-m", "pip", "install", "mem0ai", "chromadb", "mcp"], check=False)
+    wrapper = HERE / "deploy" / "mem0-local" / "mem0_mcp_server.py"
+    if not wrapper.exists():
+        print(f"  ✗ 缺 {wrapper}"); return
+    claude = shutil.which("claude")
+    if claude:
+        sh([claude, "mcp", "add", "-s", "user", "mem0", "--", sys.executable, str(wrapper)],
+           dry=a.dry_run, check=False)
+        print("  ✓ Mem0 本地 MCP 注册（重启 Claude Code 后 mcp__mem0-local__* 可用）")
+        print("  ⚠ 实验性：首跑 add/search 会调 BigModel；config 调整见 deploy/mem0-local/mem0_mcp_server.py 顶部")
+
+
 def run_pipeline(a: argparse.Namespace) -> None:
     print(f"=== KB+Memory 接入: {a.name} (code={a.code} docs={a.docs or '<无>'}) ===")
     step_precheck(a)
@@ -300,10 +323,13 @@ def run_pipeline(a: argparse.Namespace) -> None:
     step_cmm(a)
     if a.docs:
         step_graphify(a)
-    if not a.no_memory:
+    mode = getattr(a, "memory_mode", "none")
+    if mode == "docker":
         step_memory(a)
+    elif mode == "local":
+        step_memory_local(a)
     else:
-        print("=== [5/6] 跳过记忆层（--no-memory）===")
+        print("=== [5/6] 跳过记忆层（none）===")
     step_register(a)
 
 
@@ -400,9 +426,13 @@ def main() -> None:
     ap.add_argument("--name")
     ap.add_argument("--cmm-mode", default="moderate", choices=["fast", "moderate", "full"])
     ap.add_argument("--no-memory", action="store_true")
+    ap.add_argument("--memory-mode", default="none", choices=["none", "docker", "local"],
+                    help="记忆层：none无 / docker(Mem0 Docker) / local(Mem0+ChromaDB 无Docker)")
     ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--llm-key"); ap.add_argument("--llm-base"); ap.add_argument("--llm-model")
     a = ap.parse_args()
+    if getattr(a, "no_memory", False):
+        a.memory_mode = "none"
     if a.status:
         step_status(); return
     if a.interactive:
