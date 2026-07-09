@@ -152,6 +152,48 @@ def step_register(a: argparse.Namespace) -> None:
                     print("  ℹ graphify-mcp 注册失败（venv 需 mcp extra：uv tool install --force graphifyy --with mcp）")
 
 
+def step_status() -> None:
+    """查看当前 KB 状态：cmm 已索引项目 / graphify 已建文档图 / agent MCP 注册。"""
+    import glob
+    print("=== KB 当前状态 ===\n")
+    print("[代码 KB · cmm 已索引项目]")
+    cmm = shutil.which("codebase-memory-mcp")
+    if cmm:
+        try:
+            r = subprocess.run([cmm, "cli", "list_projects", "{}"], capture_output=True, text=True, timeout=30)
+            out = r.stdout.strip()
+            projects = json.loads(out[out.find("{"):]).get("projects", []) if "{" in out else []
+            for p in projects:
+                print(f"  ✓ {p.get('name')}  ({p.get('nodes', '?')} 节点)  @ {p.get('root_path', '')}")
+            print(f"  共 {len(projects)} 个项目")
+        except Exception as e:
+            print(f"  ✗ 读取失败: {e}")
+    else:
+        print("  ✗ codebase-memory-mcp 未安装")
+
+    print("\n[文档 KB · graphify 已建图]")
+    home = os.path.expanduser("~/Documents")
+    graphs = sorted(set(glob.glob(home + "/*/graphify-out/graph.json") + glob.glob(home + "/*/*/graphify-out/graph.json")))[:20]
+    if not graphs:
+        print("  （无）")
+    for g in graphs:
+        try:
+            n = len(json.load(open(g)).get("nodes", []))
+            print(f"  ✓ {g.replace(home + '/', '')}  ({n} 节点)")
+        except Exception:
+            print(f"  ? {g}")
+
+    print("\n[agent MCP 注册]")
+    claude = shutil.which("claude")
+    if claude:
+        r = subprocess.run([claude, "mcp", "list"], capture_output=True, text=True, timeout=30)
+        for line in r.stdout.splitlines():
+            if any(k in line for k in ("codebase-memory", "graphify", "mem0", "Connected", "Failed")):
+                print(f"  {line.strip()}")
+    else:
+        print("  ✗ claude CLI 未安装")
+
+
 def _ask(prompt: str, default: str = "", required: bool = False, validate=None) -> str:
     """交互式单项录入。回车=用 default；required/validate 校验。"""
     while True:
@@ -196,6 +238,7 @@ def interactive_args(dry_run: bool) -> argparse.Namespace:
 def main() -> None:
     ap = argparse.ArgumentParser(description="KB+Memory 便捷接入（跨平台，支持 --interactive）")
     ap.add_argument("-i", "--interactive", action="store_true", help="交互式逐项录入（Win .bat 入口）")
+    ap.add_argument("-s", "--status", action="store_true", help="查看当前 KB 状态（已索引项目/文档图/注册）")
     ap.add_argument("--code", type=pathlib.Path)
     ap.add_argument("--docs", type=pathlib.Path)
     ap.add_argument("--name")
@@ -204,6 +247,8 @@ def main() -> None:
     ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--llm-key"); ap.add_argument("--llm-base"); ap.add_argument("--llm-model")
     a = ap.parse_args()
+    if a.status:
+        step_status(); return
     if a.interactive:
         a = interactive_args(a.dry_run)
     elif not a.code or not a.name:
