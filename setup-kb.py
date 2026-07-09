@@ -365,23 +365,68 @@ def _install_cmm(sysname: str) -> None:
     print(f"  ✓ 装到 {bindir}/codebase-memory-mcp。确保 {bindir} 在 PATH（.zshrc/.bashrc: export PATH=\"{bindir}:$PATH\"）")
 
 
-def step_env() -> None:
+def _want(label: str, auto: bool) -> bool:
+    return True if auto else input(f"  缺 {label}，自动安装？[Y/n]: ").strip().lower() != "n"
+
+
+def _pip_install(*pkgs: str) -> None:
+    """pip 装（清华镜像 + trusted-host，绕 framework python CA 问题）。"""
+    print(f"  pip 装 {', '.join(pkgs)} ...")
+    subprocess.run([sys.executable, "-m", "pip", "install", "--trusted-host", "pypi.tuna.tsinghua.edu.cn",
+                    "-i", "https://pypi.tuna.tsinghua.edu.cn/simple", *pkgs], check=False)
+
+
+def _install_ollama(sysname: str) -> None:
+    if shutil.which("ollama"):
+        return
+    print("  装 ollama ...")
+    if sysname == "Linux":
+        subprocess.run(["bash", "-c", "curl -fsSL https://ollama.com/install.sh | sh"], check=False)
+    elif sysname == "Darwin" and shutil.which("brew"):
+        subprocess.run(["brew", "install", "ollama"], check=False)
+    else:
+        print("  ⚠ ollama 手动装：mac=ollama.com 下 .app；win=winget install Ollama.Ollama")
+
+
+def _pull_ollama_models() -> None:
+    if not shutil.which("ollama"):
+        return
+    for m in ("nomic-embed-text", "llama3.2"):
+        print(f"  ollama pull {m} ...")
+        subprocess.run(["ollama", "pull", m], check=False)
+
+
+def step_env(auto: bool = False) -> None:
     import platform
     sysname = platform.system()
-    print(f"=== 环境检查与安装（{sysname}）===")
-    print(f"[Python]            {platform.python_version()} {'✓' if sys.version_info >= (3, 12) else '✗ 需 3.12+（手动装）'}")
-    print(f"[uv]                {'✓' if shutil.which('uv') else '✗（装 graphify 时自动装）'}")
-    if shutil.which("codebase-memory-mcp"):
-        print("[codebase-memory-mcp] ✓")
-    elif input("  缺 cmm，自动下载安装 v0.8.1？[Y/n]: ").strip().lower() != "n":
+    print(f"=== 环境检查与安装（{sysname}）{'[一键 auto]' if auto else ''} ===")
+    print(f"[Python]              {platform.python_version()} {'✓' if sys.version_info >= (3, 12) else '✗ 需 3.12+(手动)'}")
+    if not shutil.which("uv") and _want("uv", auto):
+        _pip_install("uv")
+    print(f"[uv]                  {'✓' if shutil.which('uv') else '✗'}")
+    if not shutil.which("codebase-memory-mcp") and _want("cmm", auto):
         _install_cmm(sysname)
-    if shutil.which("graphify"):
-        print("[graphify]          ✓")
-    elif input("  缺 graphify，自动 uv 安装（含 mcp extra）？[Y/n]: ").strip().lower() != "n":
+    print(f"[codebase-memory-mcp] {'✓' if shutil.which('codebase-memory-mcp') else '✗'}")
+    if not shutil.which("graphify") and _want("graphify", auto):
         _install_graphify()
-    print(f"[claude CLI]        {'✓' if shutil.which('claude') else '✗ 需手动装 Claude Code'}")
-    print(f"[docker]            {'✓（Mem0 可走 Docker）' if shutil.which('docker') else '（无 → Mem0 走无 Docker 路线 / 跳过）'}")
-    print("环境检查完。缺的装完重开终端，再回菜单选接入。")
+    print(f"[graphify]            {'✓' if shutil.which('graphify') else '✗'}")
+    if _want("ollama+模型(记忆local用)", auto):
+        _install_ollama(sysname)
+        _pull_ollama_models()
+    print(f"[ollama]              {'✓' if shutil.which('ollama') else '✗'}")
+    try:
+        import mem0  # noqa: F401
+        print("[mem0ai]              ✓")
+    except ImportError:
+        if _want("mem0ai+qdrant-client+ollama+mcp", auto):
+            _pip_install("mem0ai", "qdrant-client", "ollama", "mcp")
+        try:
+            import mem0  # noqa: F401
+            print("[mem0ai]              ✓")
+        except ImportError:
+            print("[mem0ai]              ✗")
+    print(f"[claude CLI]          {'✓' if shutil.which('claude') else '✗ 需手动装 Claude Code'}")
+    print("环境检查/安装完。")
 
 
 def interactive_menu() -> None:
@@ -421,6 +466,7 @@ def main() -> None:
     ap = argparse.ArgumentParser(description="KB+Memory 便捷接入（跨平台，支持 --interactive）")
     ap.add_argument("-i", "--interactive", action="store_true", help="交互式逐项录入（Win .bat 入口）")
     ap.add_argument("-s", "--status", action="store_true", help="查看当前 KB 状态（已索引项目/文档图/注册）")
+    ap.add_argument("--full", action="store_true", help="一键：自动装全部环境 + 接入项目（deploy.sh/.bat 入口）")
     ap.add_argument("--code", type=pathlib.Path)
     ap.add_argument("--docs", type=pathlib.Path)
     ap.add_argument("--name")
@@ -433,6 +479,11 @@ def main() -> None:
     a = ap.parse_args()
     if getattr(a, "no_memory", False):
         a.memory_mode = "none"
+    if a.full:
+        step_env(auto=True)                       # 一键：自动装全部环境
+        if a.code and a.name:
+            run_pipeline(a)                       # 装完直接接入项目
+        return
     if a.status:
         step_status(); return
     if a.interactive:
