@@ -235,6 +235,108 @@ def interactive_args(dry_run: bool) -> argparse.Namespace:
     return a
 
 
+def cmm_projects() -> list:
+    cmm = shutil.which("codebase-memory-mcp")
+    if not cmm:
+        return []
+    try:
+        r = subprocess.run([cmm, "cli", "list_projects", "{}"], capture_output=True, text=True, timeout=30)
+        out = r.stdout.strip()
+        return json.loads(out[out.find("{"):]).get("projects", []) if "{" in out else []
+    except Exception:
+        return []
+
+
+def _pick_project() -> str | None:
+    projects = cmm_projects()
+    if not projects:
+        print("  （cmm 还没有已索引项目，先选 [1] 接入）"); return None
+    for i, p in enumerate(projects, 1):
+        print(f"  [{i}] {p.get('name')}  ({p.get('nodes', '?')} 节点)  @ {p.get('root_path', '')}")
+    sel = input("选项目序号（回车取消）: ").strip()
+    try:
+        return projects[int(sel) - 1]["name"]
+    except (ValueError, IndexError):
+        return None
+
+
+def interactive_query() -> None:
+    print("\n--- 查询项目代码 ---")
+    project = _pick_project()
+    if not project:
+        return
+    pattern = input("查什么（关键词/符号名）: ").strip()
+    if not pattern:
+        return
+    cmm = shutil.which("codebase-memory-mcp")
+    r = subprocess.run([cmm, "cli", "search_code",
+                        json.dumps({"project": project, "pattern": pattern, "limit": 8})],
+                       capture_output=True, text=True, timeout=60)
+    out = r.stdout.strip()
+    results = json.loads(out[out.find("{"):]).get("results", []) if "{" in out else []
+    if not results:
+        print("  （无结果）"); return
+    for res in results:
+        print(f"  - {res.get('node')}  [{res.get('file')}:{res.get('start_line', '?')}]  in_degree={res.get('in_degree', '?')}")
+
+
+def interactive_delete() -> None:
+    print("\n--- 删除项目 ---")
+    project = _pick_project()
+    if not project:
+        return
+    if input(f"  确认删除 {project}？[y/N]: ").strip().lower() != "y":
+        return
+    cmm = shutil.which("codebase-memory-mcp")
+    subprocess.run([cmm, "cli", "delete_project", json.dumps({"project": project})],
+                   capture_output=True, text=True, timeout=30)
+    print(f"  => 已删除 {project}")
+
+
+def run_pipeline(a: argparse.Namespace) -> None:
+    print(f"=== KB+Memory 接入: {a.name} (code={a.code} docs={a.docs or '<无>'}) ===")
+    step_precheck(a)
+    step_llm(a)
+    step_cmm(a)
+    if a.docs:
+        step_graphify(a)
+    if not a.no_memory:
+        step_memory(a)
+    else:
+        print("=== [5/6] 跳过记忆层（--no-memory）===")
+    step_register(a)
+
+
+def interactive_menu() -> None:
+    while True:
+        print("\n=== KB 管理（交互式）===")
+        print("  [1] 接入 / 初始化项目")
+        print("  [2] 查看已接入项目（状态）")
+        print("  [3] 查询某项目代码")
+        print("  [4] 删除某项目")
+        print("  [5] 退出")
+        c = input("选择 [1-5]: ").strip()
+        if c == "1":
+            a = interactive_args(dry_run=False)
+            run_pipeline(a)
+            print(f"  => 接入完成: {a.name}（用 [2] 查看 / [3] 查询）")
+        elif c == "2":
+            step_status()
+        elif c == "3":
+            interactive_query()
+        elif c == "4":
+            interactive_delete()
+        elif c == "5":
+            print("再见"); break
+        else:
+            print("  无效选项")
+        if c in ("1", "2", "3", "4"):
+            try:
+                input("\n(回车返回菜单)")
+            except EOFError:
+                break
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(description="KB+Memory 便捷接入（跨平台，支持 --interactive）")
     ap.add_argument("-i", "--interactive", action="store_true", help="交互式逐项录入（Win .bat 入口）")
@@ -250,26 +352,17 @@ def main() -> None:
     if a.status:
         step_status(); return
     if a.interactive:
-        a = interactive_args(a.dry_run)
-    elif not a.code or not a.name:
-        ap.error("非交互模式需 --code <目录> --name <项目名>（或用 --interactive / setup-kb.bat）")
+        interactive_menu()
+        return
+    if not a.code or not a.name:
+        ap.error("非交互模式需 --code <目录> --name <项目名>（或用 --interactive / setup-kb.bat 进菜单）")
 
     if not a.code.is_dir():
         sys.exit(f"✗ 代码目录不存在: {a.code}")
     if a.docs and not a.docs.is_dir():
         sys.exit(f"✗ 文档目录不存在: {a.docs}")
 
-    print(f"=== KB+Memory 接入: {a.name} (code={a.code} docs={a.docs or '<无>'}) ===")
-    step_precheck(a)
-    step_llm(a)
-    step_cmm(a)
-    if a.docs:
-        step_graphify(a)
-    if not a.no_memory:
-        step_memory(a)
-    else:
-        print("=== [5/6] 跳过记忆层（--no-memory）===")
-    step_register(a)
+    run_pipeline(a)
 
     print(f"=== ✅ 接入完成: {a.name} ===")
     print("验证: claude mcp list   |   重启 Claude Code 后 mcp__* 工具可用")
