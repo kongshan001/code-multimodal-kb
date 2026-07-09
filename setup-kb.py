@@ -56,8 +56,8 @@ def step_precheck(a: argparse.Namespace) -> None:
     need("codebase-memory-mcp")
     if a.docs:
         need("graphify")
-    if not a.no_memory:
-        need("docker")
+    if not a.no_memory and not shutil.which("docker"):
+        print("  ⚠ 未找到 docker —— Mem0 Docker 阶段将自动跳过（Win 无 Docker 常见；无 Docker 路线见 runbook §D，或 --no-memory）")
     print("  ✓ 工具就位")
 
 
@@ -99,12 +99,17 @@ def step_graphify(a: argparse.Namespace) -> None:
 
 
 def step_memory(a: argparse.Namespace) -> None:
-    print("=== [5/6] 记忆层 (Mem0, docker compose) ===")
+    print("=== [5/6] 记忆层 (Mem0) ===")
+    if not shutil.which("docker"):
+        print("  ⚠ 无 Docker（Win 常见）→ 跳过 Docker 路线，不报错。")
+        print("  ℹ 无 Docker 路线（pip + 本地向量库）：pip install mem0-open-mcp，配 local Qdrant(path)/Chroma")
+        print("    + BigModel(via litellm)；详见 docs/deployment-runbook.md §D。或 --no-memory 先跳过。")
+        return
     compose = MEM0_DIR / "docker-compose.yml"
     if not compose.exists():
-        print(f"  ⚠ 缺 {compose}（见 docs/deployment-runbook.md §Mem0）")
+        print(f"  ⚠ 缺 {compose}（见 docs/deployment-runbook.md §D）")
         return
-    docker = need("docker")
+    docker = "docker"
     try:
         sh([docker, "compose", "-f", str(compose), "up", "-d", "--build"], dry=a.dry_run, check=False)
     except Exception as e:

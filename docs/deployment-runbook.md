@@ -147,6 +147,28 @@ docker compose -f deploy/mem0/docker-compose.yml --env-file deploy/mem0/.env up 
 - **agent MCP 接入**：Mem0 self-host 是 **REST 不是 MCP**；装 `mem0-mcp`（或 OpenMemory MCP）指向本 backend，再 `claude mcp add`。
 - ⚠ **未在本机实测**（本机无 Docker）：compose 按官方指南、`docker compose up` 标准；需在 Docker 环境验证一遍后回填本节。
 
+### 无 Docker 路线（Win / 无 Docker 环境）
+
+`setup-kb.py` 检测到无 Docker 会自动跳过并提示。手动走 pip + 本地向量库：
+
+```bash
+pip install mem0-open-mcp          # 或 mem0-mcp-selfhosted
+```
+
+配 Mem0 OSS 用本地向量库 + BigModel（via litellm 的 zhipu provider）：
+
+```python
+config = {
+  "vector_store": {"provider": "qdrant", "path": "<本地路径>"},   # 或 chroma（embedded，零服务）
+  "llm": {"provider": "litellm", "litellm_params": {"model": "zhipu/glm-4.6", "api_key": "<BigModel key>"}},
+  "embedder": {"provider": "huggingface", "model": "<本地 embedding>"}  # 或 zhipu embedding-3
+}
+```
+
+再以 stdio MCP 注册：`claude mcp add mem0 -- mem0`。
+
+⚠ **未实测**（本机无 Docker、非 Win）；参考 [Mem0 OSS 配置](https://docs.mem0.ai/open-source/configuration) · [mem0-open-mcp](https://pypi.org/project/mem0-open-mcp/) · [Qdrant 集成](https://qdrant.tech/documentation/frameworks/mem0/)。
+
 ## 验证清单（task 6.5）
 
 - [ ] A：`cli list_projects` 显示已建图项目
