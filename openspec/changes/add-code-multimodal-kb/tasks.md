@@ -27,6 +27,8 @@
 
 ## 5. 评测（benchmark 深度调研后重做）
 
+> **归属**：评测 capability/spec/design/tasks 已归横切变更 `add-evaluation-baseline`；本节为历史 task，实际进度以该变更为准。
+
 - [ ] 5.1 评测 harness：建 pytest 套件 + 封装「调两个 MCP 收集 (query, 检索/图结果, answer, gold)」；先锁 graphify `temp=0 + 模型 + 版本` 保证可复现（B2 前置）
 - [ ] 5.2 代码检索主轨道：RepoBench-R（recall@k / nDCG@10）+ SWE-Lancer-Loc（216 条 NL→文件/函数定位命中率）
 - [ ] 5.3 代码图检索专用指标（自建）：Symbol-Level Hit@k、Call-Chain Edge Recall、Path Precision@k（gold 来自静态调用图）

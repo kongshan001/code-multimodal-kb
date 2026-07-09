@@ -14,8 +14,8 @@
 ## 3. 文档侧评测（🔴 卡凭据 · 与 doc-side KB 共享解锁 · 接管 §5 文档部分）
 
 - [ ] 3.1 前置：LLM 凭据就位 + graphify 文档图已建（依赖 add-code-multimodal-kb §3）
-- [ ] 3.2 DeepEval faithfulness / answer relevancy / G-Eval（评 graphify 文本节点→答案）→ 验证：跑出文档答案质量分
-- [ ] 3.3 复刻 MS GraphRAG LLM grader（comprehensiveness/diversity/empowerment head-to-head vs 朴素 RAG）→ 验证：head-to-head 评分可跑
+- [ ] 3.2 DeepEval faithfulness / answer relevancy / G-Eval（评 graphify 文本节点→答案）→ 验证：跑出文档答案质量分。注：复刻版脚本就绪（`eval/run_doc_quality.py` faithfulness/relevancy + `eval/llm.py` BigModel judge，免装 deepeval）；**实跑被 BigModel key 持续 429 限流阻塞**，待配额恢复后跑分数
+- [ ] 3.3 复刻 MS GraphRAG LLM grader（comprehensiveness/diversity/empowerment head-to-head vs 朴素 RAG）→ 验证：head-to-head 评分可跑。注：head-to-head 判官已写进 `run_doc_quality.py`（graphify 答 vs naive grep，BigModel 判谁更全面）；同被 429 阻塞
 - [ ] 3.4 抽取质量：独立模型（≠ graphify 抽取模型）抽样打 entity/relation/claim → 验证：评判模型与抽取模型不同
 - [ ] 3.5 外部 held-out：GraphRAG-Bench / WildGraphBench 子集 → 验证：在 held-out 上跑出分数
 
@@ -30,4 +30,4 @@
 - [ ] 5.1 实现阈值门禁表（每指标绑阈值 + 触发动作），不达标项报告标记并输出改进动作 → 验证：注入一个低分样本，报告正确标记 + 输出动作
 - [ ] 5.2 代码侧首跑出基线后，回填"设定基线"阈值（design Open Question 1）→ 验证：阈值字段有数
 - [ ] 5.3 评测报告模板 + 跑评测步骤文档化（含数据集来源、锁定项、阈值）→ 验证：新人照文档能复现一次代码侧评测
-- [ ] 5.4 在 add-code-multimodal-kb §5 + add-agent-memory §4 tasks.md 加归属行指向本变更 → 验证：两变更评测 task 标注"→ add-evaluation-baseline"
+- [x] 5.4 在 add-code-multimodal-kb §5 + add-agent-memory §4 tasks.md 加归属行指向本变更 → 已在两变更 §5/§4 header 加"归属 add-evaluation-baseline"注，消除 ~15 个重复评测 task 的歧义
