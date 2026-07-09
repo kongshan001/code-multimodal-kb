@@ -307,30 +307,84 @@ def run_pipeline(a: argparse.Namespace) -> None:
     step_register(a)
 
 
+def _install_graphify() -> None:
+    uv = shutil.which("uv") or (subprocess.run([sys.executable, "-m", "pip", "install", "uv"], check=False) and shutil.which("uv"))
+    if not uv:
+        print("  ✗ uv 装失败，手动：pip install uv && uv tool install graphifyy --with mcp"); return
+    print("  装 graphify（含 mcp extra，~1min）...")
+    subprocess.run([uv, "tool", "install", "graphifyy", "--with", "mcp", "--force"], check=False)
+    print("  ✓ graphify（重开终端或在 PATH 里）")
+
+
+def _install_cmm(sysname: str) -> None:
+    import platform
+    m = platform.machine().lower()
+    if sysname == "Darwin":
+        a = "darwin-arm64" if m == "arm64" else "darwin-amd64"
+    elif sysname == "Linux":
+        a = "linux-arm64" if m in ("arm64", "aarch64") else "linux-amd64"
+    else:
+        print("  ⚠ Windows：手动下二进制（PowerShell Invoke-WebRequest，见 runbook §A），或后续补 Win 自动化"); return
+    V, F = "v0.8.1", f"codebase-memory-mcp-{a}.tar.gz"
+    url = f"https://github.com/DeusData/codebase-memory-mcp/releases/download/{V}/{F}"
+    bindir = pathlib.Path.home() / ".local" / "bin"; bindir.mkdir(parents=True, exist_ok=True)
+    print(f"  下 {url}（CN 慢请设 HTTPS_PROXY=http://127.0.0.1:7897）...")
+    if subprocess.run(["curl", "-fsSL", "--retry", "3", "-o", F, url]).returncode != 0:
+        print("  ✗ 下载失败，检查网络/代理"); return
+    subprocess.run(["tar", "-xzf", F], check=False)
+    subprocess.run(["chmod", "+x", "codebase-memory-mcp"], check=False)
+    (pathlib.Path("codebase-memory-mcp")).rename(bindir / "codebase-memory-mcp")
+    for tmp in (F, "checksums.txt"):
+        pathlib.Path(tmp).unlink(missing_ok=True)
+    print(f"  ✓ 装到 {bindir}/codebase-memory-mcp。确保 {bindir} 在 PATH（.zshrc/.bashrc: export PATH=\"{bindir}:$PATH\"）")
+
+
+def step_env() -> None:
+    import platform
+    sysname = platform.system()
+    print(f"=== 环境检查与安装（{sysname}）===")
+    print(f"[Python]            {platform.python_version()} {'✓' if sys.version_info >= (3, 12) else '✗ 需 3.12+（手动装）'}")
+    print(f"[uv]                {'✓' if shutil.which('uv') else '✗（装 graphify 时自动装）'}")
+    if shutil.which("codebase-memory-mcp"):
+        print("[codebase-memory-mcp] ✓")
+    elif input("  缺 cmm，自动下载安装 v0.8.1？[Y/n]: ").strip().lower() != "n":
+        _install_cmm(sysname)
+    if shutil.which("graphify"):
+        print("[graphify]          ✓")
+    elif input("  缺 graphify，自动 uv 安装（含 mcp extra）？[Y/n]: ").strip().lower() != "n":
+        _install_graphify()
+    print(f"[claude CLI]        {'✓' if shutil.which('claude') else '✗ 需手动装 Claude Code'}")
+    print(f"[docker]            {'✓（Mem0 可走 Docker）' if shutil.which('docker') else '（无 → Mem0 走无 Docker 路线 / 跳过）'}")
+    print("环境检查完。缺的装完重开终端，再回菜单选接入。")
+
+
 def interactive_menu() -> None:
     while True:
         print("\n=== KB 管理（交互式）===")
-        print("  [1] 接入 / 初始化项目")
-        print("  [2] 查看已接入项目（状态）")
-        print("  [3] 查询某项目代码")
-        print("  [4] 删除某项目")
-        print("  [5] 退出")
-        c = input("选择 [1-5]: ").strip()
+        print("  [1] 环境检查 / 自动安装工具   ← 新设备先跑这个")
+        print("  [2] 接入 / 初始化项目")
+        print("  [3] 查看已接入项目（状态）")
+        print("  [4] 查询某项目代码")
+        print("  [5] 删除某项目")
+        print("  [6] 退出")
+        c = input("选择 [1-6]: ").strip()
         if c == "1":
+            step_env()
+        elif c == "2":
             a = interactive_args(dry_run=False)
             run_pipeline(a)
-            print(f"  => 接入完成: {a.name}（用 [2] 查看 / [3] 查询）")
-        elif c == "2":
-            step_status()
+            print(f"  => 接入完成: {a.name}（用 [3] 查看 / [4] 查询）")
         elif c == "3":
-            interactive_query()
+            step_status()
         elif c == "4":
-            interactive_delete()
+            interactive_query()
         elif c == "5":
+            interactive_delete()
+        elif c == "6":
             print("再见"); break
         else:
             print("  无效选项")
-        if c in ("1", "2", "3", "4"):
+        if c in ("1", "2", "3", "4", "5"):
             try:
                 input("\n(回车返回菜单)")
             except EOFError:
