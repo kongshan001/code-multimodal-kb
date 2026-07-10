@@ -187,6 +187,30 @@ config = {
 
 ✅ **已实测通过**（Ollama llama3.2 + nomic-embed-text + qdrant-local，add→search 闭环 score 0.60；复现脚本 `deploy/mem0-local/_test.py`）。配置踩坑修复见 wrapper 顶部"实测要点"。
 
+## E. 离线 / 内网部署（无外网）
+
+内网无外网时，`deploy.sh/.bat` 联网装依赖会失败——脚本会逐项打印 `❌...离线补救`（怎么备、拷哪）。下面是一次性预置清单：有网机备好 → U盘/内网拷入 → 重跑 deploy。
+
+### 预置清单（有网机备，拷入内网）
+| 依赖 | 有网机怎么备 | 内网放哪 |
+|---|---|---|
+| **cmm 二进制** | github.com/DeusData/codebase-memory-mcp/releases 下 v0.8.1（选对应平台）| `~/.local/bin/codebase-memory-mcp` + `chmod +x` |
+| **pip 包**（mem0ai/qdrant-client/ollama/mcp）| `pip download mem0ai qdrant-client ollama mcp -d ./wheels` | `pip install --no-index --find-links=./wheels mem0ai qdrant-client ollama mcp` |
+| **graphify** | `uv tool install graphifyy --with mcp`（装好）| 拷 `~/.local/share/uv/tools/graphifyy` 整目录过来 |
+| **ollama 二进制** | ollama.com 下载 | 装上（mac .app / linux 二进制 / win winget） |
+| **ollama 模型** | `ollama pull nomic-embed-text` + `ollama pull llama3.2` | 拷 `~/.ollama/models` 到内网机同名目录 |
+| Python 3.12+ / Claude Code | 预装 | — |
+
+### 流程
+1. 内网机跑 `./deploy.sh <项目>`（或 `deploy.bat`）→ 看哪些依赖 ❌（联网装失败）。
+2. 按 ❌ 提示（或上表）在有网机备好，拷入内网对应位置。
+3. 重跑 `./deploy.sh <项目>` → 装齐 → 自动接入（代码 index + 文档图 + 本地记忆 + 注册）。
+
+### 离线能用到的程度
+- **代码 KB（cmm）= 完全离线可用**（纯 tree-sitter 结构索引，零网络零 LLM，二进制预置即可）✅
+- **文档 KB（graphify）/ 记忆（Mem0）= 本地 Ollama 驱动**（模型预置，不走 BigModel 云）✅
+- ⚠ 若无本地 Ollama + 模型：只能用代码 KB（文档/记忆不可用）。LLM 抽取无法绕过 Ollama。
+
 ## 验证清单（task 6.5）
 
 - [ ] A：`cli list_projects` 显示已建图项目
