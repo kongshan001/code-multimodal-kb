@@ -333,13 +333,17 @@ def run_pipeline(a: argparse.Namespace) -> None:
     step_register(a)
 
 
-def _install_graphify() -> None:
+def _install_graphify() -> bool:
     uv = shutil.which("uv") or (subprocess.run([sys.executable, "-m", "pip", "install", "uv"], check=False) and shutil.which("uv"))
     if not uv:
-        print("  ✗ uv 装失败，手动：pip install uv && uv tool install graphifyy --with mcp"); return
-    print("  装 graphify（含 mcp extra，~1min）...")
-    subprocess.run([uv, "tool", "install", "graphifyy", "--with", "mcp", "--force"], check=False)
-    print("  ✓ graphify（重开终端或在 PATH 里）")
+        print("  ❌ uv 装失败"); return False
+    print("  装 graphify（含 mcp extra）...")
+    rc = subprocess.run([uv, "tool", "install", "graphifyy", "--with", "mcp", "--force"], check=False).returncode
+    if rc != 0 or not shutil.which("graphify"):
+        print("  ❌ graphify 装失败（可能内网无外网）。离线补救：")
+        print("     有网机 uv tool install graphifyy --with mcp，拷 ~/.local/share/uv/tools/graphifyy 整目录过来")
+        return False
+    return True
 
 
 def _install_cmm(sysname: str) -> None:
@@ -356,7 +360,9 @@ def _install_cmm(sysname: str) -> None:
     bindir = pathlib.Path.home() / ".local" / "bin"; bindir.mkdir(parents=True, exist_ok=True)
     print(f"  下 {url}（CN 慢请设 HTTPS_PROXY=http://127.0.0.1:7897）...")
     if subprocess.run(["curl", "-fsSL", "--retry", "3", "-o", F, url]).returncode != 0:
-        print("  ✗ 下载失败，检查网络/代理"); return
+        print("  ❌ cmm 下载失败（可能内网无外网）。离线补救：")
+        print(f"     有网机浏览器下 {url}，拷到本机 ~/.local/bin/codebase-memory-mcp 后 chmod +x")
+        return
     subprocess.run(["tar", "-xzf", F], check=False)
     subprocess.run(["chmod", "+x", "codebase-memory-mcp"], check=False)
     (pathlib.Path("codebase-memory-mcp")).rename(bindir / "codebase-memory-mcp")
@@ -369,11 +375,17 @@ def _want(label: str, auto: bool) -> bool:
     return True if auto else input(f"  缺 {label}，自动安装？[Y/n]: ").strip().lower() != "n"
 
 
-def _pip_install(*pkgs: str) -> None:
-    """pip 装（清华镜像 + trusted-host，绕 framework python CA 问题）。"""
+def _pip_install(*pkgs: str) -> bool:
+    """pip 装（清华镜像 + trusted-host）。失败（如内网无外网）给离线补救提示。"""
     print(f"  pip 装 {', '.join(pkgs)} ...")
-    subprocess.run([sys.executable, "-m", "pip", "install", "--trusted-host", "pypi.tuna.tsinghua.edu.cn",
-                    "-i", "https://pypi.tuna.tsinghua.edu.cn/simple", *pkgs], check=False)
+    rc = subprocess.run([sys.executable, "-m", "pip", "install", "--trusted-host", "pypi.tuna.tsinghua.edu.cn",
+                         "-i", "https://pypi.tuna.tsinghua.edu.cn/simple", *pkgs], check=False).returncode
+    if rc != 0:
+        print(f"  ❌ pip 装 {pkgs} 失败（可能内网无外网）。离线补救：")
+        print(f"     有网机: pip download {' '.join(pkgs)} -d ./wheels")
+        print(f"     拷到本机后: pip install --no-index --find-links=./wheels {' '.join(pkgs)}")
+        return False
+    return True
 
 
 def _install_ollama(sysname: str) -> None:
@@ -393,7 +405,10 @@ def _pull_ollama_models() -> None:
         return
     for m in ("nomic-embed-text", "llama3.2"):
         print(f"  ollama pull {m} ...")
-        subprocess.run(["ollama", "pull", m], check=False)
+        rc = subprocess.run(["ollama", "pull", m], check=False).returncode
+        if rc != 0:
+            print(f"  ❌ ollama pull {m} 失败（内网无外网）。离线：有网机 ollama pull {m} 后，"
+                  f"拷 ~/.ollama/models 到本机同名目录")
 
 
 def step_env(auto: bool = False) -> None:
@@ -426,7 +441,8 @@ def step_env(auto: bool = False) -> None:
         except ImportError:
             print("[mem0ai]              ✗")
     print(f"[claude CLI]          {'✓' if shutil.which('claude') else '✗ 需手动装 Claude Code'}")
-    print("环境检查/安装完。")
+    print("\n环境检查/安装完。⚠ 若上面有 ✗ = 联网装失败（内网无外网？）—— 按各步的"
+          "'❌...离线补救'手动预置（下二进制/拷 wheels/拷 ollama 模型）后，重跑 deploy.sh/.bat。")
 
 
 def interactive_menu() -> None:
