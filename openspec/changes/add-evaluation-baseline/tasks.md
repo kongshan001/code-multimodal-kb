@@ -19,11 +19,13 @@
 - [ ] 3.4 抽取质量：独立模型（≠ graphify 抽取模型）抽样打 entity/relation/claim → 验证：评判模型与抽取模型不同
 - [ ] 3.5 外部 held-out：GraphRAG-Bench / WildGraphBench 子集 → 验证：在 held-out 上跑出分数
 
-## 4. 记忆侧评测（🔴 卡凭据 · 依赖 Memory Stage 1 Mem0 · 接管 add-agent-memory §4）
+## 4. 记忆侧评测（召回+路由零凭据已完成 · 答案质量仍卡 LLM judge · 接管 add-agent-memory §4）
 
-- [ ] 4.1 前置：Mem0 已接入并迁移现有记忆（依赖 add-agent-memory §2）
-- [ ] 4.2 recall@k + 实体去重正确率 + 注入体积收敛 → 验证：对主题召回跑出相关性/去重/体积指标
-- [ ] 4.3 边界路由准确率：构造 4 类标注集（客观/程序/事件/主观各若干）+ 路由 gold，验 D1 → 验证：四类路由准确率达标
+> 2026-07 修订：Mem0 → MemPalace（add-agent-memory 已归档）。召回 + 路由两层用本地 embedding / 规则，**零 LLM**，已跑出基线；「记忆答案质量」（召回的 drawer 是否真答对问题）需 LLM judge，仍卡凭据，与 §3 文档侧同一道墙。
+
+- [x] 4.1 前置：MemPalace 已接入并 mine 现有记忆（依赖 add-agent-memory §2，已归档）→ 验证：MemPalace 3.5.0 接入 + agent 内 `mempalace_search` 可调（commit aaf81e6）；palace 1485 drawers（memory 文件 4 + 会话碎片 1481）✓
+- [x] 4.2 recall@k + 实体去重正确率 + 注入体积收敛 → 验证：`bench run memory` 跑 15 query → **hit@5=0.933 / hit@1=0.80 / recall@5=0.900**；memory 文件召回干净（8/8）、会话碎片偏松散（6/7）；去重 unique_source@5=**0.613**（同源碎片 ~39%，召回无碍、多样性弱）；注入体积有界（search ≤10 / MEMORY.md ≤20）。归档 `reports/archive/20260711T104332Z-mempalace-engineer_demo.json` + 报告 `reports/memory-baseline-2026-07.md` ✓
+- [x] 4.3 边界路由准确率：构造 4 类标注集（客观/程序/事件/主观各 3–4 条）+ 路由 gold，验 D1 → 验证：`routing.py` cascade 对 13 条候选事实 **总体准确率 1.0**（四类各 1.0，零错路由）；「决策+日期」正确归 subjective 与 CLAUDE.md 决策锚一致。标注集固化为 `test_gold_memory_snapshot` 回归门禁。诚实边界（集与规则同源，泛化需扩标）见报告 §3 ✓
 
 ## 5. 阈值门禁 + 报告 + 文档化
 

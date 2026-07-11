@@ -15,7 +15,8 @@ class Lockfile:
     llm_model: str = ""        # 用到 LLM 的 subject（文档侧/记忆侧）才填
     cmm_version: str = ""
     graphify_version: str = ""
-    mem0_version: str = ""
+    mem0_version: str = ""     # 遗留：Mem0 路线已弃用，保留字段兼容旧报告
+    mempalace_version: str = ""  # 记忆侧 subject（task 4.2）
 
     def to_dict(self) -> dict:
         return asdict(self)
@@ -36,9 +37,11 @@ def detect_lockfile() -> Lockfile:
     import shutil
     cmm = shutil.which("codebase-memory-mcp") or ""
     graphify = shutil.which("graphify") or ""
+    mempalace = shutil.which("mempalace") or ""
     return Lockfile(
         cmm_version=_version([cmm, "--version"]) if cmm else "not-installed",
         graphify_version=_version([graphify, "--version"]) if graphify else "not-installed",
+        mempalace_version=_version([mempalace, "--version"]) if mempalace else "not-installed",
     )
 
 
