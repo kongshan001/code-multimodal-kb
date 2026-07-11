@@ -31,7 +31,8 @@ python -m pytest eval/ -v
 | `run_memory_baseline.py` | 4.2 / 4.3 | 记忆侧 runner：召回 recall@k + 路由准确率 + 去重 + 体积 |
 | `run_ab_value.py` | 6.1 / 6.2 | agent A/B Stage 0：KB vs 朴素 grep 的 context token 压缩比 + 注入命中 |
 | `ab_agent.py` + `run_ab_agent.py` | 6.3 | agent A/B Stage 1：可控 ReAct loop，真跑 agent 测准确度+端到端 token+步数 |
-| `tests/` | — | 合成样本验证（指标手算期望值）+ cmm round-trip smoke + 记忆侧 + A/B Stage 0/1 |
+| `ab_tools.py` | 6.x | **A/B 工具注册表**——接新 KB 工具只写 executor+register+挂臂，loop/判分/归档不动 |
+| `tests/` | — | 合成样本验证（指标手算期望值）+ cmm round-trip smoke + 记忆侧 + A/B Stage 0/1 + 工具注册表 |
 
 ## 已完成 / 待办
 
