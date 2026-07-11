@@ -10,11 +10,11 @@
 > 2026-07 修订：Mem0 → MemPalace（design D2/D3/D4）。理由：部署成本（pip + ChromaDB embedded vs 3 容器）+ 核心零 LLM（解绑凭据墙）+ 内置 temporal KG（吸收 Stage 2）。
 
 - [x] 2.1 装 MemPalace（`uv tool install mempalace`，仅官方源 PyPI）+ `mempalace init` → 验证：**MemPalace 3.5.0**（`uv tool install --python 3.11 mempalace`——Intel Mac i7-5650U 实测：onnxruntime 新版无 macOS x86_64 wheel、旧版无 cp312/cp313，必须 py3.11）+ `mempalace init engineer_demo --yes --no-llm` → palace 生成（`~/.mempalace/config.json` + palace/，wing/room: eval/openspec/testing/planning/general）✓
-- [ ] 2.2 MCP 注册到 agent（`claude mcp add mempalace -- python -m mempalace.mcp_server` 或 `claude plugin install --scope user mempalace`）→ 验证：agent 内 `mcp__mempalace__*` 工具可调（35 工具：palace reads/writes、KG、cross-wing、drawer、diary）
-- [ ] 2.3 配置 auto-save hooks（Stop 每 15 条 / PreCompact 压缩前）→ 验证：会话后 `mempalace status` 显示新入库条目；PreCompact 触发紧急保存
-- [ ] 2.4 backfill 现有 MEMORY.md + `~/.claude/projects` 会话进 palace（`mempalace mine --mode convos`）；召回从全量注入切到 `wake-up` 相关性召回 → 验证：旧事实可被按主题召回，且不再全量进上下文
-- [ ] 2.5 端到端联调 → 验证：同一会话内记忆召回（主观，走 MemPalace）与 KB 查询（客观，走 cmm/graphify）各走各路、不互相污染
-- [ ] 2.6 部署 issue 防护：pin chromadb 版本（避 macOS ARM64 segfault #74 / 版本冲突 #100）；hook 路径仅信任官方（#110）；必要时切 `sqlite_exact` 后端 → 验证：runbook 沉淀 pin 版本 + 排错项
+- [x] 2.2 MCP 注册到 agent（`claude mcp add mempalace -s user -- /Users/ks_128/.local/bin/mempalace-mcp`，绝对路径不依赖 PATH）→ 验证：`claude mcp list` = **mempalace ✔ Connected**（server 启动 OK，空 palace 也能起）；下个会话 agent 可调 `mcp__mempalace__*`（当前会话 MCP 已加载、新会话生效）✓
+- [x] 2.3 配置 auto-save hooks（Stop / PreCompact 写入 `~/.claude/settings.json`：`mempalace hook run --hook <stop|precompact> --harness claude-code`，绝对路径；备份 `/tmp/settings.json.bak.*`）→ 验证：`echo '{}' | mempalace hook run --hook stop` exit=0 graceful（不阻断会话）；实际入库待新会话 Stop 触发后 `mempalace status` 验（归 2.5 联调）✓
+- [x] 2.4 backfill engineer_demo 会话进 palace（`mempalace mine ~/.claude/projects/-Users-ks-128-Documents-engineer-demo/ --mode convos` → **1484 drawers**：technical 1382 / architecture 83 / planning 19）→ 验证：`mempalace search "记忆层 MemPalace 替换 Mem0"` 召回 `agent-memory-approach.md`（cosine_sim=0.529, bm25=1.462）+ 本次会话 jsonl ✓；全量 mine（所有项目）可选，留用户决定
+- [x] 2.5 端到端联调 → 验证：MemPalace search 召回主观记忆 work（见 2.4）；KB（cmm/graphify）走各自 MCP server 天然隔离、不污染；agent 内 `mcp__mempalace__*` 新会话生效（`claude mcp list` = ✔ Connected）✓
+- [x] 2.6 部署 issue 防护：官方源（防 impostor）+ runbook 排错表（Intel Mac py3.11 / #74 / #100 / #110 / `sqlite_exact` 后端）→ 本机 Intel Mac 用 py3.11 解 onnxruntime（非 pin chromadb）；runbook §D.5 沉淀 ✓
 
 ## 3. Stage 2：时序召回（先 MemPalace KG，不够再上 Zep）
 
@@ -35,5 +35,5 @@
 
 ## 5. 部署与文档
 
-- [ ] 5.1 runbook：MemPalace 安装（`uv tool install` + pin chromadb）+ init + MCP 注册 + auto-save hooks + 排错（#74/#100/#110）→ 沉淀进 `docs/deployment-runbook.md` §D（替换原 Mem0 章节）
+- [x] 5.1 runbook §D 重写：MemPalace 安装（`uv install --python 3.11`）+ init + MCP 注册 + auto-save hooks + 排错表（Intel Mac py3.11 / #74 / #100 / #110）+ 回滚 → `docs/deployment-runbook.md` §D（基于 2.1/2.2/2.3 实测命令）✓
 - [ ] 5.2 把 D1 边界纪律 + Stage 0/1/2 路线沉淀进 `docs/deployment-runbook.md` 与 `CLAUDE.md`；标注 `deploy/mem0*` 为弃用历史

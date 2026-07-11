@@ -152,42 +152,63 @@ pip install deepeval               # 文档答案质量（faithfulness/G-Eval）
 # 代码侧 harness / 数据集（RepoBench-R、SWE-Lancer-Loc）见 change tasks §5
 ```
 
-## D. 记忆层 · MemPalace（待 Stage 1 重写）
+## D. 记忆层 · MemPalace（实测 2026-07）
 
-> ⚠️ 2026-07 修订：选型 Mem0 → MemPalace（[design D2](../openspec/changes/add-agent-memory/design.md)，部署成本更低：pip + ChromaDB embedded；核心零 LLM 解绑凭据墙；内置 temporal KG 吸收 Stage 2）。下方原 Mem0 Docker 步骤保留作历史参考；MemPalace 安装 / MCP 注册 / auto-save hooks 步骤待 task 5.1 重写。原 `deploy/mem0*` 标记弃用。
+> 选型 MemPalace（替换 Mem0，[design D2](../openspec/changes/add-agent-memory/design.md)）：`uv install` + ChromaDB embedded（零外部服务/零 Docker）+ 核心零 LLM（解绑凭据墙）+ 内置 temporal KG（吸收 Stage 2）。原 Mem0 Docker 路线（`deploy/mem0*`）弃用留历史。
 
-`setup-kb.py` 第 5 步拉起 `deploy/mem0/docker-compose.yml`（3 容器：API + pg/pgvector + Neo4j，按 [mem0.ai self-host 指南](https://mem0.ai/blog/self-host-mem0-docker)）。
-
-```bash
-docker compose -f deploy/mem0/docker-compose.yml --env-file deploy/mem0/.env up -d --build  # 首次 ~500MB / 2-5min
-# API 就绪后访问 http://localhost:8888/docs
-```
-
-- **LLM backend**：`deploy/mem0/.env` 填 `OPENAI_API_KEY`（官方默认）；或装 Ollama 全本地（见 `.env.example` 注释）。
-- **agent MCP 接入**：Mem0 self-host 是 **REST 不是 MCP**；装 `mem0-mcp`（或 OpenMemory MCP）指向本 backend，再 `claude mcp add`。
-- ⚠ **未在本机实测**（本机无 Docker）：compose 按官方指南、`docker compose up` 标准；需在 Docker 环境验证一遍后回填本节。
-
-### 无 Docker 路线（Win / 无 Docker 环境）
-
-`setup-kb.py` 检测到无 Docker 会自动跳过并提示。手动走 pip + 本地向量库：
+### D.1 安装（仅官方源 GitHub/PyPI/mempalaceofficial.com，防 impostor）
 
 ```bash
-pip install mem0-open-mcp          # 或 mem0-mcp-selfhosted
+uv tool install --python 3.11 mempalace      # Intel Mac 必须 py3.11（onnxruntime 无 x86_64 新 wheel）
+mempalace --version                           # → MemPalace 3.5.0
 ```
 
-配 Mem0 OSS 用本地向量库 + BigModel（via litellm 的 zhipu provider）：
+> **Intel Mac 约束**（实测 i7-5650U）：chromadb 1.5.x → onnxruntime，新版无 macOS x86_64 wheel、旧版无 cp312/cp313 → 必须 Python 3.11（onnxruntime 1.16.3 有 cp311 + macOS x86_64）。ARM Mac / Linux 可 3.12/3.13。uv tool 隔离环境，不碰系统 Python。
 
-```python
-config = {
-  "vector_store": {"provider": "qdrant", "path": "<本地路径>"},   # 或 chroma（embedded，零服务）
-  "llm": {"provider": "litellm", "litellm_params": {"model": "zhipu/glm-4.6", "api_key": "<BigModel key>"}},
-  "embedder": {"provider": "huggingface", "model": "<本地 embedding>"}  # 或 zhipu embedding-3
-}
+### D.2 初始化 palace
+
+```bash
+mempalace init <项目目录> --yes --no-llm      # --no-llm: heuristics-only 零 LLM（契 D4）
+# → 建 ~/.mempalace/（config.json + palace/），探测项目生成 wing/room
+# → 项目根生成 mempalace.yaml；.gitignore 自动加 mempalace.yaml/entities.json
 ```
 
-再以 stdio MCP 注册：`claude mcp add mem0 -- mem0`。
+### D.3 MCP 注册到 agent（user scope 全局）
 
-✅ **已实测通过**（Ollama llama3.2 + nomic-embed-text + qdrant-local，add→search 闭环 score 0.60；复现脚本 `deploy/mem0-local/_test.py`）。配置踩坑修复见 wrapper 顶部"实测要点"。
+```bash
+claude mcp add mempalace -s user -- /Users/<user>/.local/bin/mempalace-mcp   # 绝对路径不依赖 PATH
+claude mcp list | grep mempalace                                             # → mempalace ✔ Connected
+```
+
+> 下个会话 agent 可调 `mcp__mempalace__*`（35 工具：palace reads/writes、KG、cross-wing、drawer、diary）。当前会话 MCP 已加载，新会话生效。
+
+### D.4 auto-save hooks（`~/.claude/settings.json`）
+
+```json
+{"hooks":{
+  "Stop":[{"matcher":"","hooks":[{"type":"command","command":"/Users/<user>/.local/bin/mempalace hook run --hook stop --harness claude-code"}]}],
+  "PreCompact":[{"matcher":"","hooks":[{"type":"command","command":"/Users/<user>/.local/bin/mempalace hook run --hook precompact --harness claude-code"}]}]
+}}
+```
+
+改前备份 `cp ~/.claude/settings.json /tmp/settings.json.bak.<ts>`；验证 graceful：`echo '{}' | mempalace hook run --hook stop --harness claude-code` → exit 0。保留既有 hooks（PreToolUse/SessionStart 等），仅追加 Stop/PreCompact。
+
+### D.5 验证 / 排错 / 回滚
+
+```bash
+mempalace status                                  # palace 概览（mine 后有 chroma.sqlite3）
+mempalace mine ~/.claude/projects/ --mode convos  # backfill 历史会话（task 2.4）
+mempalace wake-up                                 # 新会话召回（前摄铺垫，D1）
+```
+
+| issue | 现象 | 解 |
+|---|---|---|
+| Intel Mac onnxruntime | py3.12/3.13 装失败 | `--python 3.11` |
+| #74 ARM64 segfault | M 系列导入崩 | pin chromadb（见 issue） |
+| #100 chromadb 冲突 | 版本解析失败 | pin 范围 / 切 `sqlite_exact` 后端 |
+| #110 hook injection | hook 路径不信任 | 仅官方 hook 路径，不喂不受信输入 |
+
+**回滚**：`claude mcp remove mempalace -s user` + 还原 `settings.json` 备份 + `uv tool uninstall mempalace` + `rm -rf ~/.mempalace`。
 
 ## E. 离线 / 内网部署（无外网）
 
