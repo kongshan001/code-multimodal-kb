@@ -53,6 +53,10 @@ def _cmd_run(args) -> int:
         from eval.run_ab_value import run as run_ab  # agent A/B Stage 0 token 代理
         report = run_ab(args.target)
         variant = f"{args.target}-stage0"
+    elif args.subject == "ab-agent":
+        from eval.run_ab_agent import run as run_ab1  # agent A/B Stage 1 真跑 agent
+        report = run_ab1(args.target, args.runs, args.subset)
+        variant = f"{args.target}-stage1-r{args.runs}" + (f"-n{args.subset}" if args.subset else "")
     else:
         print(f"未知 subject: {args.subject}", file=sys.stderr)
         return 2
@@ -120,6 +124,10 @@ def main(argv: list[str] | None = None) -> int:
     run_sub.add_parser("memory", help="记忆侧（MemPalace 召回 + D1 路由）")
     ab_p = run_sub.add_parser("ab", help="agent A/B Stage 0（KB vs 朴素 grep token 代理）")
     ab_p.add_argument("--target", default="godot", help="gold 模块名")
+    ag_p = run_sub.add_parser("ab-agent", help="agent A/B Stage 1（真跑 agent，准确度+token+步数）")
+    ag_p.add_argument("--target", default="godot")
+    ag_p.add_argument("--runs", type=int, default=1)
+    ag_p.add_argument("--subset", type=int, default=None, help="只跑前 N 题（pilot）")
 
     # list-reports
     sub.add_parser("list-reports", help="列出归档报告")

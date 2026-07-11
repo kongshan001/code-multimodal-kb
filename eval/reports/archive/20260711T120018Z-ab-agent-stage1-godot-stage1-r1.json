@@ -1,0 +1,1242 @@
+{
+  "subject": "ab-agent-stage1",
+  "variant": "godot-stage1-r1",
+  "target": "godot",
+  "n": 0,
+  "aggregate": {
+    "baseline": {
+      "accuracy": 0.923,
+      "accuracy_retrieval": 0.923,
+      "mean_input_tokens": 1359.8,
+      "mean_output_tokens": 264.9,
+      "mean_total_tokens": 1624.7,
+      "mean_steps": 3.42,
+      "truncated_count": 1,
+      "token_per_correct": 1760.1,
+      "n_episodes": 26
+    },
+    "kb": {
+      "accuracy": 0.923,
+      "accuracy_retrieval": 0.923,
+      "mean_input_tokens": 506.7,
+      "mean_output_tokens": 181.6,
+      "mean_total_tokens": 688.2,
+      "mean_steps": 2.12,
+      "truncated_count": 0,
+      "token_per_correct": 745.6,
+      "n_episodes": 26
+    },
+    "delta_accuracy_kb_minus_baseline": 0.0,
+    "delta_accuracy_retrieval_kb_minus_baseline": 0.0,
+    "delta_total_tokens_kb_minus_baseline": -936.5,
+    "delta_steps_kb_minus_baseline": -1.3
+  },
+  "per_query": [
+    {
+      "answer": "(max_steps reached without final answer)",
+      "input_tokens": 3622,
+      "output_tokens": 100,
+      "steps": 6,
+      "tool_calls": [
+        "grep_code",
+        "grep_code",
+        "grep_code",
+        "read_file",
+        "grep_code",
+        "grep_code",
+        "grep_code"
+      ],
+      "tool_texts": [
+        "matched 7 files:\n/Users/ks_128/Documents/godot-src/core/extension/gdextension_interface_header_generator.h\n/Users/ks_128/Documents/godot-src/core/object/script_backtrace.h\n/Users/ks_128/Documents/godot-src/core/variant/variant_op.h\n/Users/ks_128/Documents/godot-src/core/os/time.cpp\n/Users/ks_128/Documents/godot-src/core/string/ustring.h\n/Users/ks_128/Documents/godot-src/core/string/translation_server.h\n/Users/ks_128/Documents/godot-src/core/string/ustring.cpp",
+        "matched 1 files:\n/Users/ks_128/Documents/godot-src/core/string/ustring.cpp",
+        "matched 3 files:\n/Users/ks_128/Documents/godot-src/core/object/script_backtrace.h\n/Users/ks_128/Documents/godot-src/core/string/ustring.h\n/Users/ks_128/Documents/godot-src/core/string/ustring.cpp",
+        "/**************************************************************************/\n/*  ustring.h                                                             */\n/**************************************************************************/\n/*                         This file is part of:                          */\n/*                             GODOT ENGINE                               */\n/*                        https://godotengine.org                         */\n/**************************************************************************/\n/* Copyright (c) 2014-present Godot Engine contributors (see AUTHORS.md). */\n/* Copyright (c) 2007-2014 Juan Linietsky, Ariel Manzur.                  */\n/*                                                                        */\n/* Permission is hereby granted, free of charge, to any person obtaining  */\n/* a copy of this software and associated documentation files (the        */\n/* \"Software\"), to deal in the Software without restriction, including    */\n/* without limitation the rights to use, copy, modify, merge, publish,    */\n/* distribute, sublicense, and/or sell copies of the Software, and to     */\n/* permit persons to whom the Software is furnished to do so, subject to  */\n/* the following conditions:                                              */\n/*                                                                        */\n/* The above copyright notice and this permission notice shall be         */\n/* included in all copies or substantial portions of the Software.        */\n/*                                                                        */\n/* THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,        */\n/* EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF     */\n/* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. */\n/* IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY   */\n/* CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,   *",
+        "(no matches)",
+        "(no matches)",
+        "matched 1 files:\n/Users/ks_128/Documents/godot-src/core/string/ustring.cpp"
+      ],
+      "truncated": true,
+      "query": "string format",
+      "gold": [
+        "vformat"
+      ],
+      "arm": "baseline",
+      "run": 0,
+      "correct": 0,
+      "correct_retrieval": 0
+    },
+    {
+      "answer": "`String::format` — 定义在 `core/string/ustring.cpp`，是 Godot 中字符串格式化的核心方法。它支持用字典或数组进行占位符替换（如 `\"Hello {name}\".format({\"name\": \"World\"})`）。\n\n相关符号：\n- **`String::format`** — 主格式化方法\n- `TranslationServer::format_number` — 数字本地化格式化",
+      "input_tokens": 845,
+      "output_tokens": 100,
+      "steps": 2,
+      "tool_calls": [
+        "cmm_search"
+      ],
+      "tool_texts": [
+        "- format  (Users-ks_128-Documents-godot-src-core.string.ustring.String.format)  string/ustring.cpp\n- format_number  (Users-ks_128-Documents-godot-src-core.string.translation_server.TranslationServer.format_number)  string/translation_server.cpp\n- _get_string  (Users-ks_128-Documents-godot-src-core.io.resource_format_binary.ResourceLoaderBinary._get_string)  io/resource_format_binary.cpp\n- get_unicode_string  (Users-ks_128-Documents-godot-src-core.io.resource_format_binary.ResourceLoaderBinary.get_unicode_string)  io/resource_format_binary.cpp\n- save_unicode_string  (Users-ks_128-Documents-godot-src-core.io.resource_format_binary.ResourceFormatSaverBinaryInstance.save_unicode_string)  io/resource_format_binary.cpp"
+      ],
+      "truncated": false,
+      "query": "string format",
+      "gold": [
+        "vformat"
+      ],
+      "arm": "kb",
+      "run": 0,
+      "correct": 0,
+      "correct_retrieval": 0
+    },
+    {
+      "answer": "在 Godot core/ 中，`int` 转 `String` 的核心符号是：\n\n- **`String::itoa(int p_int)`** — 整数转字符串（定义在 `core/ustring.h` / `core/ustring.cpp`）\n- **`String operator+(char / int ...)`** — 也可通过拼接隐式转换\n\n最常用的入口就是 **`String::itoa()`**。",
+      "input_tokens": 66,
+      "output_tokens": 89,
+      "steps": 1,
+      "tool_calls": [],
+      "tool_texts": [],
+      "truncated": false,
+      "query": "int to string",
+      "gold": [
+        "itos"
+      ],
+      "arm": "baseline",
+      "run": 0,
+      "correct": 0,
+      "correct_retrieval": 0
+    },
+    {
+      "answer": "- **`itos`** — 将 `int` 转为 `String`，定义在 `string/ustring.cpp`。\n- 也可用 **`String::num()`** / **`String::num_int64()`** 进行更灵活的数值转字符串。",
+      "input_tokens": 320,
+      "output_tokens": 75,
+      "steps": 2,
+      "tool_calls": [
+        "cmm_search"
+      ],
+      "tool_texts": [
+        "- to_int  (Users-ks_128-Documents-godot-src-core.string.ustring.String.to_int)  string/ustring.cpp\n- _to_int  (Users-ks_128-Documents-godot-src-core.string.ustring._to_int)  string/ustring.cpp\n- hex_to_int  (Users-ks_128-Documents-godot-src-core.string.ustring.String.hex_to_int)  string/ustring.cpp\n- bin_to_int  (Users-ks_128-Documents-godot-src-core.string.ustring.String.bin_to_int)  string/ustring.cpp\n- itos  (Users-ks_128-Documents-godot-src-core.string.ustring.itos)  string/ustring.cpp"
+      ],
+      "truncated": false,
+      "query": "int to string",
+      "gold": [
+        "itos"
+      ],
+      "arm": "kb",
+      "run": 0,
+      "correct": 1,
+      "correct_retrieval": 1
+    },
+    {
+      "answer": "在 Godot core/ 中，删除对象并释放内存涉及以下关键符号：\n\n### 核心方法\n- **`Object::free()`** — 定义在 `core/object/object.cpp`，删除对象自身（仅对从 `Object` 派生的实例有效，如 `Node`、`Resource` 等）。\n- **`Object::~Object()`** — 析构函数，清理信号连接、脚本实例等。\n- **`predelete_handler()`** — 在对象被删除前调用的钩子，允许对象在析构前做清理（如从树中移除）。\n\n### 内存释放宏/函数\n- **`memdelete(ptr)`** — 调用析构函数并释放通过 `memnew` 分配的内存（Godot 的自定义内存管理）。\n- **`memfree(ptr)`** — 底层释放原始内存（通常不直接使用，由 `memdelete` 内部调用）。\n\n### 使用方式\n```cpp\n// C++ 内部\nObject *obj = memnew(Object);\n// ...\nmemdelete(obj);  // 析构 + 释放内存\n\n// GDScript 中\nobj.free()       // 调用 Object::free()，内部最终走 memdelete\nobj.queue_free() // 延迟到帧末安全删除（Node 特有）\n```\n\n### 关键文件\n| 符号 | 位置 |\n|---|---|\n| `Object::free()` | `core/object/object.cpp` |\n| `Object::~Object()` | `core/object/object.cpp` |\n| `predelete_handler()` | `core/object/object.h` |\n| `memdelete` / `memfree` | `core/os/memory.h` |\n\n**总结**：`memdelete` 是底层释放机制，`Object::free()` 是面向用户的删除入口，`predelete_handler()` 是删除前的安全钩子。",
+      "input_tokens": 3311,
+      "output_tokens": 524,
+      "steps": 6,
+      "tool_calls": [
+        "grep_code",
+        "grep_code",
+        "grep_code",
+        "grep_code",
+        "grep_code",
+        "read_file",
+        "grep_code"
+      ],
+      "tool_texts": [
+        "(no matches)",
+        "matched 20 files:\n/Users/ks_128/Documents/godot-src/core/crypto/hashing_context.cpp\n/Users/ks_128/Documents/godot-src/core/extension/gdextension_interface.cpp\n/Users/ks_128/Documents/godot-src/core/extension/gdextension.cpp\n/Users/ks_128/Documents/godot-src/core/io/udp_server.cpp\n/Users/ks_128/Documents/godot-src/core/io/xml_parser.cpp\n/Users/ks_128/Documents/godot-src/core/io/image.cpp\n/Users/ks_128/Documents/godot-src/core/io/resource.cpp\n/Users/ks_128/Documents/godot-src/core/io/file_access_memory.cpp\n/Users/ks_128/Documents/godot-src/core/io/resource_loader.cpp\n/Users/ks_128/Documents/godot-src/core/io/ip.cpp\n/Users/ks_128/Documents/godot-src/core/io/file_access_encrypted.cpp\n/Users/ks_128/Documents/godot-src/core/io/file_access_zip.cpp\n/Users/ks_128/Documents/godot-src/core/io/resource_format_binary.cpp\n/Users/ks_128/Documents/godot-src/core/io/file_access_pack.cpp\n/Users/ks_128/Documents/godot-src/core/io/resource_uid.cpp\n/Users/ks_128/Documents/godot-src/core/io/logger.cpp\n/Users/ks_128/Documents/godot-src/core/math/geometry_3d.cpp\n/Users/ks_128/Documents/godot-src/core/math/expression.h\n/Users/ks_128/Documents/godot-src/core/math/disjoint_set.h\n/Users/ks_128/Documents/godot-src/core/math/expression.cpp",
+        "matched 1 files:\n/Users/ks_128/Documents/godot-src/core/object/object.cpp",
+        "(no matches)",
+        "(no matches)",
+        "/**************************************************************************/\n/*  object.cpp                                                            */\n/**************************************************************************/\n/*                         This file is part of:                          */\n/*                             GODOT ENGINE                               */\n/*                        https://godotengine.org                         */\n/**************************************************************************/\n/* Copyright (c) 2014-present Godot Engine contributors (see AUTHORS.md). */\n/* Copyright (c) 2007-2014 Juan Linietsky, Ariel Manzur.                  */\n/*                                                                        */\n/* Permission is hereby granted, free of charge, to any person obtaining  */\n/* a copy of this software and associated documentation files (the        */\n/* \"Software\"), to deal in the Software without restriction, including    */\n/* without limitation the rights to use, copy, modify, merge, publish,    */\n/* distribute, sublicense, and/or sell copies of the Software, and to     */\n/* permit persons to whom the Software is furnished to do so, subject to  */\n/* the following conditions:                                              */\n/*                                                                        */\n/* The above copyright notice and this permission notice shall be         */\n/* included in all copies or substantial portions of the Software.        */\n/*                                                                        */\n/* THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,        */\n/* EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF     */\n/* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. */\n/* IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY   */\n/* CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,   *",
+        "matched 1 files:\n/Users/ks_128/Documents/godot-src/core/object/object.cpp"
+      ],
+      "truncated": false,
+      "query": "delete object free memory",
+      "gold": [
+        "memdelete"
+      ],
+      "arm": "baseline",
+      "run": 0,
+      "correct": 1,
+      "correct_retrieval": 1
+    },
+    {
+      "answer": "在 Godot core/ 中，删除对象、释放内存涉及以下关键符号：\n\n**对象生命周期管理（`Object` 类，`object/object.cpp`）：**\n- **`Object::free()`** — 立即删除对象并释放内存\n- **`Object::queue_delete()`** — 将对象排队，在帧末尾安全删除\n- **`Object::is_queued_for_deletion()`** — 检查对象是否已排队等待删除\n- **`Object::_predelete()`** — 删除前的虚函数回调（子类可重写做清理）\n- **`Object::_postinitialize()`** — 初始化后的虚函数回调\n- **`Object::cancel_free()`** — 取消正在进行的 free 操作\n- **`predelete_handler()`** / **`postinitialize_handler()`** — 全局处理函数\n\n**引用计数（`RefCounted` 类，`object/ref_counted.h`）：**\n- `RefCounted` 继承自 `Object`，通过引用计数自动管理内存，引用归零时自动调用 `_predelete()` 并释放。\n\n**底层内存释放（`os/memory.cpp` / `os/memory.h`）：**\n- **`Memory::free_static()`** — 释放静态分配的内存\n- **`DefaultAllocator::free()`** — 默认分配器的释放方法\n- **`Memory::free_aligned_static()`** — 释放对齐内存\n\n**典型流程：** 调用 `Object::free()` → 触发 `_predelete()` → 释放内存。对于 `RefCounted` 对象，引用计数归零时自动执行此流程。",
+      "input_tokens": 738,
+      "output_tokens": 389,
+      "steps": 3,
+      "tool_calls": [
+        "cmm_search",
+        "cmm_search"
+      ],
+      "tool_texts": [
+        "- free_static  (Users-ks_128-Documents-godot-src-core.os.memory.Memory.free_static)  os/memory.cpp\n- free  (Users-ks_128-Documents-godot-src-core.os.memory.DefaultAllocator.free)  os/memory.h\n- cancel_free  (Users-ks_128-Documents-godot-src-core.object.object.Object.cancel_free)  object/object.cpp\n- free_aligned_static  (Users-ks_128-Documents-godot-src-core.os.memory.Memory.free_aligned_static)  os/memory.cpp\n- free_instance_binding  (Users-ks_128-Documents-godot-src-core.object.object.Object.free_instance_binding)  object/object.cpp",
+        "- _predelete  (Users-ks_128-Documents-godot-src-core.object.object.Object._predelete)  object/object.cpp\n- _postinitialize  (Users-ks_128-Documents-godot-src-core.object.object.Object._postinitialize)  object/object.cpp\n- predelete_handler  (Users-ks_128-Documents-godot-src-core.object.object.predelete_handler)  object/object.cpp\n- postinitialize_handler  (Users-ks_128-Documents-godot-src-core.object.object.postinitialize_handler)  object/object.cpp\n- postinitialize_handler  (Users-ks_128-Documents-godot-src-core.object.ref_counted.postinitialize_handler)  object/ref_counted.h"
+      ],
+      "truncated": false,
+      "query": "delete object free memory",
+      "gold": [
+        "memdelete"
+      ],
+      "arm": "kb",
+      "run": 0,
+      "correct": 0,
+      "correct_retrieval": 0
+    },
+    {
+      "answer": "Godot core 中 A* 寻路相关的类：\n\n- **`AStar`** — 通用 3D A* 寻路（`core/math/a_star.h`）\n- **`AStar2D`** — 2D A* 寻路（同文件，`AStar` 的 2D 版本）\n- **`AStarGrid2D`** — 基于网格的 2D A* 寻路（`core/math/a_star_grid_2d.h`）\n\n核心方法包括 `add_point()`、`connect_points()`、`get_id_path()`、`get_point_path()` 等。",
+      "input_tokens": 192,
+      "output_tokens": 150,
+      "steps": 2,
+      "tool_calls": [
+        "grep_code"
+      ],
+      "tool_texts": [
+        "matched 2 files:\n/Users/ks_128/Documents/godot-src/core/math/a_star_grid_2d.h\n/Users/ks_128/Documents/godot-src/core/math/a_star.h"
+      ],
+      "truncated": false,
+      "query": "a star pathfinding",
+      "gold": [
+        "AStar"
+      ],
+      "arm": "baseline",
+      "run": 0,
+      "correct": 1,
+      "correct_retrieval": 1
+    },
+    {
+      "answer": "Godot core/ 中 A* 寻路相关的核心符号：\n\n- **`AStar`** — 2D/3D 通用 A* 寻路类（基于点-边图结构）\n- **`AStar2D`** — 专用 2D 版本\n- **`AStarGrid2D`** — 基于网格的 2D A* 封装（Godot 4.x 新增）\n\n关键方法：\n- `add_point()` / `connect_points()` — 构建图\n- `get_id_path()` — 返回点 ID 路径\n- `get_point_path()` — 返回 `Vector3`/`Vector2` 坐标路径\n- `compute_grid_cost()` / `_compute_cost()` — 自定义代价回调\n- `is_point_disabled()` — 动态屏蔽节点\n\n文件位置：`core/math/a_star.cpp` / `core/math/a_star.h`（或 `a_star_grid_2d.cpp`）。",
+      "input_tokens": 569,
+      "output_tokens": 261,
+      "steps": 4,
+      "tool_calls": [
+        "cmm_search",
+        "read_file",
+        "read_file"
+      ],
+      "tool_texts": [
+        "- astar  (Users-ks_128-Documents-godot-src-core.math.a_star.AStar2D.astar)  math/a_star.h",
+        "(read error: [Errno 2] No such file or directory: 'core/math/a_star.h')",
+        "(read error: [Errno 2] No such file or directory: 'core/math/a_star.cpp')"
+      ],
+      "truncated": false,
+      "query": "a star pathfinding",
+      "gold": [
+        "AStar"
+      ],
+      "arm": "kb",
+      "run": 0,
+      "correct": 1,
+      "correct_retrieval": 1
+    },
+    {
+      "answer": "Godot 的操作系统抽象层核心是 **`OS`** 类（定义在 `core/os/os.h`）。\n\n关键相关符号：\n\n- **`OS`** — 抽象基类，定义了操作系统级接口（文件系统、环境变量、命令行参数、时间、剪贴板、内存、线程、视频模式等）。\n- **`_OS`**（在 `core/core_bind.h` 中）— 将 `OS` 的部分功能暴露给 GDScript 的绑定类。\n- 平台特定的子类（在 `platform/` 目录下，如 `OS_Unix`、`OS_Windows`、`OS_MacOS`、`OS_LinuxBSD` 等）继承 `OS` 并实现具体行为。\n\n此外，`core/os/` 目录下还有配套的抽象模块：\n\n- **`DirAccess`** — 目录/文件操作抽象\n- **`FileAccess`** — 文件读写抽象\n- **`Thread`** — 线程抽象\n- **`Mutex`** / **`Semaphore`** — 同步原语抽象\n- **`Logger`** — 日志抽象\n- **`Memory`** — 内存分配抽象",
+      "input_tokens": 920,
+      "output_tokens": 302,
+      "steps": 3,
+      "tool_calls": [
+        "grep_code",
+        "grep_code",
+        "read_file"
+      ],
+      "tool_texts": [
+        "matched 2 files:\n/Users/ks_128/Documents/godot-src/core/os/os.h\n/Users/ks_128/Documents/godot-src/core/core_bind.h",
+        "(no matches)",
+        "/**************************************************************************/\n/*  os.h                                                                  */\n/**************************************************************************/\n/*                         This file is part of:                          */\n/*                             GODOT ENGINE                               */\n/*                        https://godotengine.org                         */\n/**************************************************************************/\n/* Copyright (c) 2014-present Godot Engine contributors (see AUTHORS.md). */\n/* Copyright (c) 2007-2014 Juan Linietsky, Ariel Manzur.                  */\n/*                                                                        */\n/* Permission is hereby granted, free of charge, to any person obtaining  */\n/* a copy of this software and associated documentation files (the        */\n/* \"Software\"), to deal in the Software without restriction, including    */\n/* without limitation the rights to use, copy, modify, merge, publish,    */\n/* distribute, sublicense, and/or sell copies of the Software, and to     */\n/* permit persons to whom the Software is furnished to do so, subject to  */\n/* the following conditions:                                              */\n/*                                                                        */\n/* The above copyright notice and this permission notice shall be         */\n/* included in all copies or substantial portions of the Software.        */\n/*                                                                        */\n/* THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,        */\n/* EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF     */\n/* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. */\n/* IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY   */\n/* CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,   *"
+      ],
+      "truncated": false,
+      "query": "operating system abstraction",
+      "gold": [
+        "OS"
+      ],
+      "arm": "baseline",
+      "run": 0,
+      "correct": 1,
+      "correct_retrieval": 1
+    },
+    {
+      "answer": "Godot 的操作系统抽象层主要由以下符号构成：\n\n- **`OS`** (`core/os/os.h`) — 抽象基类，定义了操作系统相关的接口（文件系统、时间、环境变量、命令行参数、系统字体、系统目录等）。\n- **`core_bind::OS`** (`core/core_bind.cpp`) — 将 `OS` 暴露给脚本层的绑定包装类。\n- 平台特定子类（如 `OS_Unix`、`OS_Windows`、`OS_LinuxBSD`、`OS_MacOS`、`OS_Android`、`OS_iOS`、`OS_Web` 等）继承自 `OS`，在各 `platform/` 目录下实现具体逻辑。\n\n核心入口就是 **`OS`** 类，通过 `OS::get_singleton()` 获取全局单例。",
+      "input_tokens": 321,
+      "output_tokens": 197,
+      "steps": 2,
+      "tool_calls": [
+        "cmm_search"
+      ],
+      "tool_texts": [
+        "- get_system_fonts  (Users-ks_128-Documents-godot-src-core.core_bind.OS.get_system_fonts)  core_bind.cpp\n- get_system_dir  (Users-ks_128-Documents-godot-src-core.core_bind.OS.get_system_dir)  core_bind.cpp\n- get_system_dir  (Users-ks_128-Documents-godot-src-core.os.os.OS.get_system_dir)  os/os.cpp\n- get_system_fonts  (Users-ks_128-Documents-godot-src-core.os.os.OS.get_system_fonts)  os/os.h\n- get_system_ca_certificates  (Users-ks_128-Documents-godot-src-core.core_bind.OS.get_system_ca_certificates)  core_bind.cpp"
+      ],
+      "truncated": false,
+      "query": "operating system abstraction",
+      "gold": [
+        "OS"
+      ],
+      "arm": "kb",
+      "run": 0,
+      "correct": 1,
+      "correct_retrieval": 1
+    },
+    {
+      "answer": "`Color` 类型定义在：\n\n- **`core/math/color.h`** — 声明\n- **`core/math/color.cpp`** — 实现\n\n核心结构体/类名：**`Color`**，位于 `core/math/` 目录下。它是一个包含 `r`, `g`, `b`, `a`（红、绿、蓝、Alpha）四个分量的颜色类型，提供了大量方法如 `lerp`、`to_html`、`from_hsv`、`blend`、`inverted` 等。",
+      "input_tokens": 1219,
+      "output_tokens": 152,
+      "steps": 4,
+      "tool_calls": [
+        "grep_code",
+        "grep_code",
+        "grep_code"
+      ],
+      "tool_texts": [
+        "(no matches)",
+        "(no matches)",
+        "matched 20 files:\n/Users/ks_128/Documents/godot-src/core/extension/gdextension_interface.cpp\n/Users/ks_128/Documents/godot-src/core/extension/extension_api_dump.cpp\n/Users/ks_128/Documents/godot-src/core/extension/gdextension_special_compat_hashes.cpp\n/Users/ks_128/Documents/godot-src/core/input/input.h\n/Users/ks_128/Documents/godot-src/core/input/input.cpp\n/Users/ks_128/Documents/godot-src/core/input/input_map.cpp\n/Users/ks_128/Documents/godot-src/core/io/image_loader.h\n/Users/ks_128/Documents/godot-src/core/io/packed_data_container.cpp\n/Users/ks_128/Documents/godot-src/core/io/image.cpp\n/Users/ks_128/Documents/godot-src/core/io/resource.cpp\n/Users/ks_128/Documents/godot-src/core/io/image_loader.cpp\n/Users/ks_128/Documents/godot-src/core/io/resource_format_binary.cpp\n/Users/ks_128/Documents/godot-src/core/io/marshalls.cpp\n/Users/ks_128/Documents/godot-src/core/io/json.cpp\n/Users/ks_128/Documents/godot-src/core/io/image.h\n/Users/ks_128/Documents/godot-src/core/math/geometry_3d.h\n/Users/ks_128/Documents/godot-src/core/math/color.h\n/Users/ks_128/Documents/godot-src/core/math/color.cpp\n/Users/ks_128/Documents/godot-src/core/core_constants.cpp\n/Users/ks_128/Documents/godot-src/core/object/script_language_extension.h"
+      ],
+      "truncated": false,
+      "query": "color",
+      "gold": [
+        "Color"
+      ],
+      "arm": "baseline",
+      "run": 0,
+      "correct": 1,
+      "correct_retrieval": 1
+    },
+    {
+      "answer": "`Color` 类定义在 **`core/math/color.h`** 和 **`core/math/color.cpp`** 中。\n\n主要符号：\n\n- **`Color`** — 类本体，定义于 `math/color.h`\n- **`Color::find_named_color`** — 按名称查找颜色\n- **`Color::get_named_color`** — 获取命名颜色",
+      "input_tokens": 565,
+      "output_tokens": 93,
+      "steps": 2,
+      "tool_calls": [
+        "cmm_search"
+      ],
+      "tool_texts": [
+        "- _ignore_definition  (Users-ks_128-Documents-godot-src-core.io.xml_parser.XMLParser._ignore_definition)  io/xml_parser.cpp\n- MethodDefinition  (Users-ks_128-Documents-godot-src-core.object.class_db.MethodDefinition.MethodDefinition)  object/class_db.h\n- Color  (Users-ks_128-Documents-godot-src-core.math.color.Color.Color)  math/color.h\n- find_named_color  (Users-ks_128-Documents-godot-src-core.math.color.Color.find_named_color)  math/color.cpp\n- get_named_color  (Users-ks_128-Documents-godot-src-core.math.color.Color.get_named_color)  math/color.cpp"
+      ],
+      "truncated": false,
+      "query": "color",
+      "gold": [
+        "Color"
+      ],
+      "arm": "kb",
+      "run": 0,
+      "correct": 1,
+      "correct_retrieval": 1
+    },
+    {
+      "answer": "`Vector2` 定义在 **`core/math/vector2.h`** 中，是一个 `struct`。\n\n主要相关符号：\n\n- **`Vector2`** — 2D 向量结构体\n- **`Vector2i`** — 整数版本，定义在 `core/math/vector2i.h`\n- 常用成员方法：`length()`、`length_squared()`、`normalized()`、`dot()`、`cross()`、`angle()`、`distance_to()`、`direction_to()`、`lerp()`、`rotated()` 等\n- 常用静态方法：`Vector2::from_angle()`\n- 常量：`Vector2::ZERO`、`Vector2::ONE`、`Vector2::LEFT`、`Vector2::RIGHT`、`Vector2::UP`、`Vector2::DOWN`",
+      "input_tokens": 343,
+      "output_tokens": 210,
+      "steps": 3,
+      "tool_calls": [
+        "grep_code",
+        "grep_code"
+      ],
+      "tool_texts": [
+        "(no matches)",
+        "matched 5 files:\n/Users/ks_128/Documents/godot-src/core/math/projection.h\n/Users/ks_128/Documents/godot-src/core/math/vector2.h\n/Users/ks_128/Documents/godot-src/core/math/vector2i.h\n/Users/ks_128/Documents/godot-src/core/math/vector3.h\n/Users/ks_128/Documents/godot-src/core/templates/interpolated_property.h"
+      ],
+      "truncated": false,
+      "query": "vector2",
+      "gold": [
+        "Vector2"
+      ],
+      "arm": "baseline",
+      "run": 0,
+      "correct": 1,
+      "correct_retrieval": 1
+    },
+    {
+      "answer": "`Vector2` 定义在 **`core/math/vector2.h`** 中，实现在 **`core/math/vector2.cpp`**。\n\n主要成员/方法：\n\n- **成员**：`x`, `y`\n- **构造**：`Vector2()`, `Vector2(real_t, real_t)`\n- **运算**：`operator+`, `operator-`, `operator*`, `operator/`, `dot()`, `cross()`\n- **长度/距离**：`length()`, `length_squared()`, `distance_to()`, `distance_squared_to()`\n- **方向/角度**：`angle()`, `angle_to()`, `angle_to_point()`, `direction_to()`\n- **归一化**：`normalize()`, `normalized()`\n- **插值**：`lerp()`, `slerp()`, `cubic_interpolate()`\n- **其他**：`rotated()`, `tangent()`, `project()`, `reflect()`, `bounce()`, `abs()`, `clamp()`, `is_zero_approx()`, `is_normalized()`\n\n静态常量：`ZERO`, `ONE`, `LEFT`, `RIGHT`, `UP`, `DOWN`, `INF`",
+      "input_tokens": 306,
+      "output_tokens": 272,
+      "steps": 2,
+      "tool_calls": [
+        "cmm_search"
+      ],
+      "tool_texts": [
+        "- Vector2  (Users-ks_128-Documents-godot-src-core.math.vector2.Vector2)  math/vector2.h\n- angle  (Users-ks_128-Documents-godot-src-core.math.vector2.Vector2.angle)  math/vector2.cpp\n- length  (Users-ks_128-Documents-godot-src-core.math.vector2.Vector2.length)  math/vector2.cpp\n- normalize  (Users-ks_128-Documents-godot-src-core.math.vector2.Vector2.normalize)  math/vector2.cpp\n- normalized  (Users-ks_128-Documents-godot-src-core.math.vector2.Vector2.normalized)  math/vector2.cpp"
+      ],
+      "truncated": false,
+      "query": "vector2",
+      "gold": [
+        "Vector2"
+      ],
+      "arm": "kb",
+      "run": 0,
+      "correct": 1,
+      "correct_retrieval": 1
+    },
+    {
+      "answer": "`Vector3` 定义在 **`core/math/vector3.h`** 中，是一个 **`struct`**。\n\n相关符号：\n\n- **`Vector3`** — 三维浮点向量结构体（`struct Vector3`）\n- **`Vector3i`** — 三维整数向量结构体（`struct Vector3i`），定义在 `core/math/vector3i.h`\n\n主要成员/方法包括：\n\n| 类别 | 符号 |\n|------|------|\n| 成员 | `x`, `y`, `z` (Axis enum: `AXIS_X`, `AXIS_Y`, `AXIS_Z`) |\n| 构造 | `Vector3()`, `Vector3(real_t, real_t, real_t)` |\n| 运算 | `operator+`, `operator-`, `operator*`, `operator/`, `operator[]` |\n| 常用方法 | `length()`, `length_squared()`, `normalized()`, `dot()`, `cross()`, `distance_to()`, `distance_squared_to()`, `lerp()`, `angle_to()`, `direction_to()`, `abs()`, `clamp()`, `min()`, `max()` |\n| 静态常量 | `ZERO`, `ONE`, `LEFT`, `RIGHT`, `UP`, `DOWN`, `FORWARD`, `BACK` |",
+      "input_tokens": 292,
+      "output_tokens": 314,
+      "steps": 3,
+      "tool_calls": [
+        "grep_code",
+        "grep_code"
+      ],
+      "tool_texts": [
+        "(no matches)",
+        "matched 2 files:\n/Users/ks_128/Documents/godot-src/core/math/vector3i.h\n/Users/ks_128/Documents/godot-src/core/math/vector3.h"
+      ],
+      "truncated": false,
+      "query": "vector3",
+      "gold": [
+        "Vector3"
+      ],
+      "arm": "baseline",
+      "run": 0,
+      "correct": 1,
+      "correct_retrieval": 1
+    },
+    {
+      "answer": "`Vector3` 定义在 **`math/vector3.h`**，实现在 **`math/vector3.cpp`**。\n\n主要符号：\n\n- **类**: `Vector3`（`core/math/vector3.h`）\n- **成员**: `x`, `y`, `z`\n- **常用方法/操作**:\n  - `length()`, `length_squared()`\n  - `normalized()`, `normalize()`\n  - `dot(const Vector3 &p_with)`\n  - `cross(const Vector3 &p_with)`\n  - `abs()`\n  - `clamp(const Vector3 &p_min, const Vector3 &p_max)`\n  - `distance_to(const Vector3 &p_to)`, `distance_squared_to(const Vector3 &p_to)`\n  - `angle_to(const Vector3 &p_to)`\n  - `direction_to(const Vector3 &p_to)`\n  - `lerp(const Vector3 &p_to, real_t p_weight)`\n  - `slerp(const Vector3 &p_to, real_t p_weight)`\n  - `rotated(const Vector3 &p_axis, real_t p_angle)`\n  - `move_toward(const Vector3 &p_to, real_t p_delta)`\n  - `project(const Vector3 &p_to)`\n  - `slide(const Vector3 &p_normal)`\n  - `bounce(const Vector3 &p_normal)`\n  - `reflect(const Vector3 &p_normal)`\n  - `min(const Vector3 &p_other)`, `max(const Vector3 &p_other)`\n- **静态方法**: `ZERO`, `ONE`, `LEFT`, `RIGHT`, `UP`, `DOWN`, `FORWARD`, `BACK` 等常量\n- **运算符重载**: `+`, `-`, `*`, `/`, `==`, `<` 等\n\n相关类：`Vector3i`（整数版本）、`Basis`（3×3 矩阵，常与 `Vector3` 配合做旋转变换）。",
+      "input_tokens": 314,
+      "output_tokens": 431,
+      "steps": 2,
+      "tool_calls": [
+        "cmm_search"
+      ],
+      "tool_texts": [
+        "- _ignore_definition  (Users-ks_128-Documents-godot-src-core.io.xml_parser.XMLParser._ignore_definition)  io/xml_parser.cpp\n- MethodDefinition  (Users-ks_128-Documents-godot-src-core.object.class_db.MethodDefinition.MethodDefinition)  object/class_db.h\n- Vector3  (Users-ks_128-Documents-godot-src-core.math.vector3.Vector3)  math/vector3.h\n- rotate  (Users-ks_128-Documents-godot-src-core.math.vector3.Vector3.rotate)  math/vector3.cpp\n- rotated  (Users-ks_128-Documents-godot-src-core.math.vector3.Vector3.rotated)  math/vector3.cpp"
+      ],
+      "truncated": false,
+      "query": "vector3",
+      "gold": [
+        "Vector3"
+      ],
+      "arm": "kb",
+      "run": 0,
+      "correct": 1,
+      "correct_retrieval": 1
+    },
+    {
+      "answer": "`Quaternion` 类定义在 `core/math/quaternion.h` 和 `core/math/quaternion.cpp` 中。\n\n主要成员和方法：\n\n- **数据成员**：`x`, `y`, `z`, `w`（实部 `w`，虚部 `x/y/z`）\n- **构造函数**：\n  - `Quaternion()` — 默认单位四元数\n  - `Quaternion(real_t p_x, real_t p_y, real_t p_z, real_t p_w)` — 分量构造\n  - `Quaternion(const Vector3 &p_axis, real_t p_angle)` — 轴角构造\n  - `Quaternion(const Vector3 &p_euler)` — 欧拉角构造\n  - `Quaternion(const Basis &p_basis)` — 从旋转矩阵构造\n- **常用方法**：\n  - `dot(const Quaternion &p_q)` — 点积\n  - `length()` / `length_squared()` — 模长\n  - `normalized()` — 归一化\n  - `inverse()` — 逆四元数\n  - `log()` / `exp()` — 对数/指数映射\n  - `slerp(const Quaternion &p_to, real_t p_weight)` — 球面线性插值\n  - `slerpni(...)` — 无翻转球面插值\n  - `spherical_cubic_interpolate(...)` — 球面三次插值\n  - `get_angle()` / `get_axis()` — 获取旋转角/轴\n  - `get_euler()` — 转欧拉角\n  - `operator*` — 四元数乘法（旋转复合）及与 `Vector3` 的乘法（旋转向量）\n  - `angle_to(const Quaternion &p_to)` — 两四元数间夹角\n\n相关类型：`Basis`、`Vector3`、`Transform3D`。",
+      "input_tokens": 1636,
+      "output_tokens": 456,
+      "steps": 4,
+      "tool_calls": [
+        "grep_code",
+        "grep_code",
+        "read_file"
+      ],
+      "tool_texts": [
+        "(no matches)",
+        "matched 20 files:\n/Users/ks_128/Documents/godot-src/core/extension/gdextension_interface.cpp\n/Users/ks_128/Documents/godot-src/core/extension/extension_api_dump.cpp\n/Users/ks_128/Documents/godot-src/core/io/packed_data_container.cpp\n/Users/ks_128/Documents/godot-src/core/io/resource_format_binary.cpp\n/Users/ks_128/Documents/godot-src/core/io/marshalls.cpp\n/Users/ks_128/Documents/godot-src/core/io/json.cpp\n/Users/ks_128/Documents/godot-src/core/math/basis.cpp\n/Users/ks_128/Documents/godot-src/core/math/basis.h\n/Users/ks_128/Documents/godot-src/core/math/transform_interpolator.h\n/Users/ks_128/Documents/godot-src/core/math/quaternion.h\n/Users/ks_128/Documents/godot-src/core/math/transform_interpolator.cpp\n/Users/ks_128/Documents/godot-src/core/math/quaternion.cpp\n/Users/ks_128/Documents/godot-src/core/math/transform_3d.cpp\n/Users/ks_128/Documents/godot-src/core/math/math_fieldwise.cpp\n/Users/ks_128/Documents/godot-src/core/core_constants.cpp\n/Users/ks_128/Documents/godot-src/core/object/script_language.cpp\n/Users/ks_128/Documents/godot-src/core/object/property_info.h\n/Users/ks_128/Documents/godot-src/core/variant/variant_op.cpp\n/Users/ks_128/Documents/godot-src/core/variant/variant_setget.h\n/Users/ks_128/Documents/godot-src/core/variant/variant_setget.cpp",
+        "/**************************************************************************/\n/*  quaternion.h                                                          */\n/**************************************************************************/\n/*                         This file is part of:                          */\n/*                             GODOT ENGINE                               */\n/*                        https://godotengine.org                         */\n/**************************************************************************/\n/* Copyright (c) 2014-present Godot Engine contributors (see AUTHORS.md). */\n/* Copyright (c) 2007-2014 Juan Linietsky, Ariel Manzur.                  */\n/*                                                                        */\n/* Permission is hereby granted, free of charge, to any person obtaining  */\n/* a copy of this software and associated documentation files (the        */\n/* \"Software\"), to deal in the Software without restriction, including    */\n/* without limitation the rights to use, copy, modify, merge, publish,    */\n/* distribute, sublicense, and/or sell copies of the Software, and to     */\n/* permit persons to whom the Software is furnished to do so, subject to  */\n/* the following conditions:                                              */\n/*                                                                        */\n/* The above copyright notice and this permission notice shall be         */\n/* included in all copies or substantial portions of the Software.        */\n/*                                                                        */\n/* THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,        */\n/* EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF     */\n/* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. */\n/* IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY   */\n/* CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,   *"
+      ],
+      "truncated": false,
+      "query": "quaternion",
+      "gold": [
+        "Quaternion"
+      ],
+      "arm": "baseline",
+      "run": 0,
+      "correct": 1,
+      "correct_retrieval": 1
+    },
+    {
+      "answer": "**`Quaternion`** — 定义在 `core/math/quaternion.h` 和 `core/math/quaternion.cpp`。\n\n主要成员/方法：\n\n| 类别 | 符号 |\n|---|---|\n| **类** | `Quaternion` |\n| **属性** | `x`, `y`, `z`, `w` |\n| **常用方法** | `length()`, `length_squared()`, `normalize()`, `normalized()`, `inverse()`, `dot()`, `slerp()`, `slerpni()`, `squad()` |\n| **构造/转换** | `from_euler()`, `get_euler()`, `set_axis_angle()`, `from_basis()` / `operator Basis` |\n| **运算** | `*` (与另一个 Quaternion 或 Vector3), `operator==`, `operator+=` 等 |\n\n文件路径：`core/math/quaternion.h`（声明）、`core/math/quaternion.cpp`（实现）。",
+      "input_tokens": 563,
+      "output_tokens": 217,
+      "steps": 2,
+      "tool_calls": [
+        "cmm_search"
+      ],
+      "tool_texts": [
+        "- Quaternion  (Users-ks_128-Documents-godot-src-core.math.quaternion.Quaternion.Quaternion)  math/quaternion.h\n- length  (Users-ks_128-Documents-godot-src-core.math.quaternion.Quaternion.length)  math/quaternion.cpp\n- normalize  (Users-ks_128-Documents-godot-src-core.math.quaternion.Quaternion.normalize)  math/quaternion.cpp\n- normalized  (Users-ks_128-Documents-godot-src-core.math.quaternion.Quaternion.normalized)  math/quaternion.cpp\n- inverse  (Users-ks_128-Documents-godot-src-core.math.quaternion.Quaternion.inverse)  math/quaternion.cpp"
+      ],
+      "truncated": false,
+      "query": "quaternion",
+      "gold": [
+        "Quaternion"
+      ],
+      "arm": "kb",
+      "run": 0,
+      "correct": 1,
+      "correct_retrieval": 1
+    },
+    {
+      "answer": "`Rect2` 定义在 **`core/math/rect2.h`** 中，是一个 `struct`。\n\n主要成员/方法：\n\n- **数据成员**：`position`（`Point2`）、`size`（`Size2`）\n- **构造函数**：`Rect2()`、`Rect2(real_t x, real_t y, real_t width, real_t height)`、`Rect2(const Point2 &p_pos, const Size2 &p_size)`\n- **常用方法**：\n  - `get_center()` / `get_area()` / `get_position()` / `get_size()` / `get_end()`\n  - `has_point()` / `has_area()`\n  - `intersects()` / `intersection()` / `encloses()`\n  - `merge()` / `expand()`\n  - `abs()` / `grow()` / `is_equal_approx()`\n  - `is_finite()`\n\n相关类型：\n- **`Rect2i`**（整数版本）— `core/math/rect2i.h`\n- **`Rect2`** 在 `Projection` 中也有引用（`core/math/projection.h`）",
+      "input_tokens": 566,
+      "output_tokens": 270,
+      "steps": 3,
+      "tool_calls": [
+        "grep_code",
+        "grep_code"
+      ],
+      "tool_texts": [
+        "(no matches)",
+        "matched 3 files:\n/Users/ks_128/Documents/godot-src/core/math/projection.h\n/Users/ks_128/Documents/godot-src/core/math/rect2.h\n/Users/ks_128/Documents/godot-src/core/math/rect2i.h"
+      ],
+      "truncated": false,
+      "query": "rect2",
+      "gold": [
+        "Rect2"
+      ],
+      "arm": "baseline",
+      "run": 0,
+      "correct": 1,
+      "correct_retrieval": 1
+    },
+    {
+      "answer": "`Rect2` 定义在 **`core/math/rect2.h`** 中，主要成员包括：\n\n- **类**: `Rect2`\n- **数据成员**: `position` (`Point2`), `size` (`Size2`)\n- **关键方法**:\n  - `intersects()` — 判断是否与另一个 `Rect2` 相交\n  - `encloses()` — 判断是否包含另一个 `Rect2`\n  - `has_point()` — 判断是否包含某点\n  - `intersection()` — 求交集\n  - `merge()` — 合并为更大的矩形\n  - `grow()` / `grow_individual()` / `grow_side()` — 扩展边界\n  - `abs()` — 返回绝对（正向）矩形\n  - `get_center()` — 返回中心点\n  - `is_equal_approx()` — 近似相等判断\n  - `is_finite()` — 判断是否有限\n\n`Rect2` 由 `Point2`（即 `Vector2`）和 `Size2`（同样为 `Vector2`）组成，是 Godot 中 2D 矩形的核心数学类型。",
+      "input_tokens": 577,
+      "output_tokens": 262,
+      "steps": 2,
+      "tool_calls": [
+        "cmm_search"
+      ],
+      "tool_texts": [
+        "- _ignore_definition  (Users-ks_128-Documents-godot-src-core.io.xml_parser.XMLParser._ignore_definition)  io/xml_parser.cpp\n- MethodDefinition  (Users-ks_128-Documents-godot-src-core.object.class_db.MethodDefinition.MethodDefinition)  object/class_db.h\n- Rect2  (Users-ks_128-Documents-godot-src-core.math.rect2.Rect2.Rect2)  math/rect2.h\n- intersects  (Users-ks_128-Documents-godot-src-core.math.rect2.Rect2.intersects)  math/rect2.h\n- encloses  (Users-ks_128-Documents-godot-src-core.math.rect2.Rect2.encloses)  math/rect2.h"
+      ],
+      "truncated": false,
+      "query": "rect2",
+      "gold": [
+        "Rect2"
+      ],
+      "arm": "kb",
+      "run": 0,
+      "correct": 1,
+      "correct_retrieval": 1
+    },
+    {
+      "answer": "Godot core/ 中 JSON 相关的核心符号：\n\n**主要类/文件：**\n- `JSON` — 核心类，定义在 `core/io/json.h` / `json.cpp`\n- `JSONResourceFormatLoader` / `JSONResourceFormatSaver` — JSON 资源加载/保存格式，在 `core/io/json_resource_format.h` / `json_resource_format.cpp`\n\n**`JSON` 类的关键方法：**\n- `JSON::parse_string()` — 静态方法，解析 JSON 字符串返回 `Variant`\n- `JSON::parse()` — 解析 JSON 字符串，结果存入 `Variant`，返回 `Error`\n- `JSON::stringify()` — 静态方法，将 `Variant` 序列化为 JSON 字符串\n- `JSON::get_data()` / `JSON::get_error_line()` / `JSON::get_error_message()` — 获取解析结果和错误信息\n\n**底层解析：**\n- `String::_parse_json()` — 在 `core/string/ustring.h` / `ustring.cpp` 中的底层 JSON 解析实现\n\n**注册：**\n- `register_core_types()` 中注册 JSON 相关类型（`core/register_core_types.cpp`）",
+      "input_tokens": 2938,
+      "output_tokens": 327,
+      "steps": 4,
+      "tool_calls": [
+        "grep_code",
+        "grep_code",
+        "read_file",
+        "read_file"
+      ],
+      "tool_texts": [
+        "matched 1 files:\n/Users/ks_128/Documents/godot-src/core/io/json.h",
+        "matched 15 files:\n/Users/ks_128/Documents/godot-src/core/extension/extension_api_dump.h\n/Users/ks_128/Documents/godot-src/core/extension/gdextension_interface_header_generator.cpp\n/Users/ks_128/Documents/godot-src/core/extension/extension_api_dump.cpp\n/Users/ks_128/Documents/godot-src/core/extension/gdextension_special_compat_hashes.cpp\n/Users/ks_128/Documents/godot-src/core/io/json_resource_format.h\n/Users/ks_128/Documents/godot-src/core/io/json.h\n/Users/ks_128/Documents/godot-src/core/io/json.cpp\n/Users/ks_128/Documents/godot-src/core/io/json_resource_format.cpp\n/Users/ks_128/Documents/godot-src/core/variant/variant_call.cpp\n/Users/ks_128/Documents/godot-src/core/variant/variant.cpp\n/Users/ks_128/Documents/godot-src/core/variant/variant.h\n/Users/ks_128/Documents/godot-src/core/os/os.cpp\n/Users/ks_128/Documents/godot-src/core/string/ustring.h\n/Users/ks_128/Documents/godot-src/core/string/ustring.cpp\n/Users/ks_128/Documents/godot-src/core/register_core_types.cpp",
+        "/**************************************************************************/\n/*  json.h                                                                */\n/**************************************************************************/\n/*                         This file is part of:                          */\n/*                             GODOT ENGINE                               */\n/*                        https://godotengine.org                         */\n/**************************************************************************/\n/* Copyright (c) 2014-present Godot Engine contributors (see AUTHORS.md). */\n/* Copyright (c) 2007-2014 Juan Linietsky, Ariel Manzur.                  */\n/*                                                                        */\n/* Permission is hereby granted, free of charge, to any person obtaining  */\n/* a copy of this software and associated documentation files (the        */\n/* \"Software\"), to deal in the Software without restriction, including    */\n/* without limitation the rights to use, copy, modify, merge, publish,    */\n/* distribute, sublicense, and/or sell copies of the Software, and to     */\n/* permit persons to whom the Software is furnished to do so, subject to  */\n/* the following conditions:                                              */\n/*                                                                        */\n/* The above copyright notice and this permission notice shall be         */\n/* included in all copies or substantial portions of the Software.        */\n/*                                                                        */\n/* THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,        */\n/* EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF     */\n/* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. */\n/* IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY   */\n/* CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,   *",
+        "/**************************************************************************/\n/*  json.h                                                                */\n/**************************************************************************/\n/*                         This file is part of:                          */\n/*                             GODOT ENGINE                               */\n/*                        https://godotengine.org                         */\n/**************************************************************************/\n/* Copyright (c) 2014-present Godot Engine contributors (see AUTHORS.md). */\n/* Copyright (c) 2007-2014 Juan Linietsky, Ariel Manzur.                  */\n/*                                                                        */\n/* Permission is hereby granted, free of charge, to any person obtaining  */\n/* a copy of this software and associated documentation files (the        */\n/* \"Software\"), to deal in the Software without restriction, including    */\n/* without limitation the rights to use, copy, modify, merge, publish,    */\n/* distribute, sublicense, and/or sell copies of the Software, and to     */\n/* permit persons to whom the Software is furnished to do so, subject to  */\n/* the following conditions:                                              */\n/*                                                                        */\n/* The above copyright notice and this permission notice shall be         */\n/* included in all copies or substantial portions of the Software.        */\n/*                                                                        */\n/* THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,        */\n/* EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF     */\n/* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. */\n/* IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY   */\n/* CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,   *"
+      ],
+      "truncated": false,
+      "query": "json",
+      "gold": [
+        "JSON"
+      ],
+      "arm": "baseline",
+      "run": 0,
+      "correct": 1,
+      "correct_retrieval": 1
+    },
+    {
+      "answer": "Godot core/ 中 JSON 相关的核心符号：\n\n- **`JSON`** — 核心类，位于 `core/io/json.cpp`\n- **`JSON::parse`** — 解析 JSON 字符串为 Variant\n- **`JSON::stringify`** — 将 Variant 序列化为 JSON 字符串\n- **`JSON::_stringify`** — 内部递归序列化实现\n- **`JSON::_get_token`** — 内部词法分析，逐 token 解析\n- **`JSON::_add_indent`** — 内部辅助，生成缩进",
+      "input_tokens": 557,
+      "output_tokens": 138,
+      "steps": 2,
+      "tool_calls": [
+        "cmm_search"
+      ],
+      "tool_texts": [
+        "- _stringify  (Users-ks_128-Documents-godot-src-core.io.json.JSON._stringify)  io/json.cpp\n- parse  (Users-ks_128-Documents-godot-src-core.io.json.JSON.parse)  io/json.cpp\n- stringify  (Users-ks_128-Documents-godot-src-core.io.json.JSON.stringify)  io/json.cpp\n- _add_indent  (Users-ks_128-Documents-godot-src-core.io.json.JSON._add_indent)  io/json.cpp\n- _get_token  (Users-ks_128-Documents-godot-src-core.io.json.JSON._get_token)  io/json.cpp"
+      ],
+      "truncated": false,
+      "query": "json",
+      "gold": [
+        "JSON"
+      ],
+      "arm": "kb",
+      "run": 0,
+      "correct": 1,
+      "correct_retrieval": 1
+    },
+    {
+      "answer": "Godot core/ 中与 **Image** 相关的主要符号：\n\n- **`Image`** — 核心类，定义在 `core/io/image.h`，继承自 `Resource`（通过 `RefCounted`）。代表一个位图图像，支持多种像素格式、压缩、缩放、裁剪等操作。\n\n- **`ImageLoader`** — 定义在 `core/io/image_loader.h`，负责从文件加载图像的抽象基类。\n\n- **`ImageFormatLoader`** — 具体格式加载器的基类（PNG、JPG、WebP、BMP、TGA、KTX 等）。\n\n- **`ImageTexture`** — 将 `Image` 包装为可在 GPU 上使用的纹理（定义在 `core/io/image_texture.h`）。\n\n`Image` 类常用方法包括：`create()`、`load()`、`save_png()`、`compress()`、`decompress()`、`resize()`、`crop()`、`convert()`、`get_data()` 等。",
+      "input_tokens": 623,
+      "output_tokens": 248,
+      "steps": 3,
+      "tool_calls": [
+        "grep_code",
+        "read_file"
+      ],
+      "tool_texts": [
+        "matched 2 files:\n/Users/ks_128/Documents/godot-src/core/io/image_loader.h\n/Users/ks_128/Documents/godot-src/core/io/image.h",
+        "/**************************************************************************/\n/*  image.h                                                               */\n/**************************************************************************/\n/*                         This file is part of:                          */\n/*                             GODOT ENGINE                               */\n/*                        https://godotengine.org                         */\n/**************************************************************************/\n/* Copyright (c) 2014-present Godot Engine contributors (see AUTHORS.md). */\n/* Copyright (c) 2007-2014 Juan Linietsky, Ariel Manzur.                  */\n/*                                                                        */\n/* Permission is hereby granted, free of charge, to any person obtaining  */\n/* a copy of this software and associated documentation files (the        */\n/* \"Software\"), to deal in the Software without restriction, including    */\n/* without limitation the rights to use, copy, modify, merge, publish,    */\n/* distribute, sublicense, and/or sell copies of the Software, and to     */\n/* permit persons to whom the Software is furnished to do so, subject to  */\n/* the following conditions:                                              */\n/*                                                                        */\n/* The above copyright notice and this permission notice shall be         */\n/* included in all copies or substantial portions of the Software.        */\n/*                                                                        */\n/* THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,        */\n/* EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF     */\n/* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. */\n/* IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY   */\n/* CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,   *"
+      ],
+      "truncated": false,
+      "query": "image",
+      "gold": [
+        "Image"
+      ],
+      "arm": "baseline",
+      "run": 0,
+      "correct": 1,
+      "correct_retrieval": 1
+    },
+    {
+      "answer": "Godot core/ 中的图像相关核心符号：\n\n- **`Image`** — 核心图像类，定义于 `core/io/image.cpp` / `image.h`\n- 主要方法/函数：\n  - `Image::validate_3d_image`\n  - `Image::compute_image_metrics`\n  - `Image::_get_dst_image_size`\n  - `Image::get_image_data_size`\n\n`Image` 类负责像素数据的创建、编辑、格式转换、压缩/解压等操作，是 `ImageTexture`、`ResourceLoader` 等模块的基础数据类型。",
+      "input_tokens": 570,
+      "output_tokens": 136,
+      "steps": 2,
+      "tool_calls": [
+        "cmm_search"
+      ],
+      "tool_texts": [
+        "- Image  (Users-ks_128-Documents-godot-src-core.io.image.Image.Image)  io/image.cpp\n- validate_3d_image  (Users-ks_128-Documents-godot-src-core.io.image.Image.validate_3d_image)  io/image.cpp\n- compute_image_metrics  (Users-ks_128-Documents-godot-src-core.io.image.Image.compute_image_metrics)  io/image.cpp\n- _get_dst_image_size  (Users-ks_128-Documents-godot-src-core.io.image.Image._get_dst_image_size)  io/image.cpp\n- get_image_data_size  (Users-ks_128-Documents-godot-src-core.io.image.Image.get_image_data_size)  io/image.cpp"
+      ],
+      "truncated": false,
+      "query": "image",
+      "gold": [
+        "Image"
+      ],
+      "arm": "kb",
+      "run": 0,
+      "correct": 1,
+      "correct_retrieval": 1
+    },
+    {
+      "answer": "`ResourceLoader` 相关的核心符号：\n\n- **`ResourceLoader`** — 主类，定义在 `core/io/resource_loader.h`\n- **`ResourceFormatLoader`** — 资源格式加载器基类（同文件）\n- **`ResourceLoader::load()`** — 加载资源的核心静态方法\n- **`ResourceLoader::load_threaded_request()` / `load_threaded_get()`** — 异步加载\n- **`ResourceLoader::exists()`** — 检查资源是否存在\n- **`ResourceLoader::get_dependencies()`** — 获取依赖\n- **`ResourceLoader::add_resource_format_loader()`** — 注册自定义格式加载器\n\n相关类：\n- **`ResourceFormatLoaderBinary`**（`core/io/resource_format_binary.h`）\n- **`Resource`**（`core/io/resource.h`）\n- **`ResourceLoader`** 的 GDScript 绑定在 `core/core_bind.h`（即 `_ResourceLoader`）",
+      "input_tokens": 1758,
+      "output_tokens": 269,
+      "steps": 4,
+      "tool_calls": [
+        "grep_code",
+        "read_file",
+        "read_file"
+      ],
+      "tool_texts": [
+        "matched 4 files:\n/Users/ks_128/Documents/godot-src/core/io/resource_loader.h\n/Users/ks_128/Documents/godot-src/core/io/resource_format_binary.h\n/Users/ks_128/Documents/godot-src/core/io/resource.h\n/Users/ks_128/Documents/godot-src/core/core_bind.h",
+        "/**************************************************************************/\n/*  resource_loader.h                                                     */\n/**************************************************************************/\n/*                         This file is part of:                          */\n/*                             GODOT ENGINE                               */\n/*                        https://godotengine.org                         */\n/**************************************************************************/\n/* Copyright (c) 2014-present Godot Engine contributors (see AUTHORS.md). */\n/* Copyright (c) 2007-2014 Juan Linietsky, Ariel Manzur.                  */\n/*                                                                        */\n/* Permission is hereby granted, free of charge, to any person obtaining  */\n/* a copy of this software and associated documentation files (the        */\n/* \"Software\"), to deal in the Software without restriction, including    */\n/* without limitation the rights to use, copy, modify, merge, publish,    */\n/* distribute, sublicense, and/or sell copies of the Software, and to     */\n/* permit persons to whom the Software is furnished to do so, subject to  */\n/* the following conditions:                                              */\n/*                                                                        */\n/* The above copyright notice and this permission notice shall be         */\n/* included in all copies or substantial portions of the Software.        */\n/*                                                                        */\n/* THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,        */\n/* EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF     */\n/* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. */\n/* IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY   */\n/* CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,   *",
+        "/**************************************************************************/\n/*  resource_loader.h                                                     */\n/**************************************************************************/\n/*                         This file is part of:                          */\n/*                             GODOT ENGINE                               */\n/*                        https://godotengine.org                         */\n/**************************************************************************/\n/* Copyright (c) 2014-present Godot Engine contributors (see AUTHORS.md). */\n/* Copyright (c) 2007-2014 Juan Linietsky, Ariel Manzur.                  */\n/*                                                                        */\n/* Permission is hereby granted, free of charge, to any person obtaining  */\n/* a copy of this software and associated documentation files (the        */\n/* \"Software\"), to deal in the Software without restriction, including    */\n/* without limitation the rights to use, copy, modify, merge, publish,    */\n/* distribute, sublicense, and/or sell copies of the Software, and to     */\n/* permit persons to whom the Software is furnished to do so, subject to  */\n/* the following conditions:                                              */\n/*                                                                        */\n/* The above copyright notice and this permission notice shall be         */\n/* included in all copies or substantial portions of the Software.        */\n/*                                                                        */\n/* THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,        */\n/* EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF     */\n/* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. */\n/* IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY   */\n/* CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,   *"
+      ],
+      "truncated": false,
+      "query": "resource loader",
+      "gold": [
+        "ResourceLoader"
+      ],
+      "arm": "baseline",
+      "run": 0,
+      "correct": 1,
+      "correct_retrieval": 1
+    },
+    {
+      "answer": "核心符号（`io/resource_loader.h` / `.cpp`）：\n\n- **`ResourceLoader`** — 主类，静态接口负责加载资源\n  - `load()` / `load_threaded_request()` / `load_threaded_get()` — 同步/异步加载\n  - `exists()` — 检查资源是否存在\n  - `add_resource_format_loader()` / `remove_resource_format_loader()` — 注册/注销格式加载器\n  - `add_custom_resource_format_loader()` / `_find_custom_resource_format_loader()` — 自定义格式加载器管理\n  - `get_recognized_extensions()` — 获取可识别的扩展名列表\n- **`ResourceFormatLoader`** — 抽象基类，各格式（如 `ResourceFormatLoaderText`、`ResourceFormatLoaderBinary`）继承它实现具体加载逻辑",
+      "input_tokens": 599,
+      "output_tokens": 191,
+      "steps": 2,
+      "tool_calls": [
+        "cmm_search"
+      ],
+      "tool_texts": [
+        "- add_resource_format_loader  (Users-ks_128-Documents-godot-src-core.io.resource_loader.ResourceLoader.add_resource_format_loader)  io/resource_loader.cpp\n- remove_resource_format_loader  (Users-ks_128-Documents-godot-src-core.io.resource_loader.ResourceLoader.remove_resource_format_loader)  io/resource_loader.cpp\n- _find_custom_resource_format_loader  (Users-ks_128-Documents-godot-src-core.io.resource_loader.ResourceLoader._find_custom_resource_format_loader)  io/resource_loader.cpp\n- add_custom_resource_format_loader  (Users-ks_128-Documents-godot-src-core.io.resource_loader.ResourceLoader.add_custom_resource_format_loader)  io/resource_loader.cpp\n- ~ResourceFormatLoader  (Users-ks_128-Documents-godot-src-core.io.resource_loader.ResourceFormatLoader.~ResourceFormatLoader)  io/resource_loader.h"
+      ],
+      "truncated": false,
+      "query": "resource loader",
+      "gold": [
+        "ResourceLoader"
+      ],
+      "arm": "kb",
+      "run": 0,
+      "correct": 1,
+      "correct_retrieval": 1
+    },
+    {
+      "answer": "Godot core 中 **ResourceSaver** 相关的主要符号：\n\n| 符号 | 位置 | 说明 |\n|---|---|---|\n| `ResourceSaver` | `core/io/resource_saver.h` | 核心静态类，负责保存资源到文件 |\n| `ResourceFormatSaver` | `core/io/resource_saver.h` | 抽象基类，具体的资源格式保存器继承自它 |\n| `ResourceFormatSaverBinary` | `core/io/resource_format_binary.cpp` | 二进制格式的 `ResourceFormatSaver` 实现 |\n| `ResourceLoader` | `core/io/` | 对应的加载端（姊妹类） |\n\n**`ResourceSaver` 主要静态方法：**\n- `save()` — 保存 `Resource` 到指定路径\n- `add_resource_format_saver()` — 注册自定义 `ResourceFormatSaver`\n- `remove_resource_format_saver()` — 注销\n- `get_recognized_extensions()` — 获取某资源类型支持的扩展名\n\n**相关文件：**\n- `core/io/resource_saver.h` / `.cpp` — 定义与实现\n- `core/core_bind.h` / `.cpp` — 通过 `_ResourceSaver`（`core_bind` 命名空间）绑定到脚本层",
+      "input_tokens": 2019,
+      "output_tokens": 350,
+      "steps": 5,
+      "tool_calls": [
+        "grep_code",
+        "read_file",
+        "read_file",
+        "grep_code"
+      ],
+      "tool_texts": [
+        "matched 7 files:\n/Users/ks_128/Documents/godot-src/core/extension/gdextension_special_compat_hashes.cpp\n/Users/ks_128/Documents/godot-src/core/io/resource_saver.h\n/Users/ks_128/Documents/godot-src/core/io/resource_saver.cpp\n/Users/ks_128/Documents/godot-src/core/io/resource_format_binary.cpp\n/Users/ks_128/Documents/godot-src/core/core_bind.cpp\n/Users/ks_128/Documents/godot-src/core/core_bind.h\n/Users/ks_128/Documents/godot-src/core/register_core_types.cpp",
+        "/**************************************************************************/\n/*  resource_saver.h                                                      */\n/**************************************************************************/\n/*                         This file is part of:                          */\n/*                             GODOT ENGINE                               */\n/*                        https://godotengine.org                         */\n/**************************************************************************/\n/* Copyright (c) 2014-present Godot Engine contributors (see AUTHORS.md). */\n/* Copyright (c) 2007-2014 Juan Linietsky, Ariel Manzur.                  */\n/*                                                                        */\n/* Permission is hereby granted, free of charge, to any person obtaining  */\n/* a copy of this software and associated documentation files (the        */\n/* \"Software\"), to deal in the Software without restriction, including    */\n/* without limitation the rights to use, copy, modify, merge, publish,    */\n/* distribute, sublicense, and/or sell copies of the Software, and to     */\n/* permit persons to whom the Software is furnished to do so, subject to  */\n/* the following conditions:                                              */\n/*                                                                        */\n/* The above copyright notice and this permission notice shall be         */\n/* included in all copies or substantial portions of the Software.        */\n/*                                                                        */\n/* THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,        */\n/* EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF     */\n/* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. */\n/* IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY   */\n/* CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,   *",
+        "/**************************************************************************/\n/*  resource_saver.h                                                      */\n/**************************************************************************/\n/*                         This file is part of:                          */\n/*                             GODOT ENGINE                               */\n/*                        https://godotengine.org                         */\n/**************************************************************************/\n/* Copyright (c) 2014-present Godot Engine contributors (see AUTHORS.md). */\n/* Copyright (c) 2007-2014 Juan Linietsky, Ariel Manzur.                  */\n/*                                                                        */\n/* Permission is hereby granted, free of charge, to any person obtaining  */\n/* a copy of this software and associated documentation files (the        */\n/* \"Software\"), to deal in the Software without restriction, including    */\n/* without limitation the rights to use, copy, modify, merge, publish,    */\n/* distribute, sublicense, and/or sell copies of the Software, and to     */\n/* permit persons to whom the Software is furnished to do so, subject to  */\n/* the following conditions:                                              */\n/*                                                                        */\n/* The above copyright notice and this permission notice shall be         */\n/* included in all copies or substantial portions of the Software.        */\n/*                                                                        */\n/* THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,        */\n/* EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF     */\n/* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. */\n/* IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY   */\n/* CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,   *",
+        "matched 2 files:\n/Users/ks_128/Documents/godot-src/core/io/resource_saver.h\n/Users/ks_128/Documents/godot-src/core/core_bind.h"
+      ],
+      "truncated": false,
+      "query": "resource saver",
+      "gold": [
+        "ResourceSaver"
+      ],
+      "arm": "baseline",
+      "run": 0,
+      "correct": 1,
+      "correct_retrieval": 1
+    },
+    {
+      "answer": "**`ResourceSaver`** — 核心类位于 `core/io/resource_saver.cpp` / `.h`\n\n主要符号：\n\n- **`ResourceSaver::save`** — 保存资源到文件\n- **`ResourceSaver::set_save_callback`** — 设置保存回调\n- **`ResourceSaver::set_timestamp_on_save`** / **`get_timestamp_on_save`** — 保存时是否更新时间戳\n- **`core_bind::ResourceSaver`** — 脚本绑定层（`core_bind.cpp`），将 `ResourceSaver` 暴露给 GDScript",
+      "input_tokens": 847,
+      "output_tokens": 148,
+      "steps": 2,
+      "tool_calls": [
+        "cmm_search"
+      ],
+      "tool_texts": [
+        "- save  (Users-ks_128-Documents-godot-src-core.io.resource_saver.ResourceSaver.save)  io/resource_saver.cpp\n- set_save_callback  (Users-ks_128-Documents-godot-src-core.io.resource_saver.ResourceSaver.set_save_callback)  io/resource_saver.cpp\n- set_timestamp_on_save  (Users-ks_128-Documents-godot-src-core.io.resource_saver.ResourceSaver.set_timestamp_on_save)  io/resource_saver.h\n- get_timestamp_on_save  (Users-ks_128-Documents-godot-src-core.io.resource_saver.ResourceSaver.get_timestamp_on_save)  io/resource_saver.h\n- save  (Users-ks_128-Documents-godot-src-core.core_bind.ResourceSaver.save)  core_bind.cpp"
+      ],
+      "truncated": false,
+      "query": "resource saver",
+      "gold": [
+        "ResourceSaver"
+      ],
+      "arm": "kb",
+      "run": 0,
+      "correct": 1,
+      "correct_retrieval": 1
+    },
+    {
+      "answer": "Godot core/ 中文件访问相关的核心类和模块：\n\n**主类：**\n- `FileAccess` — 基类，定义于 `core/io/file_access.h`，提供统一的文件读写接口（`open`、`get_8`、`store_8`、`get_buffer`、`get_line`、`get_var` 等）。\n\n**子类 / 变体：**\n- `FileAccessCompressed` — 压缩文件读写\n- `FileAccessEncrypted` — 加密文件读写\n- `FileAccessMemory` — 内存中模拟文件访问\n- `FileAccessPack` — 从 PCK 包中读取文件\n- `FileAccessZip` — 从 ZIP 中读取文件\n- `FileAccessPatched` — 带补丁的文件访问\n\n**相关类：**\n- `PckPacker` — 打包 PCK 文件\n- `ResourceUID` — 资源 UID 管理（涉及文件路径解析）\n- `Logger` — 日志系统（内部使用 `FileAccess`）",
+      "input_tokens": 577,
+      "output_tokens": 240,
+      "steps": 2,
+      "tool_calls": [
+        "grep_code"
+      ],
+      "tool_texts": [
+        "matched 10 files:\n/Users/ks_128/Documents/godot-src/core/io/file_access_compressed.h\n/Users/ks_128/Documents/godot-src/core/io/file_access_patched.h\n/Users/ks_128/Documents/godot-src/core/io/file_access_pack.h\n/Users/ks_128/Documents/godot-src/core/io/file_access_zip.h\n/Users/ks_128/Documents/godot-src/core/io/file_access_memory.h\n/Users/ks_128/Documents/godot-src/core/io/file_access.h\n/Users/ks_128/Documents/godot-src/core/io/resource_uid.h\n/Users/ks_128/Documents/godot-src/core/io/pck_packer.h\n/Users/ks_128/Documents/godot-src/core/io/logger.h\n/Users/ks_128/Documents/godot-src/core/io/file_access_encrypted.h"
+      ],
+      "truncated": false,
+      "query": "file access",
+      "gold": [
+        "FileAccess"
+      ],
+      "arm": "baseline",
+      "run": 0,
+      "correct": 1,
+      "correct_retrieval": 1
+    },
+    {
+      "answer": "Godot core/ 中与文件访问相关的主要类/符号：\n\n| 类名 | 文件 |\n|---|---|\n| **`FileAccess`** | `io/file_access.cpp` |\n| **`FileAccessCompressed`** | `io/file_access_compressed.cpp` |\n| **`FileAccessEncrypted`** | `io/file_access_encrypted.cpp` |\n| **`FileAccessPack`** | `io/file_access_pack.cpp` |\n| **`FileAccessZip`** | `io/file_access_zip.cpp` |\n\n核心基类是 **`FileAccess`**，其余为派生/变体实现（压缩、加密、PCK 包、ZIP 包）。",
+      "input_tokens": 352,
+      "output_tokens": 158,
+      "steps": 2,
+      "tool_calls": [
+        "cmm_search"
+      ],
+      "tool_texts": [
+        "- ~FileAccess  (Users-ks_128-Documents-godot-src-core.io.file_access.FileAccess.~FileAccess)  io/file_access.cpp\n- ~FileAccessCompressed  (Users-ks_128-Documents-godot-src-core.io.file_access_compressed.FileAccessCompressed.~FileAccessCompressed)  io/file_access_compressed.cpp\n- ~FileAccessEncrypted  (Users-ks_128-Documents-godot-src-core.io.file_access_encrypted.FileAccessEncrypted.~FileAccessEncrypted)  io/file_access_encrypted.cpp\n- FileAccessPack  (Users-ks_128-Documents-godot-src-core.io.file_access_pack.FileAccessPack.FileAccessPack)  io/file_access_pack.cpp\n- FileAccessZip  (Users-ks_128-Documents-godot-src-core.io.file_access_zip.FileAccessZip.FileAccessZip)  io/file_access_zip.cpp"
+      ],
+      "truncated": false,
+      "query": "file access",
+      "gold": [
+        "FileAccess"
+      ],
+      "arm": "kb",
+      "run": 0,
+      "correct": 1,
+      "correct_retrieval": 1
+    },
+    {
+      "answer": "Godot 的目录访问功能由以下核心符号提供（定义在 `core/io/dir_access.h`）：\n\n- **`DirAccess`** — 主类，提供目录操作接口（列举、创建、删除、重命名等）。\n\n关键方法/成员包括：\n\n| 方法 | 用途 |\n|---|---|\n| `DirAccess::open()` | 打开目录（工厂方法） |\n| `DirAccess::create_for_path()` | 根据路径类型创建对应实现 |\n| `list_dir_begin()` / `list_dir_end()` | 开始/结束目录遍历 |\n| `get_next()` | 获取下一个条目 |\n| `current_is_dir()` / `current_is_hidden()` | 判断当前条目类型 |\n| `make_dir()` / `make_dir_recursive()` | 创建目录 |\n| `file_exists()` / `dir_exists()` | 检查存在性 |\n| `copy()` / `rename()` / `remove()` | 文件操作 |\n| `get_current_dir()` / `change_dir()` | 获取/切换当前路径 |\n| `get_space_left()` | 获取剩余空间 |\n\n**平台后端子类**（通过 `create()` 工厂按平台选择）：\n- `DirAccessUnix`（`core/io/dir_access_unix.h`）\n- `DirAccessWindows`（`platform/windows/dir_access_windows.h`）\n- `DirAccessPack`（`core/io/file_access_pack.h`）— 用于 PCK 虚拟文件系统",
+      "input_tokens": 668,
+      "output_tokens": 364,
+      "steps": 3,
+      "tool_calls": [
+        "grep_code",
+        "grep_code",
+        "read_file"
+      ],
+      "tool_texts": [
+        "matched 2 files:\n/Users/ks_128/Documents/godot-src/core/io/file_access_pack.h\n/Users/ks_128/Documents/godot-src/core/io/dir_access.h",
+        "(no matches)",
+        "/**************************************************************************/\n/*  dir_access.h                                                          */\n/**************************************************************************/\n/*                         This file is part of:                          */\n/*                             GODOT ENGINE                               */\n/*                        https://godotengine.org                         */\n/**************************************************************************/\n/* Copyright (c) 2014-present Godot Engine contributors (see AUTHORS.md). */\n/* Copyright (c) 2007-2014 Juan Linietsky, Ariel Manzur.                  */\n/*                                                                        */\n/* Permission is hereby granted, free of charge, to any person obtaining  */\n/* a copy of this software and associated documentation files (the        */\n/* \"Software\"), to deal in the Software without restriction, including    */\n/* without limitation the rights to use, copy, modify, merge, publish,    */\n/* distribute, sublicense, and/or sell copies of the Software, and to     */\n/* permit persons to whom the Software is furnished to do so, subject to  */\n/* the following conditions:                                              */\n/*                                                                        */\n/* The above copyright notice and this permission notice shall be         */\n/* included in all copies or substantial portions of the Software.        */\n/*                                                                        */\n/* THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,        */\n/* EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF     */\n/* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. */\n/* IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY   */\n/* CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,   *"
+      ],
+      "truncated": false,
+      "query": "directory access",
+      "gold": [
+        "DirAccess"
+      ],
+      "arm": "baseline",
+      "run": 0,
+      "correct": 1,
+      "correct_retrieval": 1
+    },
+    {
+      "answer": "Godot core/ 中目录访问相关的核心符号：\n\n- **`DirAccess`** — 基类（抽象接口），定义于 `io/dir_access.h` / `io/dir_access.cpp`\n- **`DirAccessPack`** — PackedData 内部的 DirAccess 实现，`io/file_access_pack.cpp`\n- **`PackedData`** — 管理打包数据源，含 `has_directory`、`try_open_directory` 等方法\n- **`PackedSourceDirectory`** — 打包目录源，含 `add_directory` 方法\n\n`DirAccess` 是主要入口类，提供 `open`、`make_dir`、`list_dir_begin`、`list_dir_end`、`copy`、`rename`、`remove` 等文件系统操作接口。",
+      "input_tokens": 596,
+      "output_tokens": 189,
+      "steps": 2,
+      "tool_calls": [
+        "cmm_search"
+      ],
+      "tool_texts": [
+        "- add_directory  (Users-ks_128-Documents-godot-src-core.io.file_access_pack.PackedSourceDirectory.add_directory)  io/file_access_pack.cpp\n- has_directory  (Users-ks_128-Documents-godot-src-core.io.file_access_pack.PackedData.has_directory)  io/file_access_pack.h\n- try_open_directory  (Users-ks_128-Documents-godot-src-core.io.file_access_pack.PackedData.try_open_directory)  io/file_access_pack.h\n- get_filesystem_type  (Users-ks_128-Documents-godot-src-core.io.file_access_pack.DirAccessPack.get_filesystem_type)  io/file_access_pack.cpp\n- ~DirAccess  (Users-ks_128-Documents-godot-src-core.io.dir_access.DirAccess.~DirAccess)  io/dir_access.cpp"
+      ],
+      "truncated": false,
+      "query": "directory access",
+      "gold": [
+        "DirAccess"
+      ],
+      "arm": "kb",
+      "run": 0,
+      "correct": 1,
+      "correct_retrieval": 1
+    },
+    {
+      "answer": "Godot 的消息队列核心实现：\n\n**类**: `MessageQueue`（定义于 `core/object/message_queue.h` / `.cpp`）\n\n**关键成员**:\n- **单例访问**: `MessageQueue::get_singleton()`\n- **入队方法**:\n  - `push_call(ObjectID p_id, const StringName &p_method, ...)` — 延迟调用方法\n  - `push_set(ObjectID p_id, const StringName &p_prop, const Variant &p_value)` — 延迟设置属性\n  - `push_callable(const Callable &p_callable, ...)` — 延迟调用 Callable\n  - `push_notification(ObjectID p_id, int p_notification)` — 延迟发送通知\n- **处理**: `flush()` — 在主循环中刷新并执行所有排队的消息\n- **统计**: `get_statistics()` — 返回队列统计信息\n\n**相关引用**:\n- `Object`（`core/object/object.cpp`）通过 `MessageQueue` 实现延迟调用\n- `Callable`（`core/variant/callable.cpp`）中的 `CallQueue` 内部使用\n- `CallableCustomBind` / `CallableObjectUnmounted` 等辅助类型\n\n`MessageQueue` 是 Godot 实现延迟方法调用（如 `call_deferred`、`set_deferred`）的底层机制，在每帧主循环中由 `flush()` 统一处理。",
+      "input_tokens": 2167,
+      "output_tokens": 374,
+      "steps": 4,
+      "tool_calls": [
+        "grep_code",
+        "read_file",
+        "read_file"
+      ],
+      "tool_texts": [
+        "matched 7 files:\n/Users/ks_128/Documents/godot-src/core/config/project_settings.cpp\n/Users/ks_128/Documents/godot-src/core/io/resource_loader.cpp\n/Users/ks_128/Documents/godot-src/core/object/worker_thread_pool.cpp\n/Users/ks_128/Documents/godot-src/core/object/object.cpp\n/Users/ks_128/Documents/godot-src/core/object/message_queue.cpp\n/Users/ks_128/Documents/godot-src/core/object/message_queue.h\n/Users/ks_128/Documents/godot-src/core/variant/callable.cpp",
+        "/**************************************************************************/\n/*  message_queue.h                                                       */\n/**************************************************************************/\n/*                         This file is part of:                          */\n/*                             GODOT ENGINE                               */\n/*                        https://godotengine.org                         */\n/**************************************************************************/\n/* Copyright (c) 2014-present Godot Engine contributors (see AUTHORS.md). */\n/* Copyright (c) 2007-2014 Juan Linietsky, Ariel Manzur.                  */\n/*                                                                        */\n/* Permission is hereby granted, free of charge, to any person obtaining  */\n/* a copy of this software and associated documentation files (the        */\n/* \"Software\"), to deal in the Software without restriction, including    */\n/* without limitation the rights to use, copy, modify, merge, publish,    */\n/* distribute, sublicense, and/or sell copies of the Software, and to     */\n/* permit persons to whom the Software is furnished to do so, subject to  */\n/* the following conditions:                                              */\n/*                                                                        */\n/* The above copyright notice and this permission notice shall be         */\n/* included in all copies or substantial portions of the Software.        */\n/*                                                                        */\n/* THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,        */\n/* EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF     */\n/* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. */\n/* IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY   */\n/* CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,   *",
+        "/**************************************************************************/\n/*  message_queue.h                                                       */\n/**************************************************************************/\n/*                         This file is part of:                          */\n/*                             GODOT ENGINE                               */\n/*                        https://godotengine.org                         */\n/**************************************************************************/\n/* Copyright (c) 2014-present Godot Engine contributors (see AUTHORS.md). */\n/* Copyright (c) 2007-2014 Juan Linietsky, Ariel Manzur.                  */\n/*                                                                        */\n/* Permission is hereby granted, free of charge, to any person obtaining  */\n/* a copy of this software and associated documentation files (the        */\n/* \"Software\"), to deal in the Software without restriction, including    */\n/* without limitation the rights to use, copy, modify, merge, publish,    */\n/* distribute, sublicense, and/or sell copies of the Software, and to     */\n/* permit persons to whom the Software is furnished to do so, subject to  */\n/* the following conditions:                                              */\n/*                                                                        */\n/* The above copyright notice and this permission notice shall be         */\n/* included in all copies or substantial portions of the Software.        */\n/*                                                                        */\n/* THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,        */\n/* EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF     */\n/* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. */\n/* IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY   */\n/* CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,   *"
+      ],
+      "truncated": false,
+      "query": "message queue",
+      "gold": [
+        "MessageQueue"
+      ],
+      "arm": "baseline",
+      "run": 0,
+      "correct": 1,
+      "correct_retrieval": 1
+    },
+    {
+      "answer": "Godot core/ 中的消息队列相关符号：\n\n- **`MessageQueue`** — 主消息队列类（单例），位于 `object/message_queue.cpp`\n- **`CallQueue`** — 底层调用队列基类，`MessageQueue` 继承自它\n- **`CallQueue::flush()`** — 刷新/执行队列中缓存的方法调用\n- **`MessageQueue::push_call()`** / **`push_callable()`** / **`push_notification()`** — 将延迟调用/通知入队\n\n核心机制：`MessageQueue` 在帧末（或固定帧末）通过 `flush()` 统一执行排队的 `Object` 方法调用和通知，实现跨帧的延迟调用。",
+      "input_tokens": 575,
+      "output_tokens": 168,
+      "steps": 2,
+      "tool_calls": [
+        "cmm_search"
+      ],
+      "tool_texts": [
+        "- MessageQueue  (Users-ks_128-Documents-godot-src-core.object.message_queue.MessageQueue.MessageQueue)  object/message_queue.cpp\n- ~MessageQueue  (Users-ks_128-Documents-godot-src-core.object.message_queue.MessageQueue.~MessageQueue)  object/message_queue.cpp\n- CallQueue  (Users-ks_128-Documents-godot-src-core.object.message_queue.CallQueue.CallQueue)  object/message_queue.cpp\n- ~CallQueue  (Users-ks_128-Documents-godot-src-core.object.message_queue.CallQueue.~CallQueue)  object/message_queue.cpp\n- flush  (Users-ks_128-Documents-godot-src-core.object.message_queue.CallQueue.flush)  object/message_queue.cpp"
+      ],
+      "truncated": false,
+      "query": "message queue",
+      "gold": [
+        "MessageQueue"
+      ],
+      "arm": "kb",
+      "run": 0,
+      "correct": 1,
+      "correct_retrieval": 1
+    },
+    {
+      "answer": "您好！您的问题比较简略。您是想了解 Godot 引擎 core/ 代码库中的什么内容呢？例如：\n\n- **Engine 类**（`Engine`）—— 引擎核心单例，提供引擎版本、帧率等信息\n- **引擎主循环**（`MainLoop`）\n- **场景树**（`SceneTree`）\n- 其他特定模块？\n\n请补充一下您具体想查找的内容，我可以帮您定位相关的类、函数或方法名。",
+      "input_tokens": 64,
+      "output_tokens": 102,
+      "steps": 1,
+      "tool_calls": [],
+      "tool_texts": [],
+      "truncated": false,
+      "query": "engine",
+      "gold": [
+        "Engine"
+      ],
+      "arm": "baseline",
+      "run": 0,
+      "correct": 1,
+      "correct_retrieval": 1
+    },
+    {
+      "answer": "核心符号：\n\n- **`Engine`** — 定义于 `core/config/engine.cpp`，引擎主类，提供引擎级别的全局信息和控制。\n- **`Engine::print_header`** — 打印引擎头部信息。\n- **`Engine::add_singleton`** — 注册引擎单例对象。\n- **`core_bind::Engine`** — 定义于 `core_bind.h`，是 `Engine` 的脚本绑定包装类，暴露给 GDScript/脚本层使用。",
+      "input_tokens": 294,
+      "output_tokens": 112,
+      "steps": 2,
+      "tool_calls": [
+        "cmm_search"
+      ],
+      "tool_texts": [
+        "- Engine  (Users-ks_128-Documents-godot-src-core.config.engine.Engine.Engine)  config/engine.cpp\n- ~Engine  (Users-ks_128-Documents-godot-src-core.config.engine.Engine.~Engine)  config/engine.cpp\n- Engine  (Users-ks_128-Documents-godot-src-core.core_bind.Engine.Engine)  core_bind.h\n- print_header  (Users-ks_128-Documents-godot-src-core.config.engine.Engine.print_header)  config/engine.cpp\n- add_singleton  (Users-ks_128-Documents-godot-src-core.config.engine.Engine.add_singleton)  config/engine.cpp"
+      ],
+      "truncated": false,
+      "query": "engine",
+      "gold": [
+        "Engine"
+      ],
+      "arm": "kb",
+      "run": 0,
+      "correct": 1,
+      "correct_retrieval": 1
+    },
+    {
+      "answer": "Godot core/ 中与 main loop 相关的关键符号：\n\n- **`MainLoop`** — 定义于 `core/os/main_loop.h`，是引擎主循环的抽象基类。\n- **`OS`** — 定义于 `core/os/os.h`，持有并运行 `MainLoop` 实例（如 `OS::run()`）。\n- **`_Engine`** (core_bind) — 定义于 `core/core_bind.h`，通过脚本层暴露主循环相关接口。\n\n`MainLoop` 的核心虚方法包括：`input_event()`、`input_text()`、`init()`、`iteration()`、`finish()`。其最常见派生类是 `SceneTree`。",
+      "input_tokens": 454,
+      "output_tokens": 162,
+      "steps": 2,
+      "tool_calls": [
+        "grep_code"
+      ],
+      "tool_texts": [
+        "matched 3 files:\n/Users/ks_128/Documents/godot-src/core/os/os.h\n/Users/ks_128/Documents/godot-src/core/os/main_loop.h\n/Users/ks_128/Documents/godot-src/core/core_bind.h"
+      ],
+      "truncated": false,
+      "query": "main loop",
+      "gold": [
+        "MainLoop"
+      ],
+      "arm": "baseline",
+      "run": 0,
+      "correct": 1,
+      "correct_retrieval": 1
+    },
+    {
+      "answer": "Godot core/ 中与 main loop 相关的关键符号：\n\n- **`MainLoop`** — 核心主循环基类，定义于 `os/main_loop.h`\n  - `MainLoop::initialize()` — 初始化回调\n  - `MainLoop::process()` — 每帧处理回调\n  - `~MainLoop()` — 析构函数\n- **`Engine::get_main_loop()`** — 通过 `core_bind` 获取当前主循环实例\n- **`GDExtension::_register_main_loop_callbacks()`** — 扩展层注册自定义主循环回调\n\n`MainLoop` 是所有 Godot 主循环（如 `SceneTree`）的基类，由 `OS` 在启动时驱动。",
+      "input_tokens": 578,
+      "output_tokens": 168,
+      "steps": 2,
+      "tool_calls": [
+        "cmm_search"
+      ],
+      "tool_texts": [
+        "- ~MainLoop  (Users-ks_128-Documents-godot-src-core.os.main_loop.MainLoop.~MainLoop)  os/main_loop.h\n- get_main_loop  (Users-ks_128-Documents-godot-src-core.core_bind.Engine.get_main_loop)  core_bind.cpp\n- _register_main_loop_callbacks  (Users-ks_128-Documents-godot-src-core.extension.gdextension.GDExtension._register_main_loop_callbacks)  extension/gdextension.cpp\n- initialize  (Users-ks_128-Documents-godot-src-core.os.main_loop.MainLoop.initialize)  os/main_loop.cpp\n- process  (Users-ks_128-Documents-godot-src-core.os.main_loop.MainLoop.process)  os/main_loop.cpp"
+      ],
+      "truncated": false,
+      "query": "main loop",
+      "gold": [
+        "MainLoop"
+      ],
+      "arm": "kb",
+      "run": 0,
+      "correct": 1,
+      "correct_retrieval": 1
+    },
+    {
+      "answer": "Godot 的 UndoRedo 系统位于 `core/object/undo_redo.h` / `undo_redo.cpp`，核心符号如下：\n\n**类：**\n- `UndoRedo` — 继承自 `Object`，是撤销/重做的核心类。\n\n**关键枚举：**\n- `MergeMode` — 合并模式（`MERGE_DISABLE`, `MERGE_ENDS`, `MERGE_ALL`）\n\n**核心方法：**\n- `create_action()` — 开始一个操作组\n- `commit_action()` — 提交操作组\n- `add_do_method()` / `add_undo_method()` — 添加 do/undo 回调\n- `add_do_property()` / `add_undo_property()` — 添加属性修改\n- `add_do_reference()` / `add_undo_reference()` — 添加引用管理\n- `undo()` / `redo()` — 执行撤销/重做\n- `get_current_action_name()` — 获取当前操作名\n- `get_history_count()` — 获取历史记录数\n- `clear_history()` — 清空历史\n- `is_committing_action()` — 是否正在提交\n\n**相关编辑器类（editor/）：**\n- `EditorUndoRedoManager` — 编辑器级 UndoRedo 管理器",
+      "input_tokens": 1908,
+      "output_tokens": 352,
+      "steps": 4,
+      "tool_calls": [
+        "grep_code",
+        "grep_code",
+        "read_file",
+        "read_file"
+      ],
+      "tool_texts": [
+        "matched 1 files:\n/Users/ks_128/Documents/godot-src/core/object/undo_redo.h",
+        "matched 4 files:\n/Users/ks_128/Documents/godot-src/core/extension/gdextension_special_compat_hashes.cpp\n/Users/ks_128/Documents/godot-src/core/object/undo_redo.cpp\n/Users/ks_128/Documents/godot-src/core/object/undo_redo.h\n/Users/ks_128/Documents/godot-src/core/register_core_types.cpp",
+        "/**************************************************************************/\n/*  undo_redo.h                                                           */\n/**************************************************************************/\n/*                         This file is part of:                          */\n/*                             GODOT ENGINE                               */\n/*                        https://godotengine.org                         */\n/**************************************************************************/\n/* Copyright (c) 2014-present Godot Engine contributors (see AUTHORS.md). */\n/* Copyright (c) 2007-2014 Juan Linietsky, Ariel Manzur.                  */\n/*                                                                        */\n/* Permission is hereby granted, free of charge, to any person obtaining  */\n/* a copy of this software and associated documentation files (the        */\n/* \"Software\"), to deal in the Software without restriction, including    */\n/* without limitation the rights to use, copy, modify, merge, publish,    */\n/* distribute, sublicense, and/or sell copies of the Software, and to     */\n/* permit persons to whom the Software is furnished to do so, subject to  */\n/* the following conditions:                                              */\n/*                                                                        */\n/* The above copyright notice and this permission notice shall be         */\n/* included in all copies or substantial portions of the Software.        */\n/*                                                                        */\n/* THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,        */\n/* EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF     */\n/* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. */\n/* IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY   */\n/* CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,   *",
+        "/**************************************************************************/\n/*  undo_redo.h                                                           */\n/**************************************************************************/\n/*                         This file is part of:                          */\n/*                             GODOT ENGINE                               */\n/*                        https://godotengine.org                         */\n/**************************************************************************/\n/* Copyright (c) 2014-present Godot Engine contributors (see AUTHORS.md). */\n/* Copyright (c) 2007-2014 Juan Linietsky, Ariel Manzur.                  */\n/*                                                                        */\n/* Permission is hereby granted, free of charge, to any person obtaining  */\n/* a copy of this software and associated documentation files (the        */\n/* \"Software\"), to deal in the Software without restriction, including    */\n/* without limitation the rights to use, copy, modify, merge, publish,    */\n/* distribute, sublicense, and/or sell copies of the Software, and to     */\n/* permit persons to whom the Software is furnished to do so, subject to  */\n/* the following conditions:                                              */\n/*                                                                        */\n/* The above copyright notice and this permission notice shall be         */\n/* included in all copies or substantial portions of the Software.        */\n/*                                                                        */\n/* THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,        */\n/* EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF     */\n/* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. */\n/* IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY   */\n/* CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,   *"
+      ],
+      "truncated": false,
+      "query": "undo redo",
+      "gold": [
+        "UndoRedo"
+      ],
+      "arm": "baseline",
+      "run": 0,
+      "correct": 1,
+      "correct_retrieval": 1
+    },
+    {
+      "answer": "Godot 的撤销/重做系统核心类是 **`UndoRedo`**（定义在 `core/object/undo_redo.cpp`）。\n\n主要符号：\n\n- **`UndoRedo`** — 核心类，管理撤销/重做历史栈\n- **`create_action()`** — 开始一个可撤销操作\n- **`add_do_method()` / `add_undo_method()`** — 注册 do/undo 回调\n- **`commit_action()`** — 提交操作（执行 do 并压入历史）\n- **`undo()`** — 撤销上一步操作\n- **`redo()`** — 重做\n- **`clear_history()`** — 清空历史\n- **`get_history_count()`** — 获取历史记录数\n- **`_pop_history_tail()`** — 内部方法，弹出历史尾部（超出限制时）\n- **`_redo()`** — 内部实际执行重做逻辑\n\n此外，编辑器层面还有 **`EditorUndoRedoManager`** 用于多 `UndoRedo` 实例的统一管理。",
+      "input_tokens": 347,
+      "output_tokens": 248,
+      "steps": 2,
+      "tool_calls": [
+        "cmm_search"
+      ],
+      "tool_texts": [
+        "- clear_history  (Users-ks_128-Documents-godot-src-core.object.undo_redo.UndoRedo.clear_history)  object/undo_redo.cpp\n- _pop_history_tail  (Users-ks_128-Documents-godot-src-core.object.undo_redo.UndoRedo._pop_history_tail)  object/undo_redo.cpp\n- get_history_count  (Users-ks_128-Documents-godot-src-core.object.undo_redo.UndoRedo.get_history_count)  object/undo_redo.cpp\n- _redo  (Users-ks_128-Documents-godot-src-core.object.undo_redo.UndoRedo._redo)  object/undo_redo.cpp\n- redo  (Users-ks_128-Documents-godot-src-core.object.undo_redo.UndoRedo.redo)  object/undo_redo.cpp"
+      ],
+      "truncated": false,
+      "query": "undo redo",
+      "gold": [
+        "UndoRedo"
+      ],
+      "arm": "kb",
+      "run": 0,
+      "correct": 1,
+      "correct_retrieval": 1
+    },
+    {
+      "answer": "`NodePath` 类定义在：\n\n- **`core/string/node_path.h`** / **`core/string/node_path.cpp`**\n\n核心符号：\n\n- 类：`NodePath`\n- 主要方法：`get_name()`, `get_subname()`, `get_name_count()`, `get_subname_count()`, `is_absolute()`, `get_as_property_path()`, `get_concatenated_names()`, `get_concatenated_subnames()`\n- 在 `Object`（`core/object/object.h`）中通过 `get_node()` / `get_node_or_null()` 使用 `NodePath` 来查找节点\n- `NodePath` 作为 Variant 类型注册在 `core/variant/variant.h` 中（`Variant::NODE_PATH`）",
+      "input_tokens": 2197,
+      "output_tokens": 195,
+      "steps": 4,
+      "tool_calls": [
+        "grep_code",
+        "grep_code",
+        "grep_code"
+      ],
+      "tool_texts": [
+        "(no matches)",
+        "matched 20 files:\n/Users/ks_128/Documents/godot-src/core/extension/gdextension_interface.cpp\n/Users/ks_128/Documents/godot-src/core/extension/extension_api_dump.cpp\n/Users/ks_128/Documents/godot-src/core/io/resource_format_binary.cpp\n/Users/ks_128/Documents/godot-src/core/io/marshalls.cpp\n/Users/ks_128/Documents/godot-src/core/io/json.cpp\n/Users/ks_128/Documents/godot-src/core/object/object.cpp\n/Users/ks_128/Documents/godot-src/core/object/object.h\n/Users/ks_128/Documents/godot-src/core/object/script_language.cpp\n/Users/ks_128/Documents/godot-src/core/object/property_info.h\n/Users/ks_128/Documents/godot-src/core/variant/variant_op.cpp\n/Users/ks_128/Documents/godot-src/core/variant/variant_call.cpp\n/Users/ks_128/Documents/godot-src/core/variant/variant_destruct.h\n/Users/ks_128/Documents/godot-src/core/variant/variant_utility.cpp\n/Users/ks_128/Documents/godot-src/core/variant/variant_internal.h\n/Users/ks_128/Documents/godot-src/core/variant/variant_parser.cpp\n/Users/ks_128/Documents/godot-src/core/variant/variant_construct.h\n/Users/ks_128/Documents/godot-src/core/variant/method_ptrcall.h\n/Users/ks_128/Documents/godot-src/core/variant/variant.cpp\n/Users/ks_128/Documents/godot-src/core/variant/type_info.h\n/Users/ks_128/Documents/godot-src/core/variant/variant_destruct.cpp",
+        "matched 20 files:\n/Users/ks_128/Documents/godot-src/core/extension/gdextension_interface.cpp\n/Users/ks_128/Documents/godot-src/core/extension/extension_api_dump.cpp\n/Users/ks_128/Documents/godot-src/core/config/project_settings.cpp\n/Users/ks_128/Documents/godot-src/core/io/packed_data_container.cpp\n/Users/ks_128/Documents/godot-src/core/io/resource_format_binary.cpp\n/Users/ks_128/Documents/godot-src/core/io/marshalls.cpp\n/Users/ks_128/Documents/godot-src/core/io/json.cpp\n/Users/ks_128/Documents/godot-src/core/core_constants.cpp\n/Users/ks_128/Documents/godot-src/core/object/script_language.h\n/Users/ks_128/Documents/godot-src/core/object/script_language_extension.cpp\n/Users/ks_128/Documents/godot-src/core/object/property_info.h\n/Users/ks_128/Documents/godot-src/core/variant/variant_op.cpp\n/Users/ks_128/Documents/godot-src/core/variant/variant_utility.cpp\n/Users/ks_128/Documents/godot-src/core/variant/variant_internal.h\n/Users/ks_128/Documents/godot-src/core/variant/variant_parser.cpp\n/Users/ks_128/Documents/godot-src/core/variant/variant.cpp\n/Users/ks_128/Documents/godot-src/core/variant/type_info.h\n/Users/ks_128/Documents/godot-src/core/variant/variant.h\n/Users/ks_128/Documents/godot-src/core/string/node_path.cpp\n/Users/ks_128/Documents/godot-src/core/string/node_path.h"
+      ],
+      "truncated": false,
+      "query": "node path",
+      "gold": [
+        "NodePath"
+      ],
+      "arm": "baseline",
+      "run": 0,
+      "correct": 1,
+      "correct_retrieval": 1
+    },
+    {
+      "answer": "Godot 中 `NodePath` 的核心符号：\n\n- **类**：`NodePath`（定义于 `core/string/node_path.h`，实现在 `core/string/node_path.cpp`）\n- **构造/析构**：`NodePath::NodePath()`、`NodePath::~NodePath()`\n- **Variant 转换**：`Variant::operator NodePath() const`\n- **MethodDefinition**（`core/object/class_db.h`）用于在 ClassDB 中注册含 `NodePath` 参数的方法。\n\n`NodePath` 主要用于表示场景树中节点的路径（如 `\"Player/Arm/Sprite\"`），是 `Node::get_node()` 等方法的参数类型。",
+      "input_tokens": 327,
+      "output_tokens": 164,
+      "steps": 2,
+      "tool_calls": [
+        "cmm_search"
+      ],
+      "tool_texts": [
+        "- _ignore_definition  (Users-ks_128-Documents-godot-src-core.io.xml_parser.XMLParser._ignore_definition)  io/xml_parser.cpp\n- MethodDefinition  (Users-ks_128-Documents-godot-src-core.object.class_db.MethodDefinition.MethodDefinition)  object/class_db.h\n- NodePath  (Users-ks_128-Documents-godot-src-core.string.node_path.NodePath.NodePath)  string/node_path.cpp\n- ~NodePath  (Users-ks_128-Documents-godot-src-core.string.node_path.NodePath.~NodePath)  string/node_path.cpp\n- operator NodePath() const  (Users-ks_128-Documents-godot-src-core.variant.variant.Variant.operator NodePath() const)  variant/variant.cpp"
+      ],
+      "truncated": false,
+      "query": "node path",
+      "gold": [
+        "NodePath"
+      ],
+      "arm": "kb",
+      "run": 0,
+      "correct": 1,
+      "correct_retrieval": 1
+    },
+    {
+      "answer": "`StringName` 类定义在 **`core/string/string_name.h`**（实现在 `core/string/string_name.cpp`）。\n\n关键符号：\n\n- **`StringName`** — 核心类，一个全局驻留（interned）的字符串类型，用于高效比较（如属性名、信号名、方法名等）。\n- 内部数据结构：`StringName::Data` — 存储实际字符串内容和引用计数。\n- 构造方式：支持从 `const char*`、`String` 构造，也可用 `StaticKey` 路径避免死锁。\n- 全局表：通过静态哈希表管理所有驻留字符串实例，确保相同内容只存一份。\n- 相关辅助：`core/core_string_names.h` 中的 **`CoreStringNames`** 单例预定义了大量引擎内部常用的 `StringName`（如 `\"_ready\"`、`\"_process\"` 等）。",
+      "input_tokens": 3356,
+      "output_tokens": 280,
+      "steps": 6,
+      "tool_calls": [
+        "grep_code",
+        "grep_code",
+        "grep_code",
+        "grep_code",
+        "read_file"
+      ],
+      "tool_texts": [
+        "matched 3 files:\n/Users/ks_128/Documents/godot-src/core/variant/dictionary.h\n/Users/ks_128/Documents/godot-src/core/variant/array.h\n/Users/ks_128/Documents/godot-src/core/templates/a_hash_map.h",
+        "matched 20 files:\n/Users/ks_128/Documents/godot-src/core/extension/gdextension_resource_format.cpp\n/Users/ks_128/Documents/godot-src/core/extension/gdextension_interface.cpp\n/Users/ks_128/Documents/godot-src/core/extension/gdextension_special_compat_hashes.h\n/Users/ks_128/Documents/godot-src/core/extension/gdextension.cpp\n/Users/ks_128/Documents/godot-src/core/extension/extension_api_dump.cpp\n/Users/ks_128/Documents/godot-src/core/extension/gdextension_special_compat_hashes.cpp\n/Users/ks_128/Documents/godot-src/core/extension/gdextension.h\n/Users/ks_128/Documents/godot-src/core/extension/gdextension_resource_format.h\n/Users/ks_128/Documents/godot-src/core/config/project_settings.h\n/Users/ks_128/Documents/godot-src/core/config/engine.h\n/Users/ks_128/Documents/godot-src/core/config/project_settings.cpp\n/Users/ks_128/Documents/godot-src/core/config/engine.cpp\n/Users/ks_128/Documents/godot-src/core/input/shortcut.h\n/Users/ks_128/Documents/godot-src/core/input/input_event.h\n/Users/ks_128/Documents/godot-src/core/input/input.h\n/Users/ks_128/Documents/godot-src/core/input/input.cpp\n/Users/ks_128/Documents/godot-src/core/input/input_map.h\n/Users/ks_128/Documents/godot-src/core/input/input_map.cpp\n/Users/ks_128/Documents/godot-src/core/input/shortcut.cpp\n/Users/ks_128/Documents/godot-src/core/input/input_event.cpp",
+        "(no matches)",
+        "matched 13 files:\n/Users/ks_128/Documents/godot-src/core/extension/gdextension_special_compat_hashes.h\n/Users/ks_128/Documents/godot-src/core/config/engine.h\n/Users/ks_128/Documents/godot-src/core/object/gdtype.h\n/Users/ks_128/Documents/godot-src/core/core_string_names.h\n/Users/ks_128/Documents/godot-src/core/profiling/profiling.h\n/Users/ks_128/Documents/godot-src/core/debugger/engine_debugger.h\n/Users/ks_128/Documents/godot-src/core/debugger/script_debugger.h\n/Users/ks_128/Documents/godot-src/core/variant/callable.h\n/Users/ks_128/Documents/godot-src/core/core_constants.h\n/Users/ks_128/Documents/godot-src/core/string/string_name.cpp\n/Users/ks_128/Documents/godot-src/core/string/node_path.h\n/Users/ks_128/Documents/godot-src/core/string/string_name.h\n/Users/ks_128/Documents/godot-src/core/string/ustring.cpp",
+        "/**************************************************************************/\n/*  string_name.h                                                         */\n/**************************************************************************/\n/*                         This file is part of:                          */\n/*                             GODOT ENGINE                               */\n/*                        https://godotengine.org                         */\n/**************************************************************************/\n/* Copyright (c) 2014-present Godot Engine contributors (see AUTHORS.md). */\n/* Copyright (c) 2007-2014 Juan Linietsky, Ariel Manzur.                  */\n/*                                                                        */\n/* Permission is hereby granted, free of charge, to any person obtaining  */\n/* a copy of this software and associated documentation files (the        */\n/* \"Software\"), to deal in the Software without restriction, including    */\n/* without limitation the rights to use, copy, modify, merge, publish,    */\n/* distribute, sublicense, and/or sell copies of the Software, and to     */\n/* permit persons to whom the Software is furnished to do so, subject to  */\n/* the following conditions:                                              */\n/*                                                                        */\n/* The above copyright notice and this permission notice shall be         */\n/* included in all copies or substantial portions of the Software.        */\n/*                                                                        */\n/* THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,        */\n/* EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF     */\n/* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. */\n/* IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY   */\n/* CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,   *"
+      ],
+      "truncated": false,
+      "query": "string name",
+      "gold": [
+        "StringName"
+      ],
+      "arm": "baseline",
+      "run": 0,
+      "correct": 1,
+      "correct_retrieval": 1
+    },
+    {
+      "answer": "`StringName` — 定义在 `core/string/string_name.h`。\n\n它是 Godot 中用于**高效字符串比较和哈希**的类，核心特点：\n\n- **构造/析构**：`StringName()` / `~StringName()`\n- **不可变**：创建后内容不可更改，内部通过全局表做去重（interning）\n- **O(1) 比较**：比较的是指针而非字符内容\n- **与 `String` 互转**：可从 `String` 构造，也可隐式转回 `String`\n- **Variant 支持**：`Variant` 有 `operator StringName()` 转换\n\n广泛用于节点名、信号名、方法名、属性名等需要频繁比较字符串的场景。",
+      "input_tokens": 333,
+      "output_tokens": 175,
+      "steps": 2,
+      "tool_calls": [
+        "cmm_search"
+      ],
+      "tool_texts": [
+        "- StringName  (Users-ks_128-Documents-godot-src-core.string.string_name.StringName.StringName)  string/string_name.h\n- ~StringName  (Users-ks_128-Documents-godot-src-core.string.string_name.StringName.~StringName)  string/string_name.h\n- get_instance_class  (Users-ks_128-Documents-godot-src-core.object.method_bind.StringName.get_instance_class)  object/method_bind.h\n- operator StringName() const  (Users-ks_128-Documents-godot-src-core.variant.variant.Variant.operator StringName() const)  variant/variant.cpp\n- operator Vector<StringName>() const  (Users-ks_128-Documents-godot-src-core.variant.variant.Variant.operator Vector<StringName>() const)  variant/variant.cpp"
+      ],
+      "truncated": false,
+      "query": "string name",
+      "gold": [
+        "StringName"
+      ],
+      "arm": "kb",
+      "run": 0,
+      "correct": 1,
+      "correct_retrieval": 1
+    },
+    {
+      "answer": "Godot core/ 中的随机数生成器主要涉及以下符号：\n\n- **`RandomNumberGenerator`** — 对外暴露的类（`core/math/random_number_generator.h`），继承自 `Reference`，提供 `randi()`、`randf()`、`randi_range()`、`randf_range()`、`randomize()`、`set_seed()` 等方法。\n- **`RandomPCG`** — 底层 PCG 随机数实现类（`core/math/random_pcg.h`），`RandomNumberGenerator` 内部使用它。\n- **`Math`**（`core/math/math_funcs.h`）— 提供全局静态随机函数，如 `Math::rand()`、`Math::randf()`、`Math::random()`、`Math::rand_range()`，内部也依赖 `RandomPCG`。",
+      "input_tokens": 288,
+      "output_tokens": 210,
+      "steps": 2,
+      "tool_calls": [
+        "grep_code",
+        "grep_code"
+      ],
+      "tool_texts": [
+        "matched 1 files:\n/Users/ks_128/Documents/godot-src/core/math/random_number_generator.h",
+        "matched 6 files:\n/Users/ks_128/Documents/godot-src/core/io/resource.cpp\n/Users/ks_128/Documents/godot-src/core/io/resource_uid.cpp\n/Users/ks_128/Documents/godot-src/core/math/random_pcg.cpp\n/Users/ks_128/Documents/godot-src/core/math/math_funcs.cpp\n/Users/ks_128/Documents/godot-src/core/math/random_number_generator.h\n/Users/ks_128/Documents/godot-src/core/math/random_pcg.h"
+      ],
+      "truncated": false,
+      "query": "random number generator",
+      "gold": [
+        "RandomNumberGenerator"
+      ],
+      "arm": "baseline",
+      "run": 0,
+      "correct": 1,
+      "correct_retrieval": 1
+    },
+    {
+      "answer": "核心相关符号（位于 `math/random_number_generator.h`）：\n\n- **`RandomNumberGenerator`** — 类本身\n- **`randomize()`** — 随机化种子\n- **`randi()`** — 随机整数\n- **`randf()`** — 随机浮点数 [0, 1)\n- **`randfn()`** — 正态分布随机数",
+      "input_tokens": 335,
+      "output_tokens": 104,
+      "steps": 2,
+      "tool_calls": [
+        "cmm_search"
+      ],
+      "tool_texts": [
+        "- RandomNumberGenerator  (Users-ks_128-Documents-godot-src-core.math.random_number_generator.RandomNumberGenerator.RandomNumberGenerator)  math/random_number_generator.h\n- randomize  (Users-ks_128-Documents-godot-src-core.math.random_number_generator.RandomNumberGenerator.randomize)  math/random_number_generator.h\n- randi  (Users-ks_128-Documents-godot-src-core.math.random_number_generator.RandomNumberGenerator.randi)  math/random_number_generator.h\n- randf  (Users-ks_128-Documents-godot-src-core.math.random_number_generator.RandomNumberGenerator.randf)  math/random_number_generator.h\n- randfn  (Users-ks_128-Documents-godot-src-core.math.random_number_generator.RandomNumberGenerator.randfn)  math/random_number_generator.h"
+      ],
+      "truncated": false,
+      "query": "random number generator",
+      "gold": [
+        "RandomNumberGenerator"
+      ],
+      "arm": "kb",
+      "run": 0,
+      "correct": 1,
+      "correct_retrieval": 1
+    },
+    {
+      "answer": "Godot core/ 中 Crypto 相关的主要类和组件：\n\n**核心类：**\n- `Crypto` — 高层加密接口（`core/crypto/crypto.h`），提供 `generate_random_bytes()`、`generate_rsa()`、`generate_self_signed_certificate()` 等方法\n- `CryptoCore` — 底层加密原语（`core/crypto/crypto_core.h`），包含内部实现类：\n  - `CryptoCore::MD5Context`\n  - `CryptoCore::SHA1Context`\n  - `CryptoCore::SHA256Context`\n  - `CryptoCore::AESContext`\n\n**相关类：**\n- `HashingContext` — 哈希上下文（`core/crypto/hashing_context.cpp`）\n- `AESContext` — AES 加密上下文（`core/crypto/aes_context.h`）\n- `CryptoResourceLoader` — 加密资源加载器（`core/crypto/crypto_resource_format.h`）\n\n**IO 层使用 Crypto 的类：**\n- `StreamPeerTLS`、`PacketPeerDTLS` — TLS/DTLS 传输\n- `HTTPClient` / `HTTPClientTCP` — HTTPS 支持\n- `FileAccessEncrypted` — 加密文件访问",
+      "input_tokens": 1656,
+      "output_tokens": 322,
+      "steps": 3,
+      "tool_calls": [
+        "grep_code",
+        "grep_code",
+        "read_file",
+        "read_file"
+      ],
+      "tool_texts": [
+        "matched 2 files:\n/Users/ks_128/Documents/godot-src/core/crypto/crypto.h\n/Users/ks_128/Documents/godot-src/core/crypto/crypto_core.h",
+        "matched 20 files:\n/Users/ks_128/Documents/godot-src/core/crypto/hashing_context.cpp\n/Users/ks_128/Documents/godot-src/core/crypto/crypto_resource_format.cpp\n/Users/ks_128/Documents/godot-src/core/crypto/crypto_core.cpp\n/Users/ks_128/Documents/godot-src/core/crypto/crypto.h\n/Users/ks_128/Documents/godot-src/core/crypto/aes_context.h\n/Users/ks_128/Documents/godot-src/core/crypto/crypto_resource_format.h\n/Users/ks_128/Documents/godot-src/core/crypto/crypto_core.h\n/Users/ks_128/Documents/godot-src/core/crypto/crypto.cpp\n/Users/ks_128/Documents/godot-src/core/extension/gdextension_special_compat_hashes.cpp\n/Users/ks_128/Documents/godot-src/core/io/http_client_tcp.h\n/Users/ks_128/Documents/godot-src/core/io/http_client.h\n/Users/ks_128/Documents/godot-src/core/io/stream_peer_tls.h\n/Users/ks_128/Documents/godot-src/core/io/packet_peer_dtls.h\n/Users/ks_128/Documents/godot-src/core/io/file_access_encrypted.cpp\n/Users/ks_128/Documents/godot-src/core/io/resource_uid.h\n/Users/ks_128/Documents/godot-src/core/io/plist.cpp\n/Users/ks_128/Documents/godot-src/core/io/pck_packer.cpp\n/Users/ks_128/Documents/godot-src/core/io/resource_uid.cpp\n/Users/ks_128/Documents/godot-src/core/io/file_access.cpp\n/Users/ks_128/Documents/godot-src/core/io/file_access_encrypted.h",
+        "/**************************************************************************/\n/*  crypto.h                                                              */\n/**************************************************************************/\n/*                         This file is part of:                          */\n/*                             GODOT ENGINE                               */\n/*                        https://godotengine.org                         */\n/**************************************************************************/\n/* Copyright (c) 2014-present Godot Engine contributors (see AUTHORS.md). */\n/* Copyright (c) 2007-2014 Juan Linietsky, Ariel Manzur.                  */\n/*                                                                        */\n/* Permission is hereby granted, free of charge, to any person obtaining  */\n/* a copy of this software and associated documentation files (the        */\n/* \"Software\"), to deal in the Software without restriction, including    */\n/* without limitation the rights to use, copy, modify, merge, publish,    */\n/* distribute, sublicense, and/or sell copies of the Software, and to     */\n/* permit persons to whom the Software is furnished to do so, subject to  */\n/* the following conditions:                                              */\n/*                                                                        */\n/* The above copyright notice and this permission notice shall be         */\n/* included in all copies or substantial portions of the Software.        */\n/*                                                                        */\n/* THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,        */\n/* EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF     */\n/* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. */\n/* IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY   */\n/* CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,   *",
+        "/**************************************************************************/\n/*  crypto_core.h                                                         */\n/**************************************************************************/\n/*                         This file is part of:                          */\n/*                             GODOT ENGINE                               */\n/*                        https://godotengine.org                         */\n/**************************************************************************/\n/* Copyright (c) 2014-present Godot Engine contributors (see AUTHORS.md). */\n/* Copyright (c) 2007-2014 Juan Linietsky, Ariel Manzur.                  */\n/*                                                                        */\n/* Permission is hereby granted, free of charge, to any person obtaining  */\n/* a copy of this software and associated documentation files (the        */\n/* \"Software\"), to deal in the Software without restriction, including    */\n/* without limitation the rights to use, copy, modify, merge, publish,    */\n/* distribute, sublicense, and/or sell copies of the Software, and to     */\n/* permit persons to whom the Software is furnished to do so, subject to  */\n/* the following conditions:                                              */\n/*                                                                        */\n/* The above copyright notice and this permission notice shall be         */\n/* included in all copies or substantial portions of the Software.        */\n/*                                                                        */\n/* THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,        */\n/* EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF     */\n/* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. */\n/* IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY   */\n/* CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,   *"
+      ],
+      "truncated": false,
+      "query": "crypto",
+      "gold": [
+        "Crypto"
+      ],
+      "arm": "baseline",
+      "run": 0,
+      "correct": 1,
+      "correct_retrieval": 1
+    },
+    {
+      "answer": "Godot core/ 中的 crypto 相关符号：\n\n- **`HashingContext`** — 核心类，位于 `core/crypto/hashing_context.cpp`\n  - `start()` — 开始哈希计算\n  - `update()` — 更新哈希数据\n  - `finish()` — 完成并返回哈希结果\n  - `_create_ctx()` — 内部创建哈希上下文",
+      "input_tokens": 586,
+      "output_tokens": 100,
+      "steps": 2,
+      "tool_calls": [
+        "cmm_search"
+      ],
+      "tool_texts": [
+        "- ~HashingContext  (Users-ks_128-Documents-godot-src-core.crypto.hashing_context.HashingContext.~HashingContext)  crypto/hashing_context.cpp\n- start  (Users-ks_128-Documents-godot-src-core.crypto.hashing_context.HashingContext.start)  crypto/hashing_context.cpp\n- update  (Users-ks_128-Documents-godot-src-core.crypto.hashing_context.HashingContext.update)  crypto/hashing_context.cpp\n- finish  (Users-ks_128-Documents-godot-src-core.crypto.hashing_context.HashingContext.finish)  crypto/hashing_context.cpp\n- _create_ctx  (Users-ks_128-Documents-godot-src-core.crypto.hashing_context.HashingContext._create_ctx)  crypto/hashing_context.cpp"
+      ],
+      "truncated": false,
+      "query": "crypto",
+      "gold": [
+        "Crypto"
+      ],
+      "arm": "kb",
+      "run": 0,
+      "correct": 1,
+      "correct_retrieval": 1
+    },
+    {
+      "answer": "`TranslationServer` 类定义在 **`core/string/translation_server.h`** / **`translation_server.cpp`** 中。\n\n关键符号：\n\n- **类**: `TranslationServer`（继承自 `Object`，单例）\n- **核心方法**:\n  - `translate()` / `translate_plural()` — 翻译接口\n  - `set_locale()` / `get_locale()` — 设置/获取当前语言\n  - `add_translation()` / `remove_translation()` — 注册/移除 `Translation` 资源\n  - `clear()` — 清除所有翻译\n  - `get_loaded_locales()` — 获取已加载的语言列表\n- **关联类型**:\n  - `TranslationDomain`（`core/string/translation_domain.h`）— 翻译域，实际承载翻译查找逻辑\n  - `Translation`（`core/string/translation.h`）— 翻译资源基类\n  - `TranslationPO` — PO 格式翻译资源",
+      "input_tokens": 1165,
+      "output_tokens": 261,
+      "steps": 3,
+      "tool_calls": [
+        "grep_code",
+        "grep_code",
+        "read_file"
+      ],
+      "tool_texts": [
+        "matched 1 files:\n/Users/ks_128/Documents/godot-src/core/string/translation_server.h",
+        "matched 10 files:\n/Users/ks_128/Documents/godot-src/core/extension/gdextension_special_compat_hashes.cpp\n/Users/ks_128/Documents/godot-src/core/io/resource_loader.cpp\n/Users/ks_128/Documents/godot-src/core/object/object.cpp\n/Users/ks_128/Documents/godot-src/core/string/translation_domain.h\n/Users/ks_128/Documents/godot-src/core/string/translation_domain.cpp\n/Users/ks_128/Documents/godot-src/core/string/translation_server.cpp\n/Users/ks_128/Documents/godot-src/core/string/translation_server.h\n/Users/ks_128/Documents/godot-src/core/string/translation.cpp\n/Users/ks_128/Documents/godot-src/core/string/ustring.cpp\n/Users/ks_128/Documents/godot-src/core/register_core_types.cpp",
+        "/**************************************************************************/\n/*  translation_server.h                                                  */\n/**************************************************************************/\n/*                         This file is part of:                          */\n/*                             GODOT ENGINE                               */\n/*                        https://godotengine.org                         */\n/**************************************************************************/\n/* Copyright (c) 2014-present Godot Engine contributors (see AUTHORS.md). */\n/* Copyright (c) 2007-2014 Juan Linietsky, Ariel Manzur.                  */\n/*                                                                        */\n/* Permission is hereby granted, free of charge, to any person obtaining  */\n/* a copy of this software and associated documentation files (the        */\n/* \"Software\"), to deal in the Software without restriction, including    */\n/* without limitation the rights to use, copy, modify, merge, publish,    */\n/* distribute, sublicense, and/or sell copies of the Software, and to     */\n/* permit persons to whom the Software is furnished to do so, subject to  */\n/* the following conditions:                                              */\n/*                                                                        */\n/* The above copyright notice and this permission notice shall be         */\n/* included in all copies or substantial portions of the Software.        */\n/*                                                                        */\n/* THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,        */\n/* EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF     */\n/* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. */\n/* IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY   */\n/* CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,   *"
+      ],
+      "truncated": false,
+      "query": "translation server",
+      "gold": [
+        "TranslationServer"
+      ],
+      "arm": "baseline",
+      "run": 0,
+      "correct": 1,
+      "correct_retrieval": 1
+    },
+    {
+      "answer": "`TranslationServer`（定义于 `core/string/translation_server.cpp`）\n\n主要方法：\n- `add_translation`\n- `remove_translation`\n- `has_translation`\n- `get_translation_object`\n\n此外还提供 `translate`、`set_locale`、`get_locale` 等本地化相关接口，是 Godot 引擎的翻译/本地化管理核心单例。",
+      "input_tokens": 584,
+      "output_tokens": 92,
+      "steps": 2,
+      "tool_calls": [
+        "cmm_search"
+      ],
+      "tool_texts": [
+        "- TranslationServer  (Users-ks_128-Documents-godot-src-core.string.translation_server.TranslationServer.TranslationServer)  string/translation_server.cpp\n- add_translation  (Users-ks_128-Documents-godot-src-core.string.translation_server.TranslationServer.add_translation)  string/translation_server.cpp\n- remove_translation  (Users-ks_128-Documents-godot-src-core.string.translation_server.TranslationServer.remove_translation)  string/translation_server.cpp\n- has_translation  (Users-ks_128-Documents-godot-src-core.string.translation_server.TranslationServer.has_translation)  string/translation_server.cpp\n- get_translation_object  (Users-ks_128-Documents-godot-src-core.string.translation_server.TranslationServer.get_translation_object)  string/translation_server.cpp"
+      ],
+      "truncated": false,
+      "query": "translation server",
+      "gold": [
+        "TranslationServer"
+      ],
+      "arm": "kb",
+      "run": 0,
+      "correct": 1,
+      "correct_retrieval": 1
+    },
+    {
+      "answer": "Godot core/ 中 HTTP Client 相关的主要符号：\n\n- **`HTTPClient`** — 基类（抽象接口），定义于 `core/io/http_client.h`\n- **`HTTPClientTCP`** — TCP 实现，定义于 `core/io/http_client_tcp.h`\n- **`HTTPClient::Status`** — 枚举，表示连接状态（`STATUS_DISCONNECTED`, `STATUS_RESOLVING`, `STATUS_CONNECTING`, `STATUS_CONNECTED`, `STATUS_REQUESTING`, `STATUS_BODY`, `STATUS_CONNECTION_ERROR`, `STATUS_CANT_CONNECT`, `STATUS_CANT_RESOLVE`）\n- **`HTTPClient::ResponseCode`** — 枚举，HTTP 响应码\n- 关键方法：`connect_to_host()`, `request()`, `get_response_code()`, `get_response_headers()`, `read_response_body_chunk()`, `poll()`, `close()`\n\n此外还有 `core/io/http_client_proxy.h` 中的 **`HTTPClientProxy`**（代理支持）。",
+      "input_tokens": 1350,
+      "output_tokens": 265,
+      "steps": 4,
+      "tool_calls": [
+        "grep_code",
+        "read_file",
+        "read_file"
+      ],
+      "tool_texts": [
+        "matched 2 files:\n/Users/ks_128/Documents/godot-src/core/io/http_client_tcp.h\n/Users/ks_128/Documents/godot-src/core/io/http_client.h",
+        "(read error: [Errno 2] No such file or directory: 'core/io/http_client.h')",
+        "/**************************************************************************/\n/*  http_client.h                                                         */\n/**************************************************************************/\n/*                         This file is part of:                          */\n/*                             GODOT ENGINE                               */\n/*                        https://godotengine.org                         */\n/**************************************************************************/\n/* Copyright (c) 2014-present Godot Engine contributors (see AUTHORS.md). */\n/* Copyright (c) 2007-2014 Juan Linietsky, Ariel Manzur.                  */\n/*                                                                        */\n/* Permission is hereby granted, free of charge, to any person obtaining  */\n/* a copy of this software and associated documentation files (the        */\n/* \"Software\"), to deal in the Software without restriction, including    */\n/* without limitation the rights to use, copy, modify, merge, publish,    */\n/* distribute, sublicense, and/or sell copies of the Software, and to     */\n/* permit persons to whom the Software is furnished to do so, subject to  */\n/* the following conditions:                                              */\n/*                                                                        */\n/* The above copyright notice and this permission notice shall be         */\n/* included in all copies or substantial portions of the Software.        */\n/*                                                                        */\n/* THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,        */\n/* EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF     */\n/* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. */\n/* IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY   */\n/* CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,   *"
+      ],
+      "truncated": false,
+      "query": "http client",
+      "gold": [
+        "HTTPClient"
+      ],
+      "arm": "baseline",
+      "run": 0,
+      "correct": 1,
+      "correct_retrieval": 1
+    },
+    {
+      "answer": "Godot core/ 中的 HTTP 客户端实现：\n\n- **`HTTPClient`** — 核心类，定义于 `io/http_client.h` / `io/http_client.cpp`\n- 主要方法/符号：\n  - `HTTPClient::create` — 创建实例\n  - `HTTPClient::_request` — 发送 HTTP 请求\n  - `HTTPClient::_request_raw` — 发送原始 HTTP 请求\n  - `HTTPClient::verify_headers` — 校验请求头\n  - `~HTTPClient` — 析构函数",
+      "input_tokens": 575,
+      "output_tokens": 133,
+      "steps": 2,
+      "tool_calls": [
+        "cmm_search"
+      ],
+      "tool_texts": [
+        "- ~HTTPClient  (Users-ks_128-Documents-godot-src-core.io.http_client.HTTPClient.~HTTPClient)  io/http_client.h\n- create  (Users-ks_128-Documents-godot-src-core.io.http_client.HTTPClient.create)  io/http_client.cpp\n- _request  (Users-ks_128-Documents-godot-src-core.io.http_client.HTTPClient._request)  io/http_client.cpp\n- _request_raw  (Users-ks_128-Documents-godot-src-core.io.http_client.HTTPClient._request_raw)  io/http_client.cpp\n- verify_headers  (Users-ks_128-Documents-godot-src-core.io.http_client.HTTPClient.verify_headers)  io/http_client.cpp"
+      ],
+      "truncated": false,
+      "query": "http client",
+      "gold": [
+        "HTTPClient"
+      ],
+      "arm": "kb",
+      "run": 0,
+      "correct": 1,
+      "correct_retrieval": 1
+    }
+  ],
+  "lockfile": {
+    "temperature": 0.0,
+    "llm_model": "",
+    "cmm_version": "0.8.1",
+    "graphify_version": "0.8.46",
+    "mem0_version": "",
+    "mempalace_version": "3.5.0"
+  },
+  "archive_meta": {
+    "id": "20260711T120018Z-ab-agent-stage1-godot-stage1-r1",
+    "ts": "20260711T120018Z",
+    "readable_ts": "2026-07-11 20:00:18 +0800",
+    "path": "eval/reports/archive/20260711T120018Z-ab-agent-stage1-godot-stage1-r1.json"
+  }
+}

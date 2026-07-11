@@ -121,6 +121,52 @@
         "naive_per_file_cap_chars": 4000
       },
       "path": "eval/reports/archive/20260711T110417Z-ab-value-stage0-godot-stage0.json"
+    },
+    {
+      "id": "20260711T120018Z-ab-agent-stage1-godot-stage1-r1",
+      "ts": "20260711T120018Z",
+      "readable_ts": "2026-07-11 20:00:18 +0800",
+      "subject": "ab-agent-stage1",
+      "variant": "godot-stage1-r1",
+      "target": "godot",
+      "n": 0,
+      "lockfile": {
+        "temperature": 0.0,
+        "llm_model": "",
+        "cmm_version": "0.8.1",
+        "graphify_version": "0.8.46",
+        "mem0_version": "",
+        "mempalace_version": "3.5.0"
+      },
+      "aggregate": {
+        "baseline": {
+          "accuracy": 0.923,
+          "accuracy_retrieval": 0.923,
+          "mean_input_tokens": 1359.8,
+          "mean_output_tokens": 264.9,
+          "mean_total_tokens": 1624.7,
+          "mean_steps": 3.42,
+          "truncated_count": 1,
+          "token_per_correct": 1760.1,
+          "n_episodes": 26
+        },
+        "kb": {
+          "accuracy": 0.923,
+          "accuracy_retrieval": 0.923,
+          "mean_input_tokens": 506.7,
+          "mean_output_tokens": 181.6,
+          "mean_total_tokens": 688.2,
+          "mean_steps": 2.12,
+          "truncated_count": 0,
+          "token_per_correct": 745.6,
+          "n_episodes": 26
+        },
+        "delta_accuracy_kb_minus_baseline": 0.0,
+        "delta_accuracy_retrieval_kb_minus_baseline": 0.0,
+        "delta_total_tokens_kb_minus_baseline": -936.5,
+        "delta_steps_kb_minus_baseline": -1.3
+      },
+      "path": "eval/reports/archive/20260711T120018Z-ab-agent-stage1-godot-stage1-r1.json"
     }
   ]
 }
