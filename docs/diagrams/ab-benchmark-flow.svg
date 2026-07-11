@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 740" width="1200" height="740">
+  <style>text{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}</style>
+  <defs><marker id="ar" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><polygon points="0 0,9 4.5,0 9" fill="#5a5a5a"/></marker>
+  <filter id="sh"><feDropShadow dx="0" dy="2" stdDeviation="5" flood-color="#00000010"/></filter></defs>
+  <rect width="1200" height="740" fill="#f8f6f3"/>
+  <text x="600" y="38" text-anchor="middle" fill="#1a1a1a" font-size="20" font-weight="700">Agent A/B Benchmark · 有 KB vs 无 KB（gold_godot 26 题）</text>
+  <rect x="470" y="62" width="260" height="58" rx="12" fill="#a8c5e6" stroke="#4a4a4a" stroke-width="2.5" filter="url(#sh)"/>
+  <text x="600" y="88" text-anchor="middle" fill="#1a1a1a" font-size="15" font-weight="600">gold_godot（26 题代码定位）</text>
+  <text x="600" y="108" text-anchor="middle" fill="#3a3a3a" font-size="12">NL 问题 → 符号 gold · 零 LLM judge</text>
+  <line x1="600" y1="120" x2="600" y2="150" stroke="#5a5a5a" stroke-width="2" marker-end="url(#ar)"/>
+  <rect x="300" y="152" width="600" height="92" rx="12" fill="#f4e4c1" stroke="#4a4a4a" stroke-width="2.5" filter="url(#sh)"/>
+  <text x="600" y="180" text-anchor="middle" fill="#1a1a1a" font-size="16" font-weight="600">Stage 0 · token 代理（零 LLM）</text>
+  <text x="600" y="204" text-anchor="middle" fill="#3a3a3a" font-size="13">KB 注入 ~195 tok vs 朴素 grep+读 ~1750 tok</text>
+  <text x="600" y="226" text-anchor="middle" fill="#3a3a3a" font-size="13">→ 压缩 12.7× · kb_hit@5=0.846 · grep 盲区 7/26（救回 5）</text>
+  <line x1="600" y1="244" x2="600" y2="276" stroke="#5a5a5a" stroke-width="2" marker-end="url(#ar)"/>
+  <rect x="300" y="278" width="600" height="46" rx="12" fill="#9dd4c7" stroke="#4a4a4a" stroke-width="2.5" filter="url(#sh)"/>
+  <text x="600" y="306" text-anchor="middle" fill="#1a1a1a" font-size="16" font-weight="600">Stage 1 · 真跑 agent loop（glm-5.x · temp=0 · 注册表 ab_tools）</text>
+  <line x1="600" y1="324" x2="180" y2="372" stroke="#5a5a5a" stroke-width="2" marker-end="url(#ar)"/>
+  <line x1="600" y1="324" x2="480" y2="372" stroke="#5a5a5a" stroke-width="2" marker-end="url(#ar)"/>
+  <line x1="600" y1="324" x2="780" y2="372" stroke="#5a5a5a" stroke-width="2" marker-end="url(#ar)"/>
+  <line x1="600" y1="324" x2="1040" y2="372" stroke="#5a5a5a" stroke-width="2" marker-end="url(#ar)"/>
+  <rect x="65" y="374" width="230" height="180" rx="12" fill="#e8e6e3" stroke="#4a4a4a" stroke-width="2.5" filter="url(#sh)"/>
+  <text x="180" y="402" text-anchor="middle" fill="#1a1a1a" font-size="15" font-weight="600">baseline</text>
+  <text x="180" y="424" text-anchor="middle" fill="#3a3a3a" font-size="12">grep + read_file</text>
+  <text x="180" y="460" text-anchor="middle" fill="#1a1a1a" font-size="14" font-weight="700">acc 0.923</text>
+  <text x="180" y="484" text-anchor="middle" fill="#3a3a3a" font-size="12">1625 tok · 3.42 步</text>
+  <text x="180" y="524" text-anchor="middle" fill="#5a5a5a" font-size="11" font-style="italic">baseline 朴素检索</text>
+  <rect x="365" y="374" width="230" height="180" rx="12" fill="#e8e6e3" stroke="#4a4a4a" stroke-width="2.5" filter="url(#sh)"/>
+  <text x="480" y="402" text-anchor="middle" fill="#1a1a1a" font-size="15" font-weight="600">kb</text>
+  <text x="480" y="424" text-anchor="middle" fill="#3a3a3a" font-size="12">cmm + read_file</text>
+  <text x="480" y="460" text-anchor="middle" fill="#1a1a1a" font-size="14" font-weight="700">acc 0.923</text>
+  <text x="480" y="484" text-anchor="middle" fill="#3a3a3a" font-size="12">688 tok · 2.12 步</text>
+  <text x="480" y="524" text-anchor="middle" fill="#5a5a5a" font-size="11" font-style="italic">省 58% token（最省）</text>
+  <rect x="665" y="374" width="230" height="180" rx="12" fill="#e8e6e3" stroke="#4a4a4a" stroke-width="2.5" filter="url(#sh)"/>
+  <text x="780" y="402" text-anchor="middle" fill="#1a1a1a" font-size="15" font-weight="600">doc</text>
+  <text x="780" y="424" text-anchor="middle" fill="#3a3a3a" font-size="12">graphify + read_file</text>
+  <text x="780" y="460" text-anchor="middle" fill="#1a1a1a" font-size="14" font-weight="700">acc 0.346</text>
+  <text x="780" y="484" text-anchor="middle" fill="#3a3a3a" font-size="12">1961 tok · trunc 17</text>
+  <text x="780" y="524" text-anchor="middle" fill="#5a5a5a" font-size="11" font-style="italic">doc→code 锚定缺口</text>
+  <rect x="925" y="374" width="230" height="180" rx="12" fill="#9dd4c7" stroke="#4a4a4a" stroke-width="2.5" filter="url(#sh)"/>
+  <text x="1040" y="402" text-anchor="middle" fill="#1a1a1a" font-size="15" font-weight="600">codegraph</text>
+  <text x="1040" y="424" text-anchor="middle" fill="#3a3a3a" font-size="12">codegraph + read</text>
+  <text x="1040" y="460" text-anchor="middle" fill="#1a1a1a" font-size="14" font-weight="700">acc 0.962</text>
+  <text x="1040" y="484" text-anchor="middle" fill="#3a3a3a" font-size="12">865 tok · 2.15 步</text>
+  <text x="1040" y="524" text-anchor="middle" fill="#5a5a5a" font-size="11" font-style="italic">最准（救回 delete obj）</text>
+  <line x1="180" y1="554" x2="600" y2="600" stroke="#5a5a5a" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#ar)"/>
+  <line x1="480" y1="554" x2="600" y2="600" stroke="#5a5a5a" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#ar)"/>
+  <line x1="780" y1="554" x2="600" y2="600" stroke="#5a5a5a" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#ar)"/>
+  <line x1="1040" y1="554" x2="600" y2="600" stroke="#5a5a5a" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#ar)"/>
+  <rect x="430" y="602" width="340" height="58" rx="12" fill="#f4e4c1" stroke="#4a4a4a" stroke-width="2.5" filter="url(#sh)"/>
+  <text x="600" y="628" text-anchor="middle" fill="#1a1a1a" font-size="15" font-weight="600">归档留底 + 报告（reports/ab-agent-stage1）</text>
+  <text x="600" y="648" text-anchor="middle" fill="#3a3a3a" font-size="12">每臂 aggregate · per_query trace · lockfile</text>
+  <text x="600" y="700" text-anchor="middle" fill="#1a1a1a" font-size="13" font-weight="600">结论：KB 价值 = 省 token（cmm -58%）+ 概念题补救；准确度天花板由 baseline 触顶</text>
+  <text x="600" y="720" text-anchor="middle" fill="#6a6a6a" font-size="11">注册表 ab_tools：接新 KB = executor + register + 挂臂，loop/判分零改</text>
+</svg>
