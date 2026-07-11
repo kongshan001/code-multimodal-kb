@@ -137,6 +137,16 @@ def _cmd_goldgen_fold(args) -> int:
     return 0
 
 
+def _cmd_goldgen_verify(args) -> int:
+    """独立实证验收：标 verdict/reason 进 pending（人审前 vet 歧义/错配）。"""
+    from eval.goldgen import verify_pending, pending_path
+    res = verify_pending(args.target, args.root)
+    print(f"验收 {res['n']} 题：实证 pass {res['pass']} / 需人审 {res['review']}")
+    print(f"已标 verdict/reason → {pending_path(args.target)}")
+    print("人审（重点看 review 的）后跑: bench goldgen-fold --target " + args.target)
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(prog="bench", description="engineer_demo benchmark 运行器")
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -182,6 +192,11 @@ def main(argv: list[str] | None = None) -> int:
     gf = sub.add_parser("goldgen-fold", help="把审核后的 gold_pending fold 进 gold_<target>.py")
     gf.add_argument("--target", required=True)
 
+    # goldgen-verify --target X：独立实证验收（人审前自动 vet）
+    gv = sub.add_parser("goldgen-verify", help="独立实证验收：标 verdict/reason 进 pending（人审前 vet）")
+    gv.add_argument("--target", required=True)
+    gv.add_argument("--root", default="/Users/ks_128/Documents/godot-src/core")
+
     args = ap.parse_args(argv)
     if args.cmd == "run":
         return _cmd_run(args)
@@ -195,6 +210,8 @@ def main(argv: list[str] | None = None) -> int:
         return _cmd_goldgen(args)
     if args.cmd == "goldgen-fold":
         return _cmd_goldgen_fold(args)
+    if args.cmd == "goldgen-verify":
+        return _cmd_goldgen_verify(args)
     return 2
 
 

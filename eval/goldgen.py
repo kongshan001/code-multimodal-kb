@@ -1,16 +1,20 @@
-"""Gold 生成器：symbol-driven 挖掘 + 人审 query（低成本扩题库）。
+"""Gold 生成器：symbol-driven 挖掘 + 两层自动验收 + 人审（低成本扩题库）。
 
-流程：人给范围（seed 词 / 目录）→ codegraph 枚举真实符号 → LLM 为每个符号拟 NL 问题 →
-写审核队列文件 → 人审（删/改）→ fold 进 gold_<target>.py。
+**4 阶段流程**（人审前过两层自动 vet）：
+  1. generate：人给范围（seed 词 / 目录）→ codegraph 枚举真实符号 → LLM 拟 NL 问题
+     （gold = 符号，构造即正确，零 LLM judge）→ 写审核队列
+  2. 实证 verify（bench goldgen-verify）：codegraph 查同名歧义 + 检索可达，标 verdict/reason
+  3. 独立 subagent 验收（主 agent spawn）：判 NL query↔gold 语义匹配（实证做不到的，抓错配/前提错）
+  4. 人审（删/改）→ fold 进 gold_<target>.py
 
-**成本分离（关键）**：
-- gold = 真实符号（codegraph 自证存在，**构造即正确，零 LLM judge**）
-- LLM 只拟 query 措辞（它擅长、错了人审）
-- 人只审 query 是否清晰无歧义（~10 秒/条，review ≪ author）
+**两层验收互补**：实证层抓歧义 gold（grounded，零 LLM）；subagent 抓语义错配（如 query 说"数学
+向量"但 gold=Vector 动态数组、或前提事实错）。人只做最终拍板。
 
 用法：
   bench goldgen <seed> [--seed S2 ...] --target godot [--dir core/math] [--n 20]
-  bench goldgen-fold --target godot
+  bench goldgen-verify --target godot        # 实证验收（自动 vet）
+  # 主 agent spawn 独立 subagent 做语义验收（见上面流程 3）
+  bench goldgen-fold --target godot          # 人审后入库
 """
 from __future__ import annotations
 
@@ -104,6 +108,65 @@ def phrase_query(symbol: dict, client, model: str) -> str:
 
 # ── 审核队列文件 ──────────────────────────────────────────────────────────
 
+def _norm(s: str) -> str:
+    return "".join(c.lower() for c in str(s) if c.isalnum())
+
+
+def ambiguity_check(name: str, root: str = DEFAULT_ROOT) -> dict:
+    """gold 名是否同名多【不同模块】的符号（broad 判分会撞）。
+    method+class 同符号（.h 声明 + .cpp 定义 = 同模块）不算歧义；
+    不同模块出现同名（Color 在 math/color + rb_map + variant）才算。"""
+    hits = _codegraph_query(name, root, 15)
+    exact = [h for h in hits if _norm(h["name"]) == _norm(name)]
+    # 按模块（basename 去扩展名）归并：resource_uid.h/.cpp → "resource_uid" 同模块
+    modules = sorted({os.path.splitext(os.path.basename(h["file"]))[0] for h in exact if h["file"]})
+    kinds = sorted({h["kind"] for h in exact})
+    return {"ambiguous": len(modules) > 1, "modules": modules,
+            "kinds": kinds, "n_hits": len(exact)}
+
+
+def retrieval_check(query: str, gold: str, root: str = DEFAULT_ROOT) -> dict:
+    """query 能否检索到 gold。codegraph（词面）+ cmm（语义，best-effort 容冷启动）。"""
+    gn = _norm(gold)
+    # codegraph（词面，对 NL 弱但对术语强）
+    cg_names = {_norm(r["name"]) for r in _codegraph_query(query, root, 8)}
+    cg_hit = any(gn and gn in n for n in cg_names) or gn in cg_names
+    # cmm 语义（best-effort，冷启动容错）
+    cmm_hit = False
+    try:
+        from eval.subjects import cmm_bm25, norm_item
+        for r in cmm_bm25(_CMM_PROJ_FALLBACK, query, 8):
+            if isinstance(r, dict) and gn and gn in _norm(norm_item(r).get("node", "")):
+                cmm_hit = True
+                break
+    except Exception:
+        pass  # cmm 冷启动/未装 → 仅靠 codegraph
+    return {"retrievable": cg_hit or cmm_hit, "via_codegraph": cg_hit, "via_cmm": cmm_hit}
+
+
+def verify_candidate(candidate: dict, root: str = DEFAULT_ROOT) -> dict:
+    """实证验收（零 LLM）：可靠信号 = gold 是否同名歧义（不同模块同名→broad 判分会撞）。
+    retrieval 仅信息项——NL/中文 query 词面检索本就够不着符号名，不代表错配（NL 匹配交 subagent 判）。
+    """
+    gold = candidate["gold"][0] if candidate.get("gold") else ""
+    amb = ambiguity_check(gold, root)
+    ret = retrieval_check(candidate.get("query", ""), gold, root)
+    reasons = []
+    if amb["ambiguous"]:
+        reasons.append(f"gold `{gold}` 同名多模块 modules={amb['modules']}（歧义，broad 判分会撞）")
+    if ret["retrievable"]:
+        reasons.append(f"实证检索到 gold（via codegraph={ret['via_codegraph']}/cmm={ret['via_cmm']}）")
+    else:
+        reasons.append("NL query 词面未直接命中（正常，NL↔gold 匹配交 subagent 判）")
+    verdict = "review" if amb["ambiguous"] else "pass"
+    return {"verdict": verdict, "ambiguous": amb["ambiguous"],
+            "retrievable": ret["retrievable"], "reason": "; ".join(reasons)}
+
+
+# cmm 项目名（retrieval_check 用；与 ab_tools.CMM_PROJECT 同值，这里独立声明避循环导入）
+_CMM_PROJ_FALLBACK = "Users-ks-128-Documents-godot-src-core"
+
+
 def generate(seeds: list[str], target: str, client, model: str,
              root: str = DEFAULT_ROOT, n: int = 20) -> dict:
     """编排：seed → 枚举符号 → LLM 拟题 → 写审核队列。返 {symbols, candidates, pending_path}。"""
@@ -161,6 +224,42 @@ def parse_pending(target: str) -> list[tuple[str, list[str]]]:
                 gold = [gm.group(1).strip().strip('"')]
             out.append((qm.group(1).strip(), gold))
     return out
+
+
+def verify_pending(target: str, root: str = DEFAULT_ROOT) -> dict:
+    """独立 subagent/实证 验收：对 pending 每个 candidate 算 verdict，回写 `- verdict:` / `- reason:` 行。
+    在人审前自动 vet（catches 歧义 gold + query↔gold 错配）。返回 {n, pass, review}。"""
+    p = pending_path(target)
+    if not os.path.exists(p):
+        return {"n": 0, "pass": 0, "review": 0}
+    text = open(p, encoding="utf-8").read()
+    header, *rest = re.split(r"^(## candidate\s*)$", text, flags=re.MULTILINE)
+    # rest 交替：[marker, block, marker, block, ...]
+    npass = nreview = 0
+    out = [header]
+    for i in range(0, len(rest), 2):
+        marker = rest[i] if i < len(rest) else ""
+        block = rest[i + 1] if i + 1 < len(rest) else ""
+        qm = re.search(r"^-\s*query:\s*(.+)$", block, re.MULTILINE)
+        gm = re.search(r"^-\s*gold:\s*(.+)$", block, re.MULTILINE)
+        if qm and gm:
+            try:
+                gold = json.loads(gm.group(1).strip())
+            except json.JSONDecodeError:
+                gold = [gm.group(1).strip().strip('"')]
+            v = verify_candidate({"query": qm.group(1).strip(), "gold": gold}, root)
+            if v["verdict"] == "pass":
+                npass += 1
+            else:
+                nreview += 1
+            # 去掉旧的 verdict/reason 行（重跑幂等），再加新的
+            block = re.sub(r"^-\s*(verdict|reason):.*$\n?", "", block, flags=re.MULTILINE)
+            block = block.rstrip() + f"\n- verdict: {v['verdict']}\n- reason: {v['reason']}\n"
+        out.append(marker)
+        out.append(block)
+    with open(p, "w", encoding="utf-8") as f:
+        f.write("".join(out))
+    return {"n": npass + nreview, "pass": npass, "review": nreview}
 
 
 # ── fold 进 gold_<target>.py ──────────────────────────────────────────────

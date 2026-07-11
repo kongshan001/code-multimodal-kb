@@ -12,6 +12,41 @@ def test_list_symbols_real_codegraph():
     assert all(s["kind"] not in ("file", "import", "directory") for s in syms)
 
 
+def test_verify_flags_ambiguous_gold():
+    """验收：Color 同名多符号（function/enum/enum_member）→ 标 review。"""
+    from eval.goldgen import verify_candidate, ambiguity_check
+    amb = ambiguity_check("Color")
+    assert amb["ambiguous"] is True               # Color 在 rb_map/variant/math 多处
+    assert len(amb["kinds"]) >= 2
+    v = verify_candidate({"query": "x", "gold": ["Color"]})
+    assert v["ambiguous"] is True
+    assert v["verdict"] == "review"               # 歧义 → 需人审
+
+
+def test_verify_clean_unique_symbol():
+    """验收：唯一名符号（如 ResourceUID）不歧义。"""
+    from eval.goldgen import ambiguity_check
+    amb = ambiguity_check("ResourceUID")
+    assert amb["ambiguous"] is False              # ResourceUID 基本只在 resource_uid.h/.cpp
+
+
+def test_verify_pending_annotates(monkeypatch, tmp_path):
+    """verify_pending 给每个 candidate 块标 verdict/reason（幂等重跑）。"""
+    import eval.goldgen as G
+    monkeypatch.setattr(G, "pending_path", lambda target: str(tmp_path / f"vp_{target}.md"))
+    monkeypatch.setattr(G, "verify_candidate", lambda c, root=G.DEFAULT_ROOT: {
+        "verdict": "review", "ambiguous": True, "retrievable": False, "reason": "mock"})
+    p = G.pending_path("vt")
+    open(p, "w").write("## candidate\n- query: q\n- gold: [\"X\"]\n- source: X\n\n")
+    res = G.verify_pending("vt")
+    assert res["n"] == 1 and res["review"] == 1
+    annotated = open(p).read()
+    assert "- verdict: review" in annotated and "- reason: mock" in annotated
+    # 幂等：重跑不重复堆积 verdict 行
+    G.verify_pending("vt")
+    assert annotated.count("- verdict:") == 1 or open(p).read().count("- verdict: review") == 1
+
+
 class _FakeMsg:
     def __init__(self, text):
         class _B:
