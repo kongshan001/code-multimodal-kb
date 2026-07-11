@@ -1,0 +1,58 @@
+{
+  "reports": [
+    {
+      "id": "20260711T055206Z-cmm.bm25-godot-bm25",
+      "ts": "20260711T055206Z",
+      "readable_ts": "2026-07-11 13:52:06 +0800",
+      "subject": "cmm.bm25",
+      "variant": "godot-bm25",
+      "target": "godot",
+      "n": 26,
+      "lockfile": {
+        "temperature": 0.0,
+        "llm_model": "",
+        "cmm_version": "0.8.1",
+        "graphify_version": "0.8.46",
+        "mem0_version": ""
+      },
+      "aggregate": {
+        "mean_recall@1": 0.462,
+        "mean_broad_recall@1": 0.846,
+        "mean_recall@3": 0.5,
+        "mean_broad_recall@3": 0.846,
+        "mean_recall@5": 0.5,
+        "mean_broad_recall@5": 0.846,
+        "mean_recall@10": 0.5,
+        "mean_broad_recall@10": 0.885
+      },
+      "path": "eval/reports/archive/20260711T055206Z-cmm.bm25-godot-bm25.json"
+    },
+    {
+      "id": "20260711T055241Z-cmm.grep-godot-grep",
+      "ts": "20260711T055241Z",
+      "readable_ts": "2026-07-11 13:52:41 +0800",
+      "subject": "cmm.grep",
+      "variant": "godot-grep",
+      "target": "godot",
+      "n": 26,
+      "lockfile": {
+        "temperature": 0.0,
+        "llm_model": "",
+        "cmm_version": "0.8.1",
+        "graphify_version": "0.8.46",
+        "mem0_version": ""
+      },
+      "aggregate": {
+        "mean_recall@1": 0.0,
+        "mean_broad_recall@1": 0.346,
+        "mean_recall@3": 0.0,
+        "mean_broad_recall@3": 0.577,
+        "mean_recall@5": 0.0,
+        "mean_broad_recall@5": 0.692,
+        "mean_recall@10": 0.038,
+        "mean_broad_recall@10": 0.731
+      },
+      "path": "eval/reports/archive/20260711T055241Z-cmm.grep-godot-grep.json"
+    }
+  ]
+}

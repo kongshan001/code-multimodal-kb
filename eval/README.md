@@ -2,6 +2,14 @@
 
 代码侧评测的零凭据地基。指标纯函数 + cmm round-trip + 可复现 lockfile。
 
+## 统一 CLI（`bench`）
+
+`python -m eval.cli`（建议 `alias bench='python -m eval.cli'`）跑评测并自动归档留底：
+`run code|doc|cross|quality` / `list-reports` / `show <id>` / `compare <id1> <id2>`。
+
+详见 [docs/benchmark-runbook.md](../docs/benchmark-runbook.md)。
+散装 `python -m eval.run_*` 为遗留用法（直接 print JSON，不归档）。
+
 ## 跑
 
 ```bash
