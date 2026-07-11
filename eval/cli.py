@@ -62,6 +62,10 @@ def _cmd_run(args) -> int:
         from eval.run_doc_quality_ragas import run as run_dr  # 文档答案质量（Ragas 协议，LLM judge）
         report = run_dr(args.target, args.subset)
         variant = f"{args.target}-ragas"
+    elif args.subject == "memory-quality":
+        from eval.run_memory_quality import run as run_mr  # 记忆答案质量（Ragas 协议，mempalace context）
+        report = run_mr(args.target, args.subset, getattr(args, "k", 5))
+        variant = f"{args.target}-ragas"
     else:
         print(f"未知 subject: {args.subject}", file=sys.stderr)
         return 2
@@ -168,6 +172,10 @@ def main(argv: list[str] | None = None) -> int:
     dr_p = run_sub.add_parser("doc-ragas", help="文档答案质量（Ragas 协议 faithfulness+context_precision，LLM judge）")
     dr_p.add_argument("--target", default="docs")
     dr_p.add_argument("--subset", type=int, default=None)
+    mr_p = run_sub.add_parser("memory-quality", help="记忆答案质量（Ragas 协议，mempalace drawer 做 context）")
+    mr_p.add_argument("--target", default="memory")
+    mr_p.add_argument("--subset", type=int, default=None)
+    mr_p.add_argument("--k", type=int, default=5)
     run_sub.add_parser("memory", help="记忆侧（MemPalace 召回 + D1 路由）")
     ab_p = run_sub.add_parser("ab", help="agent A/B Stage 0（KB vs 朴素 grep token 代理）")
     ab_p.add_argument("--target", default="godot", help="gold 模块名")

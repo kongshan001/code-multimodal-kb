@@ -261,6 +261,31 @@
         "llm_judge": "glm-5.x（self-preference 风险，相对参考值）"
       },
       "path": "eval/reports/archive/20260711T182027Z-doc-quality-ragas-protocol-docs-ragas.json"
+    },
+    {
+      "id": "20260711T210800Z-memory-quality-ragas-protocol-memory-ragas",
+      "ts": "20260711T210800Z",
+      "readable_ts": "2026-07-12 05:08:00 +0800",
+      "subject": "memory-quality-ragas-protocol",
+      "variant": "memory-ragas",
+      "target": "memory",
+      "n": 15,
+      "lockfile": {
+        "temperature": 0.0,
+        "llm_model": "",
+        "cmm_version": "0.8.1",
+        "graphify_version": "0.8.46",
+        "mem0_version": "",
+        "mempalace_version": "3.5.0"
+      },
+      "aggregate": {
+        "n": 15,
+        "mean_faithfulness": 0.951,
+        "mean_context_precision": 0.36,
+        "llm_judge": "glm-5.x（self-preference 风险，相对参考值）",
+        "context_source": "mempalace drawers（会话碎片为主）"
+      },
+      "path": "eval/reports/archive/20260711T210800Z-memory-quality-ragas-protocol-memory-ragas.json"
     }
   ]
 }
