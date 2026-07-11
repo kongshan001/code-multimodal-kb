@@ -74,9 +74,20 @@ def _run(query: str, results: int, wing: str | None, room: str | None) -> str:
 
 
 def mempalace_search(query: str, limit: int = 10, wing: str | None = None,
-                     room: str | None = None) -> list[dict]:
-    """调 mempalace search → 解析 → 返回结构化结果项列表。"""
-    return parse_search_output(_run(query, limit, wing, room))
+                     room: str | None = None, dedup_sources: bool = False) -> list[dict]:
+    """调 mempalace search → 解析 → 返回结构化结果项列表。
+
+    dedup_sources=True：按 source_file 去重（同源只留相似度最高的那条），MMR-lite 提升 top-k 多样性。
+    用于测"re-rank 是否改善检索精度"（benchmark 驱动改进闭环）。"""
+    raw = parse_search_output(_run(query, limit, wing, room))
+    if not dedup_sources:
+        return raw
+    seen: dict[str, dict] = {}
+    for it in raw:  # mempalace 返回已按相关度排序
+        sf = norm_source(it)
+        if sf and sf not in seen:
+            seen[sf] = it
+    return list(seen.values())[:limit]
 
 
 def mempalace_available() -> bool:
