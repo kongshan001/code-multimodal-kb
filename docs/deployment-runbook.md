@@ -152,7 +152,9 @@ pip install deepeval               # 文档答案质量（faithfulness/G-Eval）
 # 代码侧 harness / 数据集（RepoBench-R、SWE-Lancer-Loc）见 change tasks §5
 ```
 
-## D. 记忆层 · Mem0 自托管（Docker，可选）
+## D. 记忆层 · MemPalace（待 Stage 1 重写）
+
+> ⚠️ 2026-07 修订：选型 Mem0 → MemPalace（[design D2](../openspec/changes/add-agent-memory/design.md)，部署成本更低：pip + ChromaDB embedded；核心零 LLM 解绑凭据墙；内置 temporal KG 吸收 Stage 2）。下方原 Mem0 Docker 步骤保留作历史参考；MemPalace 安装 / MCP 注册 / auto-save hooks 步骤待 task 5.1 重写。原 `deploy/mem0*` 标记弃用。
 
 `setup-kb.py` 第 5 步拉起 `deploy/mem0/docker-compose.yml`（3 容器：API + pg/pgvector + Neo4j，按 [mem0.ai self-host 指南](https://mem0.ai/blog/self-host-mem0-docker)）。
 
