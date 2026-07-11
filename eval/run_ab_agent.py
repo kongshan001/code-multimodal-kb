@@ -35,7 +35,8 @@ def _judge_retrieval(answer: str, tool_texts: list[str], goldset) -> int:
     return 1 if any(_norm(g) in hay for g in goldset) else 0
 
 
-def run(target: str = "godot", runs: int = 1, subset: int | None = None) -> dict:
+def run(target: str = "godot", runs: int = 1, subset: int | None = None,
+        arms: tuple[str, ...] = ("baseline", "kb", "doc")) -> dict:
     gold = importlib.import_module(f"eval.gold_{target}").GOLD
     questions = gold[:subset] if subset else gold
     client = make_client()
@@ -43,23 +44,21 @@ def run(target: str = "godot", runs: int = 1, subset: int | None = None) -> dict
 
     rows = []
     for qi, (query, goldset) in enumerate(questions):
-        for arm in ("baseline", "kb"):
+        results_this_q = {}
+        for arm in arms:
             for r in range(runs):
                 ep = run_episode(client, query, arm)
                 ep.update({"query": query, "gold": sorted(goldset), "arm": arm, "run": r,
                            "correct": _judge(ep["answer"], goldset),
                            "correct_retrieval": _judge_retrieval(ep["answer"], ep.get("tool_texts", []), goldset)})
                 rows.append(ep)
-        bl = [x for x in rows if x["query"] == query and x["arm"] == "baseline"][-1]
-        kb = [x for x in rows if x["query"] == query and x["arm"] == "kb"][-1]
-        print(f"  [{qi + 1}/{len(questions)}] {query[:40]:40} "
-              f"baseline={'✓' if bl['correct'] else '✗'} kb={'✓' if kb['correct'] else '✗'} "
-              f"(retr: b{'✓' if bl['correct_retrieval'] else '✗'}/k{'✓' if kb['correct_retrieval'] else '✗'})",
-              flush=True)
+                results_this_q[arm] = ep
+        status = " ".join(f"{a}={'✓' if results_this_q[a]['correct'] else '✗'}" for a in arms)
+        print(f"  [{qi + 1}/{len(questions)}] {query[:36]:36} {status}", flush=True)
 
     # 聚合各臂
     agg: dict = {}
-    for arm in ("baseline", "kb"):
+    for arm in arms:
         ar = [x for x in rows if x["arm"] == arm]
         tot = [x["input_tokens"] + x["output_tokens"] for x in ar]
         corr = sum(x["correct"] for x in ar)
@@ -74,18 +73,18 @@ def run(target: str = "godot", runs: int = 1, subset: int | None = None) -> dict
             "token_per_correct": round(sum(tot) / corr, 1) if corr else None,
             "n_episodes": len(ar),
         }
-    agg["delta_accuracy_kb_minus_baseline"] = round(
-        agg["kb"]["accuracy"] - agg["baseline"]["accuracy"], 3)
-    agg["delta_accuracy_retrieval_kb_minus_baseline"] = round(
-        agg["kb"]["accuracy_retrieval"] - agg["baseline"]["accuracy_retrieval"], 3)
-    agg["delta_total_tokens_kb_minus_baseline"] = round(
-        agg["kb"]["mean_total_tokens"] - agg["baseline"]["mean_total_tokens"], 1)
-    agg["delta_steps_kb_minus_baseline"] = round(
-        agg["kb"]["mean_steps"] - agg["baseline"]["mean_steps"], 2)
+    def _delta(a, b, key):
+        if a in agg and b in agg:
+            return round(agg[a][key] - agg[b][key], 3 if "accuracy" in key else 1)
+        return None
+    agg["delta_accuracy_kb_minus_baseline"] = _delta("kb", "baseline", "accuracy")
+    agg["delta_total_tokens_kb_minus_baseline"] = _delta("kb", "baseline", "mean_total_tokens")
+    agg["delta_accuracy_doc_minus_baseline"] = _delta("doc", "baseline", "accuracy")
+    agg["delta_total_tokens_doc_minus_baseline"] = _delta("doc", "baseline", "mean_total_tokens")
 
     report = stamp(
         {"subject": "ab-agent-stage1", "target": target, "project": "godot-core",
-         "n_questions": len(questions), "runs": runs, "llm_model": model,
+         "n_questions": len(questions), "runs": runs, "arms": list(arms), "llm_model": model,
          "aggregate": agg, "per_query": rows, "stage": 1,
          "note": "Stage 1 agent A/B：真跑 agent loop（temp=0），测答对率 + 端到端 token + 步数"},
         detect_lockfile(),
@@ -98,5 +97,7 @@ if __name__ == "__main__":
     ap.add_argument("--target", default="godot")
     ap.add_argument("--runs", type=int, default=1)
     ap.add_argument("--subset", type=int, default=None, help="只跑前 N 题（pilot 用）")
+    ap.add_argument("--arms", default="baseline,kb,doc", help="逗号分隔的臂（baseline/kb/doc）")
     args = ap.parse_args()
-    print(json.dumps(run(args.target, args.runs, args.subset), ensure_ascii=False, indent=2))
+    arms = tuple(a.strip() for a in args.arms.split(",") if a.strip())
+    print(json.dumps(run(args.target, args.runs, args.subset, arms), ensure_ascii=False, indent=2))

@@ -69,7 +69,26 @@ def tool_cmm_search(query: str) -> str:
         return f"(cmm error: {e})"
 
 
-_TOOL_EXEC = {"grep_code": tool_grep_code, "read_file": tool_read_file, "cmm_search": tool_cmm_search}
+DOC_GRAPH = "/Users/ks_128/Documents/godot-docs-subset/graphify-out/graph.json"
+
+
+def tool_graphify_query(question: str) -> str:
+    """graphify BFS 查 Godot 文档图（17 篇 vector/math 子集，72 节点），返文档节点。
+    注意：文档图仅覆盖 vector/math 主题，其它题（crypto/http 等）无文档可查。"""
+    try:
+        out = subprocess.run(
+            ["graphify", "query", question, "--graph", DOC_GRAPH, "--budget", "800"],
+            capture_output=True, text=True, timeout=30,
+        ).stdout
+        nodes = [ln for ln in out.splitlines() if ln.startswith("NODE ")]
+        edges = [ln for ln in out.splitlines() if ln.startswith("EDGE ")][:4]
+        return "\n".join(nodes[:10] + edges) if nodes else "(no doc nodes — 文档图未覆盖该主题)"
+    except Exception as e:
+        return f"(graphify error: {e})"
+
+
+_TOOL_EXEC = {"grep_code": tool_grep_code, "read_file": tool_read_file,
+              "cmm_search": tool_cmm_search, "graphify_query": tool_graphify_query}
 
 # ── 工具 schema（按臂组合）──────────────────────────────────────────────
 
@@ -85,10 +104,15 @@ _CMM_DEF = {
     "name": "cmm_search", "description": "用代码知识库（cmm）语义检索 Godot core/，返回相关符号/函数/类",
     "input_schema": {"type": "object", "properties": {"query": {"type": "string"}}, "required": ["query"]},
 }
+_GRAPHIFY_DEF = {
+    "name": "graphify_query", "description": "查 Godot 文档知识图（vector/math 文档子集），返回相关文档节点/概念（文档→代码定位的语义起点）",
+    "input_schema": {"type": "object", "properties": {"question": {"type": "string"}}, "required": ["question"]},
+}
 
 ARM_TOOLS = {
     "baseline": [_GREP_DEF, _READ_DEF],
     "kb": [_CMM_DEF, _READ_DEF],
+    "doc": [_GRAPHIFY_DEF, _READ_DEF],
 }
 
 
