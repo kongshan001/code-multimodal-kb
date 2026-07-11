@@ -1,7 +1,7 @@
 """统一 benchmark CLI（task 2.1–2.5）：`python -m eval.cli <subcommand>`。
 
 子命令：
-  run code|doc|cross|quality|memory   跑评测 → 归档留底 → 打印归档路径 + aggregate 摘要
+  run code|doc|cross|quality|memory|ab   跑评测 → 归档留底 → 打印归档路径 + aggregate 摘要
   list-reports                 列出 archive/index.json 全部报告
   show <id>                    查看单份归档报告（含 per_query / lockfile）
   compare <id1> <id2>          两份报告 aggregate diff
@@ -21,8 +21,8 @@ from eval.archive import archive_report, compare_reports, get_report, list_repor
 def _summary(agg: dict) -> str:
     """挑一个主指标作单行摘要。"""
     for k in ("crosstool_success_rate", "routing_overall_accuracy",
-              "mean_broad_recall@5", "mean_recall@5", "mean_hit@5",
-              "graphify_hit_rate", "cmm_hit_rate@5"):
+              "mean_compression_read", "mean_broad_recall@5", "mean_recall@5",
+              "mean_hit@5", "graphify_hit_rate", "cmm_hit_rate@5"):
         if k in agg:
             return f"{k}={agg[k]}"
     return ""
@@ -49,6 +49,10 @@ def _cmd_run(args) -> int:
         from eval.run_memory_baseline import run as run_mem  # MemPalace 召回 + D1 路由
         report = run_mem()
         variant = "engineer_demo"
+    elif args.subject == "ab":
+        from eval.run_ab_value import run as run_ab  # agent A/B Stage 0 token 代理
+        report = run_ab(args.target)
+        variant = f"{args.target}-stage0"
     else:
         print(f"未知 subject: {args.subject}", file=sys.stderr)
         return 2
@@ -114,6 +118,8 @@ def main(argv: list[str] | None = None) -> int:
     run_sub.add_parser("cross", help="跨工具 anchoring")
     run_sub.add_parser("quality", help="文档答案质量（凭据门控，可能 429）")
     run_sub.add_parser("memory", help="记忆侧（MemPalace 召回 + D1 路由）")
+    ab_p = run_sub.add_parser("ab", help="agent A/B Stage 0（KB vs 朴素 grep token 代理）")
+    ab_p.add_argument("--target", default="godot", help="gold 模块名")
 
     # list-reports
     sub.add_parser("list-reports", help="列出归档报告")

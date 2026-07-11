@@ -90,3 +90,17 @@
 
 - **WHEN** 生成代码侧 ground truth
 - **THEN** gold 完全来自 PR diff + 静态调用图 + LSP 反查，不调用任何 LLM 作裁判
+
+### Requirement: Agent-level value differential (system vs no-system)
+
+系统 SHALL 度量"配备 vs 不配备知识库 / 记忆系统"对 agent 任务的**端到端**价值差——含 token 用量、答案准确度、效率（步数 / 耗时），证明系统的边际价值，而非仅评检索层 recall。准确度与端到端 token 评测 SHALL 受 LLM 凭据门控；凭据缺席时 SHALL 仍能产出"context token 压缩比 + 注入命中"代理指标（Stage 0），并明确标注其不等于 agent 答对率。
+
+#### Scenario: token 用量与准确度对照
+
+- **WHEN** 对同一批代码定位题，分别在"有 cmm 代码 KB"与"朴素 grep 基线"下跑 agent
+- **THEN** 报告两臂的 token 用量差（压缩比）、答案准确度差、效率差，量化系统价值
+
+#### Scenario: 零凭据代理指标
+
+- **WHEN** LLM 凭据缺席
+- **THEN** 仍能量化 context token 压缩比 + 注入命中 gold（Stage 0），并在报告标注"非 agent 答对率"边界（Stage 1 凭据门控）

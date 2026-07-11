@@ -33,3 +33,15 @@
 - [ ] 5.2 代码侧首跑出基线后，回填"设定基线"阈值（design Open Question 1）→ 验证：阈值字段有数
 - [ ] 5.3 评测报告模板 + 跑评测步骤文档化（含数据集来源、锁定项、阈值）→ 验证：新人照文档能复现一次代码侧评测
 - [x] 5.4 在 add-code-multimodal-kb §5 + add-agent-memory §4 tasks.md 加归属行指向本变更 → 已在两变更 §5/§4 header 加"归属 add-evaluation-baseline"注，消除 ~15 个重复评测 task 的歧义
+
+## 6. Agent 级 A/B 价值 benchmark（端到端：有系统 vs 无系统）
+
+> 新增维度：§2–4 测**检索层** recall；本节测**agent 层**——配不配我们的系统，agent 把活干成/干省的差距。
+> 三指标：① token 用量 ② 准确度 ③ 效率（步数/耗时）。分两 stage：
+> **Stage 0 token 代理**（零 LLM，现在跑）/ **Stage 1 全 agent A/B**（需 LLM key，凭据门控）。
+> 复用 `gold_godot`（代码定位题，符号 gold，零 LLM 可判分）。
+
+- [x] 6.0 spike：cmm Godot 索引首次冷启动 search 报 "project not found" → 实测为瞬时状态（mem.init 首次重装项目注册表），暖后 search_code/search_graph 均正常；非阻塞 ✓
+- [x] 6.1 Stage 0 token 代理 runner：对 gold_godot 26 题量 KB（cmm bm25 top-5）vs 朴素 grep（文件名 / grep+读文件）的 context token 压缩比 + KB 注入命中 gold 符号（kb_hit@5）→ 验证：`bench run ab` 真跑 → **mean 压缩 12.71×（中位 15.5×）/ kb_hit@5=0.846（与 broad@5 一致）/ 朴素 grep 盲区 7/26（KB 救回 5）**；归档 `reports/archive/20260711T110417Z-ab-value-stage0-godot-stage0.json` ✓
+- [x] 6.2 Stage 0 测试 + cli `run ab` 子命令 + 报告 → 验证：`test_ab_value.py` 2 测试绿（全 29 passed）；cli `run ab` 归档通；报告 `reports/ab-value-baseline-2026-07.md`（含 6 条诚实边界，标注 Stage 0≠agent 答对率）✓
+- [x] 6.3 Stage 1 agent A/B harness design（凭据门控，仅 design 不实施）→ design §F 完整：实验图 + F1–F4 决策（两 stage / baseline=朴素检索 / 零 judge 判分 / 先 cmm 一臂）+ 4 条诚实边界 + 阈值门禁表。待 LLM key 到位实施（env 当前无 key）✓
