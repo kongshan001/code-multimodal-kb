@@ -107,7 +107,7 @@
 1. **gold 偏软**：代码侧 gold 是 architecture-derived（cmm 实测符号派生），**非 PR 反挖**（task 2.4 未做）。分数可信但偏乐观，PR 反挖是更硬的 scale-up。
 2. **小 N**：代码 26 / 文档 10 / 跨工具 8——非 RepoBench/SWE-Lancer 全量规模（HF 需 token + 范式不对口，留作 scale-up）。
 3. **单仓库单语言**：仅 Godot C++ + graphify Python 参照；多仓库/跨语言（TS/Go/Java）未验证。
-4. **文档/记忆侧答案质量评测未跑出分**：`run_doc_quality.py`（faithfulness/G-Eval/GraphRAG head-to-head）复刻脚本就绪，**被 BigModel key 持续 429 限流阻塞**——本报告只覆盖「检索召回」层，不含「答案质量」层。
+4. **文档答案质量已部分量化**：`run_doc_quality_ragas.py`（Ragas 协议直接实现）经 cc-connect GLM 端点跑出 faithfulness=0.971 / context_precision=0.533，详见 `reports/doc-quality-ragas-2026-07.md`。原 `run_doc_quality.py`（DeepEval/GraphRAG 复刻）仍卡 BigModel paas/v4 的 429；记忆侧答案质量仍空白。
 5. **记忆层零量化**：Mem0 Stage 1 未接入 agent，记忆侧评测（recall@k/去重/边界路由）全空。
 6. **strict@5 在大 C++ 上失效**：Godot strict@5=0.0（grep）/0.5（BM25）——粒度错配，只能用 broad（类/文件区级）作公平刻度。
 7. **概念盲区 15.4% 是硬限**：BM25 救不动的 4 条是「代码不含 query 词」，结构性不可检索，依赖 agent 翻译层。
@@ -121,7 +121,7 @@
 | 文档检索可用性 | recall@5=0.70 | ●●○○（小 N、子集）|
 | 工具选型正确性 | BM25 > semantic > grep（实证修正 design）| ●●●○（3 路量化）|
 | 经济性 | $0.22/17 篇，查询零 LLM | ●●●○（实测成本）|
-| 答案质量 | **未量化**（卡 429）| ○○○○ |
+| 答案质量 | **faithfulness 0.971 / context_precision 0.533**（Ragas 协议，LLM-judged）| ●●○○ |
 | 记忆层价值 | **未量化**（未接入）| ○○○○ |
 
 **总判断**：当前已量化的价值集中在「**检索召回 + 跨工具定位 + 工具选型**」三层，证据较硬；「答案质量」与「记忆层」两层尚无数据。项目处于「**核心命题已证、量化地基已铺、上层（答案质量/记忆/规模化）待封顶**」的阶段。

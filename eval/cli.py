@@ -21,8 +21,9 @@ from eval.archive import archive_report, compare_reports, get_report, list_repor
 def _summary(agg: dict) -> str:
     """挑一个主指标作单行摘要。"""
     for k in ("crosstool_success_rate", "routing_overall_accuracy",
-              "mean_compression_read", "mean_broad_recall@5", "mean_recall@5",
-              "mean_hit@5", "graphify_hit_rate", "cmm_hit_rate@5"):
+              "mean_compression_read", "mean_faithfulness",
+              "mean_broad_recall@5", "mean_recall@5", "mean_hit@5",
+              "graphify_hit_rate", "cmm_hit_rate@5"):
         if k in agg:
             return f"{k}={agg[k]}"
     return ""
@@ -57,6 +58,10 @@ def _cmd_run(args) -> int:
         from eval.run_ab_agent import run as run_ab1  # agent A/B Stage 1 真跑 agent
         report = run_ab1(args.target, args.runs, args.subset)
         variant = f"{args.target}-stage1-r{args.runs}" + (f"-n{args.subset}" if args.subset else "")
+    elif args.subject == "doc-ragas":
+        from eval.run_doc_quality_ragas import run as run_dr  # 文档答案质量（Ragas 协议，LLM judge）
+        report = run_dr(args.target, args.subset)
+        variant = f"{args.target}-ragas"
     else:
         print(f"未知 subject: {args.subject}", file=sys.stderr)
         return 2
@@ -160,6 +165,9 @@ def main(argv: list[str] | None = None) -> int:
     run_sub.add_parser("doc", help="文档侧（graphify query）")
     run_sub.add_parser("cross", help="跨工具 anchoring")
     run_sub.add_parser("quality", help="文档答案质量（凭据门控，可能 429）")
+    dr_p = run_sub.add_parser("doc-ragas", help="文档答案质量（Ragas 协议 faithfulness+context_precision，LLM judge）")
+    dr_p.add_argument("--target", default="docs")
+    dr_p.add_argument("--subset", type=int, default=None)
     run_sub.add_parser("memory", help="记忆侧（MemPalace 召回 + D1 路由）")
     ab_p = run_sub.add_parser("ab", help="agent A/B Stage 0（KB vs 朴素 grep token 代理）")
     ab_p.add_argument("--target", default="godot", help="gold 模块名")
