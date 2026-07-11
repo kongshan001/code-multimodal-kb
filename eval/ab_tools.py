@@ -17,6 +17,7 @@
 """
 from __future__ import annotations
 
+import json
 import subprocess
 from dataclasses import dataclass
 from typing import Callable
@@ -83,6 +84,28 @@ def graphify_query(question: str) -> str:
         return f"(graphify error: {e})"
 
 
+def codegraph_search(query: str) -> str:
+    """codegraph 符号检索（codegraph 臂）：返 name/kind/file。
+    需先在 GODOT_CORE 跑 `codegraph init` 建索引。JSON 输出。"""
+    try:
+        out = subprocess.run(
+            ["codegraph", "query", query, "--path", GODOT_CORE, "--limit", "5", "--json"],
+            capture_output=True, text=True, timeout=30,
+        ).stdout
+        data = json.loads(out) if out.strip() else []
+        items = data if isinstance(data, list) else (data.get("results") or data.get("symbols") or [])
+        lines = []
+        for it in (items or [])[:5]:
+            n = it.get("node", it) if isinstance(it, dict) else {}   # 结果项可能包在 "node" 里
+            name = n.get("name") or n.get("qualifiedName") or "?"
+            kind = n.get("kind", "")
+            loc = n.get("filePath") or n.get("file") or n.get("file_path") or ""
+            lines.append(f"- {name}  [{kind}]  {loc}")
+        return "\n".join(lines) if lines else "(no codegraph results)"
+    except Exception as e:
+        return f"(codegraph error: {e})"
+
+
 # ── 工具 schema（Anthropic tool_use 格式）───────────────────────────────
 _READ_DEF = {"name": "read_file", "description": "读取 Godot core/ 下某文件的前若干字符",
              "input_schema": {"type": "object", "properties": {"path": {"type": "string"}}, "required": ["path"]}}
@@ -92,6 +115,8 @@ _CMM_DEF = {"name": "cmm_search", "description": "用代码知识库（cmm）语
             "input_schema": {"type": "object", "properties": {"query": {"type": "string"}}, "required": ["query"]}}
 _GRAPHIFY_DEF = {"name": "graphify_query", "description": "查 Godot 文档知识图（vector/math 文档子集），返回相关文档节点/概念",
                  "input_schema": {"type": "object", "properties": {"question": {"type": "string"}}, "required": ["question"]}}
+_CODEGRAPH_DEF = {"name": "codegraph_search", "description": "用 codegraph 知识图检索 Godot core/ 符号（函数/类/方法），返回符号名+类型+文件",
+                  "input_schema": {"type": "object", "properties": {"query": {"type": "string"}}, "required": ["query"]}}
 
 
 # ── 注册表 ───────────────────────────────────────────────────────────────
@@ -108,6 +133,7 @@ register_tool("grep_code", grep_code, _GREP_DEF)
 register_tool("read_file", read_file, _READ_DEF)
 register_tool("cmm_search", cmm_search, _CMM_DEF)
 register_tool("graphify_query", graphify_query, _GRAPHIFY_DEF)
+register_tool("codegraph_search", codegraph_search, _CODEGRAPH_DEF)
 
 
 # ── 臂（数据：哪些工具组成哪个臂）────────────────────────────────────────
@@ -115,6 +141,7 @@ ARMS: dict[str, list[str]] = {
     "baseline": ["grep_code", "read_file"],
     "kb": ["cmm_search", "read_file"],
     "doc": ["graphify_query", "read_file"],
+    "codegraph": ["codegraph_search", "read_file"],
 }
 
 

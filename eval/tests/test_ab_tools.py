@@ -3,8 +3,9 @@ from eval import ab_tools
 
 
 def test_registry_has_builtin_tools():
-    """4 个内置工具都注册了。"""
-    assert set(ab_tools.TOOL_REGISTRY) >= {"grep_code", "read_file", "cmm_search", "graphify_query"}
+    """5 个内置工具都注册了。"""
+    assert set(ab_tools.TOOL_REGISTRY) >= {"grep_code", "read_file", "cmm_search",
+                                           "graphify_query", "codegraph_search"}
     for name, spec in ab_tools.TOOL_REGISTRY.items():
         assert callable(spec.exec_fn)
         assert spec.schema["name"] == name
@@ -15,11 +16,11 @@ def test_arms_resolve_to_schemas():
     base = [s["name"] for s in ab_tools.arm_schemas("baseline")]
     kb = [s["name"] for s in ab_tools.arm_schemas("kb")]
     doc = [s["name"] for s in ab_tools.arm_schemas("doc")]
+    cg = [s["name"] for s in ab_tools.arm_schemas("codegraph")]
     assert base == ["grep_code", "read_file"]
     assert kb == ["cmm_search", "read_file"]
     assert doc == ["graphify_query", "read_file"]
-    # read_file 两臂都有（公平）
-    assert "read_file" in base and "read_file" in kb and "read_file" in doc
+    assert cg == ["codegraph_search", "read_file"]
 
 
 def test_exec_tool_dispatches(monkeypatch):
