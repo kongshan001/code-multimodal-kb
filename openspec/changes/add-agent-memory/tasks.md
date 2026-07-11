@@ -9,7 +9,7 @@
 
 > 2026-07 修订：Mem0 → MemPalace（design D2/D3/D4）。理由：部署成本（pip + ChromaDB embedded vs 3 容器）+ 核心零 LLM（解绑凭据墙）+ 内置 temporal KG（吸收 Stage 2）。
 
-- [ ] 2.1 装 MemPalace（`uv tool install mempalace`，仅官方源 GitHub/PyPI/mempalaceofficial.com）+ `mempalace init` → 验证：`mempalace --version` + palace 结构生成（wing/room/drawer + `~/.mempalace/config.json`）
+- [x] 2.1 装 MemPalace（`uv tool install mempalace`，仅官方源 PyPI）+ `mempalace init` → 验证：**MemPalace 3.5.0**（`uv tool install --python 3.11 mempalace`——Intel Mac i7-5650U 实测：onnxruntime 新版无 macOS x86_64 wheel、旧版无 cp312/cp313，必须 py3.11）+ `mempalace init engineer_demo --yes --no-llm` → palace 生成（`~/.mempalace/config.json` + palace/，wing/room: eval/openspec/testing/planning/general）✓
 - [ ] 2.2 MCP 注册到 agent（`claude mcp add mempalace -- python -m mempalace.mcp_server` 或 `claude plugin install --scope user mempalace`）→ 验证：agent 内 `mcp__mempalace__*` 工具可调（35 工具：palace reads/writes、KG、cross-wing、drawer、diary）
 - [ ] 2.3 配置 auto-save hooks（Stop 每 15 条 / PreCompact 压缩前）→ 验证：会话后 `mempalace status` 显示新入库条目；PreCompact 触发紧急保存
 - [ ] 2.4 backfill 现有 MEMORY.md + `~/.claude/projects` 会话进 palace（`mempalace mine --mode convos`）；召回从全量注入切到 `wake-up` 相关性召回 → 验证：旧事实可被按主题召回，且不再全量进上下文

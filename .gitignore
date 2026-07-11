@@ -27,3 +27,7 @@ __pycache__/
 *.pyc
 .pytest_cache/
 .playwright
+
+# MemPalace per-project files (issue #185)
+mempalace.yaml
+entities.json

@@ -96,6 +96,7 @@ Mem0 抽取必需 LLM（原 D4 与 doc-side graphify 共享 key）。**MemPalace
 - **[主观/客观边界灰区]**（如"我们决定用 MemPalace"既是决策也是事实）→ D1 判定测试兜底：默认进 Memory（主观），KB 只收"代码/文档本身说了什么"
 - **[MemPalace verbatim 范式代价]**（替换 Mem0 的 trade-off）：不 extract 成事实条目，召回是"相关原文片段"而非"结构化事实"。→ spec 四分类由 MemPalace wing/room + extract-general 5 类覆盖；决策型记忆仍附情景锚（spec req 5 不变）
 - **[MemPalace 已知部署 issue]**：macOS ARM64 segfault（Issue #74，pin chromadb）、chromadb 版本冲突（#100）、hook shell injection（#110）。→ runbook 沉淀 pin 版本 + 仅信任 hook 路径；可切 `sqlite_exact` 后端绕开 chromadb
+- **[Intel Mac onnxruntime 阻塞]**（实测 2026-07，本机 i7-5650U）：chromadb 1.5.x → onnxruntime，而 onnxruntime 新版无 macOS x86_64 wheel（只 arm64）、旧版无 cp312/cp313 → **Intel Mac 必须用 Python 3.11**（`uv tool install --python 3.11 mempalace`，onnxruntime 1.16.3 有 cp311 + macOS x86_64）。ARM Mac / Linux 不受此限。记入 runbook + tasks 2.6
 - **[impostor 站点]**：MemPalace 仅 GitHub / PyPI / mempalaceofficial.com 官方源，其他域名（`.tech`/`.net`/其他 `.com`）可能恶意。→ runbook 明确只从官方装
 - **[LLM 抽取质量决定记忆质量]**（仅当启用 extract/rerank extras）→ 抽取模型锁定版本 + 抽样校验；核心 raw 路径零 LLM 不受影响
 - **[Stage 0 文件记忆纪律靠人遵守]** → Stage 1 auto-save hooks（Stop/PreCompact）后自动化；Stage 0 过渡期写 CLAUDE.md 纪律
