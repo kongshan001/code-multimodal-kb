@@ -1,0 +1,593 @@
+{
+  "subject": "ab-agent-stage1",
+  "variant": "godot-stage1-r1-codegraph",
+  "target": "godot",
+  "n": 0,
+  "aggregate": {
+    "codegraph": {
+      "accuracy": 0.962,
+      "accuracy_retrieval": 0.962,
+      "mean_input_tokens": 724,
+      "mean_output_tokens": 141.5,
+      "mean_total_tokens": 865.5,
+      "mean_steps": 2.15,
+      "truncated_count": 0,
+      "token_per_correct": 900.1,
+      "n_episodes": 26
+    },
+    "delta_accuracy_kb_minus_baseline": null,
+    "delta_total_tokens_kb_minus_baseline": null,
+    "delta_accuracy_doc_minus_baseline": null,
+    "delta_total_tokens_doc_minus_baseline": null
+  },
+  "per_query": [
+    {
+      "answer": "Godot core/ 中与 **String format** 相关的关键符号：\n\n- **`String::format`** — 核心格式化方法，定义在 `string/ustring.cpp`，使用 `{}` 占位符进行字符串替换。\n- **`String`** — 字符串类本身，定义在 `string/print_string.h`。\n\n用法示例（GDScript 层对应 C++ 的 `String::format`）：\n```\n\"I have {apples} apples\".format({\"apples\": 5})\n```\n\nC++ 层签名大致为：\n```cpp\nString String::format(const Variant &values, const String &placeholder = \"{_}\") const;\n```",
+      "input_tokens": 743,
+      "output_tokens": 154,
+      "steps": 2,
+      "tool_calls": [
+        "codegraph_search"
+      ],
+      "tool_texts": [
+        "- format  [method]  string/ustring.cpp\n- String  [class]  string/print_string.h\n- String  [function]  math/color.h\n- String  [function]  math/rect2.h\n- String  [function]  math/rect2i.h"
+      ],
+      "truncated": false,
+      "query": "string format",
+      "gold": [
+        "vformat"
+      ],
+      "arm": "codegraph",
+      "run": 0,
+      "correct": 0,
+      "correct_retrieval": 0
+    },
+    {
+      "answer": "- **`itos(int)`** — 全局函数，定义于 `string/ustring.cpp`，将 `int` 转为 `String`。\n- **`String`** 类（`string/print_string.h`）也可通过构造或赋值方式从整数转换。",
+      "input_tokens": 750,
+      "output_tokens": 77,
+      "steps": 2,
+      "tool_calls": [
+        "codegraph_search"
+      ],
+      "tool_texts": [
+        "- String  [class]  string/print_string.h\n- itos  [function]  string/ustring.cpp\n- to  [function]  math/bvh_abb.h\n- String  [function]  math/color.h\n- String  [function]  math/rect2.h"
+      ],
+      "truncated": false,
+      "query": "int to string",
+      "gold": [
+        "itos"
+      ],
+      "arm": "codegraph",
+      "run": 0,
+      "correct": 1,
+      "correct_retrieval": 1
+    },
+    {
+      "answer": "在 Godot core/ 中，删除对象、释放内存涉及以下关键符号：\n\n- **`Object`** (`object/object.h`, `object/object.cpp`) — 所有对象的基类，提供 `free()` 方法用于释放自身。\n- **`memdelete`** (`os/memory.h`) — 用于释放通过 `memnew` 分配的内存，是 Godot 的内存释放函数。\n- **`memfree`** (`os/memory.h`) — 底层内存释放。\n\n**典型用法：**\n- 继承自 `Object` 的对象可用 `obj->free()` 或 `memdelete(obj)` 来删除并释放内存。\n- `memdelete` 是最通用的删除方式，内部会调用析构函数并释放内存。",
+      "input_tokens": 1719,
+      "output_tokens": 201,
+      "steps": 4,
+      "tool_calls": [
+        "codegraph_search",
+        "read_file",
+        "codegraph_search"
+      ],
+      "tool_texts": [
+        "- Object  [function]  object/object.h\n- Object  [class]  object/message_queue.h\n- free  [method]  os/memory.h\n- Object  [method]  object/object.cpp\n- Object  [method]  object/object.cpp",
+        "(read error: [Errno 2] No such file or directory: 'core/object/object.h')",
+        "- Object  [method]  object/object.cpp\n- Object  [method]  object/object.cpp\n- Object  [function]  object/object.h\n- Method  [method]  io/http_client_tcp.cpp\n- memdelete  [function]  os/memory.h"
+      ],
+      "truncated": false,
+      "query": "delete object free memory",
+      "gold": [
+        "memdelete"
+      ],
+      "arm": "codegraph",
+      "run": 0,
+      "correct": 1,
+      "correct_retrieval": 1
+    },
+    {
+      "answer": "Godot core/ 中的 A* 寻路相关符号：\n\n- **`AStar3D`** — 类，定义于 `math/a_star.h`，实现在 `math/a_star.cpp`\n- **`AStar2D`** — 2D 版本（同模块）\n- **`_solve`** — 核心寻路求解方法（`math/a_star.cpp`）\n- **`clear`** — 清除寻路数据的方法\n\n主要类就是 **`AStar3D`** 和 **`AStar2D`**，核心算法逻辑在 `_solve` 方法中。",
+      "input_tokens": 437,
+      "output_tokens": 148,
+      "steps": 2,
+      "tool_calls": [
+        "codegraph_search"
+      ],
+      "tool_texts": [
+        "- AStar3D  [class]  math/a_star.h\n- ~AStar3D  [method]  math/a_star.cpp\n- clear  [method]  math/a_star.cpp\n- _solve  [method]  math/a_star.cpp\n- clear  [method]  math/a_star.cpp"
+      ],
+      "truncated": false,
+      "query": "a star pathfinding",
+      "gold": [
+        "AStar"
+      ],
+      "arm": "codegraph",
+      "run": 0,
+      "correct": 1,
+      "correct_retrieval": 1
+    },
+    {
+      "answer": "Godot 的操作系统抽象层是 **`OS`** 类，定义在 `os/os.h` / `os/os.cpp` 中。\n\n关键相关符号：\n\n| 符号 | 类型 | 文件 |\n|---|---|---|\n| `OS` | **class** | `os/os.h` |\n| `OS` | class (脚本绑定) | `core_bind.h` / `core_bind.cpp` |\n| `OS::get_singleton()` | method | `os/os.h` |\n| `OS::get_system_fonts()` | method | `os/os.h` |\n| `OS::get_system_dir()` | method | `os/os.h` |\n| `OS::get_system_ca_certificates()` | method | `os/os.h` |\n\n`OS` 是一个单例类，封装了跨平台的底层操作系统功能（文件系统路径、系统字体、剪贴板、命令行参数、时间、线程等）。各平台（Windows、Linux、macOS、Android、iOS 等）通过继承 `OS` 来实现各自的具体行为（如 `OS_Unix`、`OS_Windows` 等）。脚本层通过 `core_bind.cpp` 中的 `OS` 绑定类暴露部分接口到 GDScript。",
+      "input_tokens": 1250,
+      "output_tokens": 289,
+      "steps": 3,
+      "tool_calls": [
+        "codegraph_search",
+        "codegraph_search"
+      ],
+      "tool_texts": [
+        "- get_system_fonts  [method]  core_bind.cpp\n- get_system_dir  [method]  core_bind.cpp\n- get_system_fonts  [method]  os/os.h\n- get_system_ca_certificates  [method]  core_bind.cpp\n- get_system_font_path  [method]  core_bind.cpp",
+        "- class  [variable]  object/object.h\n- OS  [method]  core_bind.cpp\n- OS  [method]  os/os.cpp\n- OS  [class]  core_bind.h\n- OS  [class]  os/os.h"
+      ],
+      "truncated": false,
+      "query": "operating system abstraction",
+      "gold": [
+        "OS"
+      ],
+      "arm": "codegraph",
+      "run": 0,
+      "correct": 1,
+      "correct_retrieval": 1
+    },
+    {
+      "answer": "与 **color** 相关的主要符号：\n\n| 符号 | 类型 | 文件 |\n|------|------|------|\n| `Color` | 类/结构体 | `math/color.h` |\n| `COLOR` | 枚举成员 | `variant/variant.h` |\n\n核心是 **`Color`**（定义在 `core/math/color.h`），表示 RGBA 颜色，支持各种色彩空间转换、混合、插值等操作。在 Variant 系统中注册为 `Variant::COLOR` 类型。",
+      "input_tokens": 740,
+      "output_tokens": 123,
+      "steps": 2,
+      "tool_calls": [
+        "codegraph_search"
+      ],
+      "tool_texts": [
+        "- Color  [function]  math/color.h\n- Color  [enum]  templates/rb_map.h\n- Color  [enum]  templates/rb_set.h\n- COLOR  [enum_member]  variant/variant.h\n- color.h  [import]  math/color.cpp"
+      ],
+      "truncated": false,
+      "query": "color",
+      "gold": [
+        "Color"
+      ],
+      "arm": "codegraph",
+      "run": 0,
+      "correct": 1,
+      "correct_retrieval": 1
+    },
+    {
+      "answer": "**Vector2** — 定义在 `core/math/vector2.h`（实现于 `core/math/vector2.cpp`）。\n\n相关符号：\n\n| 符号 | 类型 | 文件 |\n|---|---|---|\n| `Vector2` | struct/class | `core/math/vector2.h` |\n| `Vector2i` | struct/class（整数版本） | `core/math/vector2i.h` |\n| `VECTOR2` | Variant 类型枚举成员 | `core/variant/variant.h` |\n\n`Vector2` 是 Godot 的二维向量类型，包含常见的向量运算方法（如 `dot`、`cross`、`normalize`、`length`、`angle` 等），并在 Variant 系统中注册为 `VECTOR2` 类型。",
+      "input_tokens": 752,
+      "output_tokens": 175,
+      "steps": 2,
+      "tool_calls": [
+        "codegraph_search"
+      ],
+      "tool_texts": [
+        "- Vector2  [function]  math/vector2.h\n- VECTOR2  [enum_member]  variant/variant.h\n- Vector2i  [function]  math/vector2i.h\n- Vector2i  [function]  math/vector2i.h\n- vector2.h  [import]  math/vector2.cpp"
+      ],
+      "truncated": false,
+      "query": "vector2",
+      "gold": [
+        "Vector2"
+      ],
+      "arm": "codegraph",
+      "run": 0,
+      "correct": 1,
+      "correct_retrieval": 1
+    },
+    {
+      "answer": "**Vector3** 相关符号：\n\n| 符号 | 类型 | 文件 |\n|------|------|------|\n| `Vector3` | 类/结构体 | `math/vector3.h` |\n| `Vector3i` | 类/结构体（整数版） | `math/vector3i.h` |\n| `VECTOR3` | 枚举成员（Variant 类型） | `variant/variant.h` |\n\n核心实现在 `core/math/vector3.h`（声明）和 `core/math/vector3.cpp`（实现）。`Vector3i` 是其整数版本。",
+      "input_tokens": 752,
+      "output_tokens": 136,
+      "steps": 2,
+      "tool_calls": [
+        "codegraph_search"
+      ],
+      "tool_texts": [
+        "- Vector3  [function]  math/vector3.h\n- VECTOR3  [enum_member]  variant/variant.h\n- Vector3i  [function]  math/vector3i.h\n- Vector3i  [function]  math/vector3i.h\n- vector3.h  [import]  math/vector3.cpp"
+      ],
+      "truncated": false,
+      "query": "vector3",
+      "gold": [
+        "Vector3"
+      ],
+      "arm": "codegraph",
+      "run": 0,
+      "correct": 1,
+      "correct_retrieval": 1
+    },
+    {
+      "answer": "Godot core/ 中与四元数相关的主要符号：\n\n- **`Quaternion`** — 类，定义于 `math/quaternion.h`，实现在 `math/quaternion.cpp`\n\n常用方法/成员（均在 `Quaternion` 类内）：\n\n| 类别 | 符号名 |\n|------|--------|\n| 构造 | `Quaternion()`、`Quaternion(real_t p_x, real_t p_y, real_t p_z, real_t p_w)`、`Quaternion(const Vector3 &p_axis, real_t p_angle)`、`Quaternion(const Vector3 &p_euler)`、`Quaternion(const Basis &p_basis)` |\n| 运算 | `operator*`（四元数乘法/旋转复合）、`operator*=` |\n| 转换 | `from_euler()`、`get_euler()`、`slerp()`、`slerpni()`、`spherical_cubic_interpolate()`、`spherical_cubic_interpolate_in_time()` |\n| 工具 | `dot()`、`length()`、`length_squared()`、`normalized()`、`inverse()`、`log()`、`exp()`、`get_angle()`、`get_axis()`、`angle_to()` |\n| 成员 | `x`, `y`, `z`, `w` |\n\n核心文件：**`core/math/quaternion.h`** 和 **`core/math/quaternion.cpp`**。",
+      "input_tokens": 421,
+      "output_tokens": 311,
+      "steps": 2,
+      "tool_calls": [
+        "codegraph_search"
+      ],
+      "tool_texts": [
+        "- Quaternion  [method]  math/quaternion.cpp\n- Quaternion  [function]  math/quaternion.h\n- Quaternion  [function]  math/quaternion.h\n- Quaternion  [function]  math/quaternion.h\n- Quaternion  [function]  math/quaternion.h"
+      ],
+      "truncated": false,
+      "query": "quaternion",
+      "gold": [
+        "Quaternion"
+      ],
+      "arm": "codegraph",
+      "run": 0,
+      "correct": 1,
+      "correct_retrieval": 1
+    },
+    {
+      "answer": "**Rect2** 相关符号：\n\n| 符号 | 类型 | 文件 |\n|------|------|------|\n| `Rect2` | 类/结构体 | `math/rect2.h` |\n| `Rect2i` | 类/结构体（整数版本） | `math/rect2i.h` |\n| `RECT2` | Variant 枚举成员 | `variant/variant.h` |\n\n实现文件为 `math/rect2.cpp`。`Rect2` 是 Godot 核心数学类型，表示 2D 轴对齐矩形，包含 `position` 和 `size` 两个 `Vector2` 成员。",
+      "input_tokens": 755,
+      "output_tokens": 153,
+      "steps": 2,
+      "tool_calls": [
+        "codegraph_search"
+      ],
+      "tool_texts": [
+        "- Rect2  [function]  math/rect2.h\n- RECT2  [enum_member]  variant/variant.h\n- Rect2i  [function]  math/rect2i.h\n- rect2.h  [import]  math/rect2.cpp\n- rect2.h  [file]  math/rect2.h"
+      ],
+      "truncated": false,
+      "query": "rect2",
+      "gold": [
+        "Rect2"
+      ],
+      "arm": "codegraph",
+      "run": 0,
+      "correct": 1,
+      "correct_retrieval": 1
+    },
+    {
+      "answer": "Godot core/ 中 JSON 相关的主要符号：\n\n- **`JSON`** — 类，定义于 `io/json.h`，实现在 `io/json.cpp`\n\n该类提供 JSON 字符串的解析（`parse`）和序列化（`stringify`）功能。",
+      "input_tokens": 419,
+      "output_tokens": 72,
+      "steps": 2,
+      "tool_calls": [
+        "codegraph_search"
+      ],
+      "tool_texts": [
+        "- JSON  [class]  io/json.h\n- json  [import]  extension/make_interface_header.py\n- json.h  [import]  io/json.cpp\n- json.h  [file]  io/json.h\n- json.cpp  [file]  io/json.cpp"
+      ],
+      "truncated": false,
+      "query": "json",
+      "gold": [
+        "JSON"
+      ],
+      "arm": "codegraph",
+      "run": 0,
+      "correct": 1,
+      "correct_retrieval": 1
+    },
+    {
+      "answer": "`Image` 类定义在 **`io/image.h`** / **`io/image.cpp`** 中。\n\n主要相关符号：\n\n- **`Image`** — 核心图像处理类，提供像素级操作（创建、加载、保存、缩放、裁剪、格式转换等）。\n- 常用方法包括：`create`、`load`、`save_png`、`resize`、`crop`、`convert`、`get_pixel`、`set_pixel`、`get_data` 等。\n- 枚举 `Image::Format` 定义各种像素格式（如 `FORMAT_RGBA8`、`FORMAT_RGB8`、`FORMAT_DXT5` 等）。\n\n如果你需要查找 `Image` 的某个具体方法或用法，请进一步说明。",
+      "input_tokens": 734,
+      "output_tokens": 179,
+      "steps": 2,
+      "tool_calls": [
+        "codegraph_search"
+      ],
+      "tool_texts": [
+        "- Image  [method]  io/image.cpp\n- Image  [method]  io/image.cpp\n- Image  [method]  io/image.cpp\n- Image  [method]  io/image.cpp\n- Image  [method]  io/image.h"
+      ],
+      "truncated": false,
+      "query": "image",
+      "gold": [
+        "Image"
+      ],
+      "arm": "codegraph",
+      "run": 0,
+      "correct": 1,
+      "correct_retrieval": 1
+    },
+    {
+      "answer": "相关符号：\n\n- **`ResourceLoader`** — 类，定义于 `io/resource_loader.h`\n- **`ResourceLoader`** — 方法/类，在 `core_bind.h` 中作为脚本绑定接口暴露\n- **`Resource`** — 类，定义于 `io/resource.h`",
+      "input_tokens": 740,
+      "output_tokens": 76,
+      "steps": 2,
+      "tool_calls": [
+        "codegraph_search"
+      ],
+      "tool_texts": [
+        "- ResourceLoader  [class]  io/resource_loader.h\n- ResourceLoader  [method]  core_bind.h\n- ResourceLoader  [class]  core_bind.h\n- Resource  [method]  io/resource.cpp\n- Resource  [class]  io/resource.h"
+      ],
+      "truncated": false,
+      "query": "resource loader",
+      "gold": [
+        "ResourceLoader"
+      ],
+      "arm": "codegraph",
+      "run": 0,
+      "correct": 1,
+      "correct_retrieval": 1
+    },
+    {
+      "answer": "主要符号：\n\n- **`ResourceSaver`** — 类，定义于 `io/resource_saver.h`\n- **`ResourceSaver`** — 绑定方法/类，定义于 `core_bind.h`（暴露给脚本 API）\n- **`Resource`** — 基类，定义于 `io/resource.h`，其中也有相关的保存方法（`io/resource.cpp`）",
+      "input_tokens": 744,
+      "output_tokens": 98,
+      "steps": 2,
+      "tool_calls": [
+        "codegraph_search"
+      ],
+      "tool_texts": [
+        "- ResourceSaver  [class]  io/resource_saver.h\n- ResourceSaver  [method]  core_bind.h\n- ResourceSaver  [class]  core_bind.h\n- Resource  [method]  io/resource.cpp\n- Resource  [class]  io/resource.h"
+      ],
+      "truncated": false,
+      "query": "resource saver",
+      "gold": [
+        "ResourceSaver"
+      ],
+      "arm": "codegraph",
+      "run": 0,
+      "correct": 1,
+      "correct_retrieval": 1
+    },
+    {
+      "answer": "核心符号：\n\n- **`FileAccess`** — 文件读写的主类，定义在 `io/file_access.h`\n- **`DirAccess`** — 目录操作类，定义在 `io/dir_access.h`\n- **`ACCESS_FILESYSTEM`** — 文件系统访问权限枚举值（同时出现在 `FileAccess` 和 `DirAccess` 中）\n- **`File`** (struct) — 分别出现在 `io/file_access_zip.h`（ZIP 打包文件访问）和 `io/pck_packer.h`（PCK 打包）\n\n主要使用 **`FileAccess`** 进行文件读写操作。",
+      "input_tokens": 750,
+      "output_tokens": 144,
+      "steps": 2,
+      "tool_calls": [
+        "codegraph_search"
+      ],
+      "tool_texts": [
+        "- FileAccess  [class]  io/file_access.h\n- File  [struct]  io/file_access_zip.h\n- File  [struct]  io/pck_packer.h\n- ACCESS_FILESYSTEM  [enum_member]  io/file_access.h\n- ACCESS_FILESYSTEM  [enum_member]  io/dir_access.h"
+      ],
+      "truncated": false,
+      "query": "file access",
+      "gold": [
+        "FileAccess"
+      ],
+      "arm": "codegraph",
+      "run": 0,
+      "correct": 1,
+      "correct_retrieval": 1
+    },
+    {
+      "answer": "Godot 中目录访问的核心类是 **`DirAccess`**（定义于 `io/dir_access.h`）。\n\n主要方法/符号：\n\n- **`DirAccess`** — 目录访问基类\n- **`DirAccess::open()`** — 打开目录，返回 `DirAccess*`\n- **`DirAccess::get_access_type()`** — 获取访问类型（如文件系统、打包资源等）\n- **`DirAccess::~DirAccess()`** — 析构函数\n\n相关辅助符号：\n- **`has_directory()`** / **`try_open_directory()`** — 来自 `FileAccessPack`（`io/file_access_pack.h`），用于打包资源的目录查询\n- **`add_directory()`** — `io/file_access_pack.cpp`",
+      "input_tokens": 936,
+      "output_tokens": 189,
+      "steps": 3,
+      "tool_calls": [
+        "codegraph_search",
+        "codegraph_search"
+      ],
+      "tool_texts": [
+        "- add_directory  [method]  io/file_access_pack.cpp\n- has_directory  [method]  io/file_access_pack.h\n- try_open_directory  [method]  io/file_access_pack.h\n- get_access_type  [method]  io/dir_access.cpp\n- _set_access_type  [method]  io/file_access.cpp",
+        "- DirAccess  [class]  io/dir_access.h\n- class  [variable]  object/object.h\n- ~DirAccess  [method]  io/dir_access.cpp\n- open  [method]  io/dir_access.cpp\n- _open  [method]  io/dir_access.cpp"
+      ],
+      "truncated": false,
+      "query": "directory access",
+      "gold": [
+        "DirAccess"
+      ],
+      "arm": "codegraph",
+      "run": 0,
+      "correct": 1,
+      "correct_retrieval": 1
+    },
+    {
+      "answer": "Godot core 中的消息队列相关符号：\n\n- **`MessageQueue`** — 类，定义于 `object/message_queue.h`，实现于 `object/message_queue.cpp`\n- **`Message`** — 结构体，定义于 `object/message_queue.h`（也见于 `debugger/remote_debugger.h`）\n\n`MessageQueue` 是 Godot 的核心延迟调用队列，用于将方法调用排入队列稍后执行（如 `call_deferred` 底层即依赖它）。",
+      "input_tokens": 427,
+      "output_tokens": 120,
+      "steps": 2,
+      "tool_calls": [
+        "codegraph_search"
+      ],
+      "tool_texts": [
+        "- MessageQueue  [method]  object/message_queue.cpp\n- MessageQueue  [class]  object/message_queue.h\n- Message  [struct]  object/message_queue.h\n- Message  [struct]  debugger/remote_debugger.h\n- message_queue.h  [import]  object/message_queue.cpp"
+      ],
+      "truncated": false,
+      "query": "message queue",
+      "gold": [
+        "MessageQueue"
+      ],
+      "arm": "codegraph",
+      "run": 0,
+      "correct": 1,
+      "correct_retrieval": 1
+    },
+    {
+      "answer": "Godot core/ 中与 \"engine\" 相关的主要符号：\n\n| 符号 | 类型 | 文件 |\n|------|------|------|\n| `Engine` | **class** | `config/engine.h` |\n| `Engine` | **class** | `core_bind.h`（绑定到脚本的版本） |\n\n- **`Engine`**（`config/engine.h`）— 核心引擎类，提供引擎版本信息、帧率、时间步等全局引擎状态查询。\n- **`Engine`**（`core_bind.h`）— 通过 `ClassDB` 暴露给 GDScript/脚本的绑定层接口。\n\n核心类是 **`Engine`**，定义在 `config/engine.h`。",
+      "input_tokens": 414,
+      "output_tokens": 166,
+      "steps": 2,
+      "tool_calls": [
+        "codegraph_search"
+      ],
+      "tool_texts": [
+        "- Engine  [method]  config/engine.cpp\n- Engine  [class]  config/engine.h\n- Engine  [method]  core_bind.h\n- Engine  [class]  core_bind.h\n- engine.h  [import]  config/engine.cpp"
+      ],
+      "truncated": false,
+      "query": "engine",
+      "gold": [
+        "Engine"
+      ],
+      "arm": "codegraph",
+      "run": 0,
+      "correct": 1,
+      "correct_retrieval": 1
+    },
+    {
+      "answer": "Godot core/ 中与 **main loop** 相关的符号：\n\n- **`MainLoop`** — 主循环抽象基类，定义于 `os/main_loop.h`\n- **`OS`** — 在 `os/os.h` 中持有 `MainLoop` 实例并驱动主循环\n- **`_Engine`**（`core_bind.h`）— 引擎绑定层，也引用 `MainLoop`\n\n核心入口：`MainLoop` 类（`os/main_loop.h`），由 `OS` 负责创建、迭代和销毁。",
+      "input_tokens": 744,
+      "output_tokens": 134,
+      "steps": 2,
+      "tool_calls": [
+        "codegraph_search"
+      ],
+      "tool_texts": [
+        "- MainLoop  [class]  os/main_loop.h\n- MainLoop  [class]  core_bind.h\n- MainLoop  [class]  os/os.h\n- Main  [class]  string/string_name.h\n- main_loop.h  [import]  os/main_loop.cpp"
+      ],
+      "truncated": false,
+      "query": "main loop",
+      "gold": [
+        "MainLoop"
+      ],
+      "arm": "codegraph",
+      "run": 0,
+      "correct": 1,
+      "correct_retrieval": 1
+    },
+    {
+      "answer": "Godot 的撤销/重做系统核心符号：\n\n- **`UndoRedo`** — 主类，定义于 `object/undo_redo.h`\n- **`UndoRedo::undo()`** — 撤销操作\n- **`UndoRedo::redo()`** — 重做操作\n\n常用方法还包括 `add_do_method()`、`add_undo_method()`、`add_do_property()`、`add_undo_property()`、`commit_action()` 等，用于构建撤销/重做操作。",
+      "input_tokens": 759,
+      "output_tokens": 120,
+      "steps": 2,
+      "tool_calls": [
+        "codegraph_search"
+      ],
+      "tool_texts": [
+        "- UndoRedo  [class]  object/undo_redo.h\n- redo  [method]  object/undo_redo.cpp\n- undo  [method]  object/undo_redo.cpp\n- undo_redo.h  [import]  object/undo_redo.cpp\n- undo_redo.cpp  [file]  object/undo_redo.cpp"
+      ],
+      "truncated": false,
+      "query": "undo redo",
+      "gold": [
+        "UndoRedo"
+      ],
+      "arm": "codegraph",
+      "run": 0,
+      "correct": 1,
+      "correct_retrieval": 1
+    },
+    {
+      "answer": "`NodePath` 类定义在 **`string/node_path.h`** 和 **`string/node_path.cpp`** 中。\n\n主要相关符号：\n\n- **`NodePath`** — 核心类，表示场景树中的路径（如 `\"Player/Sprite\"`）\n- 常用方法：`get_as_property_path()`, `is_absolute()`, `get_name_count()`, `get_subname_count()`, `get_concatenated_subnames()`, `is_empty()` 等\n- 在 `Node` 中通过 `get_node(const NodePath &p_path)` / `get_node_or_null()` 使用 `NodePath` 来获取目标节点\n- `NodePath` 也用于属性路径（property path），如 `\"material:albedo_color\"`",
+      "input_tokens": 746,
+      "output_tokens": 172,
+      "steps": 2,
+      "tool_calls": [
+        "codegraph_search"
+      ],
+      "tool_texts": [
+        "- NodePath  [method]  string/node_path.cpp\n- NodePath  [method]  string/node_path.cpp\n- NodePath  [method]  string/node_path.cpp\n- NodePath  [method]  string/node_path.cpp\n- NodePath  [method]  string/node_path.h"
+      ],
+      "truncated": false,
+      "query": "node path",
+      "gold": [
+        "NodePath"
+      ],
+      "arm": "codegraph",
+      "run": 0,
+      "correct": 1,
+      "correct_retrieval": 1
+    },
+    {
+      "answer": "`StringName` — 定义在 `core/string/string_name.h` 和 `core/string/string_name.cpp` 中。\n\n它是 Godot 中用于高效存储和比较字符串的类，内部使用指针比较而非字符逐字节比较，广泛用于标识符、属性名、方法名等场景。",
+      "input_tokens": 746,
+      "output_tokens": 74,
+      "steps": 2,
+      "tool_calls": [
+        "codegraph_search"
+      ],
+      "tool_texts": [
+        "- StringName  [method]  string/string_name.cpp\n- StringName  [method]  string/string_name.cpp\n- StringName  [method]  string/string_name.cpp\n- StringName  [method]  string/string_name.h\n- StringName  [method]  string/string_name.h"
+      ],
+      "truncated": false,
+      "query": "string name",
+      "gold": [
+        "StringName"
+      ],
+      "arm": "codegraph",
+      "run": 0,
+      "correct": 1,
+      "correct_retrieval": 1
+    },
+    {
+      "answer": "Godot core/ 中与随机数生成相关的符号：\n\n- **`RandomNumberGenerator`** — 类，位于 `math/random_number_generator.h`\n- **`random`** — 方法，位于 `math/random_pcg.cpp`（底层 PCG 随机数实现）",
+      "input_tokens": 753,
+      "output_tokens": 74,
+      "steps": 2,
+      "tool_calls": [
+        "codegraph_search"
+      ],
+      "tool_texts": [
+        "- RandomNumberGenerator  [method]  math/random_number_generator.h\n- RandomNumberGenerator  [class]  math/random_number_generator.h\n- random  [method]  math/random_pcg.cpp\n- random  [method]  math/random_pcg.cpp\n- random  [method]  math/random_pcg.cpp"
+      ],
+      "truncated": false,
+      "query": "random number generator",
+      "gold": [
+        "RandomNumberGenerator"
+      ],
+      "arm": "codegraph",
+      "run": 0,
+      "correct": 1,
+      "correct_retrieval": 1
+    },
+    {
+      "answer": "Godot core/ 中与 crypto 相关的主要符号：\n\n- **`Crypto`** — 主加密类，位于 `crypto/crypto.h`\n- **`CryptoKey`** — 密钥类，位于 `crypto/crypto.h`\n- **`CryptoCore`** — 底层加密核心类，位于 `crypto/crypto_core.h`",
+      "input_tokens": 98,
+      "output_tokens": 82,
+      "steps": 2,
+      "tool_calls": [
+        "codegraph_search"
+      ],
+      "tool_texts": [
+        "- Crypto  [class]  crypto/crypto.h\n- CryptoKey  [class]  crypto/crypto.h\n- CryptoCore  [class]  crypto/crypto_core.h\n- crypto.h  [import]  crypto/crypto.cpp\n- crypto.h  [file]  crypto/crypto.h"
+      ],
+      "truncated": false,
+      "query": "crypto",
+      "gold": [
+        "Crypto"
+      ],
+      "arm": "codegraph",
+      "run": 0,
+      "correct": 1,
+      "correct_retrieval": 1
+    },
+    {
+      "answer": "相关符号：\n\n- **`TranslationServer`** — 类，定义于 `string/translation_server.h`，实现于 `string/translation_server.cpp`\n- **`Translation`** — 类，定义于 `string/translation.h` 及 `string/translation_domain.h`\n\n`TranslationServer` 是 Godot 的核心翻译管理服务器，负责管理翻译、区域设置及字符串本地化。",
+      "input_tokens": 745,
+      "output_tokens": 95,
+      "steps": 2,
+      "tool_calls": [
+        "codegraph_search"
+      ],
+      "tool_texts": [
+        "- TranslationServer  [method]  string/translation_server.cpp\n- TranslationServer  [class]  string/translation_server.h\n- Translation  [class]  string/translation.h\n- Translation  [class]  string/translation_domain.h\n- server  [method]  crypto/crypto.cpp"
+      ],
+      "truncated": false,
+      "query": "translation server",
+      "gold": [
+        "TranslationServer"
+      ],
+      "arm": "codegraph",
+      "run": 0,
+      "correct": 1,
+      "correct_retrieval": 1
+    },
+    {
+      "answer": "Godot core/ 中与 HTTP client 相关的符号：\n\n- **`HTTPClient`** — 类，定义于 `io/http_client.h`\n- **`HTTPClientTCP`** — 类，定义于 `io/http_client_tcp.h` / `io/http_client_tcp.cpp`\n- **`HTTPClient::create`** — 工厂方法，定义于 `io/http_client.cpp`\n- **`~HTTPClient`** — 析构函数，定义于 `io/http_client.h`",
+      "input_tokens": 750,
+      "output_tokens": 117,
+      "steps": 2,
+      "tool_calls": [
+        "codegraph_search"
+      ],
+      "tool_texts": [
+        "- HTTPClient  [class]  io/http_client.h\n- HTTPClientTCP  [method]  io/http_client_tcp.cpp\n- HTTPClientTCP  [class]  io/http_client_tcp.h\n- ~HTTPClient  [method]  io/http_client.h\n- create  [method]  io/http_client.cpp"
+      ],
+      "truncated": false,
+      "query": "http client",
+      "gold": [
+        "HTTPClient"
+      ],
+      "arm": "codegraph",
+      "run": 0,
+      "correct": 1,
+      "correct_retrieval": 1
+    }
+  ],
+  "lockfile": {
+    "temperature": 0.0,
+    "llm_model": "",
+    "cmm_version": "0.8.1",
+    "graphify_version": "0.8.46",
+    "mem0_version": "",
+    "mempalace_version": "3.5.0"
+  },
+  "archive_meta": {
+    "id": "20260711T142828Z-ab-agent-stage1-godot-stage1-r1-codegraph",
+    "ts": "20260711T142828Z",
+    "readable_ts": "2026-07-11 22:28:28 +0800",
+    "path": "eval/reports/archive/20260711T142828Z-ab-agent-stage1-godot-stage1-r1-codegraph.json"
+  }
+}

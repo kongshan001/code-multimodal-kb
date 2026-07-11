@@ -202,6 +202,41 @@
         "delta_total_tokens_doc_minus_baseline": null
       },
       "path": "eval/reports/archive/20260711T132516Z-ab-agent-stage1-godot-stage1-r1-doc.json"
+    },
+    {
+      "id": "20260711T142828Z-ab-agent-stage1-godot-stage1-r1-codegraph",
+      "ts": "20260711T142828Z",
+      "readable_ts": "2026-07-11 22:28:28 +0800",
+      "subject": "ab-agent-stage1",
+      "variant": "godot-stage1-r1-codegraph",
+      "target": "godot",
+      "n": 0,
+      "lockfile": {
+        "temperature": 0.0,
+        "llm_model": "",
+        "cmm_version": "0.8.1",
+        "graphify_version": "0.8.46",
+        "mem0_version": "",
+        "mempalace_version": "3.5.0"
+      },
+      "aggregate": {
+        "codegraph": {
+          "accuracy": 0.962,
+          "accuracy_retrieval": 0.962,
+          "mean_input_tokens": 724,
+          "mean_output_tokens": 141.5,
+          "mean_total_tokens": 865.5,
+          "mean_steps": 2.15,
+          "truncated_count": 0,
+          "token_per_correct": 900.1,
+          "n_episodes": 26
+        },
+        "delta_accuracy_kb_minus_baseline": null,
+        "delta_total_tokens_kb_minus_baseline": null,
+        "delta_accuracy_doc_minus_baseline": null,
+        "delta_total_tokens_doc_minus_baseline": null
+      },
+      "path": "eval/reports/archive/20260711T142828Z-ab-agent-stage1-godot-stage1-r1-codegraph.json"
     }
   ]
 }
