@@ -36,4 +36,4 @@
 ## 5. 部署与文档
 
 - [x] 5.1 runbook §D 重写：MemPalace 安装（`uv install --python 3.11`）+ init + MCP 注册 + auto-save hooks + 排错表（Intel Mac py3.11 / #74 / #100 / #110）+ 回滚 → `docs/deployment-runbook.md` §D（基于 2.1/2.2/2.3 实测命令）✓
-- [ ] 5.2 把 D1 边界纪律 + Stage 0/1/2 路线沉淀进 `docs/deployment-runbook.md` 与 `CLAUDE.md`；标注 `deploy/mem0*` 为弃用历史
+- [x] 5.2 D1 边界纪律（Stage 0 已入 `CLAUDE.md`）+ Stage 路线（runbook §D 链 design D2/D3/D4）+ `deploy/mem0*` 弃用标注（§D + commit 82a6ef1）✓
