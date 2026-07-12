@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>engineer_demo · measurement lab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800&family=JetBrains+Mono:wght@400;500;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#f8f6f3; --ink:#1a1814; --ink2:#5a544a; --rule:#d9d2c4;
+    --teal:#9dd4c7; --blue:#a8c5e6; --beige:#f4e4c1; --gray:#e8e6e3;
+    --accent:#c75b39;      /* 烟花橙：唯一强调色，hero 数字 / 异常 */
+    --good:#3f7d5f; --warn:#b07a1e;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--cream);color:var(--ink);
+    font-family:'IBM Plex Sans',-apple-system,sans-serif;font-size:15px;line-height:1.45;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1180px;margin:0 auto;padding:48px 40px 80px}
+  /* ── masthead ── */
+  .mast{display:flex;align-items:flex-end;justify-content:space-between;
+    border-bottom:2px solid var(--ink);padding-bottom:18px;margin-bottom:8px}
+  .mast h1{font-family:'Fraunces',serif;font-weight:800;font-size:54px;letter-spacing:-1.5px;line-height:.95}
+  .mast h1 em{font-style:italic;font-weight:400;color:var(--ink2)}
+  .mast .meta{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--ink2);text-align:right;line-height:1.7}
+  .mast .meta b{color:var(--ink)}
+  .sub{font-family:'Fraunces',serif;font-style:italic;font-size:17px;color:var(--ink2);margin:6px 0 36px}
+  /* ── hero metrics ── */
+  .hero{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);margin-bottom:40px}
+  .hero .m{padding:22px 20px;border-right:1px solid var(--rule);position:relative}
+  .hero .m:last-child{border-right:none}
+  .hero .m .lbl{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink2);margin-bottom:8px}
+  .hero .m .num{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:40px;letter-spacing:-1px;line-height:1}
+  .hero .m .num.acc{color:var(--accent)}
+  .hero .m .ctx{font-size:11px;color:var(--ink2);margin-top:8px}
+  .hero .m .delta{position:absolute;top:22px;right:20px;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:500}
+  .up{color:var(--good)} .down{color:var(--accent)}
+  /* ── section heading ── */
+  .h{display:flex;align-items:baseline;gap:14px;margin:48px 0 18px}
+  .h .n{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--accent);letter-spacing:1px}
+  .h h2{font-family:'Fraunces',serif;font-weight:600;font-size:24px;letter-spacing:-.3px}
+  .h .line{flex:1;height:1px;background:var(--rule)}
+  /* ── value grid (§7 status) ── */
+  .vg{display:grid;grid-template-columns:1.6fr repeat(4,1fr);gap:0;font-size:13px}
+  .vg .r{display:contents}
+  .vg .c{padding:11px 12px;border-bottom:1px solid var(--rule)}
+  .vg .hd{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--ink2);border-bottom:1.5px solid var(--ink)}
+  .vg .dim{font-weight:500}
+  .vg .dots{font-family:'JetBrains Mono',monospace;font-size:15px;letter-spacing:1px}
+  .d3{color:var(--ink)}.d2{color:var(--ink2)}.d0{color:var(--rule)}
+  /* ── AB arms ── */
+  .ab{display:grid;grid-template-columns:1fr 1fr;gap:32px}
+  .ab h3{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--ink2);margin-bottom:14px}
+  .bar-row{display:grid;grid-template-columns:90px 1fr 70px;align-items:center;gap:12px;margin-bottom:11px;font-size:12px}
+  .bar-row .nm{font-family:'JetBrains Mono',monospace;color:var(--ink)}
+  .bar-row .tr{height:14px;background:var(--gray);position:relative}
+  .bar-row .tr i{position:absolute;left:0;top:0;bottom:0;background:var(--ink)}
+  .bar-row.kb .tr i{background:var(--teal)}
+  .bar-row.cg .tr i{background:var(--accent)}
+  .bar-row .v{font-family:'JetBrains Mono',monospace;text-align:right;color:var(--ink2)}
+  /* ── run list ── */
+  .runs{font-family:'JetBrains Mono',monospace;font-size:12px;width:100%;border-collapse:collapse}
+  .runs th{text-align:left;font-weight:500;color:var(--ink2);font-size:10px;letter-spacing:1px;text-transform:uppercase;padding:8px 10px;border-bottom:1.5px solid var(--ink)}
+  .runs td{padding:9px 10px;border-bottom:1px solid var(--rule);color:var(--ink)}
+  .runs tr:hover td{background:#fff}
+  .runs .sb{color:var(--accent)}
+  /* ── footer note ── */
+  .foot{margin-top:48px;padding-top:18px;border-top:1px solid var(--rule);
+    font-family:'Fraunces',serif;font-style:italic;font-size:13px;color:var(--ink2)}
+  .pill{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:10px;padding:2px 8px;
+    border:1px solid var(--ink);border-radius:20px;margin-right:6px;letter-spacing:.5px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="mast">
+    <div>
+      <h1>measurement <em>lab</em></h1>
+    </div>
+    <div class="meta">
+      <b>engineer_demo</b> · bench dashboard<br>
+      lockfile: cmm 0.8.1 · glm-5.1 · temp=0<br>
+      last run · 2026-07-12 00:45 UTC
+    </div>
+  </header>
+  <p class="sub">知识库 / 记忆系统的体检台 — 不评感觉，评数字。</p>
+
+  <!-- HERO METRICS -->
+  <section class="hero">
+    <div class="m"><div class="lbl">代码检索 broad@5</div><div class="num">0.846</div>
+      <div class="ctx">Godot core/ · BM25 vs grep</div><div class="delta up">+22%</div></div>
+    <div class="m"><div class="lbl">记忆召回 hit@5</div><div class="num">0.933</div>
+      <div class="ctx">MemPalace · reset 后恢复</div><div class="delta up">+0.33</div></div>
+    <div class="m"><div class="lbl">A/B · KB 省 token</div><div class="num acc">−58%</div>
+      <div class="ctx">agent 端到端 · cmm vs grep</div><div class="delta">2.4× /正确答</div></div>
+    <div class="m"><div class="lbl">答案 faithfulness</div><div class="num">0.971</div>
+      <div class="ctx">文档 · Ragas 协议 · LLM-judged</div><div class="delta" style="color:var(--ink2)">self-pref</div></div>
+  </section>
+
+  <!-- VALUE BENCHMARK §7 -->
+  <div class="h"><span class="n">01</span><h2>价值定位 · 哪层已量化</h2><span class="line"></span></div>
+  <div class="vg">
+    <div class="c hd">维度</div><div class="c hd">检索/召回</div><div class="c hd">agent A/B</div><div class="c hd">答案质量</div><div class="c hd">证据</div>
+    <div class="c dim">代码 KB</div><div class="c dots d3">●●●</div><div class="c dots d3">●●●</div><div class="c dots d3">●●●</div><div class="c">broad@5 0.846 · 压缩 12.7×</div>
+    <div class="c dim">文档 KB</div><div class="c dots d2">●●</div><div class="c dots d0">○</div><div class="c dots d2">●●</div><div class="c">recall@5 0.70 · faithful 0.971</div>
+    <div class="c dim">跨工具 anchoring</div><div class="c dots d3">●●●</div><div class="c dots d0">○</div><div class="c dots d0">○</div><div class="c">8/8 = 100%</div>
+    <div class="c dim">记忆层</div><div class="c dots d3">●●●</div><div class="c dots d0">○</div><div class="c dots d2">●●</div><div class="c">hit@5 0.933 · 路由 1.0</div>
+  </div>
+
+  <!-- A/B ARMS -->
+  <div class="h"><span class="n">02</span><h2>Agent A/B · 四臂横评</h2><span class="line"></span></div>
+  <div class="ab">
+    <div>
+      <h3>准确度（越高越好）</h3>
+      <div class="bar-row"><span class="nm">baseline</span><div class="tr"><i style="width:96%"></i></div><span class="v">0.923</span></div>
+      <div class="bar-row kb"><span class="nm">kb · cmm</span><div class="tr"><i style="width:96%"></i></div><span class="v">0.923</span></div>
+      <div class="bar-row"><span class="nm">doc</span><div class="tr"><i style="width:36%"></i></div><span class="v">0.346</span></div>
+      <div class="bar-row cg"><span class="nm">codegraph</span><div class="tr"><i style="width:100%"></i></div><span class="v">0.962</span></div>
+    </div>
+    <div>
+      <h3>token 用量（越短越好）</h3>
+      <div class="bar-row"><span class="nm">baseline</span><div class="tr"><i style="width:100%"></i></div><span class="v">1625</span></div>
+      <div class="bar-row kb"><span class="tr"><i style="width:42%"></i></div><span class="v">688</span></div>
+      <div class="bar-row"><span class="nm">doc</span><div class="tr"><i style="width:100%"></i></div><span class="v">1961</span></div>
+      <div class="bar-row cg"><span class="tr"><i style="width:53%"></i></div><span class="v">865</span></div>
+    </div>
+  </div>
+
+  <!-- RECENT RUNS -->
+  <div class="h"><span class="n">03</span><h2>归档 · 最近跑过</h2><span class="line"></span></div>
+  <table class="runs">
+    <tr><th>time</th><th>subject</th><th>variant</th><th>headline</th><th></th></tr>
+    <tr><td>00:45</td><td class="sb">mempalace</td><td>engineer_demo</td><td>routing_overall_accuracy=1.0 · hit@5=0.933</td><td>show ▸</td></tr>
+    <tr><td>21:08</td><td class="sb">memory-quality</td><td>memory-ragas</td><td>mean_faithfulness=0.951 · ctx_prec=0.360</td><td>show ▸</td></tr>
+    <tr><td>18:20</td><td class="sb">doc-quality-ragas</td><td>docs-ragas</td><td>mean_faithfulness=0.971 · ctx_prec=0.533</td><td>show ▸</td></tr>
+    <tr><td>14:28</td><td class="sb">ab-agent-stage1</td><td>godot-stage1-r1-codegraph</td><td>accuracy=0.962（四臂最高）</td><td>show ▸</td></tr>
+    <tr><td>11:04</td><td class="sb">ab-value-stage0</td><td>godot-stage0</td><td>mean_compression_read=12.71×</td><td>show ▸</td></tr>
+  </table>
+
+  <p class="foot">
+    <span class="pill">run</span><span class="pill">reports</span><span class="pill">compare</span><span class="pill">gold lab</span>
+    —— 命令行的每一句，这里都有一个对应的按钮。bench CLI 仍是后端，前端只读归档 JSON / 经薄 Flask 触发 run。
+  </p>
+</div>
+</body>
+</html>
