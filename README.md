@@ -36,6 +36,7 @@ python -m eval.cli web            # 起前端 → http://127.0.0.1:8765
 | [docs/deployment-runbook.md](docs/deployment-runbook.md) | **部署/排错**：A 代码 / B 文档 / C 评测 / D 记忆 / E 离线 + hook 事故复盘 |
 | [docs/benchmark-runbook.md](docs/benchmark-runbook.md) | **benchmark CLI**：`bench` 子命令 / goldgen 扩题 / 归档 / 读报告 / 复现 |
 | [docs/diagrams/](docs/diagrams/README.md) | **流程图**（fireworks-tech-graph）：系统架构 / A/B 流程 / goldgen 流程 |
+| [docs/frontend-guide.md](docs/frontend-guide.md) | **前端使用说明**：起服务 / 8 视图详解 / 典型工作流 / 排错 / CLI 对应 |
 | [web/](web/index.html) | **前端可视化**（Measurement Lab）：Dashboard / Run / Setup / Onboarding / Gold lab |
 | [eval/](eval/README.md) | **评测 harness**：指标 / gold / 可复现 lockfile / 工具注册表 |
 | [TODO.md](TODO.md) | **路线图**：已证明 / 进行中 / 待办 |
