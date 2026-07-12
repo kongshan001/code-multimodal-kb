@@ -122,8 +122,11 @@ async function catalogView() {
       <table class="t">
         ${cat.capabilities.map(cap => `<tr>
           <td style="width:28px;text-align:center"><input type="checkbox" ${cap.installed?"disabled checked":""} style="cursor:pointer"/></td>
-          <td><div style="font-weight:500;font-size:13px">${cap.name} <span style="font-size:9px;color:var(--ink2)">[${cap.type}]</span></div>
-              <div style="font-size:11px;color:var(--ink2)">${cap.desc}</div></td>
+          <td>
+            <div style="font-weight:500;font-size:13px">${cap.name} <span style="font-size:9px;color:var(--ink2)">[${cap.type}]</span></div>
+            <div style="font-size:11px;color:var(--ink2)">${cap.desc}</div>
+            ${cap.value ? `<div style="font-size:11px;color:var(--good);margin-top:3px">📊 ${cap.value}</div>` : ""}
+          </td>
           <td style="text-align:right;width:80px">${rb(cap)}</td>
           <td style="text-align:right;width:70px">${sb(cap)}</td>
         </tr>`).join("")}
