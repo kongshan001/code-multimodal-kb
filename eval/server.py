@@ -146,67 +146,12 @@ class Handler(BaseHTTPRequestHandler):
                 return self._send_json(200, {"rc": out.returncode, "stdout": out.stdout[-2000:]})
             if u.path == "/api/install":
                 cap_id = body.get("id", "")
-                project = body.get("project", "")
-                from eval.scaffold import CATALOG, _check_skill, SKILLS_DIR
-                cap = next((c for cat in CATALOG for c in cat["capabilities"] if c["id"] == cap_id), None)
-                if not cap:
-                    return self._send_json(200, {"rc": 1, "error": f"unknown capability: {cap_id}"})
-                if cap["type"] == "builtin":
-                    return self._send_json(200, {"rc": 0, "stdout": f"{cap['name']} 是内置能力（随脚手架自带），无需额外安装。"})
-                # skill / plugin：检测 → 已装返回；未装真执行 git clone
-                if cap["type"] in ("skill", "plugin"):
-                    if _check_skill(cap_id) or (cap_id == "superpowers" and _check_skill("using-superpowers")):
-                        return self._send_json(200, {"rc": 0, "stdout": f"{cap['name']} 已装 ✓"})
-                    # 从 catalog 读 source URL
-                    src = cap.get("source")
-                    if not src or not src.startswith("http"):
-                        return self._send_json(200, {"rc": 1, "stdout": f"{cap['name']}：无 git source。请手动安装到 ~/.claude/skills/{cap_id}/"})
-                    target_dir = str(SKILLS_DIR / cap_id)
-                    # 已存在先删
-                    if os.path.exists(target_dir):
-                        import shutil as _sh; _sh.rmtree(target_dir)
-                    out = subprocess.run(["git", "clone", "--depth", "1", src, target_dir],
-                                         capture_output=True, text=True, timeout=120)
-                    # strip ANSI/control chars that break JSON
-                    import re as _re
-                    msg = _re.sub(r'[\x00-\x08\x0b\x0c\x0e-\x1f\r]', '', out.stdout + out.stderr)
-                    if out.returncode == 0:
-                        return self._send_json(200, {"rc": 0, "stdout": f"✓ {cap['name']} 安装成功\n{msg[-300:]}"})
-                    return self._send_json(200, {"rc": 1, "stdout": f"安装失败：{msg[-300:]}"})
-                # tool / mcp：检测 → 已装返回；未装提示 setup.sh
-                if cap["type"] in ("tool", "mcp"):
-                    bin_name = {"cmm": "codebase-memory-mcp", "codegraph": "codegraph", "graphify": "graphify",
-                                "mempalace": "mempalace", "headroom": "headroom"}.get(cap_id, cap_id)
-                    if shutil.which(bin_name):
-                        return self._send_json(200, {"rc": 0, "stdout": f"{cap['name']} 已装：{shutil.which(bin_name)}"})
-                    # 真安装：调 setup.sh
-                    out = subprocess.run(["bash", str(REPO / "setup.sh"), "tools"],
-                                         capture_output=True, text=True, timeout=120, cwd=str(REPO))
-                    return self._send_json(200, {"rc": out.returncode, "stdout": out.stdout[-500:]})
-                return self._send_json(200, {"rc": 0, "stdout": "ok"})
+                from eval.scaffold import execute_action
+                return self._send_json(200, execute_action(cap_id, "install"))
             if u.path == "/api/uninstall":
                 cap_id = body.get("id", "")
-                from eval.scaffold import CATALOG, _check_skill, SKILLS_DIR, PLUGINS_CACHE
-                cap = next((c for cat in CATALOG for c in cat["capabilities"] if c["id"] == cap_id), None)
-                if not cap:
-                    return self._send_json(200, {"rc": 1, "error": f"unknown: {cap_id}"})
-                if cap["type"] == "builtin":
-                    return self._send_json(200, {"rc": 1, "stdout": f"{cap['name']} 是内置能力，不可卸载。"})
-                # skill：直接在 ~/.claude/skills/ 的可删；plugins 管理的提示
-                if cap["type"] in ("skill", "plugin"):
-                    target = SKILLS_DIR / cap_id
-                    if target.exists():
-                        import shutil as _sh
-                        _sh.rmtree(str(target))
-                        return self._send_json(200, {"rc": 0, "stdout": f"✓ {cap['name']} 已卸载（删除 {target}）"})
-                    # 检查是否在 plugins cache（Claude Code 插件系统管理）
-                    if PLUGINS_CACHE.exists():
-                        for _root, _dirs, _files in os.walk(PLUGINS_CACHE):
-                            if Path(_root).name in (cap_id, "using-superpowers") and "SKILL.md" in _files:
-                                return self._send_json(200, {"rc": 1, "stdout": f"{cap['name']} 是 Claude Code 插件（在 plugins cache），请用 /plugins 命令管理，不能从这里删。"})
-                    return self._send_json(200, {"rc": 1, "stdout": f"{cap['name']} 未找到安装目录，无法卸载。"})
-                # tool / mcp：不直接卸载（风险高），提示
-                return self._send_json(200, {"rc": 1, "stdout": f"{cap['name']} 是系统工具，请手动卸载（npm uninstall / uv tool uninstall / pip uninstall）。"})
+                from eval.scaffold import execute_action
+                return self._send_json(200, execute_action(cap_id, "uninstall"))
             if u.path == "/api/onboard":
                 act = body.get("action")
                 path = body.get("path", "")

@@ -27,7 +27,7 @@
         {
           "id": "openspec",
           "name": "OpenSpec",
-          "type": "plugin",
+          "type": "tool",
           "recommend": "always",
           "cost": null,
           "desc": "spec 驱动开发——先 spec 后码",
@@ -65,7 +65,7 @@
         {
           "id": "frontend-design",
           "name": "Frontend Design",
-          "type": "skill",
+          "type": "plugin",
           "recommend": "when_frontend",
           "cost": null,
           "desc": "高质量前端设计（非 AI slop）",
