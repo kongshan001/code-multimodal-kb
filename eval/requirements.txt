@@ -1,2 +1,12 @@
-# 代码侧评测零 LLM、轻依赖。重依赖（deepeval 等）留到文档侧 task 3.x。
+# 评测 harness Python 依赖（实测兼容组合）
+#
+# 检索层（code/doc/cross/memory/ab Stage0）零额外依赖——只 pytest。
+# agent 层 + 答案质量层（ab-agent/doc-ragas/memory-quality）需 anthropic SDK（走 GLM anthropic 兼容端点）。
+# 工具本体（cmm/graphify/codegraph/mempalace）非 pip 依赖，见 ../setup.sh。
 pytest>=8
+anthropic>=0.90
+
+# ── 不要装这些（本会话踩坑实证）──
+# ragas：0.4.3 与 langchain_community 版本冲突（vertexai 路径变），本项目用 Ragas 协议直接实现，不装库
+# numpy>=2 / torch / sentence-transformers：torch 2.2 编译 against numpy<2，升 numpy2 会 ABI 崩；
+#   且答案质量指标（faithfulness/context_precision）是 LLM-only，根本不用 embedding——无需这些重依赖
