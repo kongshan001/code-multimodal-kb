@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>measurement lab · setup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800&family=JetBrains+Mono:wght@400;500;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--cream:#f8f6f3;--ink:#1a1814;--ink2:#5a544a;--rule:#d9d2c4;
+    --teal:#9dd4c7;--accent:#c75b39;--good:#3f7d5f;--warn:#b07a1e;--bad:#b3462a;--gray:#e8e6e3}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--cream);color:var(--ink);font-family:'IBM Plex Sans',sans-serif;font-size:15px;line-height:1.45;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:980px;margin:0 auto;padding:48px 40px 80px}
+  .mast{display:flex;align-items:flex-end;justify-content:space-between;border-bottom:2px solid var(--ink);padding-bottom:18px;margin-bottom:8px}
+  .mast h1{font-family:'Fraunces',serif;font-weight:800;font-size:46px;letter-spacing:-1.3px;line-height:.95}
+  .mast h1 em{font-style:italic;font-weight:400;color:var(--ink2)}
+  .crumbs{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--ink2)}
+  .crumbs b{color:var(--accent)}
+  .sub{font-family:'Fraunces',serif;font-style:italic;font-size:17px;color:var(--ink2);margin:6px 0 28px}
+  /* gate banner */
+  .gate{display:flex;align-items:center;gap:16px;padding:16px 20px;border:1.5px solid var(--ink);border-radius:4px;margin-bottom:32px;background:#fff}
+  .gate .dot{width:14px;height:14px;border-radius:50%;background:var(--warn);flex:none;box-shadow:0 0 0 4px rgba(176,122,30,.18)}
+  .gate.ok .dot{background:var(--good);box-shadow:0 0 0 4px rgba(63,125,95,.18)}
+  .gate .t{font-family:'Fraunces',serif;font-size:19px;font-weight:600}
+  .gate .d{font-size:13px;color:var(--ink2);margin-top:2px}
+  .gate .all{margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:12px;padding:9px 16px;background:var(--ink);color:var(--cream);border:none;border-radius:2px;cursor:pointer;letter-spacing:.5px}
+  .h{display:flex;align-items:baseline;gap:14px;margin:32px 0 14px}
+  .h .n{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--accent);letter-spacing:1px}
+  .h h2{font-family:'Fraunces',serif;font-weight:600;font-size:22px}
+  .h .line{flex:1;height:1px;background:var(--rule)}
+  /* dep table */
+  table.dep{width:100%;border-collapse:collapse;font-size:13px}
+  .dep th{text-align:left;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--ink2);padding:9px 12px;border-bottom:1.5px solid var(--ink);font-weight:500}
+  .dep td{padding:13px 12px;border-bottom:1px solid var(--rule);vertical-align:top}
+  .dep .nm{font-family:'JetBrains Mono',monospace;font-weight:500;font-size:13px}
+  .dep .desc{color:var(--ink2);font-size:12px}
+  .st{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:500}
+  .st.ok{color:var(--good)} .st.miss{color:var(--bad)} .st.warn{color:var(--warn)}
+  .btn{font-family:'JetBrains Mono',monospace;font-size:11px;padding:5px 11px;border:1px solid var(--ink);background:#fff;border-radius:2px;cursor:pointer;letter-spacing:.3px}
+  .btn.fill{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .pill{font-family:'JetBrains Mono',monospace;font-size:10px;padding:2px 7px;border-radius:3px;background:var(--gray);color:var(--ink2)}
+  .note{font-size:11px;color:var(--ink2);font-style:italic;margin-top:3px}
+  .health{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--ink2)}
+  .health b.ok{color:var(--good)} .health b.bad{color:var(--bad)}
+  .foot{margin-top:42px;padding-top:16px;border-top:1px solid var(--rule);font-family:'Fraunces',serif;font-style:italic;font-size:13px;color:var(--ink2)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="mast">
+    <h1>setup <em>· 环境体检</em></h1>
+    <div class="crumbs">接入段 / <b>01 setup</b> → 02 project → 评测段</div>
+  </header>
+  <p class="sub">先备齐工具与凭据，再接你的工程——缺什么点一下就装。</p>
+
+  <div class="gate">
+    <span class="dot"></span>
+    <div><div class="t">2 项缺失，1 项警告</div><div class="d">装齐后健康检查自动转绿，放行进 Project 接入。</div></div>
+    <button class="all">全装缺失项 ▸</button>
+  </div>
+
+  <div class="h"><span class="n">A</span><h2>KB 工具</h2><span class="line"></span></div>
+  <table class="dep">
+    <tr><th>工具</th><th>状态</th><th>用途</th><th></th></tr>
+    <tr><td class="nm">cmm <span class="pill">binary</span></td><td class="st ok">✓ 0.8.1</td><td class="desc">代码符号/调用图 KB</td><td></td></tr>
+    <tr><td class="nm">graphify <span class="pill">npm</span></td><td class="st ok">✓ 0.8.46</td><td class="desc">文档图 KB（建图花 LLM）</td><td></td></tr>
+    <tr><td class="nm">codegraph <span class="pill">npm</span></td><td class="st miss">✗ 缺</td><td class="desc">第二代码 KB（A/B codegraph 臂 + goldgen 枚举）</td><td><button class="btn fill">装 ▸</button></td></tr>
+    <tr><td class="nm">mempalace <span class="pill">uv · py3.11</span></td><td class="st ok">✓ 3.5.0</td><td class="desc">记忆层<br><span class="note">⚠️ Intel Mac 必须 py3.11（onnxruntime wheel 限制）</span></td><td></td></tr>
+  </table>
+
+  <div class="h"><span class="n">B</span><h2>Python / 渲染 / 凭据</h2><span class="line"></span></div>
+  <table class="dep">
+    <tr><th>项</th><th>状态</th><th>说明</th><th></th></tr>
+    <tr><td class="nm">python deps</td><td class="st ok">✓ pytest + anthropic</td><td class="desc">评测 harness（检索层零 LLM）<br><span class="note">✗ 不要装 ragas（库冲突）/ numpy≥2（torch ABI 崩）—— 用 Ragas 协议直接实现</span></td><td></td></tr>
+    <tr><td class="nm">SVG→PNG 渲染</td><td class="st miss">✗ 缺</td><td class="desc">流程图用（rsvg-convert / cairosvg）</td><td><button class="btn">装 librsvg ▸</button></td></tr>
+    <tr><td class="nm">LLM 凭据</td><td class="st warn">⚠ glm-5.1（同家族）</td><td class="desc">cc-connect config 已设；agent A/B + 答案质量用<br><span class="note">⚠ self-preference：绝对质量分需第二家族 judge（待 Claude/OpenAI key）</span></td><td></td></tr>
+  </table>
+
+  <div class="h"><span class="n">C</span><h2>健康检查</h2><span class="line"></span></div>
+  <p class="health">pytest eval/tests/ → <b class="ok">48 passed</b> &nbsp;·&nbsp; cmm list_projects → <b class="ok">4 项目</b> &nbsp;·&nbsp; mempalace status → <b class="ok">2021 drawers</b><br>
+  <span style="color:var(--ink2)">→ 装齐缺失项后此项全绿，自动放行 Project 接入。</span></p>
+
+  <p class="foot">setup.sh 仍是后端——这里只是把它体检表化。一键装 = subprocess 跑 setup.sh &lt;step&gt;，SSE 流日志。</p>
+</div>
+</body>
+</html>

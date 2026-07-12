@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>measurement lab · project onboarding</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800&family=JetBrains+Mono:wght@400;500;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--cream:#f8f6f3;--ink:#1a1814;--ink2:#5a544a;--rule:#d9d2c4;
+    --teal:#9dd4c7;--accent:#c75b39;--good:#3f7d5f;--warn:#b07a1e;--gray:#e8e6e3}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--cream);color:var(--ink);font-family:'IBM Plex Sans',sans-serif;font-size:15px;line-height:1.45;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1000px;margin:0 auto;padding:48px 40px 80px}
+  .mast{display:flex;align-items:flex-end;justify-content:space-between;border-bottom:2px solid var(--ink);padding-bottom:18px;margin-bottom:8px}
+  .mast h1{font-family:'Fraunces',serif;font-weight:800;font-size:44px;letter-spacing:-1.2px;line-height:.95}
+  .mast h1 em{font-style:italic;font-weight:400;color:var(--ink2)}
+  .crumbs{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--ink2)}
+  .crumbs b{color:var(--accent)}
+  .sub{font-family:'Fraunces',serif;font-style:italic;font-size:17px;color:var(--ink2);margin:6px 0 32px}
+  /* stepper */
+  .steps{display:grid;grid-template-columns:repeat(5,1fr);gap:0;margin-bottom:36px;border:1px solid var(--rule);border-radius:4px;overflow:hidden;background:#fff}
+  .step{padding:16px 14px;border-right:1px solid var(--rule);position:relative}
+  .step:last-child{border-right:none}
+  .step .n{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--ink2);letter-spacing:1px}
+  .step .t{font-family:'Fraunces',serif;font-weight:600;font-size:14px;margin-top:3px;line-height:1.2}
+  .step.done{background:#fff}
+  .step.done .n{color:var(--good)}
+  .step.done .n::after{content:" ✓"}
+  .step.active{background:var(--ink);color:var(--cream)}
+  .step.active .n{color:var(--accent)}
+  .step.active .t{color:var(--cream)}
+  .step.todo{opacity:.45}
+  /* step body */
+  .card{border:1.5px solid var(--ink);border-radius:4px;background:#fff;padding:26px 28px;margin-bottom:20px}
+  .card h3{font-family:'Fraunces',serif;font-weight:600;font-size:22px;margin-bottom:6px}
+  .card .lede{font-size:13px;color:var(--ink2);margin-bottom:18px}
+  label{display:block;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--ink2);margin-bottom:6px}
+  .path{display:flex;gap:8px;margin-bottom:18px}
+  input{flex:1;font-family:'JetBrains Mono',monospace;font-size:13px;padding:10px 12px;border:1px solid var(--rule);border-radius:2px;background:var(--cream);color:var(--ink)}
+  input:focus{outline:none;border-color:var(--ink)}
+  .go{font-family:'JetBrains Mono',monospace;font-size:12px;padding:10px 18px;background:var(--accent);color:#fff;border:none;border-radius:2px;cursor:pointer;letter-spacing:.5px}
+  /* progress */
+  .prog{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--ink2);background:var(--cream);border:1px solid var(--rule);border-radius:2px;padding:12px 14px;margin-top:14px;white-space:pre;line-height:1.7}
+  .prog b{color:var(--ink)}
+  /* warn callouts */
+  .warn{display:flex;gap:12px;padding:14px 16px;border-left:3px solid var(--warn);background:#fdf6e9;border-radius:0 3px 3px 0;margin:14px 0;font-size:12px}
+  .warn .ico{font-family:'JetBrains Mono',monospace;color:var(--warn);font-weight:700;font-size:14px}
+  .warn b{color:var(--ink)}
+  .warn .cost{font-family:'JetBrains Mono',monospace;color:var(--accent);font-weight:600}
+  .nav{display:flex;justify-content:space-between;align-items:center;margin-top:8px}
+  .nav .sk{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--ink2);text-decoration:underline;cursor:pointer}
+  .nav .next{font-family:'JetBrains Mono',monospace;font-size:12px;padding:9px 16px;background:var(--ink);color:var(--cream);border:none;border-radius:2px;cursor:pointer}
+  .foot{margin-top:36px;padding-top:16px;border-top:1px solid var(--rule);font-family:'Fraunces',serif;font-style:italic;font-size:13px;color:var(--ink2)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="mast">
+    <h1>project <em>· 接入你的工程</em></h1>
+    <div class="crumbs">接入段 / 01 setup ✓ → <b>02 project</b> → 评测段</div>
+  </header>
+  <p class="sub">把你的代码库 / 文档 / 会话接进来，5 步走完就能 bench 自己的系统。</p>
+
+  <div class="steps">
+    <div class="step done"><div class="n">01</div><div class="t">连代码库 · 索引</div></div>
+    <div class="step active"><div class="n">02 · 进行中</div><div class="t">文档图（可选）</div></div>
+    <div class="step todo"><div class="n">03</div><div class="t">会话 mine（可选）</div></div>
+    <div class="step todo"><div class="n">04</div><div class="t">生成 gold</div></div>
+    <div class="step todo"><div class="n">05</div><div class="t">就绪 → bench</div></div>
+  </div>
+
+  <!-- step 1 done summary -->
+  <div class="card" style="background:var(--cream);border-color:var(--rule)">
+    <h3 style="font-size:16px;color:var(--ink2)">01 连代码库 · 已索引 <span style="color:var(--good);font-family:'JetBrains Mono',monospace;font-size:12px">✓</span></h3>
+    <div class="lede" style="margin-bottom:0"><span style="font-family:'JetBrains Mono',monospace;font-size:12px">/Users/ks_128/Documents/my-proj/src</span> → cmm <b>8742 节点</b> · codegraph <b>8742 节点 / 12k 边</b>（静态零 LLM，3.2s）<br>
+    <a class="sk" style="font-size:11px">重跑</a></div>
+  </div>
+
+  <!-- step 2 active -->
+  <div class="card">
+    <h3>02 文档知识图（可选）</h3>
+    <div class="lede">graphify 建图——把你的文档抽成概念图。可跳过（无文档则跳）。</div>
+    <label>文档目录</label>
+    <div class="path"><input value="/Users/ks_128/Documents/my-proj/docs"/><button class="go">建图 ▸</button></div>
+    <div class="warn">
+      <span class="ico">⚠</span>
+      <div>建图调 LLM 抽取，<b>按量计费</b>。<span class="cost">预估 ~$0.4（46 篇 .md，glm-4.6）</span>。确认才执行。<br>
+      <span style="color:var(--ink2)">建好的 graph.json 可提交 repo 团队共享（建一次，全队用）。</span></div>
+    </div>
+    <div class="prog">  waiting for confirmation…
+  <b>$</b> graphify build /Users/ks_128/Documents/my-proj/docs --backend glm-4.6</div>
+    <div class="nav">
+      <span class="sk">跳过此步 ▸</span>
+      <button class="next">确认建图（$0.4）▸</button>
+    </div>
+  </div>
+
+  <!-- step 3 preview (collapsed) -->
+  <div class="card" style="opacity:.55">
+    <h3 style="font-size:16px">03 会话 mine（可选）</h3>
+    <div class="lede">把你的 Claude Code 会话存进 MemPalace（记忆层）。
+      <div class="warn" style="margin:10px 0 0"><span class="ico">⚠</span><div><b>勿配非 idempotent 的 auto-save hook</b>——会把所有会话反复 mine 进 palace 致召回退化（实测 0.933→0.6，见 runbook §D.4）。这里只手动 <span style="font-family:'JetBrains Mono',monospace">mempalace sweep</span> 增量存。</div></div>
+    </div>
+  </div>
+
+  <p class="foot">向导状态自动存（接了一半下次接着来）。每步可跳过/重跑。005 就绪后 → 列出可 bench 的 target，一键进 Run console 跑你自己的系统。</p>
+</div>
+</body>
+</html>
