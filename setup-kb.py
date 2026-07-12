@@ -23,6 +23,14 @@ import subprocess
 import sys
 import time
 
+# Windows 中文系统默认 stdout 编码是 GBK(cp936)：print 的 emoji(✓✗⚠→) 会
+# UnicodeEncodeError。统一强制 UTF-8——跨平台一致（mac/linux 本就 utf-8），零副作用。
+for _stream in (sys.stdout, sys.stderr):
+    try:
+        _stream.reconfigure(encoding="utf-8", errors="replace")
+    except Exception:
+        pass
+
 HERE = pathlib.Path(__file__).resolve().parent
 MEM0_DIR = HERE / "deploy" / "mem0"
 BIGMODEL_ANTHROPIC_BASE = "https://open.bigmodel.cn/api/anthropic"
@@ -35,7 +43,7 @@ def sh(cmd: list[str], *, dry: bool, cwd: str | None = None, check: bool = True,
     print(f"▶ {' '.join(cmd)}")
     if dry:
         return ""
-    r = subprocess.run(cmd, cwd=cwd, capture_output=capture, text=True,
+    r = subprocess.run(cmd, cwd=cwd, capture_output=capture, text=True, encoding="utf-8", errors="replace",
                        env={**os.environ, **(env or {})})
     if check and r.returncode != 0:
         if capture:
@@ -160,7 +168,7 @@ def step_status() -> None:
     cmm = shutil.which("codebase-memory-mcp")
     if cmm:
         try:
-            r = subprocess.run([cmm, "cli", "list_projects", "{}"], capture_output=True, text=True, timeout=30)
+            r = subprocess.run([cmm, "cli", "list_projects", "{}"], capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=30)
             out = r.stdout.strip()
             projects = json.loads(out[out.find("{"):]).get("projects", []) if "{" in out else []
             for p in projects:
@@ -186,7 +194,7 @@ def step_status() -> None:
     print("\n[agent MCP 注册]")
     claude = shutil.which("claude")
     if claude:
-        r = subprocess.run([claude, "mcp", "list"], capture_output=True, text=True, timeout=30)
+        r = subprocess.run([claude, "mcp", "list"], capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=30)
         for line in r.stdout.splitlines():
             if any(k in line for k in ("codebase-memory", "graphify", "mem0", "Connected", "Failed")):
                 print(f"  {line.strip()}")
@@ -231,7 +239,7 @@ def interactive_args(dry_run: bool) -> argparse.Namespace:
         dry_run=dry_run,
         llm_key=key or None, llm_base=None, llm_model=None)
     print(f"\n-> 确认: code={a.code} docs={a.docs or '<无>'} name={a.name} "
-          f"memory={'on' if mem else 'off'} mode={mode}")
+          f"memory={'on' if memory_mode != 'none' else 'off'} mode={mode}")
     if input("  开始接入？[Y/n]: ").strip().lower().startswith("n"):
         sys.exit("已取消")
     return a
@@ -242,7 +250,7 @@ def cmm_projects() -> list:
     if not cmm:
         return []
     try:
-        r = subprocess.run([cmm, "cli", "list_projects", "{}"], capture_output=True, text=True, timeout=30)
+        r = subprocess.run([cmm, "cli", "list_projects", "{}"], capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=30)
         out = r.stdout.strip()
         return json.loads(out[out.find("{"):]).get("projects", []) if "{" in out else []
     except Exception:
@@ -273,7 +281,7 @@ def interactive_query() -> None:
     cmm = shutil.which("codebase-memory-mcp")
     r = subprocess.run([cmm, "cli", "search_code",
                         json.dumps({"project": project, "pattern": pattern, "limit": 8})],
-                       capture_output=True, text=True, timeout=60)
+                       capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=60)
     out = r.stdout.strip()
     results = json.loads(out[out.find("{"):]).get("results", []) if "{" in out else []
     if not results:
@@ -291,7 +299,7 @@ def interactive_delete() -> None:
         return
     cmm = shutil.which("codebase-memory-mcp")
     subprocess.run([cmm, "cli", "delete_project", json.dumps({"project": project})],
-                   capture_output=True, text=True, timeout=30)
+                   capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=30)
     print(f"  => 已删除 {project}")
 
 
@@ -353,8 +361,11 @@ def _install_cmm(sysname: str) -> None:
         a = "darwin-arm64" if m == "arm64" else "darwin-amd64"
     elif sysname == "Linux":
         a = "linux-arm64" if m in ("arm64", "aarch64") else "linux-amd64"
-    else:
-        print("  ⚠ Windows：手动下二进制（PowerShell Invoke-WebRequest，见 runbook §A），或后续补 Win 自动化"); return
+    else:  # Windows
+        print("  ⚠ cmm v0.8.1 release 无 Windows 预编译二进制（仅 darwin/linux）。")
+        print("     Win 装法：cargo install（需 Rust 工具链，包名见 cmm 官网），或用本机已有 .exe。")
+        print("     放到 PATH（如 ~/.local/bin/codebase-memory-mcp.exe）后重跑。详见 docs/deployment-runbook.md §A。")
+        return
     V, F = "v0.8.1", f"codebase-memory-mcp-{a}.tar.gz"
     url = f"https://github.com/DeusData/codebase-memory-mcp/releases/download/{V}/{F}"
     bindir = pathlib.Path.home() / ".local" / "bin"; bindir.mkdir(parents=True, exist_ok=True)
