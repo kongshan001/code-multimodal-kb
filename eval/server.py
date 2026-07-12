@@ -105,6 +105,9 @@ class Handler(BaseHTTPRequestHandler):
             return self._send_json(200, json.loads(f.read_text()))
         if p == "/api/health":
             return self._send_json(200, health())
+        if p == "/api/catalog":
+            from eval.scaffold import merged
+            return self._send_json(200, merged())
         if p.startswith("/api/pending/"):
             tgt = p[len("/api/pending/"):]
             f = REPO / "eval" / "reports" / f"gold_pending_{tgt}.md"

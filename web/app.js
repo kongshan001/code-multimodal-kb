@@ -86,6 +86,63 @@ async function compare() {
   };
 }
 
+// ── 能力目录（scaffold catalog）──
+async function catalogView() {
+  const data = await fetchJSON("/api/catalog");
+  const d = data.detection;
+  const s = data.summary;
+  const recBadge = (cap) => cap.recommendation === "推荐" ? `<span style="color:var(--accent);font-size:10px;font-weight:600">推荐</span>` :
+    cap.recommendation === "可选" && cap.cost ? `<span style="color:var(--warn);font-size:10px">⚠ ${cap.cost}</span>` :
+    `<span style="color:var(--ink2);font-size:10px">可选</span>`;
+  const statusBadge = (cap) => cap.installed
+    ? `<span class="st ok" style="font-size:11px">✓ 已装</span>`
+    : `<span class="st miss" style="font-size:11px">☐ 可装</span>`;
+  view().innerHTML = `
+    <h1>能力目录 <em>· agent scaffold</em></h1>
+    <p class="lede">策展的 agent 能力栈——检测你的项目，推荐该装的，勾选一键装。</p>
+
+    <!-- 检测摘要 -->
+    <div class="gate ${s.not_installed_recommended === 0 ? "ok" : ""}">
+      <span class="dot"></span>
+      <div>
+        <b>${s.installed}/${s.total} 已装</b> · ${s.recommended} 项推荐
+        ${s.not_installed_recommended > 0 ? `· <span style="color:var(--accent)">${s.not_installed_recommended} 项推荐未装</span>` : "· 推荐项全装齐 ✓"}
+        <div style="font-size:11px;color:var(--ink2);margin-top:2px">
+          检测：<b>${d.language}</b> · ${d.has_code?"源码 ✓":"无源码"} · ${d.has_docs?"文档 ✓":"无文档"} · ${d.has_tests?"测试 ✓":"无测试"} · ${d.has_frontend?"前端 ✓":""}
+        </div>
+      </div>
+      ${s.not_installed_recommended > 0 ? `<button class="btn fill" onclick="installRecommended()">一键安装推荐项 ▸</button>` : ""}
+    </div>
+
+    <!-- 分类目录 -->
+    ${data.categories.map(cat => `
+      <div class="h"><span class="n">${cat.id.slice(0,2).toUpperCase()}</span><h2>${cat.name}</h2><span class="line"></span></div>
+      <p style="font-size:12px;color:var(--ink2);margin:-8px 0 12px">${cat.desc}</p>
+      <table class="t">
+        ${cat.capabilities.map(cap => `
+          <tr>
+            <td style="width:28px;text-align:center">
+              <input type="checkbox" ${cap.installed?"disabled checked":""} data-cap="${cap.id}" style="cursor:pointer"/>
+            </td>
+            <td>
+              <div style="font-weight:500;font-size:13px">${cap.name} <span style="font-size:9px;color:var(--ink2);margin-left:4px">[${cap.type}]</span></div>
+              <div style="font-size:11px;color:var(--ink2)">${cap.desc}</div>
+            </td>
+            <td style="text-align:right;width:80px">${recBadge(cap)}</td>
+            <td style="text-align:right;width:70px">${statusBadge(cap)}</td>
+          </tr>`).join("")}
+      </table>`).join("")}
+
+    <p class="lede" style="margin-top:24px">用户不需要研究 cmm 是什么、MemPalace 为什么比 Mem0 好——这里替你策展好了。
+    勾选 → 一键装 → agent 直接能用 + 效果可量化。</p>`;
+  window.installRecommended = () => {
+    alert("MVP demo：推荐项大部分已装。完整版会 git clone skills / 跑 setup.sh / 建索引。\n\n未装的推荐项：\n" +
+      data.categories.flatMap(c => c.capabilities)
+        .filter(c => !c.installed && c.recommendation === "推荐")
+        .map(c => `  ☐ ${c.name}（${c.desc}）`).join("\n"));
+  };
+}
+
 function runConsole() {
   view().innerHTML = `
     <h1>run console <em>· 触发评测</em></h1>
@@ -238,7 +295,7 @@ function goldlabView() {
 
 // ── router ──
 const routes = {
-  dashboard, run: runConsole, reports, setup: setupView,
+  dashboard, catalog: catalogView, run: runConsole, reports, setup: setupView,
   onboard: onboardView, compare, goldlab: goldlabView,
 };
 async function router() {
