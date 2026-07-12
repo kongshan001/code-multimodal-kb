@@ -158,26 +158,23 @@ async function catalogView() {
     window.renderCat(i);
   };
   window.toggleCap = async (capId, capName) => {
-    const cap = window._catData.categories.flatMap(c => c.capabilities).find(c => c.id === capId);
-    if (!cap) return;
-    if (cap.installed) {
-      // 卸载：confirm → 调 /api/uninstall → 刷新
-      if (!confirm(`确定卸载 ${capName}？`)) return;
-      const r = await fetch("/api/uninstall", {method:"POST", headers:{"Content-Type":"application/json"},
-        body: JSON.stringify({id: capId})});
-      const o = await r.json();
-      const ok = o.rc === 0;
-      alert(`${ok?"✓":"⚠"} ${capName} ${ok?"卸载成功":"未卸载"}\n\n${(o.stdout||o.error||"").slice(0, 300)}`);
-      window.loadCatalogFor();
-    } else {
-      // 安装
-      const r = await fetch("/api/install", {method:"POST", headers:{"Content-Type":"application/json"},
-        body: JSON.stringify({id: capId, project: window._targetProject})});
-      const o = await r.json();
-      const ok = o.rc === 0;
-      alert(`${ok?"✓":"⚠"} ${capName} ${ok?"安装成功":"安装失败"}\n\n${(o.stdout||o.error||"").slice(0, 300)}`);
-      if (ok) window.loadCatalogFor();  // 刷新状态
-    }
+    const cap = window._catData?.categories?.flatMap(c => c.capabilities).find(c => c.id === capId);
+    if (!cap) { alert(`未找到 ${capName}`); return; }
+    try {
+      if (cap.installed) {
+        if (!confirm(`确定卸载 ${capName}？`)) return;
+        const r = await fetch("/api/uninstall", {method:"POST", headers:{"Content-Type":"application/json"},
+          body: JSON.stringify({id: capId})});
+        const o = await r.json();
+        alert(`${o.rc===0?"✓":"⚠"} ${capName}\n\n${(o.stdout||o.error||"").slice(0, 300)}`);
+      } else {
+        const r = await fetch("/api/install", {method:"POST", headers:{"Content-Type":"application/json"},
+          body: JSON.stringify({id: capId, project: window._targetProject})});
+        const o = await r.json();
+        alert(`${o.rc===0?"✓":"⚠"} ${capName}\n\n${(o.stdout||o.error||"").slice(0, 300)}`);
+      }
+    } catch(e) { alert(`操作失败: ${e}`); return; }
+    await window.loadCatalogFor();
   };
   window.loadCatalogFor();  // 首次自动加载
 }
