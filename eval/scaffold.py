@@ -48,14 +48,6 @@ CATALOG = load_catalog()
 # install_cmd / uninstall_cmd 里的 {id} {source} {skills_dir} 会被替换
 _INSTALL_CMDS = {
     # skill-dir: git clone 到 ~/.claude/skills/<id>/
-    "karpathy-guidelines": {
-        "install": "git clone --depth 1 {source} {skills_dir}/{id}",
-        "uninstall": "rm -rf {skills_dir}/{id}",
-    },
-    "deep-research": {
-        "install": "git clone --depth 1 {source} {skills_dir}/{id}",
-        "uninstall": "rm -rf {skills_dir}/{id}",
-    },
     "fireworks-tech-graph": {
         "install": "git clone --depth 1 {source} {skills_dir}/{id}",
         "uninstall": "rm -rf {skills_dir}/{id}",
@@ -87,16 +79,11 @@ _INSTALL_CMDS = {
         "install": "uv tool install --python 3.11 mempalace",
         "uninstall": "uv tool uninstall mempalace",
     },
-    # binary
-    "cmm": {
-        "install": "_cmm_install",
-        "uninstall": "rm -f ~/.local/bin/codebase-memory-mcp",
-    },
-    # pip venv
-    "headroom": {
-        "install": "_headroom_install",
-        "uninstall": "rm -rf ~/.headroom",
-    },
+    # 注：以下工具不在 _INSTALL_CMDS（无可靠自动安装源）：
+    # karpathy-guidelines: 无 git repo（手动创建的 skill）
+    # deep-research: Claude Code 内置，无独立 repo
+    # cmm: 268MB binary，需手动下载（见 deployment-runbook §A）
+    # headroom: install.sh URL 已失效
 }
 
 
