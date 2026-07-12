@@ -142,6 +142,8 @@ async function catalogView() {
             <div style="font-weight:500;font-size:13px">${cap.name} <span style="font-size:9px;color:var(--ink2)">[${cap.type}]</span> ${rb(cap)}</div>
             <div style="font-size:11px;color:var(--ink2)">${cap.desc}</div>
             ${cap.value ? `<div style="font-size:11px;color:var(--good);margin-top:3px">📊 ${cap.value}</div>` : ""}
+            ${cap.guide ? `<details style="margin-top:4px"><summary style="font-size:10px;color:var(--ink2);cursor:pointer">📖 使用指南</summary><div style="font-size:11px;color:var(--ink2);padding:6px 0 2px;line-height:1.5">${cap.guide}</div></details>` : ""}
+            ${(cap.docs||[]).length ? `<div style="margin-top:3px">${cap.docs.map(d => `<a href="${d.url}" target="_blank" style="font-size:10px;margin-right:10px;text-decoration:underline">🔗 ${d.title}</a>`).join("")}</div>` : ""}
           </td>
           <td style="text-align:right;width:140px;white-space:nowrap">
             ${cap.installed

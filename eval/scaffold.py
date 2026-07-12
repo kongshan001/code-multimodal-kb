@@ -1,10 +1,12 @@
-"""Agent 脚手架 · catalog + detect + recommend + install_status（MVP）。
+"""Agent 脚手架 · catalog + detect + recommend + install_status。
 
-策展清单（builtin tap）嵌入 Python dict——避免 YAML 依赖。未来可拆 catalog.yaml + tap 多源。
+策展清单从 scaffold/catalog.json 加载（用户可编辑）。
+scaffold/catalog.local.json 可选——用户自研工具覆盖/追加（按 id 合并）。
 detect() 扫目标项目 → recommend() 按 catalog 规则推荐 → install_status() 检查每项装没装。
 """
 from __future__ import annotations
 
+import json
 import os
 import shutil
 import subprocess
@@ -12,53 +14,35 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
 SKILLS_DIR = Path.home() / ".claude" / "skills"
+CATALOG_FILE = REPO / "scaffold" / "catalog.json"
+LOCAL_FILE = REPO / "scaffold" / "catalog.local.json"
 
-# ── 策展清单（builtin tap）─────────────────────────────────────────────────
-CATALOG = [
-    {"id": "se-workflows", "name": "🛠️ 软件工程工作流", "desc": "让 agent 按最佳实践干活",
-     "capabilities": [
-        {"id": "superpowers", "name": "Superpowers", "desc": "code-review / TDD / systematic-debugging 的 SOP", "type": "skill", "recommend": "always", "cost": None,
-         "value": "减少返工：先审再改 / 先测再写 / 先定位再修"},
-        {"id": "openspec", "name": "OpenSpec", "desc": "spec 驱动开发——先 spec 后码", "type": "skill", "recommend": "always", "cost": None,
-         "value": "减少需求偏差：非琐碎改动先 spec 后码，改前就看到设计"},
-        {"id": "karpathy-guidelines", "name": "Karpathy Guidelines", "desc": "简洁优先 / 外科手术改动 / 目标驱动", "type": "skill", "recommend": "always", "cost": None,
-         "value": "减少过度工程：最小代码 + 验证驱动 + 不动无关代码"},
-        {"id": "frontend-design", "name": "Frontend Design", "desc": "高质量前端设计（非 AI slop）", "type": "skill", "recommend": "when_frontend", "cost": None,
-         "value": "提升 UI 质量：避开通用 AI 美学，有性格的前端"},
-        {"id": "deep-research", "name": "Deep Research", "desc": "多源研究 + 引用追踪 + 结构化报告", "type": "skill", "recommend": "optional", "cost": None,
-         "value": "省调研时间：多源搜索 + 引用留底 + 结构化输出"},
-     ]},
-    {"id": "knowledge-base", "name": "📚 知识库", "desc": "agent 知道你的代码和文档",
-     "capabilities": [
-        {"id": "cmm", "name": "Code KB · cmm", "desc": "代码符号/调用图检索（agent 查代码不用读文件）", "type": "tool", "recommend": "when_code", "cost": None,
-         "value": "检索 broad@5=0.846（+22% vs grep）· 省 58% context token · 毫秒级"},
-        {"id": "codegraph", "name": "Code KB · codegraph", "desc": "第二代码 KB（A/B 对照 + goldgen 枚举）", "type": "tool", "recommend": "when_code", "cost": None,
-         "value": "agent 准确度 0.962（四臂最高）· 概念题补救 grep 盲区"},
-        {"id": "graphify", "name": "Doc KB · graphify", "desc": "文档语义检索（NL→概念图）", "type": "tool", "recommend": "when_docs", "cost": "LLM（约 $0.3）",
-         "value": "文档 recall@5=0.717 · NL→概念→代码定位 100% · 答案 faithfulness 0.971"},
-     ]},
-    {"id": "context-management", "name": "🗜️ 上下文管理", "desc": "有限 context window 塞更多有效信息",
-     "capabilities": [
-        {"id": "mempalace", "name": "MemPalace", "desc": "跨会话记忆（local-first，核心零 LLM）", "type": "tool", "recommend": "always", "cost": None,
-         "value": "跨会话不重说偏好/决策 · hit@5=0.933 · D1 路由准确率 1.0"},
-        {"id": "headroom", "name": "headroom", "desc": "压缩工具输出省 context token", "type": "mcp", "recommend": "optional", "cost": None,
-         "value": "压缩大工具输出为摘要 · 省 in-flight context token"},
-     ]},
-    {"id": "evaluation", "name": "📊 评测量化", "desc": "数字说话，不凭感觉",
-     "capabilities": [
-        {"id": "bench", "name": "Benchmark Harness", "desc": "召回率 / A-B 对照 / 答案质量量化", "type": "builtin", "recommend": "when_kb", "cost": None,
-         "value": "量化效果：A/B 对照证明 KB 省 58% token · 48 测试回归门禁"},
-        {"id": "goldgen", "name": "Gold Generator", "desc": "自动给代码造测试题（agent 挖符号 + 两层验收）", "type": "builtin", "recommend": "when_code", "cost": None,
-         "value": "省人工造题：agent 挖符号+拟题+两层验收·gold 构造即正确"},
-     ]},
-    {"id": "visualization", "name": "🎨 可视化", "desc": "看得见才管得好",
-     "capabilities": [
-        {"id": "measurement-lab", "name": "Measurement Lab", "desc": "Dashboard / Run / Gold lab / Onboarding", "type": "builtin", "recommend": "always", "cost": None,
-         "value": "降低门槛：不碰命令行也能看数 / 跑评测 / 对比 / 扩题"},
-        {"id": "fireworks-tech-graph", "name": "Flow Charts", "desc": "NL → SVG+PNG 技术流程图", "type": "skill", "recommend": "optional", "cost": None,
-         "value": "省画图时间：NL 描述 → 秒级出 SVG+PNG 技术图"},
-     ]},
-]
+
+def load_catalog() -> list:
+    """从 catalog.json 加载策展清单 + 合并 catalog.local.json（用户自研覆盖/追加）。"""
+    cats = json.loads(CATALOG_FILE.read_text())["categories"]
+    if LOCAL_FILE.exists():
+        local = json.loads(LOCAL_FILE.read_text()).get("categories", [])
+        cats = _merge_catalogs(cats, local)
+    return cats
+
+
+def _merge_catalogs(builtin: list, local: list) -> list:
+    """按 category id 合并；同 id capability 以 local 覆盖。"""
+    by_id = {c["id"]: c for c in builtin}
+    for lc in local:
+        if lc["id"] in by_id:
+            # 合并 capabilities（local 覆盖同 id）
+            base_caps = {c["id"]: c for c in by_id[lc["id"]]["capabilities"]}
+            for cap in lc.get("capabilities", []):
+                base_caps[cap["id"]] = cap
+            by_id[lc["id"]]["capabilities"] = list(base_caps.values())
+        else:
+            by_id[lc["id"]] = lc
+    return list(by_id.values())
+
+
+CATALOG = load_catalog()
 
 # ── 检测每项装没装 ────────────────────────────────────────────────────────
 _VERIFY = {

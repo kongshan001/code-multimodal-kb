@@ -1,0 +1,165 @@
+{
+  "version": 1,
+  "_comment": "策展清单。用户可编辑此文件或创建 catalog.local.json 增加自研工具。",
+  "categories": [
+    {
+      "id": "se-workflows",
+      "name": "🛠️ 软件工程工作流",
+      "desc": "让 agent 按最佳实践干活",
+      "capabilities": [
+        {
+          "id": "superpowers", "name": "Superpowers", "type": "skill", "recommend": "always", "cost": null,
+          "desc": "code-review / TDD / systematic-debugging 的 SOP",
+          "value": "减少返工：先审再改 / 先测再写 / 先定位再修",
+          "guide": "安装后 agent 在写代码前先 brainstorming 想清楚需求，写完 code-review 自查，遇 bug 用 systematic-debugging 而非瞎猜。强制 skill 调用纪律。",
+          "docs": [
+            {"title": "Superpowers 技能列表与用法", "url": "https://github.com/anthropics/claude-code/tree/main/skills"}
+          ]
+        },
+        {
+          "id": "openspec", "name": "OpenSpec", "type": "skill", "recommend": "always", "cost": null,
+          "desc": "spec 驱动开发——先 spec 后码",
+          "value": "减少需求偏差：非琐碎改动先 spec 后码，改前就看到设计",
+          "guide": "非琐碎需求走 openspec-explore → openspec-propose → openspec-apply-change 三阶段。先生成 proposal/design/specs/tasks，逐 task 实施，改完 archive。单行修复/笔误/跑命令不走 spec。",
+          "docs": [
+            {"title": "OpenSpec 快速上手", "url": "https://www.npmjs.com/package/@anthropic/openspec"},
+            {"title": "实战：用 OpenSpec 推进一个评测 benchmark 变更", "url": "https://github.com/kongshan001/code-multimodal-kb/blob/main/docs/benchmark-runbook.md"}
+          ]
+        },
+        {
+          "id": "karpathy-guidelines", "name": "Karpathy Guidelines", "type": "skill", "recommend": "always", "cost": null,
+          "desc": "简洁优先 / 外科手术改动 / 目标驱动",
+          "value": "减少过度工程：最小代码 + 验证驱动 + 不动无关代码",
+          "guide": "Think before coding（说出假设、不懂就问）/ Simplicity first（最小代码，不投机）/ Surgical changes（只动该动的）/ Goal-driven（定义成功标准，loop 直到验证通过）。",
+          "docs": [
+            {"title": "Karpathy 原文（X/Twitter）", "url": "https://x.com/karpathy/status/2015883857489522876"}
+          ]
+        },
+        {
+          "id": "frontend-design", "name": "Frontend Design", "type": "skill", "recommend": "when_frontend", "cost": null,
+          "desc": "高质量前端设计（非 AI slop）",
+          "value": "提升 UI 质量：避开通用 AI 美学，有性格的前端",
+          "guide": "生成有美学方向的前端（不默认 Inter 字体 / 紫色渐变）。提供风格方向（极简/暗黑/编辑感等），产出可发布代码。",
+          "docs": [
+            {"title": "fireworks-tech-graph 示例（本项目用的风格）", "url": "https://github.com/yizhiyanhua-ai/fireworks-tech-graph"}
+          ]
+        },
+        {
+          "id": "deep-research", "name": "Deep Research", "type": "skill", "recommend": "optional", "cost": null,
+          "desc": "多源研究 + 引用追踪 + 结构化报告",
+          "value": "省调研时间：多源搜索 + 引用留底 + 结构化输出",
+          "guide": "适合需要多源对比+引用的深度调研（如'对比 Ragas vs DeepEval'）。不适合简单查询或一次性查找。",
+          "docs": []
+        }
+      ]
+    },
+    {
+      "id": "knowledge-base",
+      "name": "📚 知识库",
+      "desc": "agent 知道你的代码和文档",
+      "capabilities": [
+        {
+          "id": "cmm", "name": "Code KB · cmm", "type": "tool", "recommend": "when_code", "cost": null,
+          "desc": "代码符号/调用图检索（agent 查代码不用读文件）",
+          "value": "检索 broad@5=0.846（+22% vs grep）· 省 58% context token · 毫秒级",
+          "guide": "cmm 建索引后 agent 用 search_graph（BM25 主路）查代码——返符号+位置，不用读整个文件。trace_path 追调用链。get_architecture 看全局。",
+          "docs": [
+            {"title": "cmm 部署 runbook", "url": "https://github.com/kongshan001/code-multimodal-kb/blob/main/docs/deployment-runbook.md"},
+            {"title": "A/B 对照实测（KB 省 58% token）", "url": "https://github.com/kongshan001/code-multimodal-kb/blob/main/eval/reports/ab-agent-stage1-2026-07.md"}
+          ]
+        },
+        {
+          "id": "codegraph", "name": "Code KB · codegraph", "type": "tool", "recommend": "when_code", "cost": null,
+          "desc": "第二代码 KB（A/B 对照 + goldgen 枚举）",
+          "value": "agent 准确度 0.962（四臂最高）· 概念题补救 grep 盲区",
+          "guide": "codegraph 与 cmm 互补——codegraph query --json 返符号+类型+文件，可与 cmm 做 A/B 对比。goldgen 用它枚举符号自动造题。",
+          "docs": [
+            {"title": "四臂横评报告（codegraph 最准 0.962）", "url": "https://github.com/kongshan001/code-multimodal-kb/blob/main/eval/reports/ab-agent-stage1-2026-07.md#7-四臂横评"}
+          ]
+        },
+        {
+          "id": "graphify", "name": "Doc KB · graphify", "type": "tool", "recommend": "when_docs", "cost": "LLM（约 $0.3）",
+          "desc": "文档语义检索（NL→概念图）",
+          "value": "文档 recall@5=0.717 · NL→概念→代码定位 100% · 答案 faithfulness 0.971",
+          "guide": "graphify build <docs> 建概念图（花 LLM），graphify query <NL> 做语义检索。跨工具 anchoring（文档概念→代码）8/8=100%。",
+          "docs": [
+            {"title": "文档评测报告", "url": "https://github.com/kongshan001/code-multimodal-kb/blob/main/eval/reports/doc-quality-ragas-2026-07.md"}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "context-management",
+      "name": "🗜️ 上下文管理",
+      "desc": "有限 context window 塞更多有效信息",
+      "capabilities": [
+        {
+          "id": "mempalace", "name": "MemPalace", "type": "tool", "recommend": "always", "cost": null,
+          "desc": "跨会话记忆（local-first，核心零 LLM）",
+          "value": "跨会话不重说偏好/决策 · hit@5=0.933 · D1 路由准确率 1.0",
+          "guide": "MemPalace 按四层归属（D1）存主观记忆。search 做语义召回，kg_add/query 管事实图谱。⚠️ auto-save hook 非 idempotent——用手动 sweep。",
+          "docs": [
+            {"title": "记忆层部署 + hook 事故复盘", "url": "https://github.com/kongshan001/code-multimodal-kb/blob/main/docs/deployment-runbook.md#d-记忆层--mempalace实测-2026-07"}
+          ]
+        },
+        {
+          "id": "headroom", "name": "headroom", "type": "mcp", "recommend": "optional", "cost": null,
+          "desc": "压缩工具输出省 context token",
+          "value": "压缩大工具输出为摘要 · 省 in-flight context token",
+          "guide": "headroom_compress 把大输出压成摘要（可 retrieve 原文）。长会话调了很多工具、context 撑满时最有用。",
+          "docs": []
+        }
+      ]
+    },
+    {
+      "id": "evaluation",
+      "name": "📊 评测量化",
+      "desc": "数字说话，不凭感觉",
+      "capabilities": [
+        {
+          "id": "bench", "name": "Benchmark Harness", "type": "builtin", "recommend": "when_kb", "cost": null,
+          "desc": "召回率 / A-B 对照 / 答案质量量化",
+          "value": "量化效果：A/B 对照证明 KB 省 58% token · 48 测试回归门禁",
+          "guide": "bench run code/doc/memory/ab 跑各层评测。归档留底（不覆盖），compare 对比两版。lockfile 保证跨设备可比。",
+          "docs": [
+            {"title": "Benchmark runbook", "url": "https://github.com/kongshan001/code-multimodal-kb/blob/main/docs/benchmark-runbook.md"}
+          ]
+        },
+        {
+          "id": "goldgen", "name": "Gold Generator", "type": "builtin", "recommend": "when_code", "cost": null,
+          "desc": "自动给代码造测试题（agent 挖符号 + 两层验收）",
+          "value": "省人工造题：agent 挖符号+拟题+两层验收·gold 构造即正确",
+          "guide": "bench goldgen <seed> → codegraph 枚举符号 → LLM 拟 NL 题 → 两层验收（实证+subagent）→ 人审 → fold。",
+          "docs": [
+            {"title": "扩题流程文档", "url": "https://github.com/kongshan001/code-multimodal-kb/blob/main/docs/benchmark-runbook.md#扩题goldgen--agent-挖题--两层自动验收--人审"}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "visualization",
+      "name": "🎨 可视化",
+      "desc": "看得见才管得好",
+      "capabilities": [
+        {
+          "id": "measurement-lab", "name": "Measurement Lab", "type": "builtin", "recommend": "always", "cost": null,
+          "desc": "Dashboard / Run / Gold lab / Onboarding",
+          "value": "降低门槛：不碰命令行也能看数 / 跑评测 / 对比 / 扩题",
+          "guide": "python -m eval.cli web 起前端。8 视图：Dashboard/Run/Reports/Detail/Compare/Setup/Onboarding/Gold lab + Catalog（能力目录）。",
+          "docs": [
+            {"title": "前端使用说明", "url": "https://github.com/kongshan001/code-multimodal-kb/blob/main/docs/frontend-guide.md"}
+          ]
+        },
+        {
+          "id": "fireworks-tech-graph", "name": "Flow Charts", "type": "skill", "recommend": "optional", "cost": null,
+          "desc": "NL → SVG+PNG 技术流程图",
+          "value": "省画图时间：NL 描述 → 秒级出 SVG+PNG 技术图",
+          "guide": "用中文描述系统→7 风格+14 图类型。cairosvg/rsvg-convert 导 PNG。7 风格含 Claude 官方风。",
+          "docs": [
+            {"title": "fireworks-tech-graph 仓库", "url": "https://github.com/yizhiyanhua-ai/fireworks-tech-graph"}
+          ]
+        }
+      ]
+    }
+  ]
+}
