@@ -142,15 +142,104 @@ async function setupView() {
 function placeholder(title, desc, mockup) {
   view().innerHTML = `<h1>${title}</h1><p class="lede">${desc}</p>
     <div class="h"><span class="n">→</span><h2>设计 mockup</h2><span class="line"></span></div>
-    <p style="font-size:13px;color:var(--ink2)">详细交互设计见 <a href="${mockup}">${mockup}</a>（已做 HTML mockup）。
-    后端 endpoint 已就绪（<code class="mono">/api/onboard</code> / <code class="mono">/api/goldgen</code>），UI 实装归后续迭代。</p>`;
+    <p style="font-size:13px;color:var(--ink2)">详细交互设计见 <a href="${mockup}">${mockup}</a>（已做 HTML mockup）。</p>`;
+}
+
+// ── onboarding 5 步向导 ──
+function onboardView() {
+  const steps = [
+    {n:"01", t:"连代码库 · 索引", act:"codegraph", lbl:"代码库路径", val:"/path/to/your/repo", desc:"codegraph init（静态零 LLM，秒级）"},
+    {n:"02", t:"文档图（可选）", act:"docgraph", lbl:"文档目录", val:"/path/to/docs", desc:"graphify build · ⚠ 花 LLM（按量计费，先估成本）", warn:"建图调 LLM 抽取，按量计费。graph.json 可提交 repo 团队共享。"},
+    {n:"03", t:"会话 mine（可选）", act:"mine", lbl:"会话目录 ~/.claude/projects/<proj>", val:"", desc:"mempalace mine --mode convos", warn:"⚠ 勿配非 idempotent 的 auto-save hook（会 bloat，实测召回 0.933→0.6，见 runbook §D.4）。这里只手动 mine 一次。"},
+  ];
+  view().innerHTML = `
+    <h1>project <em>· 接入你的工程</em></h1>
+    <p class="lede">5 步把你的代码库/文档/会话接进来。每步可跳过，跑完进 Gold lab 造题。</p>
+    ${steps.map(s => `
+      <div style="border:1.5px solid var(--ink);background:#fff;padding:20px;margin-bottom:16px">
+        <div class="mono" style="font-size:10px;color:var(--accent);letter-spacing:1px">${s.n}</div>
+        <h3 style="font-family:Fraunces,serif;font-size:18px;margin:2px 0 4px">${s.t}</h3>
+        <p style="font-size:12px;color:var(--ink2);margin-bottom:12px">${s.desc}</p>
+        ${s.warn ? `<div style="border-left:3px solid var(--warn);background:#fdf6e9;padding:8px 12px;font-size:11px;margin-bottom:12px">${s.warn}</div>` : ""}
+        <div style="display:flex;gap:8px">
+          <input id="ob_${s.act}" class="btn" placeholder="${s.lbl}" value="${s.val}" style="flex:1;text-align:left"/>
+          <button class="btn fill" onclick="doOnboard('${s.act}')">跑 ▸</button>
+        </div>
+        <div id="ob_out_${s.act}" class="mono" style="margin-top:10px;font-size:11px;color:var(--ink2);min-height:14px"></div>
+      </div>`).join("")}
+    <div style="border:1.5px solid var(--ink);background:var(--cream);padding:20px;margin-bottom:16px">
+      <div class="mono" style="font-size:10px;color:var(--accent);letter-spacing:1px">04</div>
+      <h3 style="font-family:Fraunces,serif;font-size:18px;margin:2px 0 4px">生成 gold</h3>
+      <p style="font-size:12px;color:var(--ink2)">给接进来的代码造题（agent 挖符号 + 两层验收 + 人审）→ <a href="#/goldlab">进 Gold lab ▸</a></p>
+    </div>
+    <div style="border:1.5px solid var(--ink);background:var(--cream);padding:20px">
+      <div class="mono" style="font-size:10px;color:var(--good);letter-spacing:1px">05</div>
+      <h3 style="font-family:Fraunces,serif;font-size:18px;margin:2px 0 4px">就绪 → bench</h3>
+      <p style="font-size:12px;color:var(--ink2)">接好了 → <a href="#/run">Run console</a> 跑你自己的系统。</p>
+    </div>`;
+  window.doOnboard = async (act) => {
+    const path = $(`#ob_${act}`).value;
+    $(`#ob_out_${act}`).textContent = "running…";
+    try {
+      const r = await fetch("/api/onboard", {method:"POST", headers:{"Content-Type":"application/json"},
+        body: JSON.stringify({action: act, path})});
+      const o = await r.json();
+      $(`#ob_out_${act}`).innerHTML = `<b style="color:${o.rc===0?"var(--good)":"var(--bad)"}">exit ${o.rc}</b> ${(o.stdout||"").slice(-400)}${o.stderr?" ⚠ "+o.stderr.slice(-150):""}`;
+    } catch(e) { $(`#ob_out_${act}`).textContent = "⚠ " + e; }
+  };
+}
+
+// ── gold lab（扩题 4 阶段）──
+function goldlabView() {
+  view().innerHTML = `
+    <h1>gold lab <em>· 扩题</em></h1>
+    <p class="lede">agent 挖符号 + LLM 拟题 → 实证验收 → 人审 → fold 入 gold。gold 构造即正确（零 judge）。</p>
+    <div style="border:1.5px solid var(--ink);background:#fff;padding:20px;margin-bottom:16px">
+      <label class="mono" style="font-size:10px;color:var(--ink2)">seed 词（空格分，指一片代码）</label>
+      <div style="display:flex;gap:8px;margin:6px 0 10px">
+        <input id="gl_seeds" class="btn" placeholder="Vector color Node Resource" style="flex:1;text-align:left"/>
+        <input id="gl_target" class="btn" value="gen" style="width:70px"/>
+        <button class="btn fill" onclick="glGen()">① 挖+拟题 ▸</button>
+      </div>
+      <div class="mono" style="font-size:11px;color:var(--ink2)">→ codegraph 枚举真实符号 + GLM 拟 NL 题 → 写 gold_pending</div>
+      <div id="gl_out_gen" class="mono" style="margin-top:10px;font-size:11px;min-height:14px"></div>
+    </div>
+    <div style="display:flex;gap:8px;margin-bottom:16px">
+      <button class="btn" onclick="glVerify()">② 实证验收</button>
+      <button class="btn" onclick="glShow()">③ 看候选（人审）</button>
+      <button class="btn fill" onclick="glFold()">④ fold 入库 ▸</button>
+    </div>
+    <div id="gl_pending" class="mono" style="background:#fff;border:1px solid var(--rule);padding:16px;font-size:11px;white-space:pre-wrap;min-height:60px;color:var(--ink2)">候选队列（gold_pending）显示在这里——人审后 fold。</div>`;
+  const tgt = () => $("#gl_target").value;
+  window.glGen = async () => {
+    $("#gl_out_gen").textContent = "running…（codegraph + GLM，~10s）";
+    const seeds = $("#gl_seeds").value.split(/\s+/).filter(Boolean);
+    const r = await fetch("/api/goldgen", {method:"POST", headers:{"Content-Type":"application/json"},
+      body: JSON.stringify({seeds, target: tgt()})});
+    const o = await r.json();
+    $("#gl_out_gen").innerHTML = `<b style="color:${o.rc===0?"var(--good)":"var(--bad)"}">exit ${o.rc}</b> ${(o.stdout||"").slice(-400)}`;
+  };
+  window.glVerify = async () => {
+    const r = await fetch("/api/goldgen-verify", {method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({target: tgt()})});
+    const o = await r.json(); glShow();
+    $("#gl_out_gen").innerHTML = `<b>verify exit ${o.rc}</b>`;
+  };
+  window.glShow = async () => {
+    const d = await fetchJSON("/api/pending/" + tgt());
+    $("#gl_pending").textContent = d.exists ? d.content : "(无 pending——先 ① 挖+拟题)";
+  };
+  window.glFold = async () => {
+    const r = await fetch("/api/goldgen-fold", {method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({target: tgt()})});
+    const o = await r.json();
+    $("#gl_pending").innerHTML = `<b style="color:var(--good)">${(o.stdout||"").slice(-200)}</b>`;
+  };
+  glShow();
 }
 
 // ── router ──
 const routes = {
   dashboard, run: runConsole, reports, setup: setupView,
-  onboard: () => placeholder("project · 目标接入", "5 步向导：连代码库→索引→文档图→会话→gold→就绪。", "docs/mockup/onboarding.html"),
-  compare, goldlab: () => placeholder("gold lab · 扩题", "agent 挖题 + 两层验收 + 人审。", "（mockup 在 dashboard §Gold lab）"),
+  onboard: onboardView, compare, goldlab: goldlabView,
 };
 async function router() {
   const h = location.hash.slice(2) || "dashboard";

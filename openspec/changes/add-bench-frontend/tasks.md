@@ -4,9 +4,9 @@
 
 ## 1. 接入段（Tier 2）
 
-- [x] 1.1 Setup 视图：依赖体检表（读 /api/health，cmm/graphify/codegraph/mempalace/python/render/creds ✓版本/✗缺）+ 健康门禁 + 依赖坑提示 → 验证：live 渲染真实 health（ready + 各项版本）✓（一键装 UI 待接 /api/setup，现提示跑 ./setup.sh）
-- [ ] 1.2 Project onboarding 5 步向导 UI（后端 /api/onboard 已就绪；UI 暂为 mockup 链接，见 docs/mockup/onboarding.html）
-- [ ] 1.3 向导状态持久化
+- [x] 1.1 Setup 视图：依赖体检表（读 /api/health，cmm/graphify/codegraph/mempalace/python/render/creds ✓版本/✗缺）+ 健康门禁 + 依赖坑提示 → 验证：live 渲染真实 health ✓
+- [x] 1.2 Project onboarding 5 步向导 UI：连代码库→索引(codegraph init)/文档图(graphify build,成本警示)/会话(mine,hook警示)/gold→就绪，每步 POST /api/onboard 实跑 → 验证：live 渲染 + 端点通 ✓
+- [ ] 1.3 向导状态持久化（localStorage）— 待接（当前每次进页面重填）
 
 ## 2. Tier 1 读视图（静态 SPA · 评测段）✓
 
@@ -18,10 +18,10 @@
 - [x] 2.6 Compare 页：两 id aggregate diff 表 ✓
 - [x] 2.7 启动：`python -m eval.cli web`（bench web 子命令）→ localhost:8765 ✓（静态托管 = 直接 open web/index.html 或起 server）
 
-## 3. Tier 2 评测交互（薄后端）— 后端就绪，UI 待接
+## 3. Tier 2 评测交互（薄后端）
 
-- [x] 3.1 Run console 页 UI：subject/target/method 选 → POST /api/run → 显示 stdout（exit + 归档摘要）→ 验证：curl /api/run memory exit 0 hit@5=0.933 ✓
-- [ ] 3.2 Gold lab 页 UI（/api/goldgen 已就绪；现为 mockup 链接）
+- [x] 3.1 Run console 页 UI：subject/target/method 选 → POST /api/run → 显示 stdout → 验证 ✓
+- [x] 3.2 Gold lab 页 UI：seed+target → ①挖+拟题(POST /api/goldgen) → ②实证验收(/api/goldgen-verify) → ③看候选人审(GET /api/pending) → ④fold(POST /api/goldgen-fold) → 验证：live 渲染 + 端点全通 ✓
 
 ## 4. 文档 + 收尾
 

@@ -105,6 +105,11 @@ class Handler(BaseHTTPRequestHandler):
             return self._send_json(200, json.loads(f.read_text()))
         if p == "/api/health":
             return self._send_json(200, health())
+        if p.startswith("/api/pending/"):
+            tgt = p[len("/api/pending/"):]
+            f = REPO / "eval" / "reports" / f"gold_pending_{tgt}.md"
+            return self._send_json(200, {"exists": f.exists(),
+                                         "content": f.read_text() if f.exists() else ""})
         return self._send(404, b"not found", "text/plain")
 
     def do_POST(self):
@@ -128,14 +133,30 @@ class Handler(BaseHTTPRequestHandler):
             if u.path == "/api/onboard":
                 act = body.get("action")
                 path = body.get("path", "")
-                if act == "index":
-                    out = subprocess.run(["codegraph", "init", path], capture_output=True, text=True, timeout=300)
-                else:
-                    out = subprocess.run(["echo", f"unknown action {act}"], capture_output=True, text=True)
-                return self._send_json(200, {"rc": out.returncode, "stdout": out.stdout[-2000:]})
+                cmds = {
+                    "codegraph": ["codegraph", "init", path],
+                    "docgraph": ["graphify", "build", path],
+                    "mine": ["mempalace", "mine", path, "--mode", "convos"],
+                }
+                cmd = cmds.get(act, ["echo", f"unknown action {act}"])
+                out = subprocess.run(cmd, capture_output=True, text=True, timeout=300, cwd=str(REPO))
+                return self._send_json(200, {"rc": out.returncode, "stdout": out.stdout[-2000:], "stderr": out.stderr[-500:]})
+            if u.path == "/api/goldgen-verify":
+                tgt = body.get("target", "gen")
+                out = subprocess.run(["python", "-m", "eval.cli", "goldgen-verify", "--target", tgt],
+                                     capture_output=True, text=True, timeout=120, cwd=str(REPO))
+                return self._send_json(200, {"rc": out.returncode, "stdout": out.stdout[-1500:]})
+            if u.path == "/api/goldgen-fold":
+                tgt = body.get("target", "gen")
+                out = subprocess.run(["python", "-m", "eval.cli", "goldgen-fold", "--target", tgt],
+                                     capture_output=True, text=True, timeout=60, cwd=str(REPO))
+                return self._send_json(200, {"rc": out.returncode, "stdout": out.stdout[-800:]})
         except Exception as e:
             return self._send_json(500, {"error": str(e)})
         return self._send_json(404, {"error": "unknown route"})
+
+    # GET pending（gold lab 读审核队列）
+    # （在 do_GET 里加 /api/pending/<target>）
 
 
 def main(argv=None):
