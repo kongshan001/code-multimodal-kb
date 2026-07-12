@@ -185,6 +185,29 @@ class Handler(BaseHTTPRequestHandler):
                                          capture_output=True, text=True, timeout=120, cwd=str(REPO))
                     return self._send_json(200, {"rc": out.returncode, "stdout": out.stdout[-500:]})
                 return self._send_json(200, {"rc": 0, "stdout": "ok"})
+            if u.path == "/api/uninstall":
+                cap_id = body.get("id", "")
+                from eval.scaffold import CATALOG, _check_skill, SKILLS_DIR, PLUGINS_CACHE
+                cap = next((c for cat in CATALOG for c in cat["capabilities"] if c["id"] == cap_id), None)
+                if not cap:
+                    return self._send_json(200, {"rc": 1, "error": f"unknown: {cap_id}"})
+                if cap["type"] == "builtin":
+                    return self._send_json(200, {"rc": 1, "stdout": f"{cap['name']} 是内置能力，不可卸载。"})
+                # skill：直接在 ~/.claude/skills/ 的可删；plugins 管理的提示
+                if cap["type"] in ("skill", "plugin"):
+                    target = SKILLS_DIR / cap_id
+                    if target.exists():
+                        import shutil as _sh
+                        _sh.rmtree(str(target))
+                        return self._send_json(200, {"rc": 0, "stdout": f"✓ {cap['name']} 已卸载（删除 {target}）"})
+                    # 检查是否在 plugins cache（Claude Code 插件系统管理）
+                    if PLUGINS_CACHE.exists():
+                        for _root, _dirs, _files in os.walk(PLUGINS_CACHE):
+                            if Path(_root).name in (cap_id, "using-superpowers") and "SKILL.md" in _files:
+                                return self._send_json(200, {"rc": 1, "stdout": f"{cap['name']} 是 Claude Code 插件（在 plugins cache），请用 /plugins 命令管理，不能从这里删。"})
+                    return self._send_json(200, {"rc": 1, "stdout": f"{cap['name']} 未找到安装目录，无法卸载。"})
+                # tool / mcp：不直接卸载（风险高），提示
+                return self._send_json(200, {"rc": 1, "stdout": f"{cap['name']} 是系统工具，请手动卸载（npm uninstall / uv tool uninstall / pip uninstall）。"})
             if u.path == "/api/onboard":
                 act = body.get("action")
                 path = body.get("path", "")

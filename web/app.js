@@ -161,8 +161,14 @@ async function catalogView() {
     const cap = window._catData.categories.flatMap(c => c.capabilities).find(c => c.id === capId);
     if (!cap) return;
     if (cap.installed) {
-      // 卸载（MVP：标记为卸载，实际卸载逻辑后续）
-      alert(`卸载 ${capName}？\n\nMVP demo：实际卸载逻辑（删 skill 目录 / remove MCP / 删索引）后续实现。`);
+      // 卸载：confirm → 调 /api/uninstall → 刷新
+      if (!confirm(`确定卸载 ${capName}？`)) return;
+      const r = await fetch("/api/uninstall", {method:"POST", headers:{"Content-Type":"application/json"},
+        body: JSON.stringify({id: capId})});
+      const o = await r.json();
+      const ok = o.rc === 0;
+      alert(`${ok?"✓":"⚠"} ${capName} ${ok?"卸载成功":"未卸载"}\n\n${(o.stdout||o.error||"").slice(0, 300)}`);
+      window.loadCatalogFor();
     } else {
       // 安装
       const r = await fetch("/api/install", {method:"POST", headers:{"Content-Type":"application/json"},
