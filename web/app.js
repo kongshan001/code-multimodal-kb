@@ -86,6 +86,36 @@ async function compare() {
   };
 }
 
+function runConsole() {
+  view().innerHTML = `
+    <h1>run console <em>· 触发评测</em></h1>
+    <p class="lede">从浏览器跑 bench（后端 subprocess 调 eval.cli）。跑完自动进归档。</p>
+    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:18px">
+      <label class="mono" style="font-size:10px;color:var(--ink2)">subject</label>
+      <select id="rcSubj" class="btn">
+        <option value="code">code（代码检索）</option>
+        <option value="memory">memory（记忆召回+路由）</option>
+        <option value="ab">ab（Stage0 token 代理）</option>
+        <option value="doc-ragas">doc-ragas（答案质量）</option>
+      </select>
+      <label class="mono" style="font-size:10px;color:var(--ink2)">target</label>
+      <input id="rcTarget" class="btn" value="godot" style="width:80px"/>
+      <label class="mono" style="font-size:10px;color:var(--ink2)">method</label>
+      <select id="rcMethod" class="btn"><option>bm25</option><option>grep</option><option>semantic</option></select>
+      <button class="btn fill" onclick="doRun()">跑 ▸</button>
+    </div>
+    <div id="rcOut" class="mono" style="background:#fff;border:1px solid var(--rule);padding:16px;font-size:11px;white-space:pre-wrap;min-height:80px;color:var(--ink2)">选参数点"跑"——结果这里出。</div>`;
+  window.doRun = async () => {
+    $("#rcOut").textContent = "running…（后端 subprocess 调 eval.cli，可能要几十秒）";
+    try {
+      const r = await fetch("/api/run", {method: "POST", headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({subject: $("#rcSubj").value, target: $("#rcTarget").value, method: $("#rcMethod").value})});
+      const o = await r.json();
+      $("#rcOut").innerHTML = `<b style="color:${o.rc === 0 ? "var(--good)" : "var(--bad)"}">exit ${o.rc}</b>\n\n${(o.stdout || "").slice(-1500)}${o.stderr ? "\n⚠ " + o.stderr.slice(-300) : ""}`;
+    } catch (e) { $("#rcOut").textContent = "⚠ " + e; }
+  };
+}
+
 async function setupView() {
   const h = await fetchJSON("/api/health");
   const d = h.deps || {};
@@ -118,7 +148,7 @@ function placeholder(title, desc, mockup) {
 
 // ── router ──
 const routes = {
-  dashboard, reports, setup: setupView,
+  dashboard, run: runConsole, reports, setup: setupView,
   onboard: () => placeholder("project · 目标接入", "5 步向导：连代码库→索引→文档图→会话→gold→就绪。", "docs/mockup/onboarding.html"),
   compare, goldlab: () => placeholder("gold lab · 扩题", "agent 挖题 + 两层验收 + 人审。", "（mockup 在 dashboard §Gold lab）"),
 };

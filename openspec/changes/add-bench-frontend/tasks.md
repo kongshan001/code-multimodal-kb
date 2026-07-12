@@ -20,7 +20,7 @@
 
 ## 3. Tier 2 评测交互（薄后端）— 后端就绪，UI 待接
 
-- [ ] 3.1 Run console 页 UI（/api/run 已就绪；现用 CLI 触发）
+- [x] 3.1 Run console 页 UI：subject/target/method 选 → POST /api/run → 显示 stdout（exit + 归档摘要）→ 验证：curl /api/run memory exit 0 hit@5=0.933 ✓
 - [ ] 3.2 Gold lab 页 UI（/api/goldgen 已就绪；现为 mockup 链接）
 
 ## 4. 文档 + 收尾
