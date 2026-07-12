@@ -44,13 +44,28 @@ def _merge_catalogs(builtin: list, local: list) -> list:
 
 CATALOG = load_catalog()
 
+PLUGINS_CACHE = Path.home() / ".claude" / "plugins" / "cache"
+
+
+def _check_skill(skill_id: str) -> bool:
+    """检查 skill 是否安装——先查 ~/.claude/skills/，再查 plugins cache。"""
+    if (SKILLS_DIR / skill_id / "SKILL.md").exists():
+        return True
+    # 插件式 skill：~/.claude/plugins/cache/<marketplace>/<plugin>/<ver>/skills/<skill_id>/SKILL.md
+    if PLUGINS_CACHE.exists():
+        for _root, _dirs, _files in os.walk(PLUGINS_CACHE):
+            if Path(_root).name == skill_id and "SKILL.md" in _files:
+                return True
+    return False
+
+
 # ── 检测每项装没装 ────────────────────────────────────────────────────────
 _VERIFY = {
-    "superpowers": lambda: (SKILLS_DIR / "superpowers" / "SKILL.md").exists(),
-    "openspec": lambda: (SKILLS_DIR / "openspec-explore" / "SKILL.md").exists(),
-    "karpathy-guidelines": lambda: (SKILLS_DIR / "karpathy-guidelines" / "SKILL.md").exists(),
-    "frontend-design": lambda: (SKILLS_DIR / "frontend-design" / "SKILL.md").exists(),
-    "deep-research": lambda: (SKILLS_DIR / "deep-research" / "SKILL.md").exists(),
+    "superpowers": lambda: _check_skill("using-superpowers") or _check_skill("superpowers"),
+    "openspec": lambda: _check_skill("openspec-explore"),
+    "karpathy-guidelines": lambda: _check_skill("karpathy-guidelines"),
+    "frontend-design": lambda: _check_skill("frontend-design"),
+    "deep-research": lambda: _check_skill("deep-research"),
     "cmm": lambda: bool(shutil.which("codebase-memory-mcp")),
     "codegraph": lambda: bool(shutil.which("codegraph")),
     "graphify": lambda: bool(shutil.which("graphify")),
@@ -59,7 +74,7 @@ _VERIFY = {
     "bench": lambda: (REPO / "eval" / "cli.py").exists(),
     "goldgen": lambda: (REPO / "eval" / "goldgen.py").exists(),
     "measurement-lab": lambda: (REPO / "web" / "index.html").exists(),
-    "fireworks-tech-graph": lambda: (SKILLS_DIR / "fireworks-tech-graph" / "SKILL.md").exists(),
+    "fireworks-tech-graph": lambda: _check_skill("fireworks-tech-graph"),
 }
 
 # ── 项目检测 ────────────────────────────────────────────────────────────

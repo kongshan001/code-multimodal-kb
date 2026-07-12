@@ -147,26 +147,43 @@ class Handler(BaseHTTPRequestHandler):
             if u.path == "/api/install":
                 cap_id = body.get("id", "")
                 project = body.get("project", "")
-                # MVP：按 type 分发安装命令（skill=git clone / tool=setup.sh / builtin=已有）
-                from eval.scaffold import CATALOG, SKILLS_DIR
+                from eval.scaffold import CATALOG, _check_skill, SKILLS_DIR
                 cap = next((c for cat in CATALOG for c in cat["capabilities"] if c["id"] == cap_id), None)
                 if not cap:
                     return self._send_json(200, {"rc": 1, "error": f"unknown capability: {cap_id}"})
                 if cap["type"] == "builtin":
                     return self._send_json(200, {"rc": 0, "stdout": f"{cap['name']} 是内置能力（随脚手架自带），无需额外安装。"})
-                if cap["type"] == "skill":
-                    # 检查是否已在全局 skills
-                    target = SKILLS_DIR / cap_id / "SKILL.md"
-                    if target.exists():
-                        return self._send_json(200, {"rc": 0, "stdout": f"{cap['name']} 已在 ~/.claude/skills/{cap_id}/"})
-                    # MVP：提示安装方式（实际 git clone 后续实现）
-                    return self._send_json(200, {"rc": 0, "stdout": f"{cap['name']} 安装方式：git clone <source> ~/.claude/skills/{cap_id}/\n（MVP：实际 clone 后续实现）"})
+                # skill / plugin：检测 → 已装返回；未装真执行 git clone
+                if cap["type"] in ("skill", "plugin"):
+                    if _check_skill(cap_id) or (cap_id == "superpowers" and _check_skill("using-superpowers")):
+                        return self._send_json(200, {"rc": 0, "stdout": f"{cap['name']} 已装 ✓"})
+                    # 真安装：git clone 已知 source → ~/.claude/skills/<id>/
+                    sources = {
+                        "superpowers": "https://github.com/anthropics/claude-code-superpowers.git",
+                        "frontend-design": "https://github.com/anthropics/claude-code-frontend-design.git",
+                        "deep-research": None,
+                        "fireworks-tech-graph": "https://github.com/yizhiyanhua-ai/fireworks-tech-graph.git",
+                    }
+                    src = sources.get(cap_id)
+                    if not src:
+                        return self._send_json(200, {"rc": 1, "stdout": f"{cap['name']}：未知 source。请手动安装到 ~/.claude/skills/{cap_id}/"})
+                    target_dir = str(SKILLS_DIR / cap_id)
+                    out = subprocess.run(["git", "clone", "--depth", "1", src, target_dir],
+                                         capture_output=True, text=True, timeout=120)
+                    msg = out.stdout + out.stderr
+                    if out.returncode == 0:
+                        return self._send_json(200, {"rc": 0, "stdout": f"✓ {cap['name']} 安装成功\n{msg[-300:]}"})
+                    return self._send_json(200, {"rc": 1, "stdout": f"安装失败：{msg[-300:]}"})
+                # tool / mcp：检测 → 已装返回；未装提示 setup.sh
                 if cap["type"] in ("tool", "mcp"):
                     bin_name = {"cmm": "codebase-memory-mcp", "codegraph": "codegraph", "graphify": "graphify",
                                 "mempalace": "mempalace", "headroom": "headroom"}.get(cap_id, cap_id)
                     if shutil.which(bin_name):
                         return self._send_json(200, {"rc": 0, "stdout": f"{cap['name']} 已装：{shutil.which(bin_name)}"})
-                    return self._send_json(200, {"rc": 0, "stdout": f"{cap['name']} 安装：./setup.sh tools\n（MVP：实际安装后续实现）"})
+                    # 真安装：调 setup.sh
+                    out = subprocess.run(["bash", str(REPO / "setup.sh"), "tools"],
+                                         capture_output=True, text=True, timeout=120, cwd=str(REPO))
+                    return self._send_json(200, {"rc": out.returncode, "stdout": out.stdout[-500:]})
                 return self._send_json(200, {"rc": 0, "stdout": "ok"})
             if u.path == "/api/onboard":
                 act = body.get("action")
