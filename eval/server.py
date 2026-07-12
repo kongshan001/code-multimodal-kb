@@ -157,20 +157,19 @@ class Handler(BaseHTTPRequestHandler):
                 if cap["type"] in ("skill", "plugin"):
                     if _check_skill(cap_id) or (cap_id == "superpowers" and _check_skill("using-superpowers")):
                         return self._send_json(200, {"rc": 0, "stdout": f"{cap['name']} 已装 ✓"})
-                    # 真安装：git clone 已知 source → ~/.claude/skills/<id>/
-                    sources = {
-                        "superpowers": "https://github.com/anthropics/claude-code-superpowers.git",
-                        "frontend-design": "https://github.com/anthropics/claude-code-frontend-design.git",
-                        "deep-research": None,
-                        "fireworks-tech-graph": "https://github.com/yizhiyanhua-ai/fireworks-tech-graph.git",
-                    }
-                    src = sources.get(cap_id)
-                    if not src:
-                        return self._send_json(200, {"rc": 1, "stdout": f"{cap['name']}：未知 source。请手动安装到 ~/.claude/skills/{cap_id}/"})
+                    # 从 catalog 读 source URL
+                    src = cap.get("source")
+                    if not src or not src.startswith("http"):
+                        return self._send_json(200, {"rc": 1, "stdout": f"{cap['name']}：无 git source。请手动安装到 ~/.claude/skills/{cap_id}/"})
                     target_dir = str(SKILLS_DIR / cap_id)
+                    # 已存在先删
+                    if os.path.exists(target_dir):
+                        import shutil as _sh; _sh.rmtree(target_dir)
                     out = subprocess.run(["git", "clone", "--depth", "1", src, target_dir],
                                          capture_output=True, text=True, timeout=120)
-                    msg = out.stdout + out.stderr
+                    # strip ANSI/control chars that break JSON
+                    import re as _re
+                    msg = _re.sub(r'[\x00-\x08\x0b\x0c\x0e-\x1f\r]', '', out.stdout + out.stderr)
                     if out.returncode == 0:
                         return self._send_json(200, {"rc": 0, "stdout": f"✓ {cap['name']} 安装成功\n{msg[-300:]}"})
                     return self._send_json(200, {"rc": 1, "stdout": f"安装失败：{msg[-300:]}"})
