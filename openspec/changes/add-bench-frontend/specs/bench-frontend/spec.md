@@ -25,14 +25,14 @@
 
 ### Requirement: Interactive run/goldgen (Tier 2, optional)
 
-系统 MAY 提供薄后端（Flask/FastAPI）包装 `eval.cli`，使前端能触发 `bench run` / `goldgen` / `goldgen-verify` / `goldgen-fold` 并流式显示进度；Gold lab 把扩题两层验收 + 人审做成 UI。
+当系统提供 Tier 2 薄后端（Flask/FastAPI 包装 `eval.cli`）时，它 SHALL 使前端能触发 `bench run` / `goldgen` / `goldgen-verify` / `goldgen-fold` 并流式显示进度；Gold lab SHALL 把扩题两层验收 + 人审做成 UI。Tier 2 为可选（不提供时降级为 Tier 1 只读 + CLI 触发）。
 
 #### Scenario: UI 触发评测
 
-- **WHEN** 用户在 Run console 选 subject + 参数并点"跑"
+- **WHEN** 用户在 Run console 选 subject + 参数并点"跑"（Tier 2 后端已提供）
 - **THEN** 后端 SHALL 子进程调 `python -m eval.cli run <subject> ...`，SSE 流 stdout 进度，完成后归档并刷新 Dashboard
 
 #### Scenario: Gold lab 两层验收可视化
 
-- **WHEN** goldgen 产出候选
+- **WHEN** goldgen 产出候选（Tier 2）
 - **THEN** 前端 SHALL 每条 candidate 显示实证 verdict + subagent verdict 双徽标，用户逐条 approve/edit，确认后触发 fold
