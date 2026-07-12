@@ -105,9 +105,11 @@ class Handler(BaseHTTPRequestHandler):
             return self._send_json(200, json.loads(f.read_text()))
         if p == "/api/health":
             return self._send_json(200, health())
-        if p == "/api/catalog":
+        if p.startswith("/api/catalog"):
             from eval.scaffold import merged
-            return self._send_json(200, merged())
+            qs = urllib.parse.parse_qs(u.query)
+            project = qs.get("project", [None])[0]
+            return self._send_json(200, merged(project))
         if p.startswith("/api/pending/"):
             tgt = p[len("/api/pending/"):]
             f = REPO / "eval" / "reports" / f"gold_pending_{tgt}.md"
@@ -133,6 +135,30 @@ class Handler(BaseHTTPRequestHandler):
                 out = subprocess.run(["python", "-m", "eval.cli", *args],
                                      capture_output=True, text=True, cwd=str(REPO), timeout=300)
                 return self._send_json(200, {"rc": out.returncode, "stdout": out.stdout[-2000:]})
+            if u.path == "/api/install":
+                cap_id = body.get("id", "")
+                project = body.get("project", "")
+                # MVP：按 type 分发安装命令（skill=git clone / tool=setup.sh / builtin=已有）
+                from eval.scaffold import CATALOG, SKILLS_DIR
+                cap = next((c for cat in CATALOG for c in cat["capabilities"] if c["id"] == cap_id), None)
+                if not cap:
+                    return self._send_json(200, {"rc": 1, "error": f"unknown capability: {cap_id}"})
+                if cap["type"] == "builtin":
+                    return self._send_json(200, {"rc": 0, "stdout": f"{cap['name']} 是内置能力（随脚手架自带），无需额外安装。"})
+                if cap["type"] == "skill":
+                    # 检查是否已在全局 skills
+                    target = SKILLS_DIR / cap_id / "SKILL.md"
+                    if target.exists():
+                        return self._send_json(200, {"rc": 0, "stdout": f"{cap['name']} 已在 ~/.claude/skills/{cap_id}/"})
+                    # MVP：提示安装方式（实际 git clone 后续实现）
+                    return self._send_json(200, {"rc": 0, "stdout": f"{cap['name']} 安装方式：git clone <source> ~/.claude/skills/{cap_id}/\n（MVP：实际 clone 后续实现）"})
+                if cap["type"] in ("tool", "mcp"):
+                    bin_name = {"cmm": "codebase-memory-mcp", "codegraph": "codegraph", "graphify": "graphify",
+                                "mempalace": "mempalace", "headroom": "headroom"}.get(cap_id, cap_id)
+                    if shutil.which(bin_name):
+                        return self._send_json(200, {"rc": 0, "stdout": f"{cap['name']} 已装：{shutil.which(bin_name)}"})
+                    return self._send_json(200, {"rc": 0, "stdout": f"{cap['name']} 安装：./setup.sh tools\n（MVP：实际安装后续实现）"})
+                return self._send_json(200, {"rc": 0, "stdout": "ok"})
             if u.path == "/api/onboard":
                 act = body.get("action")
                 path = body.get("path", "")

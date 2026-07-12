@@ -86,49 +86,68 @@ async function compare() {
   };
 }
 
-// ── 能力目录（scaffold catalog · 页签版）──
+// ── 能力目录（scaffold catalog · 页签版 · 面向目标工程）──
 async function catalogView() {
-  const data = await fetchJSON("/api/catalog");
-  window._catData = data;
-  const d = data.detection;
-  const s = data.summary;
-
-  const tabs = data.categories.map((cat, i) => {
-    const inst = cat.capabilities.filter(c => c.installed).length;
-    return `<div class="ctab ${i===0?"active":""}" onclick="switchCat(${i})">${cat.name}<span class="badge">${inst}/${cat.capabilities.length}</span></div>`;
-  }).join("");
+  // 默认目标工程
+  window._targetProject = window._targetProject || "/Users/ks_128/Documents/godot-src/core";
 
   view().innerHTML = `
     <h1>能力目录 <em>· agent scaffold</em></h1>
-    <p class="lede">策展的 agent 能力栈——检测你的项目，推荐该装的，勾选一键装。</p>
-    <div class="gate ${s.not_installed_recommended === 0 ? "ok" : ""}">
-      <span class="dot"></span>
-      <div><b>${s.installed}/${s.total} 已装</b> · ${s.recommended} 项推荐
-        ${s.not_installed_recommended > 0 ? `· <span style="color:var(--accent)">${s.not_installed_recommended} 项推荐未装</span>` : "· 全装齐 ✓"}
-        <div style="font-size:11px;color:var(--ink2);margin-top:2px">检测：<b>${d.language}</b> · ${d.has_code?"源码✓":""} ${d.has_docs?"文档✓":""} ${d.has_tests?"测试✓":""} ${d.has_frontend?"前端✓":""}</div>
-      </div>
-      ${s.not_installed_recommended > 0 ? `<button class="btn fill" onclick="installRec()">一键装推荐项 ▸</button>` : ""}
+    <p class="lede">选择目标工程 → 浏览策展能力 → 按需装/卸到该工程。</p>
+
+    <!-- 目标工程选择 -->
+    <div style="display:flex;gap:10px;align-items:center;margin-bottom:20px;padding:14px 18px;border:1.5px solid var(--ink);background:#fff">
+      <label class="mono" style="font-size:10px;color:var(--ink2);letter-spacing:1px">目标工程</label>
+      <input id="tgtPath" class="btn" value="${window._targetProject}" style="flex:1;text-align:left;font-family:'JetBrains Mono',monospace"/>
+      <button class="btn fill" onclick="loadCatalogFor()">检测 ▸</button>
     </div>
-    <div class="ctabs">${tabs}</div>
-    <div id="catBody"></div>`;
+    <div id="catalogArea"><div class="loading">点"检测"扫描目标工程…</div></div>`;
+
+  window.loadCatalogFor = async () => {
+    window._targetProject = $("#tgtPath").value || "/Users/ks_128/Documents/godot-src/core";
+    $("#catalogArea").innerHTML = `<div class="loading">检测 ${window._targetProject}…</div>`;
+    const url = `/api/catalog?project=${encodeURIComponent(window._targetProject)}`;
+    const data = await fetchJSON(url);
+    window._catData = data;
+    const d = data.detection;
+    const s = data.summary;
+
+    const tabs = data.categories.map((cat, i) => {
+      const inst = cat.capabilities.filter(c => c.installed).length;
+      return `<div class="ctab ${i===0?"active":""}" onclick="switchCat(${i})">${cat.name}<span class="badge">${inst}/${cat.capabilities.length}</span></div>`;
+    }).join("");
+
+    $("#catalogArea").innerHTML = `
+      <!-- 检测摘要 -->
+      <div class="gate ${s.not_installed_recommended === 0 ? "ok" : ""}">
+        <span class="dot"></span>
+        <div><b>${d.language}</b> · ${d.has_code?"源码✓":""} ${d.has_docs?"文档✓":""} ${d.has_tests?"测试✓":""} ${d.has_frontend?"前端✓":""}
+          <div style="font-size:11px;color:var(--ink2);margin-top:2px">${s.installed}/${s.total} 能力可用 · ${s.recommended} 项推荐 · 路径：<span class="mono" style="font-size:10px">${d.path}</span></div>
+        </div>
+      </div>
+      <div class="ctabs">${tabs}</div>
+      <div id="catBody"></div>`;
+    renderCat(0);
+  };
 
   window.renderCat = (i) => {
     const cat = window._catData.categories[i];
     const rb = c => c.recommendation === "推荐" ? `<span style="color:var(--accent);font-size:10px;font-weight:600">推荐</span>`
       : c.cost ? `<span style="color:var(--warn);font-size:10px">⚠ ${c.cost}</span>` : `<span style="color:var(--ink2);font-size:10px">可选</span>`;
-    const sb = c => c.installed ? `<span class="st ok" style="font-size:11px">✓ 已装</span>` : `<span class="st miss" style="font-size:11px">☐ 可装</span>`;
     $("#catBody").innerHTML = `
       <p style="font-size:12px;color:var(--ink2);margin:0 0 14px">${cat.desc}</p>
       <table class="t">
         ${cat.capabilities.map(cap => `<tr>
-          <td style="width:28px;text-align:center"><input type="checkbox" ${cap.installed?"disabled checked":""} style="cursor:pointer"/></td>
           <td>
-            <div style="font-weight:500;font-size:13px">${cap.name} <span style="font-size:9px;color:var(--ink2)">[${cap.type}]</span></div>
+            <div style="font-weight:500;font-size:13px">${cap.name} <span style="font-size:9px;color:var(--ink2)">[${cap.type}]</span> ${rb(cap)}</div>
             <div style="font-size:11px;color:var(--ink2)">${cap.desc}</div>
             ${cap.value ? `<div style="font-size:11px;color:var(--good);margin-top:3px">📊 ${cap.value}</div>` : ""}
           </td>
-          <td style="text-align:right;width:80px">${rb(cap)}</td>
-          <td style="text-align:right;width:70px">${sb(cap)}</td>
+          <td style="text-align:right;width:140px;white-space:nowrap">
+            ${cap.installed
+              ? `<span class="st ok" style="font-size:11px;margin-right:6px">✓ 已装</span><button class="btn" style="font-size:10px;padding:4px 10px;color:var(--bad)" onclick="toggleCap('${cap.id}','${cap.name}')">卸载</button>`
+              : `<button class="btn fill" style="font-size:10px;padding:4px 12px" onclick="toggleCap('${cap.id}','${cap.name}')">安装</button>`}
+          </td>
         </tr>`).join("")}
       </table>`;
   };
@@ -136,11 +155,23 @@ async function catalogView() {
     document.querySelectorAll(".ctab").forEach((t, j) => t.classList.toggle("active", j === i));
     window.renderCat(i);
   };
-  window.installRec = () => {
-    const missing = window._catData.categories.flatMap(c => c.capabilities).filter(c => !c.installed && c.recommendation === "推荐");
-    alert(`MVP demo：推荐项大部分已装。\n\n未装的推荐项（${missing.length}）：\n${missing.map(c => `  ☐ ${c.name}（${c.desc}）`).join("\n")}\n\n完整版会 git clone skills / 跑 setup.sh / 建索引。`);
+  window.toggleCap = async (capId, capName) => {
+    const cap = window._catData.categories.flatMap(c => c.capabilities).find(c => c.id === capId);
+    if (!cap) return;
+    if (cap.installed) {
+      // 卸载（MVP：标记为卸载，实际卸载逻辑后续）
+      alert(`卸载 ${capName}？\n\nMVP demo：实际卸载逻辑（删 skill 目录 / remove MCP / 删索引）后续实现。`);
+    } else {
+      // 安装
+      const r = await fetch("/api/install", {method:"POST", headers:{"Content-Type":"application/json"},
+        body: JSON.stringify({id: capId, project: window._targetProject})});
+      const o = await r.json();
+      const ok = o.rc === 0;
+      alert(`${ok?"✓":"⚠"} ${capName} ${ok?"安装成功":"安装失败"}\n\n${(o.stdout||o.error||"").slice(0, 300)}`);
+      if (ok) window.loadCatalogFor();  // 刷新状态
+    }
   };
-  window.renderCat(0);  // 渲染首个分类
+  window.loadCatalogFor();  // 首次自动加载
 }
 
 function runConsole() {
