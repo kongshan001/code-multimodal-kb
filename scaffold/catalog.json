@@ -137,6 +137,56 @@
       ]
     },
     {
+      "id": "engineering-practices",
+      "name": "🏗️ 工程实践",
+      "desc": "Context / Prompt / Harness 三层工程最佳实践 + Lint 反馈循环",
+      "capabilities": [
+        {
+          "id": "context-engineering", "name": "Context Engineering 体检", "type": "practice", "recommend": "always", "cost": null,
+          "desc": "检测你的 context 架构——CLAUDE.md / 记忆四层 / KB 召回 / 注入体积 / 压缩策略",
+          "value": "最小高信号 token → 省 context · 避免上下文腐烂（context rot）",
+          "guide": "Claude Code 官方：CLAUDE.md 要简洁、人可读、具体。Anthropic 定义 context engineering = 找到最小高信号 token 集。核心循环：gather → act → verify → repeat。检查项：CLAUDE.md 存在且不超 ~20 条？memory 四层归属写了？KB 召回 broad@5 达标？注入有界？压缩工具（headroom/MemPalace）在用？",
+          "docs": [
+            {"title": "Claude Code: Memory & CLAUDE.md 最佳实践", "url": "https://docs.anthropic.com/en/docs/claude-code/memory"},
+            {"title": "Anthropic: Effective Context Engineering", "url": "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents"},
+            {"title": "LangChain: Context Engineering 四策略（Write/Select/Compress/Isolate）", "url": "https://www.langchain.com/blog/context-engineering-for-agents"}
+          ]
+        },
+        {
+          "id": "prompt-engineering", "name": "Prompt Engineering 配置", "type": "practice", "recommend": "always", "cost": null,
+          "desc": "system prompt / CLAUDE.md / skill triggers / AGENTS.md 结构化",
+          "value": "指令清晰 → 减少误解返工 · skill 自动触发覆盖关键场景",
+          "guide": "Claude Code 官方：prompt 要清晰、具体、有示例。CLAUDE.md = agent 的 job description——写规则（如'新需求走 OpenSpec'）、写约束（如'改动提交 main+push'）、写判定（如'忘了会不会被纠正？→Memory'）。skill trigger 词要覆盖关键场景（画图/调试/审查/测试）。XML 结构化复杂指令。",
+          "docs": [
+            {"title": "Claude Code 官方：Prompting Best Practices", "url": "https://docs.anthropic.com/claude/prompt-library"},
+            {"title": "Anthropic: Prompt Engineering Overview", "url": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview"},
+            {"title": "Claude Code: Skills 用法（trigger 词 + SKILL.md）", "url": "https://docs.anthropic.com/en/docs/claude-code/skills"}
+          ]
+        },
+        {
+          "id": "harness-engineering", "name": "Harness Engineering 编排", "type": "practice", "recommend": "always", "cost": null,
+          "desc": "工具注册 + hooks + 反馈循环 + 验证门禁 + 沙箱",
+          "value": "整体系统可靠 → 可验证、可回滚、可量化",
+          "guide": "Harness = model 周围的一切（tools/skills/MCP/hooks/feedback loops/sandbox）。Claude Code 官方：用 Hooks 做自动化（PreToolUse 检查/Stop 保存）、Skills 做 SOP、MCP 接外部工具。检查项：hooks 配置正确（auto-save 非 idempotent？）？bench 验证门禁在？A/B 证明工具有效？反馈循环（测→改→重测）在运行？",
+          "docs": [
+            {"title": "Claude Code: Common Workflows（explore→fix→refactor→test）", "url": "https://docs.anthropic.com/en/docs/claude-code/common-workflows"},
+            {"title": "codecentric: Loop/Harness/Context 三层工程详解", "url": "https://www.codecentric.de/en/knowledge-hub/blog/loop-harness-context-engineering-explained"},
+            {"title": "DataScienceDojo: Harness Engineering 全解", "url": "https://datasciencedojo.com/blog/harness-engineering/"}
+          ]
+        },
+        {
+          "id": "lint-feedback-loop", "name": "Lint 反馈循环", "type": "practice", "recommend": "when_code", "cost": null,
+          "desc": "静态检查规则 → 问题反馈给 agent → agent 修 → 重 lint（闭环）",
+          "value": "自动捕获代码问题 → agent 即时修 → 不带到运行时/PR",
+          "guide": "Lint 是 agent 反馈循环的信号源：agent 写代码 → lint 规则检查（eslint/pylint/ruff/mypy/golangci-lint）→ 问题作为 context 反馈 → agent 修 → 重 lint 直到通过。配置 PreToolUse hook 在 agent 写文件后自动跑 lint，结果作为 feedback 注入。项目级：.eslintrc / pyproject.toml[lint] / .golangci.yml。",
+          "docs": [
+            {"title": "Claude Code: Code Review（自动 PR 审查模式）", "url": "https://docs.anthropic.com/en/docs/claude-code/code-review"},
+            {"title": "Anthropic: Define Tools 最佳实践（工具描述要详细）", "url": "https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/implement-tool-use"}
+          ]
+        }
+      ]
+    },
+    {
       "id": "visualization",
       "name": "🎨 可视化",
       "desc": "看得见才管得好",
