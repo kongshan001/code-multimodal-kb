@@ -239,58 +239,9 @@
       "path": "eval/reports/archive/20260711T142828Z-ab-agent-stage1-godot-stage1-r1-codegraph.json"
     },
     {
-      "id": "20260711T182027Z-doc-quality-ragas-protocol-docs-ragas",
-      "ts": "20260711T182027Z",
-      "readable_ts": "2026-07-12 02:20:27 +0800",
-      "subject": "doc-quality-ragas-protocol",
-      "variant": "docs-ragas",
-      "target": "docs",
-      "n": 10,
-      "lockfile": {
-        "temperature": 0.0,
-        "llm_model": "",
-        "cmm_version": "0.8.1",
-        "graphify_version": "0.8.46",
-        "mem0_version": "",
-        "mempalace_version": "3.5.0"
-      },
-      "aggregate": {
-        "n": 10,
-        "mean_faithfulness": 0.971,
-        "mean_context_precision": 0.533,
-        "llm_judge": "glm-5.x（self-preference 风险，相对参考值）"
-      },
-      "path": "eval/reports/archive/20260711T182027Z-doc-quality-ragas-protocol-docs-ragas.json"
-    },
-    {
-      "id": "20260711T210800Z-memory-quality-ragas-protocol-memory-ragas",
-      "ts": "20260711T210800Z",
-      "readable_ts": "2026-07-12 05:08:00 +0800",
-      "subject": "memory-quality-ragas-protocol",
-      "variant": "memory-ragas",
-      "target": "memory",
-      "n": 15,
-      "lockfile": {
-        "temperature": 0.0,
-        "llm_model": "",
-        "cmm_version": "0.8.1",
-        "graphify_version": "0.8.46",
-        "mem0_version": "",
-        "mempalace_version": "3.5.0"
-      },
-      "aggregate": {
-        "n": 15,
-        "mean_faithfulness": 0.951,
-        "mean_context_precision": 0.36,
-        "llm_judge": "glm-5.x（self-preference 风险，相对参考值）",
-        "context_source": "mempalace drawers（会话碎片为主）"
-      },
-      "path": "eval/reports/archive/20260711T210800Z-memory-quality-ragas-protocol-memory-ragas.json"
-    },
-    {
-      "id": "20260712T004546Z-mempalace-engineer_demo",
-      "ts": "20260712T004546Z",
-      "readable_ts": "2026-07-12 08:45:46 +0800",
+      "id": "20260711T162417Z-mempalace-engineer_demo",
+      "ts": "20260711T162417Z",
+      "readable_ts": "2026-07-12 00:24:17 +0800",
       "subject": "mempalace",
       "variant": "engineer_demo",
       "target": "engineer_demo",
@@ -298,21 +249,21 @@
       "lockfile": {
         "temperature": 0.0,
         "llm_model": "",
-        "cmm_version": "0.8.1",
-        "graphify_version": "0.8.46",
+        "cmm_version": "not-installed",
+        "graphify_version": "unknown",
         "mem0_version": "",
-        "mempalace_version": "3.5.0"
+        "mempalace_version": "unknown"
       },
       "aggregate": {
-        "mean_recall@1": 0.6,
-        "mean_hit@1": 0.667,
-        "mean_recall@3": 0.8,
-        "mean_hit@3": 0.867,
-        "mean_recall@5": 0.867,
-        "mean_hit@5": 0.933,
-        "mean_recall@10": 0.867,
-        "mean_hit@10": 0.933,
-        "mean_unique_source_ratio@5": 0.64,
+        "mean_recall@1": 0.0,
+        "mean_hit@1": 0.0,
+        "mean_recall@3": 0.0,
+        "mean_hit@3": 0.0,
+        "mean_recall@5": 0.0,
+        "mean_hit@5": 0.0,
+        "mean_recall@10": 0.0,
+        "mean_hit@10": 0.0,
+        "mean_unique_source_ratio@5": 1.0,
         "routing_overall_accuracy": 1.0,
         "routing_per_class": {
           "objective": 1.0,
@@ -325,190 +276,7 @@
         "injection_cap_search": 10,
         "injection_cap_memory_md": 20
       },
-      "path": "eval/reports/archive/20260712T004546Z-mempalace-engineer_demo.json"
-    },
-    {
-      "id": "20260712T022614Z-mempalace-engineer_demo",
-      "ts": "20260712T022614Z",
-      "readable_ts": "2026-07-12 10:26:14 +0800",
-      "subject": "mempalace",
-      "variant": "engineer_demo",
-      "target": "engineer_demo",
-      "n": 15,
-      "lockfile": {
-        "temperature": 0.0,
-        "llm_model": "",
-        "cmm_version": "0.8.1",
-        "graphify_version": "0.8.46",
-        "mem0_version": "",
-        "mempalace_version": "3.5.0"
-      },
-      "aggregate": {
-        "mean_recall@1": 0.6,
-        "mean_hit@1": 0.667,
-        "mean_recall@3": 0.8,
-        "mean_hit@3": 0.867,
-        "mean_recall@5": 0.867,
-        "mean_hit@5": 0.933,
-        "mean_recall@10": 0.867,
-        "mean_hit@10": 0.933,
-        "mean_unique_source_ratio@5": 0.64,
-        "routing_overall_accuracy": 1.0,
-        "routing_per_class": {
-          "objective": 1.0,
-          "procedural": 1.0,
-          "episodic": 1.0,
-          "subjective": 1.0
-        },
-        "routing_errors": [],
-        "routing_n": 13,
-        "injection_cap_search": 10,
-        "injection_cap_memory_md": 20
-      },
-      "path": "eval/reports/archive/20260712T022614Z-mempalace-engineer_demo.json"
-    },
-    {
-      "id": "20260712T030013Z-cmm.bm25-godot-bm25",
-      "ts": "20260712T030013Z",
-      "readable_ts": "2026-07-12 11:00:13 +0800",
-      "subject": "cmm.bm25",
-      "variant": "godot-bm25",
-      "target": "godot",
-      "n": 26,
-      "lockfile": {
-        "temperature": 0.0,
-        "llm_model": "",
-        "cmm_version": "0.8.1",
-        "graphify_version": "0.8.46",
-        "mem0_version": "",
-        "mempalace_version": "3.5.0"
-      },
-      "aggregate": {
-        "mean_recall@1": 0.462,
-        "mean_broad_recall@1": 0.846,
-        "mean_recall@3": 0.5,
-        "mean_broad_recall@3": 0.846,
-        "mean_recall@5": 0.5,
-        "mean_broad_recall@5": 0.846,
-        "mean_recall@10": 0.5,
-        "mean_broad_recall@10": 0.885
-      },
-      "path": "eval/reports/archive/20260712T030013Z-cmm.bm25-godot-bm25.json"
-    },
-    {
-      "id": "20260712T030049Z-mempalace-engineer_demo",
-      "ts": "20260712T030049Z",
-      "readable_ts": "2026-07-12 11:00:49 +0800",
-      "subject": "mempalace",
-      "variant": "engineer_demo",
-      "target": "engineer_demo",
-      "n": 15,
-      "lockfile": {
-        "temperature": 0.0,
-        "llm_model": "",
-        "cmm_version": "0.8.1",
-        "graphify_version": "0.8.46",
-        "mem0_version": "",
-        "mempalace_version": "3.5.0"
-      },
-      "aggregate": {
-        "mean_recall@1": 0.6,
-        "mean_hit@1": 0.667,
-        "mean_recall@3": 0.8,
-        "mean_hit@3": 0.867,
-        "mean_recall@5": 0.867,
-        "mean_hit@5": 0.933,
-        "mean_recall@10": 0.867,
-        "mean_hit@10": 0.933,
-        "mean_unique_source_ratio@5": 0.64,
-        "routing_overall_accuracy": 1.0,
-        "routing_per_class": {
-          "objective": 1.0,
-          "procedural": 1.0,
-          "episodic": 1.0,
-          "subjective": 1.0
-        },
-        "routing_errors": [],
-        "routing_n": 13,
-        "injection_cap_search": 10,
-        "injection_cap_memory_md": 20
-      },
-      "path": "eval/reports/archive/20260712T030049Z-mempalace-engineer_demo.json"
-    },
-    {
-      "id": "20260712T030058Z-ab-value-stage0-godot-stage0",
-      "ts": "20260712T030058Z",
-      "readable_ts": "2026-07-12 11:00:58 +0800",
-      "subject": "ab-value-stage0",
-      "variant": "godot-stage0",
-      "target": "godot",
-      "n": 26,
-      "lockfile": {
-        "temperature": 0.0,
-        "llm_model": "",
-        "cmm_version": "0.8.1",
-        "graphify_version": "0.8.46",
-        "mem0_version": "",
-        "mempalace_version": "3.5.0"
-      },
-      "aggregate": {
-        "n": 26,
-        "mean_kb_tokens": 195.4,
-        "mean_naive_read_tokens": 1749.7,
-        "mean_compression_read": 12.71,
-        "mean_kb_hit@5": 0.846,
-        "grep_miss_count": 7,
-        "naive_max_files": 3,
-        "naive_per_file_cap_chars": 4000
-      },
-      "path": "eval/reports/archive/20260712T030058Z-ab-value-stage0-godot-stage0.json"
-    },
-    {
-      "id": "20260712T030103Z-graphify.query-godot-docs-subset",
-      "ts": "20260712T030103Z",
-      "readable_ts": "2026-07-12 11:01:03 +0800",
-      "subject": "graphify.query",
-      "variant": "godot-docs-subset",
-      "target": "godot-docs-subset",
-      "n": 10,
-      "lockfile": {
-        "temperature": 0.0,
-        "llm_model": "",
-        "cmm_version": "0.8.1",
-        "graphify_version": "0.8.46",
-        "mem0_version": "",
-        "mempalace_version": "3.5.0"
-      },
-      "aggregate": {
-        "mean_recall@1": 0.417,
-        "mean_recall@3": 0.633,
-        "mean_recall@5": 0.717,
-        "mean_recall@100": 0.833
-      },
-      "path": "eval/reports/archive/20260712T030103Z-graphify.query-godot-docs-subset.json"
-    },
-    {
-      "id": "20260712T030132Z-cross-tool-anchoring-(graphify→cmm)-godot",
-      "ts": "20260712T030132Z",
-      "readable_ts": "2026-07-12 11:01:32 +0800",
-      "subject": "cross-tool anchoring (graphify→cmm)",
-      "variant": "godot",
-      "target": "",
-      "n": 8,
-      "lockfile": {
-        "temperature": 0.0,
-        "llm_model": "",
-        "cmm_version": "0.8.1",
-        "graphify_version": "0.8.46",
-        "mem0_version": "",
-        "mempalace_version": "3.5.0"
-      },
-      "aggregate": {
-        "graphify_hit_rate": 1.0,
-        "cmm_hit_rate@5": 1.0,
-        "crosstool_success_rate": 1.0
-      },
-      "path": "eval/reports/archive/20260712T030132Z-cross-tool-anchoring-(graphify→cmm)-godot.json"
+      "path": "eval/reports/archive/20260711T162417Z-mempalace-engineer_demo.json"
     }
   ]
 }

@@ -1,0 +1,58 @@
+name: Deploy Frontend (GitHub Pages)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'web/**'
+      - 'eval/reports/archive/**'
+      - '.github/workflows/deploy-pages.yml'
+  workflow_dispatch:
+
+# 允许并发跑,但不覆盖之前的 run
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+# 默认 branch = gh-pages (build 后 deploy)
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build-deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Pages
+        id: pages
+        uses: actions/configure-pages@v5
+
+      - name: Build static site (copy web/ + eval/reports/archive → _site)
+        run: |
+          mkdir -p _site/web
+          cp -r web/* _site/web/
+          # 把归档 JSON 拷进去,前端 fetch /archive/...
+          mkdir -p _site/archive
+          cp -r eval/reports/archive/* _site/archive/
+          # index.html 提到根,这样直接 / 不是 /web/
+          cp _site/web/index.html _site/index.html
+          # 同时保留 /web/index.html 的可访问性
+          ls -la _site/
+          ls -la _site/web/
+          ls -la _site/archive/ | head -10
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
