@@ -13,16 +13,38 @@
 
 参考实现（已落）`docs/mockup/dashboard.html`——单文件 HTML + 内联 CSS，可浏览器直接开。
 
-## 信息架构 · 6 个视图
+## 信息架构 · 8 个视图
 
-| 视图 | 对应 CLI | 做什么 |
-|---|---|---|
-| **Dashboard**（首屏）| list-reports 聚合 | 4 个 hero 指标 + 价值定位 §7 网格（●●○○）+ A/B 四臂条形 + 最近 run 列表 |
-| **Run console** | `bench run <subject>` | 选 subject + 参数 → 触发 → 实时进度 → 结果摘要（Tier2 需后端；Tier1 跳 CLI）|
-| **Reports archive** | `list-reports` / `show <id>` | 时间线/表，按 subject 过滤，点进看 per_query + lockfile + 图 |
-| **Compare** | `compare <id1> <id2>` | 两份报告 aggregate diff 表 + A/B 多臂横评条形 |
-| **Gold lab** | `goldgen` / `-verify` / `-fold` | 扩题 4 阶段可视化：seed 输入 → 候选队列（带 verdict 徽标）→ 逐条 approve/edit → fold（Tier2 交互核心）|
-| **Report detail** | `show <id>` | 单报告：aggregate + per_query 表 + lockfile + 边界标注（LLM-judged 等）|
+接入门户分两段：**①接入（环境+目标工程）→ ②评测（跑+看+比）**。新人从①走完到②。
+
+| 段 | 视图 | 对应 CLI / 脚本 | 做什么 | 层 |
+|---|---|---|---|---|
+| 接入 | **Setup · 环境依赖** | `setup.sh`（python/tools/render/creds）| 4 工具 + Python 依赖 + 渲染器 + 凭据：逐项状态（✓装/版本 · ✗缺）+ 一键装 + 健康检查 | Tier2 |
+| 接入 | **Project · 目标工程接入** | cmm/codegraph index + graphify build + mempalace mine + goldgen | 向导：连代码库→索引→(文档图)→(会话 mine)→生成 gold→就绪 | Tier2 |
+| 评测 | **Dashboard**（首屏）| list-reports 聚合 | 4 hero 指标 + 价值定位 §7 网格 + A/B 四臂条形 + 最近 run | Tier1 |
+| 评测 | **Run console** | `bench run <subject>` | 选 subject+参数→触发→SSE 进度→结果摘要 | Tier2 |
+| 评测 | **Reports archive** | `list-reports` / `show` | 时间线/表 + subject 过滤 + 点进 detail | Tier1 |
+| 评测 | **Compare** | `compare <id1> <id2>` | aggregate diff 表 + A/B 多臂横评条形 | Tier1 |
+| 评测 | **Gold lab** | `goldgen` / `-verify` / `-fold` | 扩题 4 阶段：seed→候选（双 verdict 徽标）→approve/edit→fold | Tier2 |
+| 评测 | **Report detail** | `show <id>` | aggregate + per_query + lockfile + 边界标注 | Tier1 |
+
+## 接入段 · 两视图设计
+
+### Setup · 环境依赖（向导式）
+- **依赖体检表**：cmm / graphify / codegraph / mempalace / Python(python+anthropic) / 渲染器 / LLM 凭据——每行 `✓ 装了 v…` 或 `✗ 缺`，含版本探测（复用 setup.sh 的探测逻辑）。
+- **一键装**：缺的项逐个或"全装"——后端 `subprocess setup.sh <step>`，SSE 流安装日志。
+- **健康检查**：跑 `pytest eval/tests/ -q`（零依赖应全绿）+ 各工具冒烟（cmm list_projects / graphify --version）→ 顶端绿灯"环境就绪"才放行进评测段。
+- 诚实：依赖坑（numpy<2 / mempalace py3.11 / ragas 库冲突）在项内折叠提示，不藏。
+
+### Project · 目标工程接入（5 步向导）
+1. **连代码库**：填路径 → `cmm index <path>` + `codegraph init <path>`（进度条，静态零 LLM）。
+2. **（可选）连文档**：填文档目录 → `graphify` 建图（⚠️ 标 LLM 成本预估，确认才跑）。
+3. **（可选）连会话**：填 `~/.claude/projects/<proj>` → `mempalace mine --mode convos`（带"别配 auto-save hook"警示，链 D.4 事故）。
+4. **生成 gold**：goldgen（seed 输入 → 两层验收 → 人审 → fold）——复用 Gold lab 视图。
+5. **就绪**：显示"可 bench run 的 target 列表"→ 一键进 Run console 跑自己的系统。
+- 每步可单独跳过/重跑；向导状态持久化（接了一半下次接着来）。
+
+
 
 ## 技术栈 · 分层（降门槛优先）
 
@@ -34,14 +56,18 @@
 **图表**：手写 SVG 条形/点阵（mockup 已示，on-brand），重交互才上 visx/Recharts。
 **不引**重型 UI 框架（MUI/AntD 之类）——与"仪器/编辑"美学冲突。
 
-## 数据流（前端不造数）
+## 数据流（前端不造数；接入段执行命令）
 
 ```
-Tier1（读）:  前端 ──fetch──▶ eval/reports/archive/*.json + index.json（统一 schema，已有）
-Tier2（交互）: 前端 ──HTTP──▶ Flask wrapper ──subprocess──▶ python -m eval.cli ...
-                                   └─ SSE 流 stdout 进度 ──▶ 前端
-归档 JSON 仍是唯一事实源；前端只渲染 + 标注边界（lockfile / LLM-judged / self-preference 一并显示）。
+Tier1（读）:    前端 ──fetch──▶ eval/reports/archive/*.json + index.json（统一 schema）
+Tier2（评测）:  前端 ──HTTP──▶ Flask wrapper ──subprocess──▶ python -m eval.cli ...
+                                 └─ SSE 流 stdout 进度 ──▶ 前端
+Tier2（接入）:  前端 ──HTTP──▶ Flask wrapper ──subprocess──▶ setup.sh / cmm index / codegraph init
+                                                         / graphify build / mempalace mine / goldgen
+                                 └─ 探测状态（which/version）+ SSE 流执行日志 ──▶ 前端
 ```
+归档 JSON 仍是评测唯一事实源；接入段执行 setup.sh / 索引 / mine（不改评测契约）。
+LLM-judged 分等边界仍随分数显示（诚实不藏）。
 
 ## 关键页面设计要点
 

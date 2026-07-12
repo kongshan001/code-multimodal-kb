@@ -1,5 +1,38 @@
 ## ADDED Requirements
 
+### Requirement: Environment dependency management
+
+当系统提供 Tier 2 后端时，前端 SHALL 显示依赖体检（cmm/graphify/codegraph/mempalace/Python/渲染器/LLM 凭据，逐项 ✓版本/✗缺）并支持一键安装（subprocess 调 `setup.sh`）+ 健康检查（pytest 冒烟 + 各工具版本探测）；环境未就绪时 SHALL 提示、不阻断只读评测视图。
+
+#### Scenario: 依赖体检 + 一键装
+
+- **WHEN** 用户进 Setup 视图
+- **THEN** 看到逐项依赖状态；点"装缺的"→ 后端 SHALL 跑 `setup.sh <step>`，SSE 流日志，装完刷新状态
+
+#### Scenario: 健康门禁
+
+- **WHEN** 关键依赖缺失
+- **THEN** 顶端 SHALL 标"环境未就绪"，但只读评测视图（Tier1）仍可用
+
+### Requirement: Target project onboarding wizard
+
+当系统提供 Tier 2 后端时，前端 SHALL 提供 5 步向导把用户的目标工程接入可 bench 状态：连代码库→索引（cmm+codegraph）→(可选 文档图 graphify)→(可选 会话 mempalace mine)→生成 gold（复用 Gold lab）→就绪；每步 SHALL 显示进度、可跳过/重跑，向导状态持久化。
+
+#### Scenario: 索引目标代码库
+
+- **WHEN** 用户填代码库路径并确认
+- **THEN** 后端 SHALL 跑 `cmm index` + `codegraph init`（静态零 LLM，进度条）；完成进入下一步
+
+#### Scenario: 文档图成本警示
+
+- **WHEN** 向导到可选的文档图步骤（graphify，花 LLM）
+- **THEN** SHALL 先显示成本预估，用户确认才执行
+
+#### Scenario: auto-save hook 警示
+
+- **WHEN** 向导到会话 mine 步骤
+- **THEN** SHALL 提示"勿配非 idempotent 的 auto-save hook"（链 deployment-runbook §D.4 事故），引导手动 `mempalace sweep`
+
 ### Requirement: Benchmark visualization layer (read-only)
 
 系统 SHALL 提供一个静态前端，读取 `eval/reports/archive/*.json` + `index.json`（统一 schema），把 bench CLI 的归档结果可视化（Dashboard / Reports archive / Compare / Report detail），使非 CLI 用户能浏览评测结果，无需运行命令。
