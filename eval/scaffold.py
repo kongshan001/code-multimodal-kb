@@ -20,9 +20,9 @@ LOCAL_FILE = REPO / "scaffold" / "catalog.local.json"
 
 def load_catalog() -> list:
     """从 catalog.json 加载策展清单 + 合并 catalog.local.json（用户自研覆盖/追加）。"""
-    cats = json.loads(CATALOG_FILE.read_text())["categories"]
+    cats = json.loads(CATALOG_FILE.read_text(encoding="utf-8"))["categories"]
     if LOCAL_FILE.exists():
-        local = json.loads(LOCAL_FILE.read_text()).get("categories", [])
+        local = json.loads(LOCAL_FILE.read_text(encoding="utf-8")).get("categories", [])
         cats = _merge_catalogs(cats, local)
     return cats
 

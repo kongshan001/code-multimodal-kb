@@ -19,10 +19,19 @@ import json
 import os
 import shutil
 import subprocess
+import sys
 import threading
 import urllib.parse
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
+
+# Windows 中文系统默认 stdout/文件编码是 GBK(cp936)：print 的 emoji(✓⚠) 和读 UTF-8
+# 文件(含中文/emoji)都会 UnicodeEncode/DecodeError。统一强制 UTF-8——跨平台一致。
+for _stream in (sys.stdout, sys.stderr):
+    try:
+        _stream.reconfigure(encoding="utf-8", errors="replace")
+    except Exception:
+        pass
 
 REPO = Path(__file__).resolve().parent.parent
 ARCHIVE = REPO / "eval" / "reports" / "archive"
@@ -94,15 +103,15 @@ class Handler(BaseHTTPRequestHandler):
             return self._send(404, b"not found", "text/plain")
         if p == "/api/reports":
             idx = ARCHIVE / "index.json"
-            return self._send_json(200, json.loads(idx.read_text()) if idx.exists() else {"reports": []})
+            return self._send_json(200, json.loads(idx.read_text(encoding='utf-8')) if idx.exists() else {"reports": []})
         if p.startswith("/api/report/"):
             rid = p[len("/api/report/"):]
-            entry = next((r for r in json.loads((ARCHIVE / "index.json").read_text())["reports"]
+            entry = next((r for r in json.loads((ARCHIVE / "index.json").read_text(encoding='utf-8'))["reports"]
                           if r["id"] == rid), None)
             if not entry:
                 return self._send_json(404, {"error": "not found"})
             f = REPO / entry["path"]
-            return self._send_json(200, json.loads(f.read_text()))
+            return self._send_json(200, json.loads(f.read_text(encoding='utf-8')))
         if p == "/api/health":
             return self._send_json(200, health())
         if p.startswith("/api/catalog"):
@@ -114,7 +123,7 @@ class Handler(BaseHTTPRequestHandler):
             tgt = p[len("/api/pending/"):]
             f = REPO / "eval" / "reports" / f"gold_pending_{tgt}.md"
             return self._send_json(200, {"exists": f.exists(),
-                                         "content": f.read_text() if f.exists() else ""})
+                                         "content": f.read_text(encoding='utf-8') if f.exists() else ""})
         return self._send(404, b"not found", "text/plain")
 
     def do_POST(self):
@@ -197,7 +206,7 @@ def main(argv=None):
     h = health()
     print(f"measurement lab → http://{a.host}:{a.port}")
     print(f"  环境 {'就绪 ✓' if h['ready'] else '⚠ 有缺项（/api/health 查）'}")
-    print(f"  报告 {len(json.loads((ARCHIVE/'index.json').read_text())['reports']) if (ARCHIVE/'index.json').exists() else 0} 份归档")
+    print(f"  报告 {len(json.loads((ARCHIVE/'index.json').read_text(encoding='utf-8'))['reports']) if (ARCHIVE/'index.json').exists() else 0} 份归档")
     print("  Ctrl-C 停")
     try:
         srv.serve_forever()
