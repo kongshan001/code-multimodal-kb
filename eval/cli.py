@@ -213,6 +213,10 @@ def main(argv: list[str] | None = None) -> int:
     gv.add_argument("--target", required=True)
     gv.add_argument("--root", default="/Users/ks_128/Documents/godot-src/core")
 
+    # web：起前端可视化服务
+    gw = sub.add_parser("web", help="起 bench 前端可视化（localhost，零依赖）")
+    gw.add_argument("--port", type=int, default=8765)
+
     args = ap.parse_args(argv)
     if args.cmd == "run":
         return _cmd_run(args)
@@ -228,6 +232,10 @@ def main(argv: list[str] | None = None) -> int:
         return _cmd_goldgen_fold(args)
     if args.cmd == "goldgen-verify":
         return _cmd_goldgen_verify(args)
+    if args.cmd == "web":
+        from eval.server import main as serve
+        serve(["--port", str(args.port)])
+        return 0
     return 2
 
 

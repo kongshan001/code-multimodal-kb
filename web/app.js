@@ -1,0 +1,136 @@
+// measurement lab · SPA（vanilla JS，读真实归档 JSON）
+const $ = (s, p = document) => p.querySelector(s);
+const view = () => $("#view");
+const fetchJSON = async (u) => (await fetch(u)).json();
+
+// ── helpers ──
+function latest(reports, subjContains) {
+  const rs = reports.filter(r => r.subject.includes(subjContains) || r.variant.includes(subjContains));
+  return rs[rs.length - 1];  // index 追加式，最后 = 最新
+}
+function headline(r) {
+  if (!r || !r.aggregate) return "—";
+  const a = r.aggregate;
+  for (const k of ["mean_broad_recall@5", "mean_hit@5", "mean_compression_read",
+                   "mean_faithfulness", "routing_overall_accuracy", "crosstool_success_rate"])
+    if (k in a) return a[k];
+  return "—";
+}
+function fmt(n) { return typeof n === "number" ? (Math.abs(n) < 1 && n !== 0 ? n.toFixed(3) : n) : n; }
+
+// ── views ──
+async function dashboard() {
+  const { reports } = await fetchJSON("/api/reports");
+  const code = latest(reports, "cmm.bm25") || latest(reports, "cmm.");
+  const mem = latest(reports, "mempalace");
+  const ab = latest(reports, "ab-value");
+  const doc = latest(reports, "doc-quality");
+  const memHit = mem ? headline(mem) : "—";
+  view().innerHTML = `
+    <h1>dashboard</h1>
+    <p class="lede">知识库 / 记忆系统的体检台 — 不评感觉，评数字。</p>
+    <section class="hero">
+      <div class="m"><div class="lbl">代码检索 broad@5</div><div class="num">${fmt(headline(code))}</div><div class="ctx">${code ? code.subject : "—"}</div></div>
+      <div class="m"><div class="lbl">记忆召回 hit@5</div><div class="num">${fmt(memHit)}</div><div class="ctx">${mem ? mem.subject : "—"}</div></div>
+      <div class="m"><div class="lbl">A/B 压缩比</div><div class="num acc">${ab ? headline(ab) + "×" : "—"}</div><div class="ctx">${ab ? ab.subject : "—"}</div></div>
+      <div class="m"><div class="lbl">答案 faithfulness</div><div class="num">${fmt(headline(doc))}<span class="badge">LLM-judged</span></div><div class="ctx">${doc ? doc.subject : "—"}</div></div>
+    </section>
+    <div class="h"><span class="n">01</span><h2>归档 · 最近跑过</h2><span class="line"></span></div>
+    <table class="t"><tr><th>time</th><th>subject</th><th>variant</th><th>headline</th><th></th></tr>
+    ${reports.slice().reverse().slice(0, 8).map(r => `<tr onclick="location.hash='#/report/${r.id}'">
+      <td>${(r.readable_ts || r.ts || "").slice(5, 16)}</td>
+      <td class="sb">${r.subject}</td><td>${r.variant}</td><td>${headline(r)}</td><td>show ▸</td></tr>`).join("")}
+    </table>`;
+}
+
+async function reports() {
+  const { reports } = await fetchJSON("/api/reports");
+  view().innerHTML = `<h1>归档 <em>· reports</em></h1><p class="lede">${reports.length} 份历史评测，点行看详情。</p>
+    <table class="t"><tr><th>id</th><th>subject</th><th>variant</th><th>ts</th><th>headline</th></tr>
+    ${reports.slice().reverse().map(r => `<tr onclick="location.hash='#/report/${r.id}'">
+      <td>${r.id.slice(0, 24)}…</td><td class="sb">${r.subject}</td><td>${r.variant}</td>
+      <td>${(r.readable_ts || r.ts || "").slice(5, 16)}</td><td>${headline(r)}</td></tr>`).join("")}</table>`;
+}
+
+async function reportDetail(id) {
+  const r = await fetchJSON("/api/report/" + id);
+  const agg = r.aggregate || {};
+  const pq = r.per_query || [];
+  view().innerHTML = `
+    <h1>${r.subject} <em>· detail</em></h1>
+    <p class="lede">${r.variant} · n=${r.n || pq.length} · ${r.target || ""}</p>
+    <div class="h"><span class="n">A</span><h2>aggregate</h2><span class="line"></span></div>
+    <div class="kv">${Object.entries(agg).map(([k, v]) => `<span>${k}</span> = <b>${fmt(v)}</b><br>`).join("")}</div>
+    <div class="h"><span class="n">B</span><h2>per_query（${pq.length}）</h2><span class="line"></span></div>
+    <table class="t"><tr><th>query</th><th>headline</th></tr>
+    ${pq.slice(0, 30).map(q => `<tr><td>${(q.query || "").slice(0, 50)}</td><td>${headline({aggregate: q})}</td></tr>`).join("")}</table>
+    <p class="lede" style="margin-top:18px">lockfile: ${JSON.stringify(r.lockfile || {})}</p>`;
+}
+
+async function compare() {
+  const { reports } = await fetchJSON("/api/reports");
+  const opts = reports.map(r => `<option value="${r.id}">${r.id.slice(0, 20)}… ${r.subject}`).join("");
+  view().innerHTML = `<h1>compare <em>· 对比</em></h1><p class="lede">选两份归档，看 aggregate diff。</p>
+    <p style="margin:12px 0"><select id="cmpA" class="btn">${opts}</select>
+    <select id="cmpB" class="btn">${opts}</select>
+    <button class="btn fill" onclick="doCompare()">对比 ▸</button></p>
+    <div id="cmpResult"></div>`;
+  window.doCompare = async () => {
+    const a = await fetchJSON("/api/report/" + $("#cmpA").value);
+    const b = await fetchJSON("/api/report/" + $("#cmpB").value);
+    const keys = [...new Set([...Object.keys(a.aggregate || {}), ...Object.keys(b.aggregate || {})])].sort();
+    $("#cmpResult").innerHTML = `<table class="t"><tr><th>metric</th><th>left</th><th>right</th><th>delta</th></tr>
+      ${keys.map(k => { const x = a.aggregate?.[k], y = b.aggregate?.[k];
+        const d = (typeof x === "number" && typeof y === "number") ? (y - x).toFixed(3) : "—";
+        return `<tr><td>${k}</td><td>${fmt(x)}</td><td>${fmt(y)}</td><td>${d}</td></tr>`; }).join("")}</table>`;
+  };
+}
+
+async function setupView() {
+  const h = await fetchJSON("/api/health");
+  const d = h.deps || {};
+  const row = (name, key, desc, warn) => `<tr>
+    <td class="nm">${name}</td><td class="st ${d[key] ? "ok" : "miss"}">${d[key] ? "✓ " + d[key] : "✗ 缺"}</td>
+    <td style="color:var(--ink2);font-size:11px">${desc}${warn ? `<br><i style="color:var(--warn)">${warn}</i>` : ""}</td></tr>`;
+  view().innerHTML = `
+    <h1>setup <em>· 环境体检</em></h1>
+    <p class="lede">工具与凭据状态。${h.ready ? "环境就绪，可进评测。" : "有缺项——装齐再 bench。"}</p>
+    <div class="gate ${h.ready ? "ok" : ""}"><span class="dot"></span>
+      <b>${h.ready ? "环境就绪 ✓" : "有缺项"}</b>　<button class="btn" onclick="location.reload()">刷新</button></div>
+    <div class="h"><span class="n">A</span><h2>KB 工具</h2><span class="line"></span></div>
+    <table class="t dep">${row("cmm","cmm","代码符号/调用图 KB")}
+      ${row("graphify","graphify","文档图 KB（建图花 LLM）")}
+      ${row("codegraph","codegraph","第二代码 KB（A/B + goldgen）","")}
+      ${row("mempalace","mempalace","记忆层","⚠ Intel Mac 必须 py3.11")}</table>
+    <div class="h"><span class="n">B</span><h2>Python / 凭据</h2><span class="line"></span></div>
+    <table class="t dep">${row("python","python","pytest + anthropic","✗ 勿装 ragas（库冲突）/ numpy≥2")}
+      ${row("render","render","SVG→PNG（流程图用）")}
+      ${row("LLM 凭据","creds","agent A/B + 答案质量用","⚠ 同家族 self-preference")}</table>
+    <p class="lede" style="margin-top:18px">后端是 setup.sh——这里只体检。装缺的跑：<code class="mono">./setup.sh tools</code></p>`;
+}
+
+function placeholder(title, desc, mockup) {
+  view().innerHTML = `<h1>${title}</h1><p class="lede">${desc}</p>
+    <div class="h"><span class="n">→</span><h2>设计 mockup</h2><span class="line"></span></div>
+    <p style="font-size:13px;color:var(--ink2)">详细交互设计见 <a href="${mockup}">${mockup}</a>（已做 HTML mockup）。
+    后端 endpoint 已就绪（<code class="mono">/api/onboard</code> / <code class="mono">/api/goldgen</code>），UI 实装归后续迭代。</p>`;
+}
+
+// ── router ──
+const routes = {
+  dashboard, reports, setup: setupView,
+  onboard: () => placeholder("project · 目标接入", "5 步向导：连代码库→索引→文档图→会话→gold→就绪。", "docs/mockup/onboarding.html"),
+  compare, goldlab: () => placeholder("gold lab · 扩题", "agent 挖题 + 两层验收 + 人审。", "（mockup 在 dashboard §Gold lab）"),
+};
+async function router() {
+  const h = location.hash.slice(2) || "dashboard";
+  const [route, arg] = h.split("/");
+  document.querySelectorAll(".nav a").forEach(a => a.classList.toggle("active", a.dataset.route === route));
+  view().innerHTML = `<div class="loading">loading…</div>`;
+  try {
+    if (route === "report") await reportDetail(arg);
+    else await (routes[route] || dashboard)();
+  } catch (e) { view().innerHTML = `<div class="loading">⚠ ${e}</div>`; }
+}
+window.addEventListener("hashchange", router);
+router();
