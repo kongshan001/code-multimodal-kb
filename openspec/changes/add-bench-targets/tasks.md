@@ -35,11 +35,14 @@
 
 ## 5. 重写 goldgen（pending 折进 problems.json）
 
-- [ ] 5.1 `generate`：候选直接写 `targets/<id>/problems.json`，每条 `status: pending` + `provenance`（source_symbol/kind/file）
-- [ ] 5.2 `verify_pending` 改为 `verify`：在 problems.json 原 pending 条目上标 `verdict`/`reason`（增量，不全量重写）
-- [ ] 5.3 删除 `write_gold_module` / `fold` / `write_pending` / `parse_pending` / `pending_path`
-- [ ] 5.4 `cli.py` 删 `goldgen-fold` 子命令；`goldgen` / `goldgen-verify` 适配新签名（`--target <id>` 必传）
-- [ ] 5.5 重写 `eval/tests/test_goldgen.py`：generate→problems.json pending、verify 原地标、无 .md 产生 → 全绿
+- [x] 5.1 `generate`：候选直接追加进 `targets/<id>/problems.json`，每条 `status: pending` + `provenance`（source_symbol/kind/file）；root/cmm_project 从 target.json 读
+- [x] 5.2 `verify_pending` → `verify`：在 problems.json 原 pending 候选上原地标 `verdict`/`reason`（增量、幂等，不全量重写）
+- [x] 5.3 删除 `write_gold_module` / `fold` / `write_pending` / `parse_pending` / `pending_path` / `DEFAULT_ROOT` / `_CMM_PROJ_FALLBACK` / `_gold_file_path`（fold 步骤消失）
+- [x] 5.4 `cli.py` 删 `goldgen-fold` 子命令 + 处理器；`goldgen` / `goldgen-verify` 删 `--root`、`--target` 必传（target id）
+- [x] 5.5 `server.py`：`/api/pending/<target>` 改读 problems.json 的 pending 候选（不再读 .md）；删 `/api/goldgen-fold` 路由
+- [x] 5.6 `web/app.js` Gold lab：删 fold 按钮 + glFold（approve/删 编辑器留组 7）；默认 target → godot-core
+- [x] 5.7 重写 `eval/tests/test_goldgen.py`：generate→problems.json pending（带 provenance + 稳定 id）+ 跳重复 query、verify 原地标（幂等，accepted 不动）；6 测试全绿
+- [x] 5.8 `eval/targets.py` 加 `slugify` / `assign_ids` / `save_problems`（goldgen + 组 7 前端编辑器共用，校验 + 写回）
 
 ## 6. 删 gold_*.py + 改快照测试
 

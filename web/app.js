@@ -333,23 +333,22 @@ function onboardView() {
 function goldlabView() {
   view().innerHTML = `
     <h1>gold lab <em>· 扩题</em></h1>
-    <p class="lede">agent 挖符号 + LLM 拟题 → 实证验收 → 人审 → fold 入 gold。gold 构造即正确（零 judge）。</p>
+    <p class="lede">agent 挖符号 + LLM 拟题 → 实证验收 → 人审 approve/删。候选直接进 problems.json（status: pending），无 fold。gold 构造即正确（零 judge）。</p>
     <div style="border:1.5px solid var(--ink);background:#fff;padding:20px;margin-bottom:16px">
       <label class="mono" style="font-size:10px;color:var(--ink2)">seed 词（空格分，指一片代码）</label>
       <div style="display:flex;gap:8px;margin:6px 0 10px">
         <input id="gl_seeds" class="btn" placeholder="Vector color Node Resource" style="flex:1;text-align:left"/>
-        <input id="gl_target" class="btn" value="gen" style="width:70px"/>
+        <input id="gl_target" class="btn" value="godot-core" style="width:120px"/>
         <button class="btn fill" onclick="glGen()">① 挖+拟题 ▸</button>
       </div>
-      <div class="mono" style="font-size:11px;color:var(--ink2)">→ codegraph 枚举真实符号 + GLM 拟 NL 题 → 写 gold_pending</div>
+      <div class="mono" style="font-size:11px;color:var(--ink2)">→ codegraph 枚举真实符号 + GLM 拟 NL 题 → 候选进 problems.json（pending）</div>
       <div id="gl_out_gen" class="mono" style="margin-top:10px;font-size:11px;min-height:14px"></div>
     </div>
     <div style="display:flex;gap:8px;margin-bottom:16px">
       <button class="btn" onclick="glVerify()">② 实证验收</button>
-      <button class="btn" onclick="glShow()">③ 看候选（人审）</button>
-      <button class="btn fill" onclick="glFold()">④ fold 入库 ▸</button>
+      <button class="btn" onclick="glShow()">③ 看 pending 候选</button>
     </div>
-    <div id="gl_pending" class="mono" style="background:#fff;border:1px solid var(--rule);padding:16px;font-size:11px;white-space:pre-wrap;min-height:60px;color:var(--ink2)">候选队列（gold_pending）显示在这里——人审后 fold。</div>`;
+    <div id="gl_pending" class="mono" style="background:#fff;border:1px solid var(--rule);padding:16px;font-size:11px;white-space:pre-wrap;min-height:60px;color:var(--ink2)">pending 候选显示在这里（来自 problems.json）。approve/删 编辑器见后续。</div>`;
   const tgt = () => $("#gl_target").value;
   window.glGen = async () => {
     $("#gl_out_gen").textContent = "running…（codegraph + GLM，~10s）";
@@ -367,11 +366,6 @@ function goldlabView() {
   window.glShow = async () => {
     const d = await fetchJSON("/api/pending/" + tgt());
     $("#gl_pending").textContent = d.exists ? d.content : "(无 pending——先 ① 挖+拟题)";
-  };
-  window.glFold = async () => {
-    const r = await fetch("/api/goldgen-fold", {method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({target: tgt()})});
-    const o = await r.json();
-    $("#gl_pending").innerHTML = `<b style="color:var(--good)">${(o.stdout||"").slice(-200)}</b>`;
   };
   glShow();
 }

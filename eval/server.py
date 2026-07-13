@@ -121,9 +121,24 @@ class Handler(BaseHTTPRequestHandler):
             return self._send_json(200, merged(project))
         if p.startswith("/api/pending/"):
             tgt = p[len("/api/pending/"):]
-            f = REPO / "eval" / "reports" / f"gold_pending_{tgt}.md"
-            return self._send_json(200, {"exists": f.exists(),
-                                         "content": f.read_text(encoding='utf-8') if f.exists() else ""})
+            from eval.targets import load_problems
+            try:
+                pending = [x for x in load_problems(tgt) if x.get("status") == "pending"]
+            except Exception as e:
+                return self._send_json(200, {"exists": False, "count": 0,
+                                             "content": f"(target 不存在或无 problems.json: {e})"})
+            lines = [f"# pending 候选 · target={tgt}（来自 problems.json，前端 approve/删）", ""]
+            for x in pending:
+                lines.append(f"## {x['id']}")
+                lines.append(f"- query: {x.get('query') or x.get('fact')}")
+                lines.append(f"- gold: {x.get('gold', {})}")
+                if x.get("verdict"):
+                    lines.append(f"- verdict: {x['verdict']}")
+                if x.get("reason"):
+                    lines.append(f"- reason: {x['reason']}")
+                lines.append("")
+            return self._send_json(200, {"exists": bool(pending), "count": len(pending),
+                                         "content": "\n".join(lines)})
         return self._send(404, b"not found", "text/plain")
 
     def do_POST(self):
@@ -173,11 +188,6 @@ class Handler(BaseHTTPRequestHandler):
                 out = subprocess.run(["python", "-m", "eval.cli", "goldgen-verify", "--target", tgt],
                                      capture_output=True, text=True, timeout=120, cwd=str(REPO))
                 return self._send_json(200, {"rc": out.returncode, "stdout": out.stdout[-1500:]})
-            if u.path == "/api/goldgen-fold":
-                tgt = body.get("target", "gen")
-                out = subprocess.run(["python", "-m", "eval.cli", "goldgen-fold", "--target", tgt],
-                                     capture_output=True, text=True, timeout=60, cwd=str(REPO))
-                return self._send_json(200, {"rc": out.returncode, "stdout": out.stdout[-800:]})
         except Exception as e:
             return self._send_json(500, {"error": str(e)})
         return self._send_json(404, {"error": "unknown route"})

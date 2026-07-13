@@ -13,6 +13,7 @@
 from __future__ import annotations
 
 import json
+import re
 from pathlib import Path
 from typing import Any
 
@@ -172,3 +173,56 @@ def load_problems(target_id: str) -> list[dict]:
 def load(target_id: str) -> dict:
     """一站式：{target: merged 配置, problems: 校验后列表}。runner 主入口。"""
     return {"target": load_target(target_id), "problems": load_problems(target_id)}
+
+
+# ── slug + 写回（goldgen / 前端编辑器共用）────────────────────────────────
+_TOKEN = re.compile(r"[A-Za-z0-9一-鿿]+")
+
+
+def slugify(text: str, n: int = 3) -> str:
+    """text → lowercase kebab slug（前 n 个 token；CJK 连串视作一个 token）。
+
+    稳定 id 用：<target-id>-<slug(query/fact)>。撞名由调用方加 -2/-3。
+    """
+    tokens = _TOKEN.findall(text.lower())
+    return "-".join(tokens[:n]) or "q"
+
+
+def assign_ids(target_id: str, problems: list[dict]) -> None:
+    """给无 id 的题分配 <target_id>-<slug(text)>，撞名加 -2/-3。就地改 problems。
+
+    已有 id 的题保留（幂等）。text = fact（routing）或 query（其余）。
+    """
+    seen: dict[str, int] = {p["id"]: 1 for p in problems if p.get("id")}
+    for p in problems:
+        if p.get("id"):
+            continue
+        text = p.get("fact") or p.get("query") or ""
+        base = f"{target_id}-{slugify(text)}"
+        if base in seen:
+            seen[base] += 1
+            pid = f"{base}-{seen[base]}"
+        else:
+            seen[base] = 1
+            pid = base
+        p["id"] = pid
+
+
+def save_problems(target_id: str, problems: list[dict], *, assign: bool = True) -> list[dict]:
+    """校验 + 写回 targets/<id>/problems.json。
+
+    assign=True（默认）：先给无 id 的题分配稳定 id（goldgen 新候选用）。
+    逐题校验 schema（type↔gold、id 唯一、必填字段）。校验失败抛 TargetError，不写。
+    返回写回的 problems（含分配后的 id）。
+    """
+    if assign:
+        assign_ids(target_id, problems)
+    seen: set[str] = set()
+    for p in problems:
+        _validate_problem(p, target_id, seen)
+    f = _target_dir(target_id) / "problems.json"
+    f.write_text(
+        json.dumps({"version": 1, "target": target_id, "problems": problems},
+                   ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8")
+    return problems

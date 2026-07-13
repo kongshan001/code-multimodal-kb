@@ -118,41 +118,34 @@ def _cmd_compare(args) -> int:
 
 
 def _cmd_goldgen(args) -> int:
-    """agent 挖符号 + LLM 拟题 → 审核队列文件。"""
+    """agent 挖符号 + LLM 拟题 → 候选（status: pending）追加进 problems.json。"""
     from eval.goldgen import generate, seeds_from_dir
     from eval.ab_agent import load_creds, make_client
+    from eval.targets import load_target
 
+    root = load_target(args.target)["code"]["codegraph_root"]
     seeds = list(args.seeds)
     if args.dir:
-        seeds += seeds_from_dir(args.dir, args.root)
+        seeds += seeds_from_dir(args.dir, root)
     seeds = list(dict.fromkeys(seeds))  # 去重保序
     if not seeds:
         print("需给至少一个 seed 词 或 --dir <目录>", file=sys.stderr)
         return 2
     client = make_client()
     _, _, model = load_creds()
-    res = generate(seeds, args.target, client, model, args.root, args.n)
-    print(f"枚举 {res['symbols']} 符号 → LLM 拟 {res['candidates']} 题")
-    print(f"审核队列: {res['pending_path']}")
-    print(f"人审（删/改 query）后跑: bench goldgen-fold --target {args.target}")
-    return 0
-
-
-def _cmd_goldgen_fold(args) -> int:
-    """把审核后的 gold_pending fold 进 gold_<target>.py。"""
-    from eval.goldgen import fold
-    res = fold(args.target)
-    print(f"fold: +{res['added']} 题 → eval/gold_{res['target']}.py（共 {res['total']} 题）")
+    res = generate(seeds, args.target, client, model, args.n)
+    print(f"枚举 {res['symbols']} 符号 → LLM 拟 {res['candidates']} 新候选（status: pending）")
+    print(f"→ targets/{args.target}/problems.json")
+    print(f"人审（前端 approve/删）或先跑: bench goldgen-verify --target {args.target}")
     return 0
 
 
 def _cmd_goldgen_verify(args) -> int:
-    """独立实证验收：标 verdict/reason 进 pending（人审前 vet 歧义/错配）。"""
-    from eval.goldgen import verify_pending, pending_path
-    res = verify_pending(args.target, args.root)
-    print(f"验收 {res['n']} 题：实证 pass {res['pass']} / 需人审 {res['review']}")
-    print(f"已标 verdict/reason → {pending_path(args.target)}")
-    print("人审（重点看 review 的）后跑: bench goldgen-fold --target " + args.target)
+    """实证验收：在 pending 候选原地标 verdict/reason（幂等）。"""
+    from eval.goldgen import verify
+    res = verify(args.target)
+    print(f"验收 {res['n']} pending 候选：pass {res['pass']} / 需人审 {res['review']}")
+    print(f"已标 verdict/reason → targets/{args.target}/problems.json")
     return 0
 
 
@@ -200,21 +193,15 @@ def main(argv: list[str] | None = None) -> int:
     cmp_p.add_argument("id2")
 
     # goldgen <seeds...> --target X [--dir D]：agent 挖符号+LLM拟题→审核队列
-    gg = sub.add_parser("goldgen", help="agent 挖符号 + LLM 拟题 → 审核队列（人审后 fold 进 gold）")
+    gg = sub.add_parser("goldgen", help="agent 挖符号 + LLM 拟题 → pending 候选进 problems.json")
     gg.add_argument("seeds", nargs="*", help="搜索 seed 词，指一片代码（如 Vector color）")
-    gg.add_argument("--target", required=True, help="gold 模块名（如 godot / 新名）")
+    gg.add_argument("--target", required=True, help="target id（如 godot-core）")
     gg.add_argument("--dir", help="目录（派生文件名 seed 兜底）")
-    gg.add_argument("--root", default="/Users/ks_128/Documents/godot-src/core")
     gg.add_argument("--n", type=int, default=20)
 
-    # goldgen-fold --target X：审核后的 candidate fold 进 gold_<target>.py
-    gf = sub.add_parser("goldgen-fold", help="把审核后的 gold_pending fold 进 gold_<target>.py")
-    gf.add_argument("--target", required=True)
-
-    # goldgen-verify --target X：独立实证验收（人审前自动 vet）
-    gv = sub.add_parser("goldgen-verify", help="独立实证验收：标 verdict/reason 进 pending（人审前 vet）")
-    gv.add_argument("--target", required=True)
-    gv.add_argument("--root", default="/Users/ks_128/Documents/godot-src/core")
+    # goldgen-verify --target X：实证验收，在 pending 候选原地标 verdict/reason
+    gv = sub.add_parser("goldgen-verify", help="实证验收：在 pending 候选原地标 verdict/reason")
+    gv.add_argument("--target", required=True, help="target id")
 
     # web：起前端可视化服务
     gw = sub.add_parser("web", help="起 bench 前端可视化（localhost，零依赖）")
@@ -231,8 +218,6 @@ def main(argv: list[str] | None = None) -> int:
         return _cmd_compare(args)
     if args.cmd == "goldgen":
         return _cmd_goldgen(args)
-    if args.cmd == "goldgen-fold":
-        return _cmd_goldgen_fold(args)
     if args.cmd == "goldgen-verify":
         return _cmd_goldgen_verify(args)
     if args.cmd == "web":

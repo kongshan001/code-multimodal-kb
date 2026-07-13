@@ -1,11 +1,28 @@
-"""goldgen 测试：符号枚举（真 codegraph）+ LLM 拟题（mock）+ fold（tmp 隔离）。"""
-import os
+"""goldgen 测试：符号枚举（真 codegraph）+ LLM 拟题（mock）+ generate/verify（tmp 隔离）。
+
+新存储模型（design D6）：候选直接进 targets/<id>/problems.json（status: pending），
+verify 原地标 verdict/reason，无 pending.md、无 fold。
+"""
+import json
+
+import pytest
+
+from eval.targets import load_target
+
+
+# ── 真 codegraph 集成（godot-core target）──────────────────────────────────
+def _root():
+    return load_target("godot-core")["code"]["codegraph_root"]
+
+
+def _cmm_project():
+    return load_target("godot-core")["code"]["cmm_project"]
 
 
 def test_list_symbols_real_codegraph():
     """真 codegraph：seed 'color' 枚举出 Color 等真实符号（非 file/import 节点）。"""
     from eval.goldgen import list_symbols
-    syms = list_symbols(["color"], per_seed=5)
+    syms = list_symbols(["color"], _root(), per_seed=5)
     assert len(syms) > 0
     names = [s["name"] for s in syms]
     assert "Color" in names                       # gold-correct-by-construction 的关键
@@ -13,12 +30,12 @@ def test_list_symbols_real_codegraph():
 
 
 def test_verify_flags_ambiguous_gold():
-    """验收：Color 同名多符号（function/enum/enum_member）→ 标 review。"""
+    """验收：Color 同名多符号（不同模块）→ 标 review。"""
     from eval.goldgen import verify_candidate, ambiguity_check
-    amb = ambiguity_check("Color")
+    amb = ambiguity_check("Color", _root())
     assert amb["ambiguous"] is True               # Color 在 rb_map/variant/math 多处
     assert len(amb["kinds"]) >= 2
-    v = verify_candidate({"query": "x", "gold": ["Color"]})
+    v = verify_candidate({"query": "x", "gold": ["Color"]}, _root(), _cmm_project())
     assert v["ambiguous"] is True
     assert v["verdict"] == "review"               # 歧义 → 需人审
 
@@ -26,25 +43,22 @@ def test_verify_flags_ambiguous_gold():
 def test_verify_clean_unique_symbol():
     """验收：唯一名符号（如 ResourceUID）不歧义。"""
     from eval.goldgen import ambiguity_check
-    amb = ambiguity_check("ResourceUID")
-    assert amb["ambiguous"] is False              # ResourceUID 基本只在 resource_uid.h/.cpp
+    amb = ambiguity_check("ResourceUID", _root())
+    assert amb["ambiguous"] is False
 
 
-def test_verify_pending_annotates(monkeypatch, tmp_path):
-    """verify_pending 给每个 candidate 块标 verdict/reason（幂等重跑）。"""
-    import eval.goldgen as G
-    monkeypatch.setattr(G, "pending_path", lambda target: str(tmp_path / f"vp_{target}.md"))
-    monkeypatch.setattr(G, "verify_candidate", lambda c, root=G.DEFAULT_ROOT: {
-        "verdict": "review", "ambiguous": True, "retrievable": False, "reason": "mock"})
-    p = G.pending_path("vt")
-    open(p, "w").write("## candidate\n- query: q\n- gold: [\"X\"]\n- source: X\n\n")
-    res = G.verify_pending("vt")
-    assert res["n"] == 1 and res["review"] == 1
-    annotated = open(p).read()
-    assert "- verdict: review" in annotated and "- reason: mock" in annotated
-    # 幂等：重跑不重复堆积 verdict 行
-    G.verify_pending("vt")
-    assert annotated.count("- verdict:") == 1 or open(p).read().count("- verdict: review") == 1
+# ── hermetic：generate / verify（tmp 隔离 TARGETS_DIR）─────────────────────
+def _seed_target(tmp_path, monkeypatch, problems=None):
+    """在 tmp 造一个 godot-core target（含 target.json + problems.json），重定向 loader。"""
+    from eval import targets as T
+    monkeypatch.setattr(T, "TARGETS_DIR", tmp_path)
+    d = tmp_path / "godot-core"
+    d.mkdir()
+    (d / "target.json").write_text(json.dumps({
+        "id": "godot-core", "subjects": ["code_retrieval"],
+        "code": {"codegraph_root": "/fake/code", "cmm_project": "fakeproj"}}, ensure_ascii=False))
+    (d / "problems.json").write_text(json.dumps(
+        {"version": 1, "target": "godot-core", "problems": problems or []}, ensure_ascii=False))
 
 
 class _FakeMsg:
@@ -60,54 +74,65 @@ class _FakeClient:
         self.messages = type("M", (), {"create": lambda self_, **kw: _FakeMsg(next(self._it))})()
 
 
-def test_generate_writes_pending(monkeypatch, tmp_path):
-    """mock LLM + mock 枚举 → generate 写审核队列，gold 来自符号（非 LLM）。"""
+def test_generate_appends_pending(monkeypatch, tmp_path):
+    """mock 枚举 + LLM → generate 把候选（status: pending + provenance）追加进 problems.json。"""
     import eval.goldgen as G
-    # mock 枚举（不依赖 codegraph）
+    _seed_target(tmp_path, monkeypatch)
     monkeypatch.setattr(G, "list_symbols", lambda seeds, root, per_seed=5: [
         {"name": "Color", "kind": "class", "file": "math/color.h"},
         {"name": "JSON", "kind": "class", "file": "io/json.cpp"},
     ])
-    monkeypatch.setattr(G, "pending_path", lambda target: str(tmp_path / f"gold_pending_{target}.md"))
     client = _FakeClient(["what represents a color", "json 解析在哪"])
-    res = G.generate(["x"], "testtgt", client, "fake-model", n=10)
+    res = G.generate(["x"], "godot-core", client, "fake-model", n=10)
     assert res["candidates"] == 2
-    text = open(res["pending_path"]).read()
-    assert "## candidate" in text
-    assert "what represents a color" in text
-    assert '"Color"' in text                       # gold = 符号名（非 LLM 产物）
+
+    from eval.targets import load_problems
+    problems = load_problems("godot-core")
+    assert len(problems) == 2
+    p0 = problems[0]
+    assert p0["status"] == "pending"
+    assert p0["gold"]["symbols"] == ["Color"]            # gold = 符号名（非 LLM 产物）
+    assert p0["provenance"] == {"source_symbol": "Color", "kind": "class", "file": "math/color.h"}
+    assert p0["id"].startswith("godot-core-")            # 分配了稳定 id
 
 
-def test_fold_appends_to_gold(monkeypatch, tmp_path):
-    """审核后的 pending → fold 进 gold_<target>.py（去重合并），写 tmp 隔离。"""
+def test_generate_skips_duplicate_queries(monkeypatch, tmp_path):
+    """LLM 拟出的 query 与现有题重复 → 跳过（不重复入库）。"""
     import eval.goldgen as G
-    # 隔离路径到 tmp
-    monkeypatch.setattr(G, "pending_path", lambda target: str(tmp_path / f"gold_pending_{target}.md"))
-    monkeypatch.setattr(G, "_gold_file_path", lambda target: str(tmp_path / f"gold_{target}.py"))
-    # 写一个审核后的 pending（人删了第 2 个、留第 1+3）
-    pending = (
-        "## candidate\n- query: color 在哪\n- gold: [\"Color\"]\n- source: Color [class] math/color.h\n\n"
-        "## candidate\n- query: 不要这条\n- gold: [\"Bad\"]\n- source: Bad\n\n"
-    )
-    open(G.pending_path("foldtest"), "w").write(pending)
-    res = G.fold("foldtest")
-    # 注意：fold 不删 candidate（人审时已删），收全部剩余块
-    assert res["added"] == 2
-    assert res["target"] == "foldtest"
-    # gold 文件写出，含两条
-    written = open(G._gold_file_path("foldtest")).read()
-    assert "color 在哪" in written and "Color" in written
+    _seed_target(tmp_path, monkeypatch, problems=[
+        {"id": "godot-core-color", "type": "code_retrieval", "query": "what represents a color",
+         "gold": {"symbols": ["Color"]}, "status": "accepted"}])
+    monkeypatch.setattr(G, "list_symbols", lambda seeds, root, per_seed=5: [
+        {"name": "Color", "kind": "class", "file": "math/color.h"},
+        {"name": "JSON", "kind": "class", "file": "io/json.cpp"},
+    ])
+    client = _FakeClient(["what represents a color", "json 解析在哪"])  # 第 1 条重复
+    res = G.generate(["x"], "godot-core", client, "fake-model", n=10)
+    assert res["candidates"] == 1                        # 仅 JSON 新增
 
 
-def test_fold_dedup(monkeypatch, tmp_path):
-    """同一 pending 内重复 query 只加一次（fold 的 within-pending 去重）。"""
+def test_verify_annotates_pending_in_place(monkeypatch, tmp_path):
+    """verify 在 pending 候选原地标 verdict/reason（幂等，不产生第二份文件）。"""
     import eval.goldgen as G
-    monkeypatch.setattr(G, "pending_path", lambda target: str(tmp_path / f"pp_{target}.md"))
-    monkeypatch.setattr(G, "_gold_file_path", lambda target: str(tmp_path / f"g_{target}.py"))
-    open(G.pending_path("dup"), "w").write(
-        '## candidate\n- query: same q\n- gold: ["X"]\n\n'
-        '## candidate\n- query: same q\n- gold: ["X"]\n\n'
-        '## candidate\n- query: new q\n- gold: ["Y"]\n\n')
-    res = G.fold("dup")     # 2 条 same q → 去重留 1，new q +1 → 共 +2
-    assert res["added"] == 2
-    assert res["total"] == 2
+    _seed_target(tmp_path, monkeypatch, problems=[
+        {"id": "godot-core-color", "type": "code_retrieval", "query": "color",
+         "gold": {"symbols": ["Color"]}, "status": "pending"},
+        {"id": "godot-core-json", "type": "code_retrieval", "query": "json",
+         "gold": {"symbols": ["JSON"]}, "status": "pending"},
+        {"id": "godot-core-old", "type": "code_retrieval", "query": "engine",
+         "gold": {"symbols": ["Engine"]}, "status": "accepted"},  # 已 accepted，跳过
+    ])
+    monkeypatch.setattr(G, "verify_candidate", lambda cand, root, cmm_project: {
+        "verdict": "review", "ambiguous": True, "retrievable": False, "reason": "mock"})
+    res = G.verify("godot-core")
+    assert res["n"] == 2 and res["review"] == 2          # 只验 2 个 pending，accepted 跳过
+
+    from eval.targets import load_problems
+    problems = {p["id"]: p for p in load_problems("godot-core")}
+    assert problems["godot-core-color"]["verdict"] == "review"
+    assert problems["godot-core-color"]["reason"] == "mock"
+    assert "verdict" not in problems["godot-core-old"]   # accepted 未被动
+    # 幂等：重跑不堆积
+    G.verify("godot-core")
+    problems2 = {p["id"]: p for p in load_problems("godot-core")}
+    assert problems2["godot-core-color"]["reason"] == "mock"

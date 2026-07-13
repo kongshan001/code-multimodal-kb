@@ -1,20 +1,17 @@
 """Gold 生成器：symbol-driven 挖掘 + 两层自动验收 + 人审（低成本扩题库）。
 
-**4 阶段流程**（人审前过两层自动 vet）：
-  1. generate：人给范围（seed 词 / 目录）→ codegraph 枚举真实符号 → LLM 拟 NL 问题
-     （gold = 符号，构造即正确，零 LLM judge）→ 写审核队列
-  2. 实证 verify（bench goldgen-verify）：codegraph 查同名歧义 + 检索可达，标 verdict/reason
-  3. 独立 subagent 验收（主 agent spawn）：判 NL query↔gold 语义匹配（实证做不到的，抓错配/前提错）
-  4. 人审（删/改）→ fold 进 gold_<target>.py
+候选直接落 targets/<id>/problems.json（status: pending + provenance）。人审 = 前端逐条
+approve（status→accepted）或删。**无 pending.md、无 fold、无全量重写**——所有编辑增量
+作用于 problems.json 单条目（design D6）。
 
-**两层验收互补**：实证层抓歧义 gold（grounded，零 LLM）；subagent 抓语义错配（如 query 说"数学
-向量"但 gold=Vector 动态数组、或前提事实错）。人只做最终拍板。
+仅适用于 code_retrieval target（枚举代码符号造题）。root / cmm_project 从该 target 的
+target.json 读（经 overlay），引擎零硬编码。
 
-用法：
-  bench goldgen <seed> [--seed S2 ...] --target godot [--dir core/math] [--n 20]
-  bench goldgen-verify --target godot        # 实证验收（自动 vet）
-  # 主 agent spawn 独立 subagent 做语义验收（见上面流程 3）
-  bench goldgen-fold --target godot          # 人审后入库
+流程：
+  bench goldgen <seeds> --target <id>     codegraph 枚举真实符号 + LLM 拟 NL 题
+                                           （gold=符号，构造即正确，零 LLM judge）→ 写 pending 候选
+  bench goldgen-verify --target <id>       实证验收（零 LLM）：在 pending 候选原地标 verdict/reason
+  （主 agent spawn 独立 subagent 做语义验收；人审 approve/删 在前端）
 """
 from __future__ import annotations
 
@@ -23,14 +20,13 @@ import os
 import re
 import subprocess
 
+from eval.targets import load_problems, load_target, save_problems
+
 # 非"真符号"的节点 kind（文件/导入/目录级），枚举时滤掉
 _NON_SYMBOL_KINDS = {"file", "import", "directory", "unknown", "module", "package"}
-# codegraph 项目根（换代码库改这里，或 --root 传）
-DEFAULT_ROOT = "/Users/ks_128/Documents/godot-src/core"
 
 
 # ── 符号枚举（codegraph，零 LLM）──────────────────────────────────────────
-
 def _codegraph_query(seed: str, root: str, limit: int) -> list[dict]:
     out = subprocess.run(
         ["codegraph", "query", seed, "--path", root, "--limit", str(limit), "--json"],
@@ -51,7 +47,7 @@ def _codegraph_query(seed: str, root: str, limit: int) -> list[dict]:
     return out_list
 
 
-def list_symbols(seeds: list[str], root: str = DEFAULT_ROOT, per_seed: int = 5) -> list[dict]:
+def list_symbols(seeds: list[str], root: str, per_seed: int = 5) -> list[dict]:
     """多 seed 并集枚举真实符号，按 name 去重。"""
     seen, out = set(), []
     for seed in seeds:
@@ -63,7 +59,7 @@ def list_symbols(seeds: list[str], root: str = DEFAULT_ROOT, per_seed: int = 5) 
     return out
 
 
-def seeds_from_dir(dir_path: str, root: str = DEFAULT_ROOT, max_files: int = 8) -> list[str]:
+def seeds_from_dir(dir_path: str, root: str, max_files: int = 8) -> list[str]:
     """目录 → 文件 basename 当 seed（兜底；snake/camelCase 可能漏，人审时补）。"""
     try:
         out = subprocess.run(
@@ -87,11 +83,10 @@ def seeds_from_dir(dir_path: str, root: str = DEFAULT_ROOT, max_files: int = 8) 
 
 
 # ── LLM 出题（仅 query 措辞；gold 来自符号）───────────────────────────────
-
 def phrase_query(symbol: dict, client, model: str) -> str:
     """LLM 为符号拟一个 NL 问题，其答案就是该符号名。仅返 query 文本。"""
     prompt = (
-        f"你是代码 benchmark 的出题人。给定 Godot 代码里的符号：`{symbol['name']}`"
+        f"你是代码 benchmark 的出题人。给定代码里的符号：`{symbol['name']}`"
         f"（{symbol['kind']}，位于 {symbol['file']}）。\n"
         f"拟**一个**开发者会自然问的问题，这个符号名就是答案。要求：\n"
         f"- 问题里**可以**用概念描述，但答案确定就是 `{symbol['name']}`；\n"
@@ -106,36 +101,30 @@ def phrase_query(symbol: dict, client, model: str) -> str:
     return text.strip().strip('"').strip("“”")
 
 
-# ── 审核队列文件 ──────────────────────────────────────────────────────────
-
+# ── 实证验收（零 LLM）─────────────────────────────────────────────────────
 def _norm(s: str) -> str:
     return "".join(c.lower() for c in str(s) if c.isalnum())
 
 
-def ambiguity_check(name: str, root: str = DEFAULT_ROOT) -> dict:
-    """gold 名是否同名多【不同模块】的符号（broad 判分会撞）。
-    method+class 同符号（.h 声明 + .cpp 定义 = 同模块）不算歧义；
-    不同模块出现同名（Color 在 math/color + rb_map + variant）才算。"""
+def ambiguity_check(name: str, root: str) -> dict:
+    """gold 名是否同名多【不同模块】的符号（broad 判分会撞）。"""
     hits = _codegraph_query(name, root, 15)
     exact = [h for h in hits if _norm(h["name"]) == _norm(name)]
-    # 按模块（basename 去扩展名）归并：resource_uid.h/.cpp → "resource_uid" 同模块
     modules = sorted({os.path.splitext(os.path.basename(h["file"]))[0] for h in exact if h["file"]})
     kinds = sorted({h["kind"] for h in exact})
     return {"ambiguous": len(modules) > 1, "modules": modules,
             "kinds": kinds, "n_hits": len(exact)}
 
 
-def retrieval_check(query: str, gold: str, root: str = DEFAULT_ROOT) -> dict:
+def retrieval_check(query: str, gold: str, root: str, cmm_project: str) -> dict:
     """query 能否检索到 gold。codegraph（词面）+ cmm（语义，best-effort 容冷启动）。"""
     gn = _norm(gold)
-    # codegraph（词面，对 NL 弱但对术语强）
     cg_names = {_norm(r["name"]) for r in _codegraph_query(query, root, 8)}
     cg_hit = any(gn and gn in n for n in cg_names) or gn in cg_names
-    # cmm 语义（best-effort，冷启动容错）
     cmm_hit = False
     try:
         from eval.subjects import cmm_bm25, norm_item
-        for r in cmm_bm25(_CMM_PROJ_FALLBACK, query, 8):
+        for r in cmm_bm25(cmm_project, query, 8):
             if isinstance(r, dict) and gn and gn in _norm(norm_item(r).get("node", "")):
                 cmm_hit = True
                 break
@@ -144,13 +133,11 @@ def retrieval_check(query: str, gold: str, root: str = DEFAULT_ROOT) -> dict:
     return {"retrievable": cg_hit or cmm_hit, "via_codegraph": cg_hit, "via_cmm": cmm_hit}
 
 
-def verify_candidate(candidate: dict, root: str = DEFAULT_ROOT) -> dict:
-    """实证验收（零 LLM）：可靠信号 = gold 是否同名歧义（不同模块同名→broad 判分会撞）。
-    retrieval 仅信息项——NL/中文 query 词面检索本就够不着符号名，不代表错配（NL 匹配交 subagent 判）。
-    """
+def verify_candidate(candidate: dict, root: str, cmm_project: str) -> dict:
+    """实证验收（零 LLM）：可靠信号 = gold 同名歧义；检索仅信息项。"""
     gold = candidate["gold"][0] if candidate.get("gold") else ""
     amb = ambiguity_check(gold, root)
-    ret = retrieval_check(candidate.get("query", ""), gold, root)
+    ret = retrieval_check(candidate.get("query", ""), gold, root, cmm_project)
     reasons = []
     if amb["ambiguous"]:
         reasons.append(f"gold `{gold}` 同名多模块 modules={amb['modules']}（歧义，broad 判分会撞）")
@@ -163,147 +150,52 @@ def verify_candidate(candidate: dict, root: str = DEFAULT_ROOT) -> dict:
             "retrievable": ret["retrievable"], "reason": "; ".join(reasons)}
 
 
-# cmm 项目名（retrieval_check 用；与 ab_tools.CMM_PROJECT 同值，这里独立声明避循环导入）
-_CMM_PROJ_FALLBACK = "Users-ks-128-Documents-godot-src-core"
+# ── generate / verify（直接写 problems.json）──────────────────────────────
+def generate(seeds: list[str], target_id: str, client, model: str, n: int = 20) -> dict:
+    """seed → 枚举符号 → LLM 拟题 → 候选（status: pending + provenance）追加进 problems.json。
 
-
-def generate(seeds: list[str], target: str, client, model: str,
-             root: str = DEFAULT_ROOT, n: int = 20) -> dict:
-    """编排：seed → 枚举符号 → LLM 拟题 → 写审核队列。返 {symbols, candidates, pending_path}。"""
+    root / cmm_project 从 target.json 读。返 {symbols, candidates, target}。
+    """
+    target = load_target(target_id)
+    root = target["code"]["codegraph_root"]
+    cmm_project = target["code"]["cmm_project"]
     syms = list_symbols(seeds, root)[:n]
-    cands = []
+    existing = load_problems(target_id)
+    existing_q = {p["query"] for p in existing if p["type"] == "code_retrieval"}
+    new = []
     for s in syms:
         q = phrase_query(s, client, model)
-        if q:
-            cands.append({"query": q, "gold": [s["name"]], "name": s["name"],
-                          "kind": s["kind"], "file": s["file"]})
-    p = write_pending(target, cands)
-    return {"symbols": len(syms), "candidates": len(cands), "pending_path": p}
-
-
-def pending_path(target: str) -> str:
-    return os.path.join(os.path.dirname(__file__), "reports", f"gold_pending_{target}.md")
-
-
-def write_pending(target: str, candidates: list[dict]) -> str:
-    """写审核队列 md：每块一个 candidate，人删/改后跑 fold。"""
-    p = pending_path(target)
-    lines = [
-        f"# gold_pending · target={target}",
-        f"# 审核：保留你要的块、删不要的、可改 `query:` 措辞。完成后跑 `bench goldgen-fold --target {target}`。",
-        "# 每块以 `## candidate` 开头；fold 只收 `query:` + `gold:` 两行。",
-        "",
-    ]
-    for c in candidates:
-        lines += [
-            "## candidate",
-            f"- query: {c['query']}",
-            f"- gold: {json.dumps(c['gold'], ensure_ascii=False)}",
-            f"- source: {c['name']} [{c['kind']}] {c['file']}",
-            "",
-        ]
-    with open(p, "w", encoding="utf-8") as f:
-        f.write("\n".join(lines))
-    return p
-
-
-def parse_pending(target: str) -> list[tuple[str, list[str]]]:
-    """解析审核后的 pending 文件：每个 ## candidate 块取 query + gold。"""
-    p = pending_path(target)
-    if not os.path.exists(p):
-        return []
-    text = open(p, encoding="utf-8").read()
-    out = []
-    for block in re.split(r"^## candidate\s*$", text, flags=re.MULTILINE):
-        qm = re.search(r"^-\s*query:\s*(.+)$", block, re.MULTILINE)
-        gm = re.search(r"^-\s*gold:\s*(.+)$", block, re.MULTILINE)
-        if qm and gm:
-            try:
-                gold = json.loads(gm.group(1).strip())
-            except json.JSONDecodeError:
-                gold = [gm.group(1).strip().strip('"')]
-            out.append((qm.group(1).strip(), gold))
-    return out
-
-
-def verify_pending(target: str, root: str = DEFAULT_ROOT) -> dict:
-    """独立 subagent/实证 验收：对 pending 每个 candidate 算 verdict，回写 `- verdict:` / `- reason:` 行。
-    在人审前自动 vet（catches 歧义 gold + query↔gold 错配）。返回 {n, pass, review}。"""
-    p = pending_path(target)
-    if not os.path.exists(p):
-        return {"n": 0, "pass": 0, "review": 0}
-    text = open(p, encoding="utf-8").read()
-    header, *rest = re.split(r"^(## candidate\s*)$", text, flags=re.MULTILINE)
-    # rest 交替：[marker, block, marker, block, ...]
-    npass = nreview = 0
-    out = [header]
-    for i in range(0, len(rest), 2):
-        marker = rest[i] if i < len(rest) else ""
-        block = rest[i + 1] if i + 1 < len(rest) else ""
-        qm = re.search(r"^-\s*query:\s*(.+)$", block, re.MULTILINE)
-        gm = re.search(r"^-\s*gold:\s*(.+)$", block, re.MULTILINE)
-        if qm and gm:
-            try:
-                gold = json.loads(gm.group(1).strip())
-            except json.JSONDecodeError:
-                gold = [gm.group(1).strip().strip('"')]
-            v = verify_candidate({"query": qm.group(1).strip(), "gold": gold}, root)
-            if v["verdict"] == "pass":
-                npass += 1
-            else:
-                nreview += 1
-            # 去掉旧的 verdict/reason 行（重跑幂等），再加新的
-            block = re.sub(r"^-\s*(verdict|reason):.*$\n?", "", block, flags=re.MULTILINE)
-            block = block.rstrip() + f"\n- verdict: {v['verdict']}\n- reason: {v['reason']}\n"
-        out.append(marker)
-        out.append(block)
-    with open(p, "w", encoding="utf-8") as f:
-        f.write("".join(out))
-    return {"n": npass + nreview, "pass": npass, "review": nreview}
-
-
-# ── fold 进 gold_<target>.py ──────────────────────────────────────────────
-
-def _gold_file_path(target: str) -> str:
-    return os.path.join(os.path.dirname(__file__), f"gold_{target}.py")
-
-
-def write_gold_module(target: str, gold: list[tuple[str, set]], project: str = "") -> str:
-    """（重）写 gold_<target>.py：GOLD = [(query, {symbols}), ...]。"""
-    p = _gold_file_path(target)
-    body = [f'"""gold 集（target={target}）。部分由 goldgen 生成 + 人审。"""', "from __future__ import annotations", ""]
-    if project:
-        body += [f'PROJECT = "{project}"', ""]
-    body.append("GOLD: list[tuple[str, set[str]]] = [")
-    for q, gs in gold:
-        syms = ", ".join(f'"{s}"' for s in sorted(gs))
-        body.append(f"    ({q!r}, {{{syms}}}),")
-    body.append("]")
-    with open(p, "w", encoding="utf-8") as f:
-        f.write("\n".join(body) + "\n")
-    return p
-
-
-def fold(target: str) -> dict:
-    """把审核后 pending 里的 candidate fold 进 gold_<target>.py（去重合并）。"""
-    new = parse_pending(target)
-    # 读现有 gold
-    existing = []
-    project = ""
-    try:
-        import importlib
-        mod = importlib.import_module(f"eval.gold_{target}")
-        existing = list(mod.GOLD)
-        project = getattr(mod, "PROJECT", "")
-    except Exception:
-        pass
-    existing_q = {q for q, _ in existing}
-    added = 0
-    for q, gold in new:
-        if q in existing_q:
+        if not q or q in existing_q:
             continue
-        existing.append((q, set(gold)))
         existing_q.add(q)
-        added += 1
-    write_gold_module(target, existing, project)
-    return {"added": added, "total": len(existing), "target": target}
+        new.append({
+            "type": "code_retrieval", "query": q, "gold": {"symbols": [s["name"]]},
+            "status": "pending",
+            "provenance": {"source_symbol": s["name"], "kind": s["kind"], "file": s["file"]},
+        })
+    save_problems(target_id, existing + new)  # 给新候选分配稳定 id + 校验 + 写回
+    return {"symbols": len(syms), "candidates": len(new), "target": target_id}
+
+
+def verify(target_id: str) -> dict:
+    """对 problems.json 里的 status: pending 候选，原地标 verdict/reason（增量，幂等）。
+
+    仅对 code_retrieval 候选（歧义/检索是 code 概念）。返 {n, pass, review, target}。
+    """
+    target = load_target(target_id)
+    root = target["code"]["codegraph_root"]
+    cmm_project = target["code"]["cmm_project"]
+    problems = load_problems(target_id)
+    npass = nreview = 0
+    for p in problems:
+        if p.get("status") != "pending" or p["type"] != "code_retrieval":
+            continue
+        v = verify_candidate({"query": p["query"], "gold": p["gold"]["symbols"]}, root, cmm_project)
+        p["verdict"] = v["verdict"]
+        p["reason"] = v["reason"]
+        if v["verdict"] == "pass":
+            npass += 1
+        else:
+            nreview += 1
+    save_problems(target_id, problems, assign=False)  # id 已存在，不重分配；只写回 verdict/reason
+    return {"n": npass + nreview, "pass": npass, "review": nreview, "target": target_id}
