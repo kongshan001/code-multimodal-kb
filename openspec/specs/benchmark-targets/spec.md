@@ -1,7 +1,9 @@
 # benchmark-targets Specification
 
 ## Purpose
-TBD - created by archiving change add-bench-targets. Update Purpose after archive.
+
+定义 benchmark 的目标工程与题库数据模型，使任意代码 / 文档 / 记忆工程能低成本接入 benchmark 量化检索质量。题目（gold）与目标工程绑定以声明式 JSON（`targets/<id>/`）承载，引擎零工程假设、可移植；造题、编辑、验收经配置与前端驱动，回归门禁防漂移。
+
 ## Requirements
 ### Requirement: Declarative problem corpus
 
