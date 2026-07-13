@@ -286,6 +286,10 @@ function placeholder(title, desc, mockup) {
 }
 
 // ── onboarding 5 步向导 ──
+// 向导路径持久化（localStorage）——避免每次进页面重填
+function _obLoad(act, dflt){ try { return localStorage.getItem("bench_onboard_"+act) || dflt; } catch(e) { return dflt; } }
+function _obSave(act, val){ try { localStorage.setItem("bench_onboard_"+act, val); } catch(e) {} }
+
 function onboardView() {
   const steps = [
     {n:"01", t:"连代码库 · 索引", act:"codegraph", lbl:"代码库路径", val:"/path/to/your/repo", desc:"codegraph init（静态零 LLM，秒级）"},
@@ -294,7 +298,7 @@ function onboardView() {
   ];
   view().innerHTML = `
     <h1>project <em>· 接入你的工程</em></h1>
-    <p class="lede">5 步把你的代码库/文档/会话接进来。每步可跳过，跑完进 Gold lab 造题。</p>
+    <p class="lede">5 步把你的代码库/文档/会话接进来。每步可跳过，跑完进 Gold lab 造题。<span style="font-size:11px;color:var(--ink2)">（路径本地记忆，下次进来自动回填）</span></p>
     ${steps.map(s => `
       <div style="border:1.5px solid var(--ink);background:#fff;padding:20px;margin-bottom:16px">
         <div class="mono" style="font-size:10px;color:var(--accent);letter-spacing:1px">${s.n}</div>
@@ -302,7 +306,7 @@ function onboardView() {
         <p style="font-size:12px;color:var(--ink2);margin-bottom:12px">${s.desc}</p>
         ${s.warn ? `<div style="border-left:3px solid var(--warn);background:#fdf6e9;padding:8px 12px;font-size:11px;margin-bottom:12px">${s.warn}</div>` : ""}
         <div style="display:flex;gap:8px">
-          <input id="ob_${s.act}" class="btn" placeholder="${s.lbl}" value="${s.val}" style="flex:1;text-align:left"/>
+          <input id="ob_${s.act}" class="btn" placeholder="${s.lbl}" value="${_obLoad(s.act, s.val)}" oninput="_obSave('${s.act}', this.value)" style="flex:1;text-align:left"/>
           <button class="btn fill" onclick="doOnboard('${s.act}')">跑 ▸</button>
         </div>
         <div id="ob_out_${s.act}" class="mono" style="margin-top:10px;font-size:11px;color:var(--ink2);min-height:14px"></div>

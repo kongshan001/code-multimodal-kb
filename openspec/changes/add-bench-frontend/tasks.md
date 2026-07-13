@@ -6,7 +6,7 @@
 
 - [x] 1.1 Setup 视图：依赖体检表（读 /api/health，cmm/graphify/codegraph/mempalace/python/render/creds ✓版本/✗缺）+ 健康门禁 + 依赖坑提示 → 验证：live 渲染真实 health ✓
 - [x] 1.2 Project onboarding 5 步向导 UI：连代码库→索引(codegraph init)/文档图(graphify build,成本警示)/会话(mine,hook警示)/gold→就绪，每步 POST /api/onboard 实跑 → 验证：live 渲染 + 端点通 ✓
-- [ ] 1.3 向导状态持久化（localStorage）— 待接（当前每次进页面重填）
+- [x] 1.3 向导状态持久化（localStorage）— Playwright 验证：输路径 → 离开页面 → 折回，自动回填 ✓
 
 ## 2. Tier 1 读视图（静态 SPA · 评测段）✓
 
