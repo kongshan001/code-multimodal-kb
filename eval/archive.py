@@ -90,7 +90,7 @@ def archive_report(report: dict, subject: str | None = None, variant: str = "") 
         "readable_ts": readable,
         "path": rel_path,
     }
-    path.write_text(json.dumps(norm, ensure_ascii=False, indent=2))
+    path.write_text(json.dumps(norm, ensure_ascii=False, indent=2), encoding="utf-8")
 
     entry = {
         "id": rid,
@@ -113,12 +113,12 @@ def archive_report(report: dict, subject: str | None = None, variant: str = "") 
 
 def _load_index() -> dict:
     if INDEX_PATH.exists():
-        return json.loads(INDEX_PATH.read_text())
+        return json.loads(INDEX_PATH.read_text(encoding="utf-8"))
     return {"reports": []}
 
 
 def _save_index(index: dict) -> None:
-    INDEX_PATH.write_text(json.dumps(index, ensure_ascii=False, indent=2))
+    INDEX_PATH.write_text(json.dumps(index, ensure_ascii=False, indent=2), encoding="utf-8")
 
 
 def list_reports() -> list[dict]:
@@ -131,7 +131,7 @@ def get_report(rid: str) -> dict | None:
         if entry["id"] == rid:
             p = _REPO_ROOT / entry["path"]
             if p.exists():
-                return json.loads(p.read_text())
+                return json.loads(p.read_text(encoding="utf-8"))
     return None
 
 

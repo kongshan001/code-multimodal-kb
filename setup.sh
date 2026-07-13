@@ -33,7 +33,7 @@ install_tools() {
   else echo "  [graphify] ✓ 已装"; fi
   # 3. codegraph（第二代码 KB）—— npm
   if ! command -v codegraph >/dev/null 2>&1; then
-    echo "  [codegraph] 装：npm install -g codegraph（接 A/B codegraph 臂 + goldgen 枚举）"
+    echo "  [codegraph] 装：npm install -g @colbymchenry/codegraph（接 A/B codegraph 臂 + goldgen 枚举；npm 上的裸 codegraph 是撞名空壳包，必须带 @colbymchenry scope）"
   else echo "  [codegraph] ✓ $(codegraph --version 2>&1 | tail -1)"; fi
   # 4. MemPalace（记忆层）—— Intel Mac 必须 py3.11（onnxruntime wheel 限制）
   if ! command -v mempalace >/dev/null 2>&1; then
