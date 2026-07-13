@@ -1,0 +1,720 @@
+{
+  "subject": "ab-value-stage0",
+  "variant": "claude-gui-stage0",
+  "target": "claude-gui",
+  "n": 36,
+  "aggregate": {
+    "n": 36,
+    "mean_kb_tokens": 161.2,
+    "mean_naive_read_tokens": 1,
+    "mean_compression_read": 0,
+    "mean_kb_hit@5": 0.472,
+    "grep_miss_count": 36,
+    "naive_max_files": 3,
+    "naive_per_file_cap_chars": 4000
+  },
+  "per_query": [
+    {
+      "query": "websocket connection manager broadcast",
+      "gold": [
+        "WebSocketManager"
+      ],
+      "kb_top5": [
+        "broadcast",
+        "constructor",
+        "validateConfig",
+        "constructor",
+        "readGlobalConfig"
+      ],
+      "kb_tokens": 226,
+      "kb_hit@5": 1.0,
+      "naive_file_count": 0,
+      "naive_list_tokens": 1,
+      "naive_read_tokens": 1,
+      "compression_read": 0.0,
+      "grep_miss": true
+    },
+    {
+      "query": "react hook for websocket connection",
+      "gold": [
+        "useWebSocket"
+      ],
+      "kb_top5": [
+        "constructor",
+        "broadcast",
+        "getStats",
+        "useWebSocket",
+        "WebSocketManager"
+      ],
+      "kb_tokens": 201,
+      "kb_hit@5": 1.0,
+      "naive_file_count": 0,
+      "naive_list_tokens": 1,
+      "naive_read_tokens": 1,
+      "compression_read": 0.0,
+      "grep_miss": true
+    },
+    {
+      "query": "websocket message payload type shape",
+      "gold": [
+        "WebSocketMessage"
+      ],
+      "kb_top5": [
+        "constructor",
+        "broadcast",
+        "getStats",
+        "useWebSocket",
+        "WebSocketMessage"
+      ],
+      "kb_tokens": 205,
+      "kb_hit@5": 1.0,
+      "naive_file_count": 0,
+      "naive_list_tokens": 1,
+      "naive_read_tokens": 1,
+      "compression_read": 0.0,
+      "grep_miss": true
+    },
+    {
+      "query": "parse raw log into structured entries",
+      "gold": [
+        "LogParser"
+      ],
+      "kb_top5": [
+        "parse",
+        "constructor",
+        "constructor",
+        "start",
+        "notify"
+      ],
+      "kb_tokens": 215,
+      "kb_hit@5": 1.0,
+      "naive_file_count": 0,
+      "naive_list_tokens": 1,
+      "naive_read_tokens": 1,
+      "compression_read": 0.0,
+      "grep_miss": true
+    },
+    {
+      "query": "watch log file emit new lines",
+      "gold": [
+        "LogWatcher"
+      ],
+      "kb_top5": [
+        "watchFile",
+        "constructor",
+        "parse",
+        "constructor",
+        "start"
+      ],
+      "kb_tokens": 216,
+      "kb_hit@5": 1.0,
+      "naive_file_count": 0,
+      "naive_list_tokens": 1,
+      "naive_read_tokens": 1,
+      "compression_read": 0.0,
+      "grep_miss": true
+    },
+    {
+      "query": "load persist user settings config",
+      "gold": [
+        "ConfigManager"
+      ],
+      "kb_top5": [
+        "loadConfig",
+        "configRoutes",
+        "validateConfig",
+        "readGlobalConfig",
+        "writeGlobalConfig"
+      ],
+      "kb_tokens": 232,
+      "kb_hit@5": 1.0,
+      "naive_file_count": 0,
+      "naive_list_tokens": 1,
+      "naive_read_tokens": 1,
+      "compression_read": 0.0,
+      "grep_miss": true
+    },
+    {
+      "query": "debounce rapidly fired callback",
+      "gold": [
+        "debounce"
+      ],
+      "kb_top5": [
+        "debounce"
+      ],
+      "kb_tokens": 38,
+      "kb_hit@5": 1.0,
+      "naive_file_count": 0,
+      "naive_list_tokens": 1,
+      "naive_read_tokens": 1,
+      "compression_read": 0.03,
+      "grep_miss": true
+    },
+    {
+      "query": "throttle frequent event callbacks",
+      "gold": [
+        "throttle"
+      ],
+      "kb_top5": [
+        "throttle",
+        "onEvent"
+      ],
+      "kb_tokens": 81,
+      "kb_hit@5": 1.0,
+      "naive_file_count": 0,
+      "naive_list_tokens": 1,
+      "naive_read_tokens": 1,
+      "compression_read": 0.01,
+      "grep_miss": true
+    },
+    {
+      "query": "zustand global state store hook",
+      "gold": [
+        "useSystemStore"
+      ],
+      "kb_top5": [
+        "readGlobalConfig",
+        "writeGlobalConfig",
+        "SystemState"
+      ],
+      "kb_tokens": 137,
+      "kb_hit@5": 0.0,
+      "naive_file_count": 0,
+      "naive_list_tokens": 1,
+      "naive_read_tokens": 1,
+      "compression_read": 0.01,
+      "grep_miss": true
+    },
+    {
+      "query": "left navigation sidebar component",
+      "gold": [
+        "Sidebar"
+      ],
+      "kb_top5": [
+        "Sidebar"
+      ],
+      "kb_tokens": 43,
+      "kb_hit@5": 1.0,
+      "naive_file_count": 0,
+      "naive_list_tokens": 1,
+      "naive_read_tokens": 1,
+      "compression_read": 0.02,
+      "grep_miss": true
+    },
+    {
+      "query": "top header bar component",
+      "gold": [
+        "Header"
+      ],
+      "kb_top5": [
+        "Header"
+      ],
+      "kb_tokens": 42,
+      "kb_hit@5": 1.0,
+      "naive_file_count": 0,
+      "naive_list_tokens": 1,
+      "naive_read_tokens": 1,
+      "compression_read": 0.02,
+      "grep_miss": true
+    },
+    {
+      "query": "json config editor component textarea",
+      "gold": [
+        "JsonEditor"
+      ],
+      "kb_top5": [
+        "JsonEditor",
+        "handleSave",
+        "JsonEditorProps",
+        "configRoutes",
+        "validateConfig"
+      ],
+      "kb_tokens": 241,
+      "kb_hit@5": 1.0,
+      "naive_file_count": 0,
+      "naive_list_tokens": 1,
+      "naive_read_tokens": 1,
+      "compression_read": 0.0,
+      "grep_miss": true
+    },
+    {
+      "query": "agent list with live status component",
+      "gold": [
+        "AgentList"
+      ],
+      "kb_top5": [
+        "AgentList",
+        "setStatus",
+        "Agent"
+      ],
+      "kb_tokens": 120,
+      "kb_hit@5": 1.0,
+      "naive_file_count": 0,
+      "naive_list_tokens": 1,
+      "naive_read_tokens": 1,
+      "compression_read": 0.01,
+      "grep_miss": true
+    },
+    {
+      "query": "global error handler middleware fastify",
+      "gold": [
+        "errorHandler"
+      ],
+      "kb_top5": [
+        "errorHandler",
+        "readGlobalConfig",
+        "writeGlobalConfig"
+      ],
+      "kb_tokens": 140,
+      "kb_hit@5": 1.0,
+      "naive_file_count": 0,
+      "naive_list_tokens": 1,
+      "naive_read_tokens": 1,
+      "compression_read": 0.01,
+      "grep_miss": true
+    },
+    {
+      "query": "merge tailwind class names conditionally",
+      "gold": [
+        "cn"
+      ],
+      "kb_top5": [
+        "WebSocketManager",
+        "ConfigManager",
+        "LogParser",
+        "LogWatcher"
+      ],
+      "kb_tokens": 166,
+      "kb_hit@5": 0.0,
+      "naive_file_count": 0,
+      "naive_list_tokens": 1,
+      "naive_read_tokens": 1,
+      "compression_read": 0.01,
+      "grep_miss": true
+    },
+    {
+      "query": "main dashboard landing page next",
+      "gold": [
+        "DashboardPage"
+      ],
+      "kb_top5": [
+        "DashboardPage",
+        "AgentsPage",
+        "ConfigPage",
+        "loadConfig",
+        "handleSave"
+      ],
+      "kb_tokens": 221,
+      "kb_hit@5": 1.0,
+      "naive_file_count": 0,
+      "naive_list_tokens": 1,
+      "naive_read_tokens": 1,
+      "compression_read": 0.0,
+      "grep_miss": true
+    },
+    {
+      "query": "health check fastify route plugin",
+      "gold": [
+        "healthRoutes"
+      ],
+      "kb_top5": [
+        "healthRoutes"
+      ],
+      "kb_tokens": 39,
+      "kb_hit@5": 1.0,
+      "naive_file_count": 0,
+      "naive_list_tokens": 1,
+      "naive_read_tokens": 1,
+      "compression_read": 0.03,
+      "grep_miss": true
+    },
+    {
+      "query": "config crud fastify route plugin",
+      "gold": [
+        "configRoutes"
+      ],
+      "kb_top5": [
+        "configRoutes",
+        "validateConfig",
+        "readGlobalConfig",
+        "writeGlobalConfig",
+        "ConfigPage"
+      ],
+      "kb_tokens": 232,
+      "kb_hit@5": 1.0,
+      "naive_file_count": 0,
+      "naive_list_tokens": 1,
+      "naive_read_tokens": 1,
+      "compression_read": 0.0,
+      "grep_miss": true
+    },
+    {
+      "query": "管理长连接并广播消息的类",
+      "gold": [
+        "WebSocketManager"
+      ],
+      "kb_top5": [
+        ".last-run.json",
+        "API_BASE",
+        "API_PORT",
+        "Agent",
+        "AgentList"
+      ],
+      "kb_tokens": 177,
+      "kb_hit@5": 0.0,
+      "naive_file_count": 0,
+      "naive_list_tokens": 1,
+      "naive_read_tokens": 1,
+      "compression_read": 0.01,
+      "grep_miss": true
+    },
+    {
+      "query": "把原始日志文本解析成结构化数据",
+      "gold": [
+        "LogParser"
+      ],
+      "kb_top5": [
+        ".last-run.json",
+        "API_BASE",
+        "API_PORT",
+        "Agent",
+        "AgentList"
+      ],
+      "kb_tokens": 177,
+      "kb_hit@5": 0.0,
+      "naive_file_count": 0,
+      "naive_list_tokens": 1,
+      "naive_read_tokens": 1,
+      "compression_read": 0.01,
+      "grep_miss": true
+    },
+    {
+      "query": "监视日志文件并推送新增行",
+      "gold": [
+        "LogWatcher"
+      ],
+      "kb_top5": [
+        ".last-run.json",
+        "API_BASE",
+        "API_PORT",
+        "Agent",
+        "AgentList"
+      ],
+      "kb_tokens": 177,
+      "kb_hit@5": 0.0,
+      "naive_file_count": 0,
+      "naive_list_tokens": 1,
+      "naive_read_tokens": 1,
+      "compression_read": 0.01,
+      "grep_miss": true
+    },
+    {
+      "query": "加载和保存用户设置",
+      "gold": [
+        "ConfigManager"
+      ],
+      "kb_top5": [
+        ".last-run.json",
+        "API_BASE",
+        "API_PORT",
+        "Agent",
+        "AgentList"
+      ],
+      "kb_tokens": 177,
+      "kb_hit@5": 0.0,
+      "naive_file_count": 0,
+      "naive_list_tokens": 1,
+      "naive_read_tokens": 1,
+      "compression_read": 0.01,
+      "grep_miss": true
+    },
+    {
+      "query": "全局错误处理中间件",
+      "gold": [
+        "errorHandler"
+      ],
+      "kb_top5": [
+        ".last-run.json",
+        "API_BASE",
+        "API_PORT",
+        "Agent",
+        "AgentList"
+      ],
+      "kb_tokens": 177,
+      "kb_hit@5": 0.0,
+      "naive_file_count": 0,
+      "naive_list_tokens": 1,
+      "naive_read_tokens": 1,
+      "compression_read": 0.01,
+      "grep_miss": true
+    },
+    {
+      "query": "健康检查路由",
+      "gold": [
+        "healthRoutes"
+      ],
+      "kb_top5": [
+        ".last-run.json",
+        "API_BASE",
+        "API_PORT",
+        "Agent",
+        "AgentList"
+      ],
+      "kb_tokens": 177,
+      "kb_hit@5": 0.0,
+      "naive_file_count": 0,
+      "naive_list_tokens": 1,
+      "naive_read_tokens": 1,
+      "compression_read": 0.01,
+      "grep_miss": true
+    },
+    {
+      "query": "配置增删改查路由",
+      "gold": [
+        "configRoutes"
+      ],
+      "kb_top5": [
+        ".last-run.json",
+        "API_BASE",
+        "API_PORT",
+        "Agent",
+        "AgentList"
+      ],
+      "kb_tokens": 177,
+      "kb_hit@5": 0.0,
+      "naive_file_count": 0,
+      "naive_list_tokens": 1,
+      "naive_read_tokens": 1,
+      "compression_read": 0.01,
+      "grep_miss": true
+    },
+    {
+      "query": "建立长连接的 React 钩子",
+      "gold": [
+        "useWebSocket"
+      ],
+      "kb_top5": [],
+      "kb_tokens": 1,
+      "kb_hit@5": 0.0,
+      "naive_file_count": 0,
+      "naive_list_tokens": 1,
+      "naive_read_tokens": 1,
+      "compression_read": 1.0,
+      "grep_miss": true
+    },
+    {
+      "query": "长连接消息的数据结构定义",
+      "gold": [
+        "WebSocketMessage"
+      ],
+      "kb_top5": [
+        ".last-run.json",
+        "API_BASE",
+        "API_PORT",
+        "Agent",
+        "AgentList"
+      ],
+      "kb_tokens": 177,
+      "kb_hit@5": 0.0,
+      "naive_file_count": 0,
+      "naive_list_tokens": 1,
+      "naive_read_tokens": 1,
+      "compression_read": 0.01,
+      "grep_miss": true
+    },
+    {
+      "query": "防抖 短时间内多次触发只执行末次",
+      "gold": [
+        "debounce"
+      ],
+      "kb_top5": [
+        ".last-run.json",
+        "API_BASE",
+        "API_PORT",
+        "Agent",
+        "AgentList"
+      ],
+      "kb_tokens": 177,
+      "kb_hit@5": 0.0,
+      "naive_file_count": 0,
+      "naive_list_tokens": 1,
+      "naive_read_tokens": 1,
+      "compression_read": 0.01,
+      "grep_miss": true
+    },
+    {
+      "query": "节流 限定单位时间内最多执行一次",
+      "gold": [
+        "throttle"
+      ],
+      "kb_top5": [
+        ".last-run.json",
+        "API_BASE",
+        "API_PORT",
+        "Agent",
+        "AgentList"
+      ],
+      "kb_tokens": 177,
+      "kb_hit@5": 0.0,
+      "naive_file_count": 0,
+      "naive_list_tokens": 1,
+      "naive_read_tokens": 1,
+      "compression_read": 0.01,
+      "grep_miss": true
+    },
+    {
+      "query": "全局应用状态容器",
+      "gold": [
+        "useSystemStore"
+      ],
+      "kb_top5": [
+        ".last-run.json",
+        "API_BASE",
+        "API_PORT",
+        "Agent",
+        "AgentList"
+      ],
+      "kb_tokens": 177,
+      "kb_hit@5": 0.0,
+      "naive_file_count": 0,
+      "naive_list_tokens": 1,
+      "naive_read_tokens": 1,
+      "compression_read": 0.01,
+      "grep_miss": true
+    },
+    {
+      "query": "按条件合并样式类名",
+      "gold": [
+        "cn"
+      ],
+      "kb_top5": [
+        ".last-run.json",
+        "API_BASE",
+        "API_PORT",
+        "Agent",
+        "AgentList"
+      ],
+      "kb_tokens": 177,
+      "kb_hit@5": 0.0,
+      "naive_file_count": 0,
+      "naive_list_tokens": 1,
+      "naive_read_tokens": 1,
+      "compression_read": 0.01,
+      "grep_miss": true
+    },
+    {
+      "query": "左侧导航栏",
+      "gold": [
+        "Sidebar"
+      ],
+      "kb_top5": [
+        ".last-run.json",
+        "API_BASE",
+        "API_PORT",
+        "Agent",
+        "AgentList"
+      ],
+      "kb_tokens": 177,
+      "kb_hit@5": 0.0,
+      "naive_file_count": 0,
+      "naive_list_tokens": 1,
+      "naive_read_tokens": 1,
+      "compression_read": 0.01,
+      "grep_miss": true
+    },
+    {
+      "query": "顶部应用栏",
+      "gold": [
+        "Header"
+      ],
+      "kb_top5": [
+        ".last-run.json",
+        "API_BASE",
+        "API_PORT",
+        "Agent",
+        "AgentList"
+      ],
+      "kb_tokens": 177,
+      "kb_hit@5": 0.0,
+      "naive_file_count": 0,
+      "naive_list_tokens": 1,
+      "naive_read_tokens": 1,
+      "compression_read": 0.01,
+      "grep_miss": true
+    },
+    {
+      "query": "编辑原始配置文本的表单",
+      "gold": [
+        "JsonEditor"
+      ],
+      "kb_top5": [
+        ".last-run.json",
+        "API_BASE",
+        "API_PORT",
+        "Agent",
+        "AgentList"
+      ],
+      "kb_tokens": 177,
+      "kb_hit@5": 0.0,
+      "naive_file_count": 0,
+      "naive_list_tokens": 1,
+      "naive_read_tokens": 1,
+      "compression_read": 0.01,
+      "grep_miss": true
+    },
+    {
+      "query": "展示任务执行体列表与实时状态",
+      "gold": [
+        "AgentList"
+      ],
+      "kb_top5": [
+        ".last-run.json",
+        "API_BASE",
+        "API_PORT",
+        "Agent",
+        "AgentList"
+      ],
+      "kb_tokens": 177,
+      "kb_hit@5": 1.0,
+      "naive_file_count": 0,
+      "naive_list_tokens": 1,
+      "naive_read_tokens": 1,
+      "compression_read": 0.01,
+      "grep_miss": true
+    },
+    {
+      "query": "主控制台页面",
+      "gold": [
+        "DashboardPage"
+      ],
+      "kb_top5": [
+        ".last-run.json",
+        "API_BASE",
+        "API_PORT",
+        "Agent",
+        "AgentList"
+      ],
+      "kb_tokens": 177,
+      "kb_hit@5": 0.0,
+      "naive_file_count": 0,
+      "naive_list_tokens": 1,
+      "naive_read_tokens": 1,
+      "compression_read": 0.01,
+      "grep_miss": true
+    }
+  ],
+  "lockfile": {
+    "temperature": 0.0,
+    "llm_model": "",
+    "cmm_version": "0.8.1",
+    "graphify_version": "0.9.12",
+    "mem0_version": "",
+    "mempalace_version": "not-installed"
+  },
+  "archive_meta": {
+    "id": "20260713T154524Z-ab-value-stage0-claude-gui-stage0",
+    "ts": "20260713T154524Z",
+    "readable_ts": "2026-07-13 23:45:24 +0800",
+    "path": "eval\\reports\\archive\\20260713T154524Z-ab-value-stage0-claude-gui-stage0.json"
+  }
+}

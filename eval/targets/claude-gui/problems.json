@@ -18,7 +18,10 @@
       },
       "id": "claude-gui-websocket-connection-manager",
       "verdict": "review",
-      "reason": "gold `WebSocketManager` 同名多模块 modules=['server', 'websocket']（歧义，broad 判分会撞）; 实证检索到 gold（via codegraph=True/cmm=False）"
+      "reason": "gold `WebSocketManager` 同名多模块 modules=['server', 'websocket']（歧义，broad 判分会撞）; 实证检索到 gold（via codegraph=True/cmm=False）",
+      "tags": [
+        "en_query"
+      ]
     },
     {
       "type": "code_retrieval",
@@ -36,7 +39,10 @@
       },
       "id": "claude-gui-react-hook-for",
       "verdict": "pass",
-      "reason": "实证检索到 gold（via codegraph=False/cmm=True）"
+      "reason": "实证检索到 gold（via codegraph=False/cmm=True）",
+      "tags": [
+        "en_query"
+      ]
     },
     {
       "type": "code_retrieval",
@@ -54,7 +60,10 @@
       },
       "id": "claude-gui-websocket-message-payload",
       "verdict": "pass",
-      "reason": "实证检索到 gold（via codegraph=True/cmm=True）"
+      "reason": "实证检索到 gold（via codegraph=True/cmm=True）",
+      "tags": [
+        "en_query"
+      ]
     },
     {
       "type": "code_retrieval",
@@ -72,7 +81,10 @@
       },
       "id": "claude-gui-parse-raw-log",
       "verdict": "pass",
-      "reason": "实证检索到 gold（via codegraph=True/cmm=False）"
+      "reason": "实证检索到 gold（via codegraph=True/cmm=False）",
+      "tags": [
+        "en_query"
+      ]
     },
     {
       "type": "code_retrieval",
@@ -90,7 +102,10 @@
       },
       "id": "claude-gui-watch-log-file",
       "verdict": "pass",
-      "reason": "实证检索到 gold（via codegraph=True/cmm=False）"
+      "reason": "实证检索到 gold（via codegraph=True/cmm=False）",
+      "tags": [
+        "en_query"
+      ]
     },
     {
       "type": "code_retrieval",
@@ -108,7 +123,10 @@
       },
       "id": "claude-gui-load-persist-user",
       "verdict": "pass",
-      "reason": "实证检索到 gold（via codegraph=True/cmm=False）"
+      "reason": "实证检索到 gold（via codegraph=True/cmm=False）",
+      "tags": [
+        "en_query"
+      ]
     },
     {
       "type": "code_retrieval",
@@ -126,7 +144,10 @@
       },
       "id": "claude-gui-debounce-rapidly-fired",
       "verdict": "pass",
-      "reason": "实证检索到 gold（via codegraph=True/cmm=True）"
+      "reason": "实证检索到 gold（via codegraph=True/cmm=True）",
+      "tags": [
+        "en_query"
+      ]
     },
     {
       "type": "code_retrieval",
@@ -144,7 +165,10 @@
       },
       "id": "claude-gui-throttle-frequent-event",
       "verdict": "pass",
-      "reason": "实证检索到 gold（via codegraph=True/cmm=True）"
+      "reason": "实证检索到 gold（via codegraph=True/cmm=True）",
+      "tags": [
+        "en_query"
+      ]
     },
     {
       "type": "code_retrieval",
@@ -162,7 +186,10 @@
       },
       "id": "claude-gui-zustand-global-state",
       "verdict": "pass",
-      "reason": "NL query 词面未直接命中（正常，NL↔gold 匹配交 subagent 判）"
+      "reason": "NL query 词面未直接命中（正常，NL↔gold 匹配交 subagent 判）",
+      "tags": [
+        "en_query"
+      ]
     },
     {
       "type": "code_retrieval",
@@ -180,7 +207,10 @@
       },
       "id": "claude-gui-left-navigation-sidebar",
       "verdict": "pass",
-      "reason": "实证检索到 gold（via codegraph=True/cmm=True）"
+      "reason": "实证检索到 gold（via codegraph=True/cmm=True）",
+      "tags": [
+        "en_query"
+      ]
     },
     {
       "type": "code_retrieval",
@@ -198,7 +228,10 @@
       },
       "id": "claude-gui-top-header-bar",
       "verdict": "pass",
-      "reason": "实证检索到 gold（via codegraph=True/cmm=True）"
+      "reason": "实证检索到 gold（via codegraph=True/cmm=True）",
+      "tags": [
+        "en_query"
+      ]
     },
     {
       "type": "code_retrieval",
@@ -216,7 +249,10 @@
       },
       "id": "claude-gui-json-config-editor",
       "verdict": "pass",
-      "reason": "实证检索到 gold（via codegraph=True/cmm=True）"
+      "reason": "实证检索到 gold（via codegraph=True/cmm=True）",
+      "tags": [
+        "en_query"
+      ]
     },
     {
       "type": "code_retrieval",
@@ -234,7 +270,10 @@
       },
       "id": "claude-gui-agent-list-with",
       "verdict": "pass",
-      "reason": "实证检索到 gold（via codegraph=True/cmm=True）"
+      "reason": "实证检索到 gold（via codegraph=True/cmm=True）",
+      "tags": [
+        "en_query"
+      ]
     },
     {
       "type": "code_retrieval",
@@ -252,7 +291,10 @@
       },
       "id": "claude-gui-global-error-handler",
       "verdict": "pass",
-      "reason": "实证检索到 gold（via codegraph=True/cmm=True）"
+      "reason": "实证检索到 gold（via codegraph=True/cmm=True）",
+      "tags": [
+        "en_query"
+      ]
     },
     {
       "type": "code_retrieval",
@@ -270,7 +312,10 @@
       },
       "id": "claude-gui-merge-tailwind-class",
       "verdict": "pass",
-      "reason": "实证检索到 gold（via codegraph=True/cmm=False）"
+      "reason": "实证检索到 gold（via codegraph=True/cmm=False）",
+      "tags": [
+        "en_query"
+      ]
     },
     {
       "type": "code_retrieval",
@@ -288,7 +333,10 @@
       },
       "id": "claude-gui-main-dashboard-landing",
       "verdict": "pass",
-      "reason": "实证检索到 gold（via codegraph=True/cmm=True）"
+      "reason": "实证检索到 gold（via codegraph=True/cmm=True）",
+      "tags": [
+        "en_query"
+      ]
     },
     {
       "type": "code_retrieval",
@@ -306,7 +354,10 @@
       },
       "id": "claude-gui-health-check-fastify",
       "verdict": "pass",
-      "reason": "实证检索到 gold（via codegraph=True/cmm=True）"
+      "reason": "实证检索到 gold（via codegraph=True/cmm=True）",
+      "tags": [
+        "en_query"
+      ]
     },
     {
       "type": "code_retrieval",
@@ -324,7 +375,352 @@
       },
       "id": "claude-gui-config-crud-fastify",
       "verdict": "pass",
-      "reason": "实证检索到 gold（via codegraph=True/cmm=True）"
+      "reason": "实证检索到 gold（via codegraph=True/cmm=True）",
+      "tags": [
+        "en_query"
+      ]
+    },
+    {
+      "type": "code_retrieval",
+      "query": "管理长连接并广播消息的类",
+      "gold": {
+        "symbols": [
+          "WebSocketManager"
+        ]
+      },
+      "status": "accepted",
+      "tags": [
+        "zh_query"
+      ],
+      "provenance": {
+        "source_symbol": "WebSocketManager",
+        "kind": "class",
+        "file": "src/backend/websocket.mjs"
+      },
+      "id": "claude-gui-zh-ws-manager"
+    },
+    {
+      "type": "code_retrieval",
+      "query": "把原始日志文本解析成结构化数据",
+      "gold": {
+        "symbols": [
+          "LogParser"
+        ]
+      },
+      "status": "accepted",
+      "tags": [
+        "zh_query"
+      ],
+      "provenance": {
+        "source_symbol": "LogParser",
+        "kind": "class",
+        "file": "src/backend/services/log-parser.mjs"
+      },
+      "id": "claude-gui-zh-log-parser"
+    },
+    {
+      "type": "code_retrieval",
+      "query": "监视日志文件并推送新增行",
+      "gold": {
+        "symbols": [
+          "LogWatcher"
+        ]
+      },
+      "status": "accepted",
+      "tags": [
+        "zh_query"
+      ],
+      "provenance": {
+        "source_symbol": "LogWatcher",
+        "kind": "class",
+        "file": "src/backend/services/log-watcher.mjs"
+      },
+      "id": "claude-gui-zh-log-watcher"
+    },
+    {
+      "type": "code_retrieval",
+      "query": "加载和保存用户设置",
+      "gold": {
+        "symbols": [
+          "ConfigManager"
+        ]
+      },
+      "status": "accepted",
+      "tags": [
+        "zh_query"
+      ],
+      "provenance": {
+        "source_symbol": "ConfigManager",
+        "kind": "class",
+        "file": "src/backend/services/config-manager.mjs"
+      },
+      "id": "claude-gui-zh-config-mgr"
+    },
+    {
+      "type": "code_retrieval",
+      "query": "全局错误处理中间件",
+      "gold": {
+        "symbols": [
+          "errorHandler"
+        ]
+      },
+      "status": "accepted",
+      "tags": [
+        "zh_query"
+      ],
+      "provenance": {
+        "source_symbol": "errorHandler",
+        "kind": "function",
+        "file": "src/backend/middleware/error.mjs"
+      },
+      "id": "claude-gui-zh-error-mw"
+    },
+    {
+      "type": "code_retrieval",
+      "query": "健康检查路由",
+      "gold": {
+        "symbols": [
+          "healthRoutes"
+        ]
+      },
+      "status": "accepted",
+      "tags": [
+        "zh_query"
+      ],
+      "provenance": {
+        "source_symbol": "healthRoutes",
+        "kind": "function",
+        "file": "src/backend/routes/health.mjs"
+      },
+      "id": "claude-gui-zh-health-route"
+    },
+    {
+      "type": "code_retrieval",
+      "query": "配置增删改查路由",
+      "gold": {
+        "symbols": [
+          "configRoutes"
+        ]
+      },
+      "status": "accepted",
+      "tags": [
+        "zh_query"
+      ],
+      "provenance": {
+        "source_symbol": "configRoutes",
+        "kind": "function",
+        "file": "src/backend/routes/config.mjs"
+      },
+      "id": "claude-gui-zh-config-route"
+    },
+    {
+      "type": "code_retrieval",
+      "query": "建立长连接的 React 钩子",
+      "gold": {
+        "symbols": [
+          "useWebSocket"
+        ]
+      },
+      "status": "accepted",
+      "tags": [
+        "zh_query"
+      ],
+      "provenance": {
+        "source_symbol": "useWebSocket",
+        "kind": "function",
+        "file": "src/frontend/lib/use-websocket.ts"
+      },
+      "id": "claude-gui-zh-use-ws"
+    },
+    {
+      "type": "code_retrieval",
+      "query": "长连接消息的数据结构定义",
+      "gold": {
+        "symbols": [
+          "WebSocketMessage"
+        ]
+      },
+      "status": "accepted",
+      "tags": [
+        "zh_query"
+      ],
+      "provenance": {
+        "source_symbol": "WebSocketMessage",
+        "kind": "interface",
+        "file": "src/frontend/lib/use-websocket.ts"
+      },
+      "id": "claude-gui-zh-ws-msg"
+    },
+    {
+      "type": "code_retrieval",
+      "query": "防抖 短时间内多次触发只执行末次",
+      "gold": {
+        "symbols": [
+          "debounce"
+        ]
+      },
+      "status": "accepted",
+      "tags": [
+        "zh_query"
+      ],
+      "provenance": {
+        "source_symbol": "debounce",
+        "kind": "function",
+        "file": "src/frontend/lib/performance.ts"
+      },
+      "id": "claude-gui-zh-debounce"
+    },
+    {
+      "type": "code_retrieval",
+      "query": "节流 限定单位时间内最多执行一次",
+      "gold": {
+        "symbols": [
+          "throttle"
+        ]
+      },
+      "status": "accepted",
+      "tags": [
+        "zh_query"
+      ],
+      "provenance": {
+        "source_symbol": "throttle",
+        "kind": "function",
+        "file": "src/frontend/lib/performance.ts"
+      },
+      "id": "claude-gui-zh-throttle"
+    },
+    {
+      "type": "code_retrieval",
+      "query": "全局应用状态容器",
+      "gold": {
+        "symbols": [
+          "useSystemStore"
+        ]
+      },
+      "status": "accepted",
+      "tags": [
+        "zh_query"
+      ],
+      "provenance": {
+        "source_symbol": "useSystemStore",
+        "kind": "const",
+        "file": "src/frontend/lib/stores.ts"
+      },
+      "id": "claude-gui-zh-system-store"
+    },
+    {
+      "type": "code_retrieval",
+      "query": "按条件合并样式类名",
+      "gold": {
+        "symbols": [
+          "cn"
+        ]
+      },
+      "status": "accepted",
+      "tags": [
+        "zh_query"
+      ],
+      "provenance": {
+        "source_symbol": "cn",
+        "kind": "function",
+        "file": "src/frontend/lib/utils.ts"
+      },
+      "id": "claude-gui-zh-cn"
+    },
+    {
+      "type": "code_retrieval",
+      "query": "左侧导航栏",
+      "gold": {
+        "symbols": [
+          "Sidebar"
+        ]
+      },
+      "status": "accepted",
+      "tags": [
+        "zh_query"
+      ],
+      "provenance": {
+        "source_symbol": "Sidebar",
+        "kind": "function",
+        "file": "src/frontend/components/layout/sidebar.tsx"
+      },
+      "id": "claude-gui-zh-sidebar"
+    },
+    {
+      "type": "code_retrieval",
+      "query": "顶部应用栏",
+      "gold": {
+        "symbols": [
+          "Header"
+        ]
+      },
+      "status": "accepted",
+      "tags": [
+        "zh_query"
+      ],
+      "provenance": {
+        "source_symbol": "Header",
+        "kind": "function",
+        "file": "src/frontend/components/layout/header.tsx"
+      },
+      "id": "claude-gui-zh-header"
+    },
+    {
+      "type": "code_retrieval",
+      "query": "编辑原始配置文本的表单",
+      "gold": {
+        "symbols": [
+          "JsonEditor"
+        ]
+      },
+      "status": "accepted",
+      "tags": [
+        "zh_query"
+      ],
+      "provenance": {
+        "source_symbol": "JsonEditor",
+        "kind": "function",
+        "file": "src/frontend/components/config-editor/json-editor.tsx"
+      },
+      "id": "claude-gui-zh-json-editor"
+    },
+    {
+      "type": "code_retrieval",
+      "query": "展示任务执行体列表与实时状态",
+      "gold": {
+        "symbols": [
+          "AgentList"
+        ]
+      },
+      "status": "accepted",
+      "tags": [
+        "zh_query"
+      ],
+      "provenance": {
+        "source_symbol": "AgentList",
+        "kind": "function",
+        "file": "src/frontend/components/agent-monitor/agent-list.tsx"
+      },
+      "id": "claude-gui-zh-agent-list"
+    },
+    {
+      "type": "code_retrieval",
+      "query": "主控制台页面",
+      "gold": {
+        "symbols": [
+          "DashboardPage"
+        ]
+      },
+      "status": "accepted",
+      "tags": [
+        "zh_query"
+      ],
+      "provenance": {
+        "source_symbol": "DashboardPage",
+        "kind": "function",
+        "file": "src/frontend/app/dashboard/page.tsx"
+      },
+      "id": "claude-gui-zh-dashboard"
     }
   ]
 }

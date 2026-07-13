@@ -1156,13 +1156,13 @@
       "path": "eval/reports/archive/20260713T113801Z-mempalace-engineer_demo.json"
     },
     {
-      "id": "20260713T142708Z-cmm.bm25-claude-gui-bm25",
-      "ts": "20260713T142708Z",
-      "readable_ts": "2026-07-13 22:27:08 +0800",
+      "id": "20260713T153839Z-cmm.bm25-claude-gui-bm25",
+      "ts": "20260713T153839Z",
+      "readable_ts": "2026-07-13 23:38:39 +0800",
       "subject": "cmm.bm25",
       "variant": "claude-gui-bm25",
       "target": "claude-gui",
-      "n": 18,
+      "n": 36,
       "lockfile": {
         "temperature": 0.0,
         "llm_model": "",
@@ -1172,25 +1172,25 @@
         "mempalace_version": "not-installed"
       },
       "aggregate": {
-        "mean_recall@1": 0.556,
-        "mean_broad_recall@1": 0.722,
-        "mean_recall@3": 0.556,
-        "mean_broad_recall@3": 0.778,
-        "mean_recall@5": 0.667,
-        "mean_broad_recall@5": 0.889,
-        "mean_recall@10": 0.833,
-        "mean_broad_recall@10": 0.889
+        "mean_recall@1": 0.278,
+        "mean_broad_recall@1": 0.361,
+        "mean_recall@3": 0.278,
+        "mean_broad_recall@3": 0.389,
+        "mean_recall@5": 0.361,
+        "mean_broad_recall@5": 0.472,
+        "mean_recall@10": 0.444,
+        "mean_broad_recall@10": 0.472
       },
-      "path": "eval\\reports\\archive\\20260713T142708Z-cmm.bm25-claude-gui-bm25.json"
+      "path": "eval\\reports\\archive\\20260713T153839Z-cmm.bm25-claude-gui-bm25.json"
     },
     {
-      "id": "20260713T142833Z-cmm.grep-claude-gui-grep",
-      "ts": "20260713T142833Z",
-      "readable_ts": "2026-07-13 22:28:33 +0800",
+      "id": "20260713T154338Z-cmm.grep-claude-gui-grep",
+      "ts": "20260713T154338Z",
+      "readable_ts": "2026-07-13 23:43:38 +0800",
       "subject": "cmm.grep",
       "variant": "claude-gui-grep",
       "target": "claude-gui",
-      "n": 18,
+      "n": 36,
       "lockfile": {
         "temperature": 0.0,
         "llm_model": "",
@@ -1209,16 +1209,16 @@
         "mean_recall@10": 0.0,
         "mean_broad_recall@10": 0.0
       },
-      "path": "eval\\reports\\archive\\20260713T142833Z-cmm.grep-claude-gui-grep.json"
+      "path": "eval\\reports\\archive\\20260713T154338Z-cmm.grep-claude-gui-grep.json"
     },
     {
-      "id": "20260713T150241Z-ab-value-stage0-claude-gui-stage0",
-      "ts": "20260713T150241Z",
-      "readable_ts": "2026-07-13 23:02:41 +0800",
+      "id": "20260713T154524Z-ab-value-stage0-claude-gui-stage0",
+      "ts": "20260713T154524Z",
+      "readable_ts": "2026-07-13 23:45:24 +0800",
       "subject": "ab-value-stage0",
       "variant": "claude-gui-stage0",
       "target": "claude-gui",
-      "n": 18,
+      "n": 36,
       "lockfile": {
         "temperature": 0.0,
         "llm_model": "",
@@ -1228,16 +1228,16 @@
         "mempalace_version": "not-installed"
       },
       "aggregate": {
-        "n": 18,
-        "mean_kb_tokens": 155.3,
+        "n": 36,
+        "mean_kb_tokens": 161.2,
         "mean_naive_read_tokens": 1,
         "mean_compression_read": 0,
-        "mean_kb_hit@5": 0.889,
-        "grep_miss_count": 18,
+        "mean_kb_hit@5": 0.472,
+        "grep_miss_count": 36,
         "naive_max_files": 3,
         "naive_per_file_cap_chars": 4000
       },
-      "path": "eval\\reports\\archive\\20260713T150241Z-ab-value-stage0-claude-gui-stage0.json"
+      "path": "eval\\reports\\archive\\20260713T154524Z-ab-value-stage0-claude-gui-stage0.json"
     }
   ]
 }
