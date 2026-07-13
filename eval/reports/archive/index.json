@@ -1210,6 +1210,34 @@
         "mean_broad_recall@10": 0.0
       },
       "path": "eval\\reports\\archive\\20260713T142833Z-cmm.grep-claude-gui-grep.json"
+    },
+    {
+      "id": "20260713T150241Z-ab-value-stage0-claude-gui-stage0",
+      "ts": "20260713T150241Z",
+      "readable_ts": "2026-07-13 23:02:41 +0800",
+      "subject": "ab-value-stage0",
+      "variant": "claude-gui-stage0",
+      "target": "claude-gui",
+      "n": 18,
+      "lockfile": {
+        "temperature": 0.0,
+        "llm_model": "",
+        "cmm_version": "0.8.1",
+        "graphify_version": "0.9.12",
+        "mem0_version": "",
+        "mempalace_version": "not-installed"
+      },
+      "aggregate": {
+        "n": 18,
+        "mean_kb_tokens": 155.3,
+        "mean_naive_read_tokens": 1,
+        "mean_compression_read": 0,
+        "mean_kb_hit@5": 0.889,
+        "grep_miss_count": 18,
+        "naive_max_files": 3,
+        "naive_per_file_cap_chars": 4000
+      },
+      "path": "eval\\reports\\archive\\20260713T150241Z-ab-value-stage0-claude-gui-stage0.json"
     }
   ]
 }
