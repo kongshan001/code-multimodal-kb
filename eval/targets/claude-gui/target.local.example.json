@@ -1,0 +1,6 @@
+{
+  "code": {
+    "codegraph_root": "/your/path/to/claude_gui",
+    "cmm_project": "your-cmm-project-name"
+  }
+}

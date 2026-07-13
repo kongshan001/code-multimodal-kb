@@ -1,0 +1,12 @@
+{
+  "id": "claude-gui",
+  "language": "TypeScript",
+  "subjects": [
+    "code_retrieval"
+  ],
+  "code": {
+    "codegraph_root": "D:/claude_code_proj/claude_gui",
+    "cmm_project": "D-claude_code_proj-claude_gui"
+  },
+  "notes": "claude-gui: Next.js + TypeScript GUI app（src/{backend,frontend}，~19 源文件），测代码 KB 在中小型 TS 项目上的检索质量"
+}

@@ -1154,6 +1154,62 @@
         "injection_cap_memory_md": 20
       },
       "path": "eval/reports/archive/20260713T113801Z-mempalace-engineer_demo.json"
+    },
+    {
+      "id": "20260713T142708Z-cmm.bm25-claude-gui-bm25",
+      "ts": "20260713T142708Z",
+      "readable_ts": "2026-07-13 22:27:08 +0800",
+      "subject": "cmm.bm25",
+      "variant": "claude-gui-bm25",
+      "target": "claude-gui",
+      "n": 18,
+      "lockfile": {
+        "temperature": 0.0,
+        "llm_model": "",
+        "cmm_version": "0.8.1",
+        "graphify_version": "0.9.12",
+        "mem0_version": "",
+        "mempalace_version": "not-installed"
+      },
+      "aggregate": {
+        "mean_recall@1": 0.556,
+        "mean_broad_recall@1": 0.722,
+        "mean_recall@3": 0.556,
+        "mean_broad_recall@3": 0.778,
+        "mean_recall@5": 0.667,
+        "mean_broad_recall@5": 0.889,
+        "mean_recall@10": 0.833,
+        "mean_broad_recall@10": 0.889
+      },
+      "path": "eval\\reports\\archive\\20260713T142708Z-cmm.bm25-claude-gui-bm25.json"
+    },
+    {
+      "id": "20260713T142833Z-cmm.grep-claude-gui-grep",
+      "ts": "20260713T142833Z",
+      "readable_ts": "2026-07-13 22:28:33 +0800",
+      "subject": "cmm.grep",
+      "variant": "claude-gui-grep",
+      "target": "claude-gui",
+      "n": 18,
+      "lockfile": {
+        "temperature": 0.0,
+        "llm_model": "",
+        "cmm_version": "0.8.1",
+        "graphify_version": "0.9.12",
+        "mem0_version": "",
+        "mempalace_version": "not-installed"
+      },
+      "aggregate": {
+        "mean_recall@1": 0.0,
+        "mean_broad_recall@1": 0.0,
+        "mean_recall@3": 0.0,
+        "mean_broad_recall@3": 0.0,
+        "mean_recall@5": 0.0,
+        "mean_broad_recall@5": 0.0,
+        "mean_recall@10": 0.0,
+        "mean_broad_recall@10": 0.0
+      },
+      "path": "eval\\reports\\archive\\20260713T142833Z-cmm.grep-claude-gui-grep.json"
     }
   ]
 }
