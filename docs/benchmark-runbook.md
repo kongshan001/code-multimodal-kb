@@ -22,19 +22,21 @@
 
 建议加 alias：`alias bench='python -m eval.cli'`。下文用 `bench` 代指。
 
+> **题目与目标工程绑定 = `eval/targets/<id>/`**（`target.json` 描述工程 + `problems.json` 存题）。`--target` 接 **target id**（如 `godot-core`），不是旧的金模块名。对接自己的工程见 [bench-dock-target skill](../.claude/skills/bench-dock-target/SKILL.md) 或各 target 的 README。
+
 ### `bench run <subject>` —— 跑评测并归档
 
 ```bash
-# 检索层（测工具召回质量）
-bench run code  --target godot --method bm25   # 代码侧（cmm）：grep/bm25/semantic
-bench run doc                                   # 文档侧（graphify query，BFS）
-bench run cross                                 # 跨工具 anchoring（文档概念→代码）
-bench run memory                                # 记忆侧（MemPalace 召回 hit@k + D1 路由准确率）
-bench run quality                               # 文档答案质量（凭据门控，可能 429）
+# 检索层（测工具召回质量）—— --target = target id
+bench run code   --target godot-core --method bm25   # 代码侧（cmm）：grep/bm25/semantic
+bench run doc    --target godot-docs                  # 文档侧（graphify query）
+bench run cross  --target godot-cross                 # 跨工具 anchoring（文档概念→代码）
+bench run memory --target engineer-demo-memory        # 记忆侧（MemPalace 召回 hit@k + D1 路由）
+bench run quality                                    # 文档答案质量（凭据门控，可能 429）
 
 # agent 层（测"有 vs 无 KB"端到端价值）
-bench run ab          --target godot            # Stage 0 token 代理（零 LLM：KB vs grep 压缩比）
-bench run ab-agent    --target godot --runs 1 [--arms baseline,kb,doc,codegraph]  # Stage 1 真跑 agent
+bench run ab       --target godot-core                # Stage 0 token 代理（零 LLM：KB vs grep 压缩比）
+bench run ab-agent --target godot-core --runs 1 [--arms baseline,kb,doc,codegraph]  # Stage 1 真跑 agent
 ```
 
 `ab` / `ab-agent` 用 `ab_tools.py` 注册表（接新 KB = 写 executor + register + 挂臂，loop/判分零改）。
@@ -59,21 +61,22 @@ bench run ab-agent    --target godot --runs 1 [--arms baseline,kb,doc,codegraph]
 
 仅 `aggregate` 维度 diff（metric / left / right / delta）。用于横向对比"换 method / 换 gold / 调 prompt"前后的指标变化。
 
-### 扩题（`goldgen`）—— agent 挖题 + 两层自动验收 + 人审
+### 扩题（`goldgen`）—— agent 挖题 + 实证验收 + 人审
 
-低成本扩 gold 集，**人审前过两层自动 vet**（4 阶段）：
+候选**直接进 `targets/<id>/problems.json`（`status: pending` + provenance）**——无 pending.md、无 fold。人审 = 前端逐条 approve。
 
 ```
-1. bench goldgen <seeds> --target X [--dir D] [--n 20]   # codegraph 枚举符号 + LLM 拟 NL 题（gold=符号，构造即正确）
-2. bench goldgen-verify --target X                        # 实证验收（零 LLM）：同名歧义 + 检索可达
-3. 独立 subagent 验收（主 agent spawn）                    # 判 NL query↔gold 语义匹配（实证做不到）
-4. 人审（删/改 eval/reports/gold_pending_<X>.md）→ bench goldgen-fold --target X
+1. bench goldgen <seeds> --target <id> [--dir D] [--n 20]   # codegraph 枚举符号 + LLM 拟 NL 题
+                                                            # （gold=符号，构造即正确）→ 写 pending 候选进 problems.json
+2. bench goldgen-verify --target <id>                        # 实证验收（零 LLM）：在 pending 候选原地标 verdict（同名歧义）
+3. （主 agent spawn 独立 subagent 做语义验收，判 NL query↔gold 匹配）
+4. 人审：bench web → Gold lab → pending 候选逐条 ✓ approve（status→accepted）/ 🗑 删
 ```
 
 - **scope** = 搜索 seed 词（Vector/color/...）指一片代码；`--dir core/math` 从文件名派生 seed 兜底
-- **两层互补**：实证层抓歧义 gold（grounded），subagent 抓语义错配（如 query 说"数学向量"但 gold=Vector 动态数组）。
-  实测 subagent 抓到实证漏的（前提事实错 / 概念错配）
-- gold 来自 codegraph 真实符号 = 构造即正确，**零 LLM judge**（绕开循环）
+- gold 来自 codegraph 真实符号 = 构造即正确，**零 LLM judge**（绕开循环）；LLM 只拟 query 措辞
+- 手动增/改/删题也走前端 Gold lab 编辑器（schema 校验）或直接编 `problems.json`（loader 校验）
+- 改完 `git commit`——前端不自动提交（顶部"待提交"黄条会提示）
 
 ## 3. 读报告
 
@@ -148,6 +151,6 @@ python -m pytest eval/tests/ -v
 
 散装 `python -m eval.run_code_baseline --target godot --method bm25` 仍可用（直接 `print` JSON 到 stdout，**不归档**）。新用法一律走 `bench`。
 
-## 8. 前端预留
+## 8. 前端
 
-报告 = 结构化 JSON（统一 schema），`archive/index.json` 是清单。前端（后续 change）可直接消费这两个数据源，无需解析 stdout。本变更**不**引入 HTTP / UI。
+报告 = 结构化 JSON（统一 schema），`archive/index.json` 是清单。前端 Measurement Lab 直接消费这俩数据源（不解析 stdout）。起前端：`bench web`（→ http://127.0.0.1:8765），含 Dashboard / Run console / Reports / Compare / Setup / Onboarding / **Gold lab 题库编辑器**（读写 `problems.json`）。详见 `docs/frontend-guide.md`。

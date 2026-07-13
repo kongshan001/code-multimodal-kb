@@ -73,7 +73,7 @@ measurement lab → http://127.0.0.1:8765
 **从浏览器跑 benchmark**，不用开终端。
 
 1. 选 **subject**（code/memory/ab/doc-ragas）
-2. 填 **target**（gold 模块名，如 godot）
+2. 填 **target**（target id，如 godot-core / engineer-demo-memory）
 3. 选 **method**（bm25/grep/semantic，仅 code 需要）
 4. 点 **"跑 ▸"**
 5. 等几十秒（后端 subprocess 调 `eval.cli`），结果显示在下方
@@ -141,23 +141,30 @@ measurement lab → http://127.0.0.1:8765
 
 每步：填路径 → 点"跑"→ 看输出（exit code + stdout 摘要）。可跳过/重跑。
 
-### 3.8 Gold lab · 扩题（评测段）
+### 3.8 Gold lab · 题库编辑器（评测段）
 
-**用 agent 自动给你的代码造测试题**——4 步。
+**直接在浏览器读写题库** `eval/targets/<id>/problems.json`——列表 / 新增 / 改 / 删 / approve pending，不碰命令行、不手编文件。
 
+顶部先选 **target**（下拉，列全部 target）。然后两条路：
+
+**自动造题**（code_retrieval target）：
 ```
-① 挖+拟题    填 seed 词（如 "Vector color Node"）+ target 名 → 点"挖+拟题"
-              → codegraph 枚举真实符号 + GLM 拟 NL 问题 → 写 gold_pending 文件
-
-② 实证验收   点"实证验收" → codegraph 查同名歧义（标 verdict）
-
-③ 看候选人审  点"看候选" → 显示 gold_pending 内容（每条 query+gold+verdict）
-              → 人审：好的留、差的在文件里删（eval/reports/gold_pending_<target>.md）
-
-④ fold 入库  点"fold 入库" → 审核后的题入库 eval/gold_<target>.py
+① goldgen     填 seed 词（如 "Vector color Node"）→ codegraph 枚举真实符号 + GLM 拟 NL 题
+              （gold = 符号，构造即正确，零 LLM judge）→ 候选以 status: pending 进表
+② 实证验收    codegraph 查同名歧义（零 LLM），在 pending 候选原地标 verdict
+✓ approve     逐条审：好的点 ✓ approve（status→accepted），差的点 🗑 删
 ```
 
-**gold 构造即正确**（来自真实符号，零 LLM judge）；LLM 只拟措辞，错了人审。
+**手动增/改/删**：右上 "+ 新增题目" 或行尾 ✎ → 表单。**type 下拉决定 gold 字段**：
+- `code_retrieval` → symbols（逗号分）
+- `doc_retrieval` → node_labels
+- `cross_anchor` → doc_node_label / cmm_identifier / code_file
+- `memory_recall` → source_files
+- `memory_routing` → layer（objective/procedural/episodic/subjective）+ signal
+
+行尾 🗑 删除（带确认）。
+
+**前端不自动 git commit**——任何写操作后顶部亮"待提交"黄条，提示你 `git add eval/targets/ && git commit && git push`（带"已提交，隐藏"按钮）。后端 schema 校验：type 非法 / gold 形状不匹配 / query 空 → 400 + 中文错误，文件不动。
 
 ---
 
@@ -184,9 +191,9 @@ measurement lab → http://127.0.0.1:8765
 
 ### D. "我想扩测试题"
 
-1. Gold lab → 填 seed 词（指一片代码区域，如 "physics collision"）→ 挖拟题
-2. 实证验收 → 看候选 → 人审（删差的）
-3. fold 入库 → 新题进 gold 文件
+1. Gold lab → 选 target → 填 seed 词（指一片代码区域，如 "physics collision"）→ ① goldgen
+2. ② 实证验收 → pending 候选逐条 ✓ approve（好的）/ 🗑 删（差的）
+3. 改完记得 `git commit`（前端顶部"待提交"黄条会提示）
 
 ---
 
@@ -228,6 +235,6 @@ measurement lab → http://127.0.0.1:8765
 | Compare | `bench compare <id1> <id2>` |
 | Setup | `./setup.sh python/tools/creds` |
 | Onboarding | `codegraph init` / `graphify build` / `mempalace mine` |
-| Gold lab | `bench goldgen` / `goldgen-verify` / `goldgen-fold` |
+| Gold lab | `bench goldgen` / `goldgen-verify` + 题库 CRUD（`/api/gold/*`，前端编辑器）|
 
 **前端和 CLI 完全等价**——同一后端，两种入口。自动化用 CLI，日常用前端。

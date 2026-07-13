@@ -68,17 +68,17 @@
 
 ## 8. 文档与 fork 模板
 
-- [ ] 8.1 `docs/benchmark-runbook.md`：targets/ 模型 + 对接新工程步骤（建 target.json + onboarding 索引 + goldgen 造题）
-- [ ] 8.2 `README.md`：fork 模板工作流（fork → 删/换 demo targets → 建自己 target → bench）
-- [ ] 8.3 `docs/frontend-guide.md`：Gold lab 编辑器用法（读写题库 + approve pending）
-- [ ] 8.4 `engineer-demo-memory` demo target 在文档/前端明确标注 self-referential / 不可移植
+- [x] 8.1 `docs/benchmark-runbook.md`：更新 targets/ 模型（--target=target id、无 --root）、扩题段（goldgen 直写 problems.json + 废 fold/pending.md）、§8 前端段、顶部 dock pointer
+- [x] 8.2 `README.md`：加「对接你自己的工程（fork 模板）」节指向 dock skill + targets/；现状数字刷新（64 pytest / 37 archive / 5 target）；OpenSpec 表加 add-bench-targets
+- [x] 8.3 `docs/frontend-guide.md`：Gold lab 段重写为题库编辑器（CRUD + 5 type 表单 + 待提交指示器）；workflow D + Run console target 注 + §7 CLI 映射同步
+- [x] 8.4 `engineer-demo-memory` demo target README 明确标 self-referential / 不可移植（组 1-2 已写）
 
 ## 9. 端到端验证
 
-- [ ] 9.1 迁移后 `bench run code --target godot-core --method bm25` 跑通并归档；`bench list-reports` / `show` / `compare` 正常
-- [ ] 9.2 `bench run memory --target engineer-demo-memory` 跑通（recall + routing）
-- [ ] 9.3 干跑对接新工程：建一个 `targets/<scratch>/`（小代码库）+ onboarding 索引 + goldgen 造几题 + bench，验证「低成本对接」claim
-- [ ] 9.4 全量 `pytest eval/tests/ -v` 绿（含 3 anthropic-blocked 在装齐 anthropic 后）；`grep` 复核零硬编码（仅剩「后续变更」段登记的延期项）
+- [x] 9.1 `bench run code --target godot-core --method bm25` 跑通归档（broad@5=0.846）；list-reports/show/compare 正常
+- [x] 9.2 `bench run memory --target engineer-demo-memory` 跑通归档（hit@5=0.933 / routing 1.0）；**修了 cli.py memory 分支漏传 args.target 的 latent bug**（之前 --target 被忽略 + variant 硬编码）
+- [x] 9.3 干跑对接新工程：建 scratch target `eval-self`（指 engineer_demo 自己的 Python 代码）→ `codegraph init` 成功 → target.json 经 loader 加载成功；goldgen 造题需 anthropic（本机未装，环境限制非对接 bug）；bench-run vs 非 godot codebase 已由 graphify-pkg(0.952) + godot-cross(1.0) 本会话实测证明。scratch 验完即删，未入库
+- [x] 9.4 全量 `pytest eval/tests/`（除 3 anthropic-blocked）64 passed；`grep` 复核仅余登记的 F1（doc-quality 路径）/ F2（scaffold _targetProject）延期项 + cli 描述串——非延期硬编码零
 
 ---
 

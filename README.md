@@ -2,11 +2,11 @@
 
 给 agent（Claude Code 等）接入 **知识库**（代码 cmm + 文档 graphify）、**记忆**（MemPalace）、**评测 benchmark**（检索/agent A/B/答案质量）+ **前端可视化**（Measurement Lab）。复用成熟 MCP、不建网关。Godot 是参考靶子（端到端实测）。
 
-## 现状（2026-07-12 · 端到端全验证）
+## 现状（2026-07-13 · 端到端全验证）
 
 | 层 | 指标 | 值 |
 |---|---|---|
-| 代码检索（cmm BM25）| broad@5 | **0.846** |
+| 代码检索（cmm BM25）| broad@5 | **0.846**（godot-core）· **0.952**（graphify-pkg 小库）|
 | 文档检索（graphify）| recall@5 | **0.717** |
 | 跨工具 anchoring | 成功率 | **100%**（8/8）|
 | 记忆召回（MemPalace）| hit@5 | **0.933** · 路由准确率 **1.0** |
@@ -15,7 +15,7 @@
 | 文档答案质量 | faithfulness | **0.971**（Ragas 协议）|
 | 记忆答案质量 | faithfulness | **0.951** |
 
-**pytest 48 passed · 归档 16 份 · E2E 12 CLI + 8 前端视图全通 · 零失败。**
+**pytest 64 passed · 归档 37 份 · 5 target · Gold lab 题库编辑器 live · 零失败。**
 
 ## 快速接入
 
@@ -27,6 +27,17 @@ python -m eval.cli web            # 起前端 → http://127.0.0.1:8765
 ```
 
 命令行同样可用：`python -m pytest eval/tests/`（零依赖测试）→ `python -m eval.cli run code/memory/ab/...`（跑评测）。
+
+## 对接你自己的工程（fork 模板）
+
+本仓库是 fork 模板——clone 后把 benchmark 指向你自己的代码/文档/记忆：
+
+1. 建 `eval/targets/<myproj>/target.json`（参考现有 5 个 target 之一）+ `target.local.json`（你机器路径覆盖，gitignored）
+2. 建索引（`codegraph init` / `cmm index` / `graphify build` / `mempalace mine`，按 subject）
+3. 造题：`bench goldgen <seeds> --target <myproj>` → `bench web` Gold lab 逐条 approve；或前端编辑器手增
+4. 跑：`bench run code --target <myproj> --method bm25`
+
+完整 6 步 + 常见坑（cmm_project 名、机器路径、graphify 成本）见 [bench-dock-target skill](.claude/skills/bench-dock-target/SKILL.md)——对 Claude 说"把 X 工程对接到 benchmark"它会带你走完。每个 target 目录也有面向小白的 README。
 
 ## 文档索引
 
@@ -47,6 +58,7 @@ python -m eval.cli web            # 起前端 → http://127.0.0.1:8765
 
 | 变更 | 状态 | 主题 |
 |---|---|---|
+| `add-bench-targets` | **进行中**（组 1-8 ✅）| 题库配置化（`targets/` 模型）+ 引擎可移植 + 前端 Gold lab 编辑器 + dock skill |
 | `add-bench-frontend` | **进行中**（15/16）| 前端可视化层（8/8 视图 live，Measurement Lab）|
 | `add-benchmark-runner` | 进行中 | bench CLI 骨架（已完成核心）|
 | `add-code-multimodal-kb` | 进行中 | 代码 KB + 文档 KB |

@@ -48,8 +48,8 @@ def _cmd_run(args) -> int:
         variant = "godot-render"
     elif args.subject == "memory":
         from eval.run_memory_baseline import run as run_mem  # MemPalace 召回 + D1 路由
-        report = run_mem()
-        variant = "engineer_demo"
+        report = run_mem(args.target)
+        variant = args.target
     elif args.subject == "ab":
         from eval.run_ab_value import run as run_ab  # agent A/B Stage 0 token 代理
         report = run_ab(args.target)
