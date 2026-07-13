@@ -34,3 +34,6 @@ entities.json
 graphify-out/
 VERIFICATION-REPORT.md
 *.local.md
+vendor/*.tar.gz
+vendor/*.zip
+vendor/codebase-memory-mcp

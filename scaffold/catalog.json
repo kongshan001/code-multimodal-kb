@@ -106,7 +106,7 @@
           "cost": null,
           "desc": "代码符号/调用图检索（agent 查代码不用读文件）",
           "value": "检索 broad@5=0.846（+22% vs grep）· 省 58% context token · 毫秒级",
-          "guide": "cmm 建索引后 agent 用 search_graph（BM25 主路）查代码——返符号+位置，不用读整个文件。trace_path 追调用链。get_architecture 看全局。",
+          "guide": "cmm binary 随 vendor/ 分发（无需下载）。建索引后 agent 用 search_graph（BM25 主路）查代码——返符号+位置。",
           "docs": [
             {
               "title": "cmm 部署 runbook",
@@ -185,9 +185,9 @@
           "cost": null,
           "desc": "压缩工具输出省 context token",
           "value": "压缩大工具输出为摘要 · 省 in-flight context token",
-          "guide": "headroom_compress 把大输出压成摘要（可 retrieve 原文）。长会话调了很多工具、context 撑满时最有用。",
+          "guide": "headroom-ai[all] via uv tool（需 py3.12）。压缩大工具输出为摘要（可 retrieve 原文）。长会话调了很多工具、context 撑满时最有用。",
           "docs": [],
-          "source": "https://github.com/mgks/headroom"
+          "source": "https://github.com/headroomlabs-ai/headroom"
         }
       ]
     },

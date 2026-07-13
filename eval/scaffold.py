@@ -79,11 +79,18 @@ _INSTALL_CMDS = {
         "install": "uv tool install --python 3.11 mempalace",
         "uninstall": "uv tool uninstall mempalace",
     },
+    "headroom": {
+        "install": "uv tool install --python 3.12 'headroom-ai[all]'",
+        "uninstall": "uv tool uninstall headroom-ai",
+    },
+    # cmm: binary 从 vendor/ 拷贝
+    "cmm": {
+        "install": "_cmm_install",
+        "uninstall": "rm -f ~/.local/bin/codebase-memory-mcp",
+    },
     # 注：以下工具不在 _INSTALL_CMDS（无可靠自动安装源）：
     # karpathy-guidelines: 无 git repo（手动创建的 skill）
     # deep-research: Claude Code 内置，无独立 repo
-    # cmm: 268MB binary，需手动下载（见 deployment-runbook §A）
-    # headroom: install.sh URL 已失效
 }
 
 
@@ -101,8 +108,15 @@ def _plugin_toggle(plugin_key: str, enable: bool) -> tuple[int, str]:
 
 
 def _cmm_install() -> tuple[int, str]:
-    """cmm 是 binary download。"""
-    return 1, "cmm 需从 GitHub releases 手动下载 binary。见 docs/deployment-runbook.md §A"
+    """cmm binary 从 vendor/ 拷贝（已随仓库分发）。"""
+    vendor_bin = REPO / "vendor" / "codebase-memory-mcp"
+    target = Path.home() / ".local" / "bin" / "codebase-memory-mcp"
+    if not vendor_bin.exists():
+        return 1, "vendor/codebase-memory-mcp 不存在。请从 GitHub releases 下载。"
+    target.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copy2(str(vendor_bin), str(target))
+    target.chmod(0o755)
+    return 0, f"✓ cmm 已从 vendor/ 拷贝到 {target}"
 
 
 def _headroom_install() -> tuple[int, str]:
@@ -176,7 +190,7 @@ _VERIFY = {
     "codegraph": lambda: bool(shutil.which("codegraph")),
     "graphify": lambda: bool(shutil.which("graphify")),
     "mempalace": lambda: bool(shutil.which("mempalace")),
-    "headroom": lambda: (Path.home() / "bin" / "headroom").exists() or bool(shutil.which("headroom")),
+    "headroom": lambda: bool(shutil.which("headroom")),
     "bench": lambda: (REPO / "eval" / "cli.py").exists(),
     "goldgen": lambda: (REPO / "eval" / "goldgen.py").exists(),
     "measurement-lab": lambda: (REPO / "web" / "index.html").exists(),
