@@ -10,12 +10,12 @@
 from __future__ import annotations
 
 import argparse
-import importlib
 import json
 import statistics
 
 from eval.ab_agent import load_creds, make_client, run_episode
 from eval.repro import detect_lockfile, stamp
+from eval.targets import load_problems, load_target
 
 
 def _norm(s: str) -> str:
@@ -35,15 +35,16 @@ def _judge_retrieval(answer: str, tool_texts: list[str], goldset) -> int:
     return 1 if any(_norm(g) in hay for g in goldset) else 0
 
 
-def run(target: str = "godot", runs: int = 1, subset: int | None = None,
+def run(target_id: str = "godot-core", runs: int = 1, subset: int | None = None,
         arms: tuple[str, ...] = ("baseline", "kb", "doc")) -> dict:
-    gold = importlib.import_module(f"eval.gold_{target}").GOLD
-    questions = gold[:subset] if subset else gold
+    problems = [p for p in load_problems(target_id) if p["type"] == "code_retrieval"]
+    questions = problems[:subset] if subset else problems
     client = make_client()
     _, _, model = load_creds()
 
     rows = []
-    for qi, (query, goldset) in enumerate(questions):
+    for qi, p in enumerate(questions):
+        query, goldset = p["query"], set(p["gold"]["symbols"])
         results_this_q = {}
         for arm in arms:
             for r in range(runs):
@@ -83,7 +84,8 @@ def run(target: str = "godot", runs: int = 1, subset: int | None = None,
     agg["delta_total_tokens_doc_minus_baseline"] = _delta("doc", "baseline", "mean_total_tokens")
 
     report = stamp(
-        {"subject": "ab-agent-stage1", "target": target, "project": "godot-core",
+        {"subject": "ab-agent-stage1", "target": target_id,
+         "project": load_target(target_id)["code"]["cmm_project"],
          "n_questions": len(questions), "runs": runs, "arms": list(arms), "llm_model": model,
          "aggregate": agg, "per_query": rows, "stage": 1,
          "note": "Stage 1 agent A/B：真跑 agent loop（temp=0），测答对率 + 端到端 token + 步数"},
@@ -94,7 +96,7 @@ def run(target: str = "godot", runs: int = 1, subset: int | None = None,
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser(description="agent A/B Stage 1：真跑 agent 准确度 + token 对照")
-    ap.add_argument("--target", default="godot")
+    ap.add_argument("--target", default="godot-core")
     ap.add_argument("--runs", type=int, default=1)
     ap.add_argument("--subset", type=int, default=None, help="只跑前 N 题（pilot 用）")
     ap.add_argument("--arms", default="baseline,kb,doc", help="逗号分隔的臂（baseline/kb/doc）")

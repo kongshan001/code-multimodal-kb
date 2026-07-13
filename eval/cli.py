@@ -36,12 +36,12 @@ def _cmd_run(args) -> int:
         variant = f"{args.target}-{args.method}"
     elif args.subject == "doc":
         from eval.run_doc_baseline import run as run_doc
-        report = run_doc()
-        variant = report.get("target", "godot-docs-subset")
+        report = run_doc(args.target)
+        variant = args.target
     elif args.subject == "cross":
         from eval.run_crosstool_baseline import run as run_cross
-        report = run_cross()
-        variant = "godot"
+        report = run_cross(args.target)
+        variant = args.target
     elif args.subject == "quality":
         from eval.run_doc_quality import run as run_q  # 凭据门控，可能 429
         report = run_q()
@@ -164,24 +164,26 @@ def main(argv: list[str] | None = None) -> int:
     run_p = sub.add_parser("run", help="跑评测并归档")
     run_sub = run_p.add_subparsers(dest="subject", required=True)
     code_p = run_sub.add_parser("code", help="代码侧（cmm）")
-    code_p.add_argument("--target", default="code", help="gold 模块名，如 godot")
+    code_p.add_argument("--target", default="godot-core", help="target id（如 godot-core / graphify-pkg）")
     code_p.add_argument("--method", default="grep", choices=["grep", "bm25", "semantic"])
-    run_sub.add_parser("doc", help="文档侧（graphify query）")
-    run_sub.add_parser("cross", help="跨工具 anchoring")
+    doc_p = run_sub.add_parser("doc", help="文档侧（graphify query）")
+    doc_p.add_argument("--target", default="godot-docs", help="target id")
+    cross_p = run_sub.add_parser("cross", help="跨工具 anchoring")
+    cross_p.add_argument("--target", default="godot-cross", help="target id")
     run_sub.add_parser("quality", help="文档答案质量（凭据门控，可能 429）")
     mem_p = run_sub.add_parser("memory", help="记忆侧（MemPalace 召回 + D1 路由）")
-    mem_p.add_argument("--target", default="engineer_demo")
+    mem_p.add_argument("--target", default="engineer-demo-memory", help="target id")
     dr_p = run_sub.add_parser("doc-ragas", help="文档答案质量（Ragas 协议 faithfulness+context_precision，LLM judge）")
     dr_p.add_argument("--target", default="docs")
     dr_p.add_argument("--subset", type=int, default=None)
     mr_p = run_sub.add_parser("memory-quality", help="记忆答案质量（Ragas 协议，mempalace drawer 做 context）")
-    mr_p.add_argument("--target", default="memory")
+    mr_p.add_argument("--target", default="engineer-demo-memory", help="target id")
     mr_p.add_argument("--subset", type=int, default=None)
     mr_p.add_argument("--k", type=int, default=5)
     ab_p = run_sub.add_parser("ab", help="agent A/B Stage 0（KB vs 朴素 grep token 代理）")
-    ab_p.add_argument("--target", default="godot", help="gold 模块名")
+    ab_p.add_argument("--target", default="godot-core", help="target id")
     ag_p = run_sub.add_parser("ab-agent", help="agent A/B Stage 1（真跑 agent，准确度+token+步数）")
-    ag_p.add_argument("--target", default="godot")
+    ag_p.add_argument("--target", default="godot-core")
     ag_p.add_argument("--runs", type=int, default=1)
     ag_p.add_argument("--subset", type=int, default=None, help="只跑前 N 题（pilot）")
 

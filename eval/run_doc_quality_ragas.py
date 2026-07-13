@@ -16,7 +16,6 @@
 """
 from __future__ import annotations
 
-import importlib
 import json
 import os
 import re
@@ -24,19 +23,18 @@ import statistics
 
 from eval.ab_agent import load_creds, make_client
 from eval.repro import detect_lockfile, stamp
-from eval.run_doc_baseline import GRAPH, graphify_query
+from eval.targets import load_problems, load_target
 
 _MODEL = None
 RST_DIR = "/Users/ks_128/Documents/godot-docs-subset"  # graphify 文档图源（17 篇 .rst）
 _PER_DOC_CAP = 5000  # 每文档取前 N chars（覆盖到正文段落，非仅 intro）
 
 
-def _doc_chunks(query: str) -> list[str]:
+def _doc_chunks(query: str, graph: str) -> list[str]:
     """graphify 定位节点（raw NODE 行，带 src=）→ 取 src 指向的 .rst 真实文本做可读 context。
-    graphify 返图节点元数据（不可读），答案质量需要文档段落——故映射到源 .rst。
-    注意：run_doc_baseline.graphify_query 只返标签丢 src，这里直接调 graphify 取 raw 输出。"""
+    graphify 返图节点元数据（不可读），答案质量需要文档段落——故映射到源 .rst。"""
     import subprocess
-    out = subprocess.run(["graphify", "query", query, "--graph", GRAPH, "--budget", "800"],
+    out = subprocess.run(["graphify", "query", query, "--graph", graph, "--budget", "800"],
                          capture_output=True, text=True, timeout=30).stdout
     srcs = []
     for line in out.splitlines():
@@ -112,14 +110,16 @@ def _generate_answer(query: str, context: str, client) -> str:
         max_tokens=320).strip()
 
 
-def run(target: str = "docs", subset: int | None = None) -> dict:
-    gold = importlib.import_module(f"eval.gold_{target}").GOLD
-    questions = gold[:subset] if subset else gold
+def run(target_id: str = "godot-docs", subset: int | None = None) -> dict:
+    graph = load_target(target_id)["doc"]["graph"]
+    problems = [p for p in load_problems(target_id) if p["type"] == "doc_retrieval"]
+    questions = problems[:subset] if subset else problems
     client = make_client()
 
     rows = []
-    for query, goldset in questions:
-        chunks = _doc_chunks(query)  # graphify 定位 → .rst 可读文本
+    for p in questions:
+        query, goldset = p["query"], set(p["gold"]["node_labels"])
+        chunks = _doc_chunks(query, graph)  # graphify 定位 → .rst 可读文本
         context = "\n".join(chunks) or "(无 context)"
         answer = _generate_answer(query, context, client)
         f = faithfulness(answer, context, client)
@@ -136,7 +136,7 @@ def run(target: str = "docs", subset: int | None = None) -> dict:
         "llm_judge": "glm-5.x（self-preference 风险，相对参考值）",
     }
     report = stamp(
-        {"subject": "doc-quality-ragas-protocol", "target": target, "graph": GRAPH,
+        {"subject": "doc-quality-ragas-protocol", "target": target_id, "graph": graph,
          "n": len(rows), "aggregate": agg, "per_query": rows,
          "metrics": "faithfulness + context_precision（reference-free，Ragas 协议直接实现）",
          "note": "LLM-judged（GLM 生成+判分，同家族 self-preference）；相对参考值，非 grounded 回归值"},
@@ -148,7 +148,7 @@ def run(target: str = "docs", subset: int | None = None) -> dict:
 if __name__ == "__main__":
     import argparse, json as _json
     ap = argparse.ArgumentParser(description="文档答案质量（Ragas 协议：faithfulness + context_precision）")
-    ap.add_argument("--target", default="docs")
+    ap.add_argument("--target", default="godot-docs")
     ap.add_argument("--subset", type=int, default=None)
     a = ap.parse_args()
     print(_json.dumps(run(a.target, a.subset), ensure_ascii=False, indent=2))

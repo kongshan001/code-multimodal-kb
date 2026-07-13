@@ -1,14 +1,15 @@
 """跑记忆侧基线（task 4.2 + 4.3）：MemPalace 召回质量 + D1 边界路由准确率。
 
+target = targets/<id>/（memory_recall + memory_routing 型，如 engineer-demo-memory）。
 两部分指标：
-  recall    — 对 RECALL_GOLD 调 mempalace search，按 source_file 召回算
+  recall    — 对 memory_recall 题调 mempalace search，按 source_file 召回算
               recall@k / hit@k（k=1,3,5,10）+ unique_source_ratio@5（去重）。
-  routing   — 对 ROUTING_GOLD 跑 D1 router（routing.py），算四类 + 总体准确率。
+  routing   — 对 memory_routing 题跑 D1 router（routing.py），算四类 + 总体准确率。
   volume    — 注入体积收敛：search 固定返回 ≤ LIMIT（不随库增长无界膨胀）。
 
 零 LLM：MemPalace 用本地 embedding（onnxruntime），查询阶段不调 LLM，可复现。
 用法：
-  python -m eval.run_memory_baseline
+  python -m eval.run_memory_baseline --target engineer-demo-memory
   bench run memory
 """
 from __future__ import annotations
@@ -17,11 +18,11 @@ import argparse
 import json
 import statistics
 
-from eval.gold_memory import RECALL_GOLD, ROUTING_GOLD
 from eval.metrics import hit_rate_at_k, recall_at_k
 from eval.repro import detect_lockfile, stamp
 from eval.routing import routing_accuracy
 from eval.subjects_memory import mempalace_search, norm_source
+from eval.targets import load_problems, load_target
 
 KS = (1, 3, 5, 10)
 LIMIT = 10
@@ -37,10 +38,17 @@ def _dedup_sources(raw: list[dict]) -> list[str]:
     return seen
 
 
-def run() -> dict:
+def run(target_id: str = "engineer-demo-memory") -> dict:
+    target = load_target(target_id)
+    palace = target.get("memory", {}).get("palace", target_id)
+    problems = load_problems(target_id)
+    recall_problems = [p for p in problems if p["type"] == "memory_recall"]
+    routing_problems = [p for p in problems if p["type"] == "memory_routing"]
+
     # ── recall：主观记忆按主题召回 ──
     rows = []
-    for query, gold_sources in RECALL_GOLD:
+    for p in recall_problems:
+        query, gold_sources = p["query"], set(p["gold"]["source_files"])
         raw = mempalace_search(query, limit=LIMIT)
         sources = _dedup_sources(raw)
         row = {
@@ -69,7 +77,7 @@ def run() -> dict:
     )
 
     # ── routing：D1 四层归属准确率 ──
-    rres = routing_accuracy([(fact, gold) for fact, gold, _ in ROUTING_GOLD])
+    rres = routing_accuracy([(p["fact"], p["gold"]["layer"]) for p in routing_problems])
     agg["routing_overall_accuracy"] = rres["overall"]
     agg["routing_per_class"] = rres["per_class"]
     agg["routing_errors"] = rres["errors"]
@@ -82,7 +90,7 @@ def run() -> dict:
     agg["injection_cap_memory_md"] = 20
 
     report = stamp(
-        {"subject": "mempalace", "target": "engineer_demo",
+        {"subject": "mempalace", "target": target_id, "palace": palace,
          "n": len(rows), "aggregate": agg, "per_query": rows},
         detect_lockfile(),
     )
@@ -91,5 +99,6 @@ def run() -> dict:
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser(description="记忆侧基线（MemPalace 召回 + D1 路由）")
+    ap.add_argument("--target", default="engineer-demo-memory")
     args = ap.parse_args()
-    print(json.dumps(run(), ensure_ascii=False, indent=2))
+    print(json.dumps(run(args.target), ensure_ascii=False, indent=2))

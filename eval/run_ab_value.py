@@ -15,7 +15,6 @@ Stage 1（全 agent 准确度 + 端到端 token）卡 LLM 凭据，见 design §
 from __future__ import annotations
 
 import argparse
-import importlib
 import json
 import os
 import statistics
@@ -23,9 +22,8 @@ import subprocess
 
 from eval.repro import detect_lockfile, stamp
 from eval.subjects import cmm_bm25, norm_item
+from eval.targets import load_problems, load_target
 
-PROJECT = "Users-ks_128-Documents-godot-src-core"
-GODOT_CORE = "/Users/ks_128/Documents/godot-src/core"
 KS = (1, 3, 5)
 NAIVE_MAX_FILES = 3      # 朴素 agent 读 top-3 grep 命中文件
 NAIVE_PER_FILE_CAP = 4000  # 每文件截断 chars（~1000 token）
@@ -43,11 +41,11 @@ def _broad_text(it: dict) -> str:
                    if c.isalnum())
 
 
-def _grep_files(query: str) -> list[str]:
+def _grep_files(query: str, code_root: str) -> list[str]:
     """朴素 grep -rl <query>（大小写不敏感，.h/.cpp/.hpp）。返回命中文件路径。"""
     try:
         out = subprocess.run(
-            ["grep", "-rli", query, GODOT_CORE, "--include=*.h", "--include=*.cpp",
+            ["grep", "-rli", query, code_root, "--include=*.h", "--include=*.cpp",
              "--include=*.hpp"],
             capture_output=True, text=True, timeout=60,
         ).stdout.strip()
@@ -67,9 +65,9 @@ def _read_capped(paths: list[str]) -> str:
     return "\n".join(out)
 
 
-def _grep_read_cost(query: str) -> dict:
+def _grep_read_cost(query: str, code_root: str) -> dict:
     """Arm A 朴素 grep 的注入成本：文件名清单 + 读文件内容。"""
-    files = _grep_files(query)
+    files = _grep_files(query, code_root)
     list_ctx = "\n".join(files)
     read_ctx = _read_capped(files)
     return {
@@ -80,14 +78,17 @@ def _grep_read_cost(query: str) -> dict:
     }
 
 
-def run(target: str = "godot") -> dict:
-    gold_mod = importlib.import_module(f"eval.gold_{target}")
-    gold = gold_mod.GOLD
+def run(target_id: str = "godot-core") -> dict:
+    target = load_target(target_id)
+    project = target["code"]["cmm_project"]
+    code_root = target["code"]["codegraph_root"]
+    problems = [p for p in load_problems(target_id) if p["type"] == "code_retrieval"]
 
     rows = []
-    for query, goldset in gold:
+    for p in problems:
+        query, goldset = p["query"], set(p["gold"]["symbols"])
         # Arm B: KB
-        kb_raw = [r for r in cmm_bm25(PROJECT, query, 5) if isinstance(r, dict)]
+        kb_raw = [r for r in cmm_bm25(project, query, 5) if isinstance(r, dict)]
         kb_items = [norm_item(r) for r in kb_raw]
         kb_ctx = json.dumps(kb_items, ensure_ascii=False)
         kb_tokens = _tok(kb_ctx)
@@ -103,7 +104,7 @@ def run(target: str = "godot") -> dict:
                 / max(1, len(goldset)), 3)
 
         # Arm A: naive grep
-        naive = _grep_read_cost(query)
+        naive = _grep_read_cost(query, code_root)
 
         compression = round(naive["read_tokens"] / kb_tokens, 2) if kb_tokens else 0.0
         rows.append({
@@ -134,7 +135,7 @@ def run(target: str = "godot") -> dict:
     }
 
     report = stamp(
-        {"subject": "ab-value-stage0", "target": target, "project": PROJECT,
+        {"subject": "ab-value-stage0", "target": target_id, "project": project,
          "n": n, "aggregate": agg, "per_query": rows,
          "stage": 0,
          "note": "Stage 0 token 代理：只证 KB 省 context token + 注入命中，不证 agent 答对率（Stage 1 凭据门控）"},
@@ -145,6 +146,6 @@ def run(target: str = "godot") -> dict:
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser(description="agent A/B Stage 0：KB vs 朴素 grep token 代理")
-    ap.add_argument("--target", default="godot")
+    ap.add_argument("--target", default="godot-core")
     args = ap.parse_args()
     print(json.dumps(run(args.target), ensure_ascii=False, indent=2))

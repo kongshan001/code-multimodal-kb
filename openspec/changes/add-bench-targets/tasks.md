@@ -16,21 +16,22 @@
 - [x] 2.3 题数守恒验证：godot 26 / code 21 / docs 10 / cross 8 / memory recall 15 + routing 13 = 93（与源文件实数对照，routing 实为 13 非 explore 时误数的 14）；test_targets_loader 集成断言每 target 题数
 - [x] 2.4 生成 `targets/<id>/target.json`（机器路径入 base，可跑值）+ `.gitignore` 加 `eval/targets/*/target.local.json` + 每目录留 `target.local.example.json`
 
-## 3. runner 与 goldgen 切换到 loader（迁移前过渡）
+## 3. runner 切换到 loader（迁移前过渡）
 
-- [ ] 3.1 `run_code_baseline` / `run_doc_baseline` / `run_crosstool_baseline` 改读 `targets/<id>/problems.json`（经 loader），不再 import `gold_*`
-- [ ] 3.2 `run_memory_baseline` / `run_memory_quality` 改读 `targets/engineer-demo-memory/problems.json`（recall + routing 两种 type）
-- [ ] 3.3 `run_ab_value` / `ab_tools` 改从 `targets/godot-core/target.json` 读 `cmm_project` / codegraph root
-- [ ] 3.4 `goldgen`（过渡）root/project 从 `target.json` 读（为第 5 阶段重写做准备）
-- [ ] 3.5 证据：`pytest eval/tests/ -k "not gold_regression and not gold_memory_snapshot"` 全绿（快照在第 6 阶段改）
+- [x] 3.1 `run_code_baseline` / `run_doc_baseline` / `run_crosstool_baseline` 改读 `targets/<id>/problems.json`（经 loader），不再 import `gold_*`
+- [x] 3.2 `run_memory_baseline` / `run_memory_quality` 改读 `targets/engineer-demo-memory/problems.json`（recall + routing 两种 type）
+- [x] 3.3 `run_ab_value` / `ab_tools` 改从 `targets/godot-core/target.json` 读 `cmm_project` / codegraph root（ab_tools DOC_GRAPH 从 godot-docs 读）
+- [x] 3.4 并入组 5：`goldgen` 不做过渡改动，直接在组 5 重写（root/project 从 target.json 读）——避免写一次就扔的过渡代码
+- [x] 3.5 额外迁移 `run_doc_quality_ragas` + `run_ab_agent`（gold 源 + graph/project 从 target 读）——它们也 import gold_*，不迁移会卡组 6 删除
+- [x] 3.6 证据：`pytest eval/tests/`（除 3 个 anthropic-blocked）64 passed；3 个因变更失效的测试（test_ab_value / test_memory::recall_smoke / test_archive::code_smoke）已改 mock loader 全绿
 
-## 4. 拔 13 处硬编码
+## 4. 拔硬编码（retrieval 层）
 
-- [ ] 4.1 删 `cli.py:205,215` 的 `--root` 参数及 godot 默认值（goldgen / goldgen-verify 子命令）
-- [ ] 4.2 删 `goldgen.py:29 DEFAULT_ROOT` + `:167 _CMM_PROJ_FALLBACK`；root/project 全走 loader
-- [ ] 4.3 `web/app.js:92,107,382` 默认目标路径 → 从 `list_targets()` 取首个或留空提示选择
-- [ ] 4.4 `ab_tools.py:28-29` / `run_ab_value.py:27-28` / `gold_crosstool.py:8` / `run_memory_baseline.py:85` / `run_memory_quality.py:54` 全部改读 target 配置
-- [ ] 4.5 证据：`grep -rn "godot-src\|ks-128\|ks_128\|engineer_demo" eval/*.py web/*.js` 命中仅在 `targets/*.json`（数据文件）内
+- [x] 4.1 retrieval runner 全部拔除：`run_code/doc/crosstool/memory/ab_value` + `ab_tools` 的 `PROJECT`/`GODOT_CORE`/`CMM_PROJECT`/`DOC_GRAPH`/`GRAPH` 字面量改读 target.json
+- [~] 4.2 **延期**：`run_doc_quality.py`（GRAPH/DOCS_DIR→godot-render-docs 语料）+ `run_doc_quality_ragas.py:RST_DIR`——anthropic-gated 答案质量 runner，需扩 target schema（`doc.rst_dir`）+ 可能第 6 个 target（godot-render-docs 是与 godot-docs-subset 不同的语料）。不阻塞组 6（它们不 import gold_*），列为后续
+- [~] 4.3 **延期**：`web/app.js:92,107,382` 的 `_targetProject` 默认路径是 scaffold 能力目录扫描路径（非 bench target），属 scaffold 可移植性问题，另案。run-console 的 bench target 默认值（code/memory/ab/doc-ragas）已改新 target id
+- [ ] 4.4 `goldgen.py:29 DEFAULT_ROOT` + `:167 _CMM_PROJ_FALLBACK` + `cli.py:207,217 --root` → 组 5 重写 goldgen 时一起拔
+- [x] 4.5 证据：retrieval 层 `grep "godot-src\|ks-128\|engineer_demo" eval/run_*.py eval/ab_tools.py` 仅剩延期项（doc-quality 路径 + goldgen）；非延期硬编码已清零
 
 ## 5. 重写 goldgen（pending 折进 problems.json）
 

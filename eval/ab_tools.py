@@ -23,11 +23,15 @@ from dataclasses import dataclass
 from typing import Callable
 
 from eval.subjects import cmm_bm25, norm_item
+from eval.targets import load_target
 
-# ── 代码库 / 索引目标（换代码库改这里）──────────────────────────────────
-GODOT_CORE = "/Users/ks_128/Documents/godot-src/core"
-CMM_PROJECT = "Users-ks-128-Documents-godot-src-core"
-DOC_GRAPH = "/Users/ks_128/Documents/godot-docs-subset/graphify-out/graph.json"
+# ── 代码库 / 索引目标：从 targets/ 读（无硬编码路径）─────────────────────
+# ab 默认针对 godot-core（代码）+ godot-docs（文档图）。换代码库 = 换 target.json。
+_CODE_TARGET = load_target("godot-core")
+_DOC_TARGET = load_target("godot-docs")
+GODOT_CORE = _CODE_TARGET["code"]["codegraph_root"]
+CMM_PROJECT = _CODE_TARGET["code"]["cmm_project"]
+DOC_GRAPH = _DOC_TARGET["doc"]["graph"]
 READ_CAP = 2000
 
 

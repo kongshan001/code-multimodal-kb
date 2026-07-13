@@ -19,12 +19,14 @@ def test_code_baseline_end_to_end_smoke(monkeypatch, tmp_path):
     import eval.run_code_baseline as rc
     A = _isolate(monkeypatch, tmp_path)
 
-    monkeypatch.setattr(rc, "load_gold", lambda target: ("proj", [("color", {"Color"})]))
+    monkeypatch.setattr(rc, "load_target", lambda tid: {"code": {"cmm_project": "proj"}})
+    monkeypatch.setattr(rc, "load_problems", lambda tid: [
+        {"id": "t-color", "type": "code_retrieval", "query": "color", "gold": {"symbols": ["Color"]}}])
     monkeypatch.setattr(rc, "_retrieve",
                         lambda method, project, query: [{"node": "Color", "file": "color.cpp"}])
     monkeypatch.setattr(rc, "detect_lockfile", lambda: Lockfile(cmm_version="test"))
 
-    report = rc.run(target="code", method="bm25")
+    report = rc.run(target_id="fake", method="bm25")
     assert report["n"] == 1
     assert report["aggregate"]["mean_broad_recall@5"] == 1.0      # Color 命中
     assert report["aggregate"]["mean_recall@5"] == 1.0             # strict 也命中

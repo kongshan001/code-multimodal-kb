@@ -228,7 +228,7 @@ function runConsole() {
         <option value="doc-ragas">doc-ragas（答案质量）</option>
       </select>
       <span id="rcTargetWrap"><label class="mono" style="font-size:10px;color:var(--ink2)">target</label>
-      <input id="rcTarget" class="btn" value="godot" style="width:80px"/></span>
+      <input id="rcTarget" class="btn" value="godot-core" style="width:120px"/></span>
       <span id="rcMethodWrap"><label class="mono" style="font-size:10px;color:var(--ink2)">method</label>
       <select id="rcMethod" class="btn"><option>bm25</option><option>grep</option><option>semantic</option></select></span>
       <button class="btn fill" onclick="doRun()">跑 ▸</button>
@@ -239,7 +239,7 @@ function runConsole() {
     // 只有 code 有 method
     $("#rcMethodWrap").style.display = subj === "code" ? "" : "none";
     // 各 subject 的默认 target
-    const defaults = {code:"godot", memory:"engineer_demo", ab:"godot", "doc-ragas":"docs"};
+    const defaults = {code:"godot-core", memory:"engineer-demo-memory", ab:"godot-core", "doc-ragas":"godot-docs"};
     $("#rcTarget").value = defaults[subj] || "godot";
   };
   window.doRun = async () => {

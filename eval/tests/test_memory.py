@@ -68,21 +68,24 @@ def test_memory_recall_smoke(monkeypatch):
     """L2 端到端：mock mempalace_search（命中 gold）→ run() aggregate 预期。"""
     import eval.run_memory_baseline as rm
     from eval.repro import Lockfile
+    from eval.targets import load_problems
+
+    recall = [p for p in load_problems("engineer-demo-memory") if p["type"] == "memory_recall"]
 
     def fake_search(query, limit=10, wing=None, room=None):
         # 返回每个 gold source 各一条 → recall@k=1（含多 gold 项）
-        for q, gold in rm.RECALL_GOLD:
-            if q == query:
+        for p in recall:
+            if p["query"] == query:
                 return [{"rank": i + 1, "wing": "w", "room": "r",
                          "source_file": sf, "cosine_sim": 0.5, "bm25_score": 1.0,
-                         "text": "..."} for i, sf in enumerate(gold)]
+                         "text": "..."} for i, sf in enumerate(p["gold"]["source_files"])]
         return []
 
     monkeypatch.setattr(rm, "mempalace_search", fake_search)
     monkeypatch.setattr(rm, "detect_lockfile", lambda: Lockfile(mempalace_version="test"))
 
-    report = rm.run()
-    assert report["n"] == len(RECALL_GOLD)
+    report = rm.run("engineer-demo-memory")
+    assert report["n"] == len(recall)
     assert report["aggregate"]["mean_hit@5"] == 1.0           # mock 全命中
     assert report["aggregate"]["mean_recall@5"] == 1.0
     assert report["aggregate"]["mean_unique_source_ratio@5"] == 1.0  # 单条无冗余

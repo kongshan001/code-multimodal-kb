@@ -12,25 +12,28 @@ mempalace 召回的 drawer 文本。
 """
 from __future__ import annotations
 
-import importlib
 import statistics
 
 from eval.ab_agent import load_creds, make_client
 from eval.repro import detect_lockfile, stamp
 from eval.run_doc_quality_ragas import _generate_answer, context_precision, faithfulness
 from eval.subjects_memory import mempalace_search
+from eval.targets import load_problems, load_target
 
 _MODEL = None
 
 
-def run(target: str = "memory", subset: int | None = None, k_chunks: int = 5) -> dict:
-    """对 RECALL_GOLD 每条：mempalace 召回 drawer 做 context → GLM 答 → Ragas 协议判分。"""
-    gold = importlib.import_module(f"eval.gold_{target}").RECALL_GOLD
-    questions = gold[:subset] if subset else gold
+def run(target_id: str = "engineer-demo-memory", subset: int | None = None, k_chunks: int = 5) -> dict:
+    """对 memory_recall 题每条：mempalace 召回 drawer 做 context → GLM 答 → Ragas 协议判分。"""
+    target = load_target(target_id)
+    palace = target.get("memory", {}).get("palace", target_id)
+    problems = [p for p in load_problems(target_id) if p["type"] == "memory_recall"]
+    questions = problems[:subset] if subset else problems
     client = make_client()
 
     rows = []
-    for query, gold_sources in questions:
+    for p in questions:
+        query, gold_sources = p["query"], set(p["gold"]["source_files"])
         raw = mempalace_search(query, limit=k_chunks)
         chunks = [it["text"] for it in raw if it.get("text")]
         context = "\n".join(chunks) or "(无 context)"
@@ -51,7 +54,7 @@ def run(target: str = "memory", subset: int | None = None, k_chunks: int = 5) ->
         "context_source": "mempalace drawers（会话碎片为主）",
     }
     report = stamp(
-        {"subject": "memory-quality-ragas-protocol", "target": target, "palace": "engineer_demo",
+        {"subject": "memory-quality-ragas-protocol", "target": target_id, "palace": palace,
          "n": len(rows), "aggregate": agg, "per_query": rows,
          "metrics": "faithfulness + context_precision（reference-free，Ragas 协议；记忆层）",
          "note": "LLM-judged（GLM 生成+判分，同家族 self-preference）；记忆 drawer 嘈杂，预期低于文档层"},
@@ -63,7 +66,7 @@ def run(target: str = "memory", subset: int | None = None, k_chunks: int = 5) ->
 if __name__ == "__main__":
     import argparse, json as _json
     ap = argparse.ArgumentParser(description="记忆答案质量（Ragas 协议，mempalace drawer 做 context）")
-    ap.add_argument("--target", default="memory")
+    ap.add_argument("--target", default="engineer-demo-memory")
     ap.add_argument("--subset", type=int, default=None)
     ap.add_argument("--k", type=int, default=5)
     a = ap.parse_args()
