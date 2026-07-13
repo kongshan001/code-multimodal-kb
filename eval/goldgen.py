@@ -18,8 +18,8 @@ from __future__ import annotations
 import json
 import os
 import re
-import subprocess
 
+from eval._subproc import run_text
 from eval.targets import load_problems, load_target, save_problems
 
 # 非"真符号"的节点 kind（文件/导入/目录级），枚举时滤掉
@@ -28,17 +28,8 @@ _NON_SYMBOL_KINDS = {"file", "import", "directory", "unknown", "module", "packag
 
 # ── 符号枚举（codegraph，零 LLM）──────────────────────────────────────────
 def _run_codegraph(args: list[str], timeout: int = 30) -> str:
-    """跑 codegraph 子命令，强制 UTF-8 解码。
-
-    Windows 中文系统默认用 GBK(cp936) 解码子进程 stdout；codegraph 输出含 UTF-8 非
-    ASCII 字节（符号名/路径）会 UnicodeDecodeError → reader 线程崩 → stdout=None →
-    后续 .strip() AttributeError。显式 encoding=utf-8 + errors=replace 修掉，跨平台一致。
-    兜底返回 ""（绝不返 None）。
-    """
-    return subprocess.run(
-        ["codegraph", *args], capture_output=True, text=True,
-        encoding="utf-8", errors="replace", timeout=timeout,
-    ).stdout or ""
+    """跑 codegraph 子命令（经 _subproc.run_text：UTF-8 解码 + Windows .cmd 包装器解析）。"""
+    return run_text(["codegraph", *args], timeout=timeout).stdout or ""
 
 
 def _codegraph_query(seed: str, root: str, limit: int) -> list[dict]:
