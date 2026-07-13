@@ -146,12 +146,10 @@ async function catalogView() {
             ${(cap.docs||[]).length ? `<div style="margin-top:3px">${cap.docs.map(d => `<a href="${d.url}" target="_blank" style="font-size:10px;margin-right:10px;text-decoration:underline">🔗 ${d.title}</a>`).join("")}</div>` : ""}
             ${cap.source ? `<div style="margin-top:2px"><a href="${cap.source}" target="_blank" style="font-size:10px;color:var(--ink2);text-decoration:underline">📦 ${cap.source.replace('https://github.com/','github.com/')}</a></div>` : ""}
           </td>
-          <td style="text-align:right;width:140px;white-space:nowrap">
-            ${cap.installable
-              ? (cap.installed
-                ? `<span class="st ok" style="font-size:11px;margin-right:6px">✓ 已装</span><button class="btn" style="font-size:10px;padding:4px 10px;color:var(--bad)" onclick="toggleCap('${cap.id}','${cap.name}')">卸载</button>`
-                : `<button class="btn fill" style="font-size:10px;padding:4px 12px" onclick="toggleCap('${cap.id}','${cap.name}')">安装</button>`)
-              : `<span class="st ${cap.installed?'ok':'miss'}" style="font-size:11px">${cap.installed?'✓ 已装':'☐ 未装'}</span>${cap.type==='builtin'?'<span style="font-size:9px;color:var(--ink2);display:block">内置</span>':''}${cap.type==='practice'?'<span style="font-size:9px;color:var(--ink2);display:block">方法论</span>':''}`}
+          <td style="text-align:right;width:100px;white-space:nowrap">
+            ${cap.installable && !cap.installed
+              ? `<button class="btn fill" style="font-size:10px;padding:4px 12px" onclick="toggleCap('${cap.id}','${cap.name}')">安装</button>`
+              : `<span class="st ${cap.installed?'ok':'miss'}" style="font-size:11px">${cap.installed?'✓ 已装':'☐ 未装'}</span>`}
           </td>
         </tr>`).join("")}
       </table>`;
