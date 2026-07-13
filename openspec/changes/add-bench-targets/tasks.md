@@ -1,6 +1,12 @@
 # Tasks · add-bench-targets
 
-按 design.md 的迁移计划（受控 big-bang，8 阶段）拆。每步独立提交 main + push（带 Co-Authored-By）。每 task 带可验证证据。
+按 design.md 的迁移计划（受控 big-bang）拆。每步独立提交 main + push（带 Co-Authored-By）。每 task 带可验证证据。
+
+> **进度总览**：组 1-6 ✅ 完成（题库配置化 + 引擎可移植落地，gold_*.py 已删）；组 7-9 🚧 待办（前端编辑器 / 文档 / 端到端）；2 项 ⏸️ 延期见末尾。
+>
+> 已完成 commit：`1d4152e`（组1-2 loader+迁移）→ `14ef682`（组3-4 runner+拔硬编码）→ `77b5517`（组5 goldgen 重写）→ `fbc977f`（组6 删 gold_*.py+快照）。
+
+
 
 ## 1. Loader 与 schema（eval/targets.py）
 
@@ -30,7 +36,7 @@
 - [x] 4.1 retrieval runner 全部拔除：`run_code/doc/crosstool/memory/ab_value` + `ab_tools` 的 `PROJECT`/`GODOT_CORE`/`CMM_PROJECT`/`DOC_GRAPH`/`GRAPH` 字面量改读 target.json
 - [~] 4.2 **延期**：`run_doc_quality.py`（GRAPH/DOCS_DIR→godot-render-docs 语料）+ `run_doc_quality_ragas.py:RST_DIR`——anthropic-gated 答案质量 runner，需扩 target schema（`doc.rst_dir`）+ 可能第 6 个 target（godot-render-docs 是与 godot-docs-subset 不同的语料）。不阻塞组 6（它们不 import gold_*），列为后续
 - [~] 4.3 **延期**：`web/app.js:92,107,382` 的 `_targetProject` 默认路径是 scaffold 能力目录扫描路径（非 bench target），属 scaffold 可移植性问题，另案。run-console 的 bench target 默认值（code/memory/ab/doc-ragas）已改新 target id
-- [ ] 4.4 `goldgen.py:29 DEFAULT_ROOT` + `:167 _CMM_PROJ_FALLBACK` + `cli.py:207,217 --root` → 组 5 重写 goldgen 时一起拔
+- [x] 4.4 `goldgen.py:29 DEFAULT_ROOT` + `:167 _CMM_PROJ_FALLBACK` + `cli.py:207,217 --root` → 已在组 5 重写 goldgen 时拔除
 - [x] 4.5 证据：retrieval 层 `grep "godot-src\|ks-128\|engineer_demo" eval/run_*.py eval/ab_tools.py` 仅剩延期项（doc-quality 路径 + goldgen）；非延期硬编码已清零
 
 ## 5. 重写 goldgen（pending 折进 problems.json）
@@ -72,4 +78,23 @@
 - [ ] 9.1 迁移后 `bench run code --target godot-core --method bm25` 跑通并归档；`bench list-reports` / `show` / `compare` 正常
 - [ ] 9.2 `bench run memory --target engineer-demo-memory` 跑通（recall + routing）
 - [ ] 9.3 干跑对接新工程：建一个 `targets/<scratch>/`（小代码库）+ onboarding 索引 + goldgen 造几题 + bench，验证「低成本对接」claim
-- [ ] 9.4 全量 `pytest eval/tests/ -v` 绿；`grep` 复核零硬编码；迁移脚本可重跑（idempotent）
+- [ ] 9.4 全量 `pytest eval/tests/ -v` 绿（含 3 anthropic-blocked 在装齐 anthropic 后）；`grep` 复核零硬编码（仅剩「后续变更」段登记的延期项）
+
+---
+
+## ⏸️ 后续变更（本变更范围外，archive 不阻断；登记以便未来认领）
+
+> 这些是实施组 3-6 时发现的、不属于「题库配置化 + 引擎可移植」核心目标的硬编码，单独认领。
+
+### F1. 文档答案质量 runner 的文档语料路径配置化
+
+- **现状**：`run_doc_quality.py:18,19`（`GRAPH`/`DOCS_DIR` → `/Users/ks_128/Documents/godot-render-docs`）+ `run_doc_quality_ragas.py:29`（`RST_DIR` → `/Users/ks_128/Documents/godot-docs-subset`）仍是硬编码字面量。
+- **为何延期**：两者是 anthropic-gated 答案质量 runner，引用与 `godot-docs`（doc_retrieval）不同的文档语料（`godot-render-docs` 是渲染文档、`godot-docs-subset` 的 .rst 源目录）。完整迁移需扩 target schema（`doc.rst_dir`）+ 可能新增第 6 个 target（`godot-render-docs`）。
+- **不阻塞本变更**：它们不 import `gold_*`，故未拖住组 6 删 gold_*.py。
+- **建议 change 名**：`add-bench-doc-quality-targets`。
+
+### F2. scaffold 能力目录扫描的默认工程路径
+
+- **现状**：`web/app.js:92,107,382` 的 `window._targetProject` 默认 `/Users/ks_128/Documents/godot-src/core`，是「能力目录 / 工程实践」视图用来扫目标工程做能力检测的路径，**非 bench target**。
+- **为何延期**：属 scaffold（`scaffold/catalog.json`）的可移植性问题，与 benchmark targets 模型是两个 feature。
+- **建议 change 名**：`add-scaffold-portable-project-default`（或并入 scaffold 相关变更）。

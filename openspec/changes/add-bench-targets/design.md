@@ -30,6 +30,8 @@
 - **不**前端自动 commit/push git（前端只写文件，用户自己 commit）。
 - **不**引入 YAML/PyYAML（保持检索层零依赖，见决策 D1）。
 - **不**解决 memory gold 锚文件名会腐的既有问题（schema 留 notes 标注，已知限制）。
+- **不**迁移文档答案质量 runner 的文档语料路径（`run_doc_quality.py` 的 GRAPH/DOCS_DIR、`run_doc_quality_ragas.py` 的 RST_DIR）——它们引用与 `godot-docs` 不同的文档语料（godot-render-docs / .rst 源目录），需扩 `doc.rst_dir` schema + 可能第 6 个 target，属后续 change `add-bench-doc-quality-targets`（见 tasks.md「后续变更 F1」）。
+- **不**改 `web/app.js` 的 `_targetProject` 默认路径——那是 scaffold 能力目录扫描路径（非 bench target），属 scaffold 可移植性，另案（见 tasks.md「后续变更 F2」）。
 
 ## Decisions
 
