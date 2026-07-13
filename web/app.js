@@ -371,7 +371,7 @@ async function goldlabView() {
     </div>
     <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:14px">
       <label class="mono" style="font-size:10px;color:var(--ink2)">target</label>
-      <select id="glTarget" class="btn" onchange="window._goldTarget=this.value;goldRender()">${targets.map(t=>`<option value="${t.id}" ${t.id===window._goldTarget?'selected':''}>${t.id} [${(t.subjects||[]).join(',')||'?'})]</option>`).join('')}</select>
+      <select id="glTarget" class="btn" onchange="window._goldTarget=this.value;goldRender()">${targets.map(t=>`<option value="${t.id}" ${t.id===window._goldTarget?'selected':''}>${t.id} [${(t.subjects||[]).join(',')||'?'}]</option>`).join('')}</select>
       <button class="btn" onclick="goldRender()">刷新</button>
       <span style="flex:1"></span>
       <input id="glSeeds" class="btn" placeholder="seed 词（goldgen 用，如 Vector color）" style="width:220px;text-align:left"/>
