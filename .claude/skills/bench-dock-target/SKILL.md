@@ -68,7 +68,7 @@ Run only what your `subjects` need:
 | Subject | Index command | Notes |
 |---|---|---|
 | code_retrieval | `codegraph init <codegraph_root>` | static, zero LLM, seconds |
-| code_retrieval | `cmm index <codegraph_root>` (or via cmm CLI) | builds the cmm knowledge graph |
+| code_retrieval | cmm index：`./setup-kb.py --code <codegraph_root>`（推荐，仓库封装）或直接 `codebase-memory-mcp cli index_repository`（跑 `cli index_repository --help` 看当前 flags；旧的 `cli index_repository '<json>'` raw-JSON 形式已 deprecated） | 建 cmm 知识图 |
 | doc_retrieval | `graphify build <docs-dir>` | **spends LLM tokens** — estimate cost first; the resulting `graph.json` can be committed for team sharing |
 | memory | `mempalace mine <session-dir> --mode convos` | ⚠ do NOT enable a non-idempotent auto-save hook alongside it (causes memory bloat — see `docs/deployment-runbook.md §D`) |
 
@@ -83,6 +83,7 @@ Run only what your `subjects` need:
 bench goldgen <seed words> --target <id>          # codegraph enumerates real symbols + LLM phrases NL questions
 bench goldgen-verify --target <id>                 # empirical vetting: flags ambiguous gold (zero LLM)
 ```
+> `goldgen` 需要 `anthropic` SDK + LLM 凭据（GLM 走 `~/.cc-connect/config.toml`）。没装/没凭据 → `pip install anthropic`，或走下面的手动路径（不调 LLM）。
 Then review the `status: pending` candidates and approve the good ones:
 ```bash
 bench web          # open browser → Gold lab (#/goldlab) → select target → ✓ approve good ones, 🗑 drop bad ones
