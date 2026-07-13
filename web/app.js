@@ -112,7 +112,7 @@ async function catalogView() {
     const d = data.detection;
     const s = data.summary;
 
-    const tabs = data.categories.map((cat, i) => {
+    const tabs = data.categories.filter(c => c.id !== "engineering-practices").map((cat, i) => {
       const inst = cat.capabilities.filter(c => c.installed).length;
       return `<div class="ctab ${i===0?"active":""}" onclick="switchCat(${i})">${cat.name}<span class="badge">${inst}/${cat.capabilities.length}</span></div>`;
     }).join("");
@@ -379,9 +379,34 @@ function goldlabView() {
 }
 
 // ── router ──
+// ── 工程实践（独立分页）──
+async function practicesView() {
+  const data = await fetchJSON("/api/catalog?project=" + encodeURIComponent(window._targetProject || "/Users/ks_128/Documents/engineer_demo"));
+  const ep = data.categories.find(c => c.id === "engineering-practices");
+  if (!ep) { view().innerHTML = `<div class="loading">未找到工程实践分类</div>`; return; }
+  view().innerHTML = `
+    <h1>工程实践 <em>· Engineering</em></h1>
+    <p class="lede">Context / Prompt / Harness 三层工程最佳实践 + Lint 反馈循环。来自 Claude Code 官方文档。</p>
+    ${ep.capabilities.map(cap => `
+      <div style="border:1.5px solid var(--ink);background:#fff;padding:22px 24px;margin-bottom:16px">
+        <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:6px">
+          <h3 style="font-family:Fraunces,serif;font-size:20px;font-weight:600">${cap.name}</h3>
+          <span style="font-size:9px;color:var(--ink2)">[${cap.type}]</span>
+          ${cap.recommendation === "推荐" ? `<span style="color:var(--accent);font-size:10px;font-weight:600">推荐</span>` : `<span style="color:var(--ink2);font-size:10px">可选</span>`}
+        </div>
+        <p style="font-size:13px;color:var(--ink);margin-bottom:8px">${cap.desc}</p>
+        ${cap.value ? `<p style="font-size:12px;color:var(--good);margin-bottom:10px">📊 ${cap.value}</p>` : ""}
+        ${cap.guide ? `<details style="margin-top:8px"><summary style="font-size:11px;color:var(--ink2);cursor:pointer">📖 使用指南</summary><div style="font-size:12px;color:var(--ink);padding:8px 0 2px;line-height:1.6">${cap.guide}</div></details>` : ""}
+        ${(cap.docs||[]).length ? `<div style="margin-top:8px">${cap.docs.map(d => `<a href="${d.url}" target="_blank" style="font-size:11px;margin-right:12px;text-decoration:underline">🔗 ${d.title}</a>`).join("")}</div>` : ""}
+        ${cap.source ? `<div style="margin-top:4px"><a href="${cap.source}" target="_blank" style="font-size:10px;color:var(--ink2);text-decoration:underline">📦 ${cap.source.replace('https://github.com/','github.com/')}</a></div>` : ""}
+      </div>`).join("")}
+    <p class="lede" style="margin-top:20px">三层演进：Prompt Engineering（告诉模型做什么）→ Context Engineering（管理模型知道什么）→ Harness Engineering（管控模型怎么干活）。</p>`;
+}
+
+// ── router ──
 const routes = {
   dashboard, catalog: catalogView, run: runConsole, reports, setup: setupView,
-  onboard: onboardView, compare, goldlab: goldlabView,
+  onboard: onboardView, compare, goldlab: goldlabView, practices: practicesView,
 };
 async function router() {
   const h = location.hash.slice(2) || "dashboard";
