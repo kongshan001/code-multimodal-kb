@@ -126,6 +126,27 @@ def _headroom_install() -> tuple[int, str]:
     return out.returncode, out.stdout[-200:] + out.stderr[-200:]
 
 
+def _cmd_preview(template: str, cap: dict) -> str:
+    """生成人类可读的命令预览（替换变量 + 翻译内部函数名）。"""
+    if not template:
+        return ""
+    source = cap.get("source") or ""
+    cmd = template.format(id=cap["id"], source=source, skills_dir=str(SKILLS_DIR))
+    # 翻译内部函数为可读描述
+    replacements = {
+        "_plugin_toggle superpowers@superpowers-marketplace true": "启用 Claude Code 插件 superpowers",
+        "_plugin_toggle superpowers@superpowers-marketplace false": "禁用 Claude Code 插件 superpowers",
+        "_plugin_toggle frontend-design@claude-plugins-official true": "启用 Claude Code 插件 frontend-design",
+        "_plugin_toggle frontend-design@claude-plugins-official false": "禁用 Claude Code 插件 frontend-design",
+        "_cmm_install": "从 vendor/ 拷贝 cmm binary 到 ~/.local/bin/",
+        "_headroom_install": "安装 headroom (uv tool install headroom-ai[all])",
+    }
+    for k, v in replacements.items():
+        if cmd == k:
+            return v
+    return cmd
+
+
 def execute_action(cap_id: str, action: str) -> dict:
     """执行 install 或 uninstall。返回 {rc, stdout}。"""
     cmds = _INSTALL_CMDS.get(cap_id)
@@ -248,9 +269,14 @@ def merged(project_path: str = None) -> dict:
         for cap in cat["capabilities"]:
             installed = _VERIFY.get(cap["id"], lambda: False)()
             rec = _should_recommend(cap["recommend"], d)
-            # 标注是否可安装/卸载
+            # 标注是否可安装/卸载 + 展示将执行的命令
+            cmds = _INSTALL_CMDS.get(cap["id"], {})
             installable = cap["id"] in _INSTALL_CMDS and cap.get("type") in INSTALLABLE_TYPES
-            caps.append({**cap, "installed": installed, "recommendation": rec, "installable": installable})
+            # 生成人类可读的命令预览
+            install_cmd_preview = _cmd_preview(cmds.get("install", ""), cap)
+            uninstall_cmd_preview = _cmd_preview(cmds.get("uninstall", ""), cap)
+            caps.append({**cap, "installed": installed, "recommendation": rec, "installable": installable,
+                         "install_cmd": install_cmd_preview, "uninstall_cmd": uninstall_cmd_preview})
             total_caps += 1
             if installed: total_installed += 1
             if rec == "推荐": total_recommended += 1

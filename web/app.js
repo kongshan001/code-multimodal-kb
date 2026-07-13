@@ -162,22 +162,57 @@ async function catalogView() {
   };
   window.toggleCap = async (capId, capName) => {
     const cap = window._catData?.categories?.flatMap(c => c.capabilities).find(c => c.id === capId);
-    if (!cap) { alert(`未找到 ${capName}`); return; }
+    if (!cap) { return; }
+    const isUninstall = cap.installed;
+    const action = isUninstall ? "卸载" : "安装";
+    const cmd = isUninstall ? (cap.uninstall_cmd || "") : (cap.install_cmd || "");
+    const apiPath = isUninstall ? "/api/uninstall" : "/api/install";
+
+    // 找到按钮行
+    const btn = [...document.querySelectorAll('button')].find(b => b.getAttribute('onclick')?.includes(capId));
+    const row = btn?.closest('tr');
+    const btnOriginal = btn ? btn.outerHTML : '';
+    if (btn) { btn.disabled = true; btn.textContent = "⏳ 执行中..."; btn.style.opacity = "0.6"; }
+
+    // 在按钮行下方插入日志行（不受 catalog 刷新影响——直到手动刷新）
+    let logRow = document.querySelector('#capLogRow');
+    if (logRow) logRow.remove();
+    logRow = document.createElement('tr');
+    logRow.id = 'capLogRow';
+    logRow.innerHTML = `<td colspan="4" style="padding:14px 16px;background:#fff;border:1.5px solid var(--ink);font-family:'JetBrains Mono',monospace;font-size:11px;white-space:pre-wrap;line-height:1.6;color:var(--ink)">
+      <b style="color:var(--accent);font-size:13px">${action} ${capName}</b>
+<span style="color:var(--ink2)">执行指令：</span>
+<code style="color:var(--ink)">$ ${cmd || '(内部操作)'}</code>
+
+<span style="color:var(--ink2)">⏳ 正在执行...</span></td>`;
+    if (row?.parentNode) row.parentNode.insertBefore(logRow, row.nextSibling);
+
+    if (isUninstall && !confirm(`确定${action} ${capName}？`)) {
+      if (btn) { btn.disabled = false; btn.outerHTML = btnOriginal; }
+      logRow.remove();
+      return;
+    }
+
     try {
-      if (cap.installed) {
-        if (!confirm(`确定卸载 ${capName}？`)) return;
-        const r = await fetch("/api/uninstall", {method:"POST", headers:{"Content-Type":"application/json"},
-          body: JSON.stringify({id: capId})});
-        const o = await r.json();
-        alert(`${o.rc===0?"✓":"⚠"} ${capName}\n\n${(o.stdout||o.error||"").slice(0, 300)}`);
-      } else {
-        const r = await fetch("/api/install", {method:"POST", headers:{"Content-Type":"application/json"},
-          body: JSON.stringify({id: capId, project: window._targetProject})});
-        const o = await r.json();
-        alert(`${o.rc===0?"✓":"⚠"} ${capName}\n\n${(o.stdout||o.error||"").slice(0, 300)}`);
-      }
-    } catch(e) { alert(`操作失败: ${e}`); return; }
-    await window.loadCatalogFor();
+      const payload = {id: capId};
+      if (!isUninstall) payload.project = window._targetProject;
+      const r = await fetch(apiPath, {method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify(payload)});
+      const o = await r.json();
+      const ok = o.rc === 0;
+      const output = (o.stdout || o.error || "").slice(0, 500);
+      const color = ok ? 'var(--good)' : 'var(--bad)';
+      logRow.innerHTML = `<td colspan="4" style="padding:14px 16px;background:#fff;border:1.5px solid var(--ink);font-family:'JetBrains Mono',monospace;font-size:11px;white-space:pre-wrap;line-height:1.6;color:var(--ink)">
+        <b style="color:${color};font-size:13px">${ok?'✓':'⚠'} ${action}${ok?'成功':'失败'}：${capName}</b>
+<span style="color:var(--ink2)">执行指令：</span>
+<code style="color:var(--ink)">$ ${cmd || '(内部操作)'}</code>
+
+<span style="color:var(--ink2)">输出：</span>
+${output}
+
+<span style="color:var(--ink2)">→ </span><a href="#/catalog" onclick="setTimeout(()=>window.loadCatalogFor(),100);return true;" style="color:var(--accent);text-decoration:underline">刷新状态</a></td>`;
+    } catch(e) {
+      logRow.innerHTML = `<td colspan="4" style="padding:14px;background:#fff;border:1.5px solid var(--bad);font-family:monospace;font-size:11px;color:var(--bad)">⚠ 操作失败: ${e}</td>`;
+    }
   };
   window.loadCatalogFor();  // 首次自动加载
 }
