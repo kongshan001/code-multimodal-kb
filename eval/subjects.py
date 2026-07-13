@@ -8,8 +8,9 @@ from __future__ import annotations
 import json
 import os
 import shutil
-import subprocess
 from typing import Any
+
+from eval._subproc import run_text
 
 CMM_BIN = (
     os.environ.get("CMM_BIN")
@@ -19,10 +20,7 @@ CMM_BIN = (
 
 
 def _cli(tool: str, args: dict) -> Any:
-    proc = subprocess.run(
-        [CMM_BIN, "cli", tool, json.dumps(args)],
-        capture_output=True, text=True, timeout=120,
-    )
+    proc = run_text([CMM_BIN, "cli", tool, json.dumps(args)], timeout=120)
     if proc.returncode != 0:
         raise RuntimeError(f"cmm cli {tool} 失败 (rc={proc.returncode}): {proc.stderr.strip()}")
     out = proc.stdout.strip()

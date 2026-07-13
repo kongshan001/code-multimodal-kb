@@ -21,6 +21,7 @@ import os
 import re
 import statistics
 
+from eval._subproc import run_text
 from eval.ab_agent import load_creds, make_client
 from eval.repro import detect_lockfile, stamp
 from eval.targets import load_problems, load_target
@@ -33,9 +34,8 @@ _PER_DOC_CAP = 5000  # 每文档取前 N chars（覆盖到正文段落，非仅 
 def _doc_chunks(query: str, graph: str) -> list[str]:
     """graphify 定位节点（raw NODE 行，带 src=）→ 取 src 指向的 .rst 真实文本做可读 context。
     graphify 返图节点元数据（不可读），答案质量需要文档段落——故映射到源 .rst。"""
-    import subprocess
-    out = subprocess.run(["graphify", "query", query, "--graph", graph, "--budget", "800"],
-                         capture_output=True, text=True, timeout=30).stdout
+    out = run_text(["graphify", "query", query, "--graph", graph, "--budget", "800"],
+                   timeout=30).stdout
     srcs = []
     for line in out.splitlines():
         if not line.startswith("NODE "):

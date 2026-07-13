@@ -18,12 +18,13 @@ import argparse
 import json
 import os
 import shutil
-import subprocess
 import sys
 import threading
 import urllib.parse
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
+
+from eval._subproc import run_text
 
 # Windows 中文系统默认 stdout/文件编码是 GBK(cp936)：print 的 emoji(✓⚠) 和读 UTF-8
 # 文件(含中文/emoji)都会 UnicodeEncode/DecodeError。统一强制 UTF-8——跨平台一致。
@@ -48,7 +49,7 @@ def _probe_bin(name: str) -> str:
     if not p:
         return ""
     try:
-        out = subprocess.run([p, "--version"], capture_output=True, text=True, timeout=8)
+        out = run_text([p, "--version"], timeout=8)
         return out.stdout.strip().split()[-1] if out.returncode == 0 else "ok"
     except Exception:
         return "ok"
@@ -155,14 +156,12 @@ class Handler(BaseHTTPRequestHandler):
                 # --target 各 subject 接受，但默认值不同
                 if body.get("target"):
                     args += ["--target", body["target"]]
-                out = subprocess.run(["python", "-m", "eval.cli", *args],
-                                     capture_output=True, text=True, cwd=str(REPO), timeout=600)
+                out = run_text(["python", "-m", "eval.cli", *args], timeout=600, cwd=str(REPO))
                 return self._send_json(200, {"rc": out.returncode, "stdout": out.stdout[-2000:], "stderr": out.stderr[-500:]})
             if u.path == "/api/goldgen":
                 seeds = body.get("seeds", [])
                 args = ["goldgen", *seeds, "--target", body.get("target", "gen")]
-                out = subprocess.run(["python", "-m", "eval.cli", *args],
-                                     capture_output=True, text=True, cwd=str(REPO), timeout=300)
+                out = run_text(["python", "-m", "eval.cli", *args], timeout=300, cwd=str(REPO))
                 return self._send_json(200, {"rc": out.returncode, "stdout": out.stdout[-2000:]})
             if u.path == "/api/install":
                 cap_id = body.get("id", "")
@@ -181,12 +180,12 @@ class Handler(BaseHTTPRequestHandler):
                     "mine": ["mempalace", "mine", path, "--mode", "convos"],
                 }
                 cmd = cmds.get(act, ["echo", f"unknown action {act}"])
-                out = subprocess.run(cmd, capture_output=True, text=True, timeout=300, cwd=str(REPO))
+                out = run_text(cmd, timeout=300, cwd=str(REPO))
                 return self._send_json(200, {"rc": out.returncode, "stdout": out.stdout[-2000:], "stderr": out.stderr[-500:]})
             if u.path == "/api/goldgen-verify":
                 tgt = body.get("target", "gen")
-                out = subprocess.run(["python", "-m", "eval.cli", "goldgen-verify", "--target", tgt],
-                                     capture_output=True, text=True, timeout=120, cwd=str(REPO))
+                out = run_text(["python", "-m", "eval.cli", "goldgen-verify", "--target", tgt],
+                               timeout=120, cwd=str(REPO))
                 return self._send_json(200, {"rc": out.returncode, "stdout": out.stdout[-1500:]})
         except Exception as e:
             return self._send_json(500, {"error": str(e)})

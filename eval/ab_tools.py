@@ -18,10 +18,10 @@
 from __future__ import annotations
 
 import json
-import subprocess
 from dataclasses import dataclass
 from typing import Callable
 
+from eval._subproc import run_text
 from eval.subjects import cmm_bm25, norm_item
 from eval.targets import load_target
 
@@ -45,9 +45,9 @@ class ToolSpec:
 def grep_code(pattern: str) -> str:
     """朴素 grep -rli（baseline 臂）：返 top-20 文件路径。"""
     try:
-        out = subprocess.run(
+        out = run_text(
             ["grep", "-rli", pattern, GODOT_CORE, "--include=*.h", "--include=*.cpp", "--include=*.hpp"],
-            capture_output=True, text=True, timeout=30,
+            timeout=30,
         ).stdout.strip()
         files = [ln for ln in out.splitlines() if ln][:20]
         return f"matched {len(files)} files:\n" + "\n".join(files) if files else "(no matches)"
@@ -77,9 +77,9 @@ def cmm_search(query: str) -> str:
 def graphify_query(question: str) -> str:
     """graphify BFS 查文档图（doc 臂）：返文档概念节点（仅 vector/math 子集覆盖的主题）。"""
     try:
-        out = subprocess.run(
+        out = run_text(
             ["graphify", "query", question, "--graph", DOC_GRAPH, "--budget", "800"],
-            capture_output=True, text=True, timeout=30,
+            timeout=30,
         ).stdout
         nodes = [ln for ln in out.splitlines() if ln.startswith("NODE ")]
         edges = [ln for ln in out.splitlines() if ln.startswith("EDGE ")][:4]
@@ -92,9 +92,9 @@ def codegraph_search(query: str) -> str:
     """codegraph 符号检索（codegraph 臂）：返 name/kind/file。
     需先在 GODOT_CORE 跑 `codegraph init` 建索引。JSON 输出。"""
     try:
-        out = subprocess.run(
+        out = run_text(
             ["codegraph", "query", query, "--path", GODOT_CORE, "--limit", "5", "--json"],
-            capture_output=True, text=True, timeout=30,
+            timeout=30,
         ).stdout
         data = json.loads(out) if out.strip() else []
         items = data if isinstance(data, list) else (data.get("results") or data.get("symbols") or [])

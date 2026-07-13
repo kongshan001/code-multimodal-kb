@@ -9,8 +9,9 @@ from __future__ import annotations
 import os
 import re
 import shutil
-import subprocess
 from typing import Any
+
+from eval._subproc import run_text
 
 MEMPALACE_BIN = (
     os.environ.get("MEMPALACE_BIN")
@@ -67,7 +68,7 @@ def _run(query: str, results: int, wing: str | None, room: str | None) -> str:
         cmd += ["--wing", wing]
     if room:
         cmd += ["--room", room]
-    proc = subprocess.run(cmd, capture_output=True, text=True, timeout=120)
+    proc = run_text(cmd, timeout=120)
     if proc.returncode != 0:
         raise RuntimeError(f"mempalace search 失败 (rc={proc.returncode}): {proc.stderr.strip()[:200]}")
     return proc.stdout
@@ -92,7 +93,7 @@ def mempalace_search(query: str, limit: int = 10, wing: str | None = None,
 
 def mempalace_available() -> bool:
     try:
-        subprocess.run([MEMPALACE_BIN, "--version"], capture_output=True, text=True, timeout=15)
+        run_text([MEMPALACE_BIN, "--version"], timeout=15)
         return True
     except Exception:
         return False

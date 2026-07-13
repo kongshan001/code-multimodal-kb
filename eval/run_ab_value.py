@@ -18,8 +18,8 @@ import argparse
 import json
 import os
 import statistics
-import subprocess
 
+from eval._subproc import run_text
 from eval.repro import detect_lockfile, stamp
 from eval.subjects import cmm_bm25, norm_item
 from eval.targets import load_problems, load_target
@@ -44,10 +44,10 @@ def _broad_text(it: dict) -> str:
 def _grep_files(query: str, code_root: str) -> list[str]:
     """朴素 grep -rl <query>（大小写不敏感，.h/.cpp/.hpp）。返回命中文件路径。"""
     try:
-        out = subprocess.run(
+        out = run_text(
             ["grep", "-rli", query, code_root, "--include=*.h", "--include=*.cpp",
              "--include=*.hpp"],
-            capture_output=True, text=True, timeout=60,
+            timeout=60,
         ).stdout.strip()
         return [ln for ln in out.splitlines() if ln]
     except Exception:

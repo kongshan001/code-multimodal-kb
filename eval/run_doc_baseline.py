@@ -8,9 +8,9 @@ from __future__ import annotations
 
 import argparse
 import json
-import subprocess
 import statistics
 
+from eval._subproc import run_text
 from eval.metrics import recall_at_k
 from eval.targets import load_problems, load_target
 
@@ -19,9 +19,9 @@ KS = (1, 3, 5, 100)  # 第 4 档用大值=全部返回节点
 
 def graphify_query(graph: str, question: str, budget: int = 1200) -> list[str]:
     """调 graphify query，解析返回的 NODE <label> 行（有序）。"""
-    proc = subprocess.run(
+    proc = run_text(
         ["graphify", "query", question, "--graph", graph, "--budget", str(budget)],
-        capture_output=True, text=True, timeout=90,
+        timeout=90,
     )
     labels: list[str] = []
     for line in proc.stdout.splitlines():

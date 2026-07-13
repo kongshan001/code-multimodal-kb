@@ -11,7 +11,8 @@ from __future__ import annotations
 
 import json
 import pathlib
-import subprocess
+
+from eval._subproc import run_text
 
 from eval.llm import complete
 
@@ -29,8 +30,7 @@ QA: list[tuple[str, str]] = [
 
 
 def graphify_answer(q: str) -> str:
-    r = subprocess.run(["graphify", "query", q, "--graph", GRAPH, "--budget", "800"],
-                       capture_output=True, text=True, timeout=90)
+    r = run_text(["graphify", "query", q, "--graph", GRAPH, "--budget", "800"], timeout=90)
     lines = [l for l in r.stdout.splitlines() if l.startswith(("NODE ", "EDGE "))]
     return "\n".join(lines[:12]) or "(空)"
 
@@ -40,8 +40,7 @@ def naive_answer(q: str) -> str:
     import re
     kws = [w for w in re.findall(r"[A-Za-z一-龥]{2,}", q) if len(w) >= 2][:4]
     pat = "|".join(kws)
-    r = subprocess.run(["grep", "-riE", pat, *DOCS_DIR.glob("*.rst")],
-                       capture_output=True, text=True, timeout=30)
+    r = run_text(["grep", "-riE", pat, *DOCS_DIR.glob("*.rst")], timeout=30)
     hits = [l.strip() for l in r.stdout.splitlines() if l.strip()][:6]
     return "\n".join(hits) or "(空)"
 

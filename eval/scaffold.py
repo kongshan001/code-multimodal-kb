@@ -9,8 +9,9 @@ import json
 import os
 import re
 import shutil
-import subprocess
 from pathlib import Path
+
+from eval._subproc import run_text
 
 REPO = Path(__file__).resolve().parent.parent
 SKILLS_DIR = Path.home() / ".claude" / "skills"
@@ -121,8 +122,8 @@ def _cmm_install() -> tuple[int, str]:
 
 def _headroom_install() -> tuple[int, str]:
     """headroom 安装到 ~/.headroom/venv。"""
-    out = subprocess.run(["bash", "-c", "curl -fsSL https://raw.githubusercontent.com/mgks/headroom/main/install.sh | bash"],
-                         capture_output=True, text=True, timeout=120)
+    out = run_text(["bash", "-c", "curl -fsSL https://raw.githubusercontent.com/mgks/headroom/main/install.sh | bash"],
+                   timeout=120)
     return out.returncode, out.stdout[-200:] + out.stderr[-200:]
 
 
@@ -175,7 +176,7 @@ def execute_action(cap_id: str, action: str) -> dict:
 
     # 模板替换 + 执行
     cmd = cmd_template.format(id=cap_id, source=source, skills_dir=str(SKILLS_DIR))
-    out = subprocess.run(["bash", "-c", cmd], capture_output=True, text=True, timeout=180)
+    out = run_text(["bash", "-c", cmd], timeout=180)
     # strip control chars
     msg = re.sub(r'[\x00-\x08\x0b\x0c\x0e-\x1f\r]', '', out.stdout + out.stderr)
     return {"rc": out.returncode, "stdout": msg[-400:]}
