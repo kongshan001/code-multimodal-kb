@@ -132,9 +132,14 @@ class Handler(BaseHTTPRequestHandler):
         body = json.loads(self.rfile.read(length)) if length else {}
         try:
             if u.path == "/api/run":
-                args = ["run", body.get("subject", "code")]
-                if body.get("target"): args += ["--target", body["target"]]
-                if body.get("method"): args += ["--method", body["method"]]
+                subj = body.get("subject", "code")
+                args = ["run", subj]
+                # 只有 code 接受 --method；其它 subject 的 argparse 不认
+                if subj == "code" and body.get("method"):
+                    args += ["--method", body["method"]]
+                # --target 各 subject 接受，但默认值不同
+                if body.get("target"):
+                    args += ["--target", body["target"]]
                 out = subprocess.run(["python", "-m", "eval.cli", *args],
                                      capture_output=True, text=True, cwd=str(REPO), timeout=600)
                 return self._send_json(200, {"rc": out.returncode, "stdout": out.stdout[-2000:], "stderr": out.stderr[-500:]})

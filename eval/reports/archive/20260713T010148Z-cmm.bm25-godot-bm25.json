@@ -1,0 +1,578 @@
+{
+  "subject": "cmm.bm25",
+  "variant": "godot-bm25",
+  "target": "godot",
+  "n": 26,
+  "aggregate": {
+    "mean_recall@1": 0.462,
+    "mean_broad_recall@1": 0.846,
+    "mean_recall@3": 0.5,
+    "mean_broad_recall@3": 0.846,
+    "mean_recall@5": 0.5,
+    "mean_broad_recall@5": 0.846,
+    "mean_recall@10": 0.5,
+    "mean_broad_recall@10": 0.885
+  },
+  "per_query": [
+    {
+      "query": "string format",
+      "gold": [
+        "vformat"
+      ],
+      "retrieved_top5": [
+        "format",
+        "format_number",
+        "_get_string",
+        "get_unicode_string",
+        "save_unicode_string"
+      ],
+      "recall@1": 0.0,
+      "broad_recall@1": 0.0,
+      "recall@3": 0.0,
+      "broad_recall@3": 0.0,
+      "recall@5": 0.0,
+      "broad_recall@5": 0.0,
+      "recall@10": 0.0,
+      "broad_recall@10": 0.0
+    },
+    {
+      "query": "int to string",
+      "gold": [
+        "itos"
+      ],
+      "retrieved_top5": [
+        "to_int",
+        "_to_int",
+        "hex_to_int",
+        "bin_to_int",
+        "as_int"
+      ],
+      "recall@1": 0.0,
+      "broad_recall@1": 0.0,
+      "recall@3": 0.0,
+      "broad_recall@3": 0.0,
+      "recall@5": 0.0,
+      "broad_recall@5": 0.0,
+      "recall@10": 0.0,
+      "broad_recall@10": 0.0
+    },
+    {
+      "query": "delete object free memory",
+      "gold": [
+        "memdelete"
+      ],
+      "retrieved_top5": [
+        "operator delete",
+        "delete_allocation",
+        "free_static",
+        "free",
+        "free_aligned_static"
+      ],
+      "recall@1": 0.0,
+      "broad_recall@1": 0.0,
+      "recall@3": 0.0,
+      "broad_recall@3": 0.0,
+      "recall@5": 0.0,
+      "broad_recall@5": 0.0,
+      "recall@10": 0.0,
+      "broad_recall@10": 0.0
+    },
+    {
+      "query": "a star pathfinding",
+      "gold": [
+        "AStar"
+      ],
+      "retrieved_top5": [
+        "~AStar3D",
+        "clear",
+        "_solve",
+        "clear",
+        "_solve"
+      ],
+      "recall@1": 0.0,
+      "broad_recall@1": 1.0,
+      "recall@3": 0.0,
+      "broad_recall@3": 1.0,
+      "recall@5": 0.0,
+      "broad_recall@5": 1.0,
+      "recall@10": 0.0,
+      "broad_recall@10": 1.0
+    },
+    {
+      "query": "operating system abstraction",
+      "gold": [
+        "OS"
+      ],
+      "retrieved_top5": [
+        "get_system_fonts",
+        "get_system_dir",
+        "get_system_dir",
+        "get_system_fonts",
+        "get_system_ca_certificates"
+      ],
+      "recall@1": 0.0,
+      "broad_recall@1": 1.0,
+      "recall@3": 0.0,
+      "broad_recall@3": 1.0,
+      "recall@5": 0.0,
+      "broad_recall@5": 1.0,
+      "recall@10": 0.0,
+      "broad_recall@10": 1.0
+    },
+    {
+      "query": "color",
+      "gold": [
+        "Color"
+      ],
+      "retrieved_top5": [
+        "Color",
+        "find_named_color",
+        "get_named_color",
+        "get_named_color_count",
+        "get_named_color_name"
+      ],
+      "recall@1": 1.0,
+      "broad_recall@1": 1.0,
+      "recall@3": 1.0,
+      "broad_recall@3": 1.0,
+      "recall@5": 1.0,
+      "broad_recall@5": 1.0,
+      "recall@10": 1.0,
+      "broad_recall@10": 1.0
+    },
+    {
+      "query": "vector2",
+      "gold": [
+        "Vector2"
+      ],
+      "retrieved_top5": [
+        "Vector2",
+        "angle",
+        "length",
+        "normalize",
+        "normalized"
+      ],
+      "recall@1": 1.0,
+      "broad_recall@1": 1.0,
+      "recall@3": 1.0,
+      "broad_recall@3": 1.0,
+      "recall@5": 1.0,
+      "broad_recall@5": 1.0,
+      "recall@10": 1.0,
+      "broad_recall@10": 1.0
+    },
+    {
+      "query": "vector3",
+      "gold": [
+        "Vector3"
+      ],
+      "retrieved_top5": [
+        "Vector3",
+        "rotate",
+        "rotated",
+        "snap",
+        "snapped"
+      ],
+      "recall@1": 1.0,
+      "broad_recall@1": 1.0,
+      "recall@3": 1.0,
+      "broad_recall@3": 1.0,
+      "recall@5": 1.0,
+      "broad_recall@5": 1.0,
+      "recall@10": 1.0,
+      "broad_recall@10": 1.0
+    },
+    {
+      "query": "quaternion",
+      "gold": [
+        "Quaternion"
+      ],
+      "retrieved_top5": [
+        "Quaternion",
+        "length",
+        "normalize",
+        "normalized",
+        "inverse"
+      ],
+      "recall@1": 1.0,
+      "broad_recall@1": 1.0,
+      "recall@3": 1.0,
+      "broad_recall@3": 1.0,
+      "recall@5": 1.0,
+      "broad_recall@5": 1.0,
+      "recall@10": 1.0,
+      "broad_recall@10": 1.0
+    },
+    {
+      "query": "rect2",
+      "gold": [
+        "Rect2"
+      ],
+      "retrieved_top5": [
+        "Rect2",
+        "intersects",
+        "encloses",
+        "intersection",
+        "merge"
+      ],
+      "recall@1": 1.0,
+      "broad_recall@1": 1.0,
+      "recall@3": 1.0,
+      "broad_recall@3": 1.0,
+      "recall@5": 1.0,
+      "broad_recall@5": 1.0,
+      "recall@10": 1.0,
+      "broad_recall@10": 1.0
+    },
+    {
+      "query": "json",
+      "gold": [
+        "JSON"
+      ],
+      "retrieved_top5": [
+        "_stringify",
+        "parse",
+        "stringify",
+        "_add_indent",
+        "_get_token"
+      ],
+      "recall@1": 0.0,
+      "broad_recall@1": 1.0,
+      "recall@3": 0.0,
+      "broad_recall@3": 1.0,
+      "recall@5": 0.0,
+      "broad_recall@5": 1.0,
+      "recall@10": 0.0,
+      "broad_recall@10": 1.0
+    },
+    {
+      "query": "image",
+      "gold": [
+        "Image"
+      ],
+      "retrieved_top5": [
+        "Image",
+        "validate_3d_image",
+        "compute_image_metrics",
+        "_get_dst_image_size",
+        "get_image_data_size"
+      ],
+      "recall@1": 1.0,
+      "broad_recall@1": 1.0,
+      "recall@3": 1.0,
+      "broad_recall@3": 1.0,
+      "recall@5": 1.0,
+      "broad_recall@5": 1.0,
+      "recall@10": 1.0,
+      "broad_recall@10": 1.0
+    },
+    {
+      "query": "resource loader",
+      "gold": [
+        "ResourceLoader"
+      ],
+      "retrieved_top5": [
+        "add_resource_format_loader",
+        "remove_resource_format_loader",
+        "_find_custom_resource_format_loader",
+        "add_custom_resource_format_loader",
+        "~ResourceFormatLoader"
+      ],
+      "recall@1": 0.0,
+      "broad_recall@1": 1.0,
+      "recall@3": 0.0,
+      "broad_recall@3": 1.0,
+      "recall@5": 0.0,
+      "broad_recall@5": 1.0,
+      "recall@10": 0.0,
+      "broad_recall@10": 1.0
+    },
+    {
+      "query": "resource saver",
+      "gold": [
+        "ResourceSaver"
+      ],
+      "retrieved_top5": [
+        "add_resource_format_saver",
+        "remove_resource_format_saver",
+        "_find_custom_resource_format_saver",
+        "add_custom_resource_format_saver",
+        "~ResourceFormatSaver"
+      ],
+      "recall@1": 0.0,
+      "broad_recall@1": 1.0,
+      "recall@3": 0.0,
+      "broad_recall@3": 1.0,
+      "recall@5": 0.0,
+      "broad_recall@5": 1.0,
+      "recall@10": 0.0,
+      "broad_recall@10": 1.0
+    },
+    {
+      "query": "file access",
+      "gold": [
+        "FileAccess"
+      ],
+      "retrieved_top5": [
+        "~FileAccess",
+        "~FileAccessCompressed",
+        "~FileAccessEncrypted",
+        "FileAccessPack",
+        "FileAccessZip"
+      ],
+      "recall@1": 0.0,
+      "broad_recall@1": 1.0,
+      "recall@3": 0.0,
+      "broad_recall@3": 1.0,
+      "recall@5": 0.0,
+      "broad_recall@5": 1.0,
+      "recall@10": 0.0,
+      "broad_recall@10": 1.0
+    },
+    {
+      "query": "directory access",
+      "gold": [
+        "DirAccess"
+      ],
+      "retrieved_top5": [
+        "add_directory",
+        "has_directory",
+        "try_open_directory",
+        "list_directory",
+        "list_directory"
+      ],
+      "recall@1": 0.0,
+      "broad_recall@1": 0.0,
+      "recall@3": 0.0,
+      "broad_recall@3": 0.0,
+      "recall@5": 0.0,
+      "broad_recall@5": 0.0,
+      "recall@10": 0.0,
+      "broad_recall@10": 1.0
+    },
+    {
+      "query": "message queue",
+      "gold": [
+        "MessageQueue"
+      ],
+      "retrieved_top5": [
+        "MessageQueue",
+        "~MessageQueue",
+        "CallQueue",
+        "~CallQueue",
+        "flush"
+      ],
+      "recall@1": 1.0,
+      "broad_recall@1": 1.0,
+      "recall@3": 1.0,
+      "broad_recall@3": 1.0,
+      "recall@5": 1.0,
+      "broad_recall@5": 1.0,
+      "recall@10": 1.0,
+      "broad_recall@10": 1.0
+    },
+    {
+      "query": "engine",
+      "gold": [
+        "Engine"
+      ],
+      "retrieved_top5": [
+        "Engine",
+        "~Engine",
+        "Engine",
+        "print_header",
+        "add_singleton"
+      ],
+      "recall@1": 1.0,
+      "broad_recall@1": 1.0,
+      "recall@3": 2.0,
+      "broad_recall@3": 1.0,
+      "recall@5": 2.0,
+      "broad_recall@5": 1.0,
+      "recall@10": 2.0,
+      "broad_recall@10": 1.0
+    },
+    {
+      "query": "main loop",
+      "gold": [
+        "MainLoop"
+      ],
+      "retrieved_top5": [
+        "~MainLoop",
+        "get_main_loop",
+        "_register_main_loop_callbacks",
+        "initialize",
+        "process"
+      ],
+      "recall@1": 0.0,
+      "broad_recall@1": 1.0,
+      "recall@3": 0.0,
+      "broad_recall@3": 1.0,
+      "recall@5": 0.0,
+      "broad_recall@5": 1.0,
+      "recall@10": 0.0,
+      "broad_recall@10": 1.0
+    },
+    {
+      "query": "undo redo",
+      "gold": [
+        "UndoRedo"
+      ],
+      "retrieved_top5": [
+        "_redo",
+        "redo",
+        "undo",
+        "~UndoRedo",
+        "discard_redo"
+      ],
+      "recall@1": 0.0,
+      "broad_recall@1": 1.0,
+      "recall@3": 0.0,
+      "broad_recall@3": 1.0,
+      "recall@5": 0.0,
+      "broad_recall@5": 1.0,
+      "recall@10": 0.0,
+      "broad_recall@10": 1.0
+    },
+    {
+      "query": "node path",
+      "gold": [
+        "NodePath"
+      ],
+      "retrieved_top5": [
+        "NodePath",
+        "~NodePath",
+        "get_node_path",
+        "init_node_path",
+        "rel_path_to"
+      ],
+      "recall@1": 1.0,
+      "broad_recall@1": 1.0,
+      "recall@3": 1.0,
+      "broad_recall@3": 1.0,
+      "recall@5": 1.0,
+      "broad_recall@5": 1.0,
+      "recall@10": 1.0,
+      "broad_recall@10": 1.0
+    },
+    {
+      "query": "string name",
+      "gold": [
+        "StringName"
+      ],
+      "retrieved_top5": [
+        "StringName",
+        "~StringName",
+        "is_node_unique_name",
+        "String",
+        "operator=="
+      ],
+      "recall@1": 1.0,
+      "broad_recall@1": 1.0,
+      "recall@3": 1.0,
+      "broad_recall@3": 1.0,
+      "recall@5": 1.0,
+      "broad_recall@5": 1.0,
+      "recall@10": 1.0,
+      "broad_recall@10": 1.0
+    },
+    {
+      "query": "random number generator",
+      "gold": [
+        "RandomNumberGenerator"
+      ],
+      "retrieved_top5": [
+        "RandomNumberGenerator",
+        "randomize",
+        "randi",
+        "randf",
+        "randfn"
+      ],
+      "recall@1": 1.0,
+      "broad_recall@1": 1.0,
+      "recall@3": 1.0,
+      "broad_recall@3": 1.0,
+      "recall@5": 1.0,
+      "broad_recall@5": 1.0,
+      "recall@10": 1.0,
+      "broad_recall@10": 1.0
+    },
+    {
+      "query": "crypto",
+      "gold": [
+        "Crypto"
+      ],
+      "retrieved_top5": [
+        "create",
+        "hmac_digest",
+        "_bind_methods",
+        "load_default_certificates",
+        "constant_time_compare"
+      ],
+      "recall@1": 0.0,
+      "broad_recall@1": 1.0,
+      "recall@3": 0.0,
+      "broad_recall@3": 1.0,
+      "recall@5": 0.0,
+      "broad_recall@5": 1.0,
+      "recall@10": 0.0,
+      "broad_recall@10": 1.0
+    },
+    {
+      "query": "translation server",
+      "gold": [
+        "TranslationServer"
+      ],
+      "retrieved_top5": [
+        "TranslationServer",
+        "add_translation",
+        "remove_translation",
+        "has_translation",
+        "get_translation_object"
+      ],
+      "recall@1": 1.0,
+      "broad_recall@1": 1.0,
+      "recall@3": 1.0,
+      "broad_recall@3": 1.0,
+      "recall@5": 1.0,
+      "broad_recall@5": 1.0,
+      "recall@10": 1.0,
+      "broad_recall@10": 1.0
+    },
+    {
+      "query": "http client",
+      "gold": [
+        "HTTPClient"
+      ],
+      "retrieved_top5": [
+        "~HTTPClient",
+        "HTTPClientTCP",
+        "set_http_proxy",
+        "_get_http_data",
+        "set_http_proxy"
+      ],
+      "recall@1": 0.0,
+      "broad_recall@1": 1.0,
+      "recall@3": 0.0,
+      "broad_recall@3": 1.0,
+      "recall@5": 0.0,
+      "broad_recall@5": 1.0,
+      "recall@10": 0.0,
+      "broad_recall@10": 1.0
+    }
+  ],
+  "lockfile": {
+    "temperature": 0.0,
+    "llm_model": "",
+    "cmm_version": "0.9.0",
+    "graphify_version": "0.9.13",
+    "mem0_version": "",
+    "mempalace_version": "3.5.0"
+  },
+  "archive_meta": {
+    "id": "20260713T010148Z-cmm.bm25-godot-bm25",
+    "ts": "20260713T010148Z",
+    "readable_ts": "2026-07-13 09:01:48 +0800",
+    "path": "eval/reports/archive/20260713T010148Z-cmm.bm25-godot-bm25.json"
+  }
+}

@@ -1,0 +1,138 @@
+{
+  "subject": "doc-quality-ragas-protocol",
+  "variant": "docs-ragas",
+  "target": "docs",
+  "n": 10,
+  "aggregate": {
+    "n": 10,
+    "mean_faithfulness": 0.986,
+    "mean_context_precision": 0.533,
+    "llm_judge": "glm-5.x（self-preference 风险，相对参考值）"
+  },
+  "per_query": [
+    {
+      "query": "how do nodes communicate with signals",
+      "gold": [
+        "Signals Concept"
+      ],
+      "answer": "Nodes communicate using signals by allowing one node to \"emit\" a signal (such as passing a bullet, direction, and location) without needing to know what happens next. Other nodes that are connected to",
+      "n_chunks": 2,
+      "faithfulness": 1.0,
+      "context_precision": 0.5
+    },
+    {
+      "query": "vector normalization and dot product",
+      "gold": [
+        "Dot Product",
+        "Vector Normalization",
+        "Vector2 Class"
+      ],
+      "answer": "在提供的 context 中，向量归一化（Vector normalization）体现为使用单位向量（Unit vectors）来表示方向。例如，垂直于表面的单位向量被称为单位法向量（Unit normal vectors，简称法线），它们被用来描述表面的朝向。\n\n点积（Dot product）在 context 中展现了其实用价值：计算一个单位向量与空间中任意一点的点积，可以得出该点到该向量所",
+      "n_chunks": 3,
+      "faithfulness": 0.857,
+      "context_precision": 0.333
+    },
+    {
+      "query": "node lifecycle ready callback",
+      "gold": [
+        "Node Class",
+        "_ready Callback"
+      ],
+      "answer": "在 Godot 中，节点的生命周期就绪回调是 `_ready()`（C# 中为 `_Ready()`）。该函数在节点及其所有子节点都进入场景树后，且仅在节点生命周期内被调用一次。由于它能确保所有子节点均已就绪，因此你可以在其中安全地调用 `get_node()` 来获取子节点的引用。",
+      "n_chunks": 3,
+      "faithfulness": 1.0,
+      "context_precision": 0.333
+    },
+    {
+      "query": "per-frame process physics update",
+      "gold": [
+        "_physics_process Virtual Function",
+        "_process Virtual Function"
+      ],
+      "answer": "Per-frame physics updates are handled through the `_physics_process()` virtual method, which the engine calls before every physics step. This processing happens at a fixed rate (60 times per second by",
+      "n_chunks": 1,
+      "faithfulness": 1.0,
+      "context_precision": 1.0
+    },
+    {
+      "query": "attach child node get node path",
+      "gold": [
+        "add_child Method",
+        "get_node Method"
+      ],
+      "answer": "你可以通过调用 `add_child()` 方法将新创建的节点添加为当前脚本节点的子节点。随后，可以使用 `get_node()` 方法并传入节点名称或路径来获取该子节点的引用，例如 `get_node(\"Sprite2D\")` 或 `get_node(\"ShieldBar/AnimationPlayer\")`。在 GDScript 中，还可以使用 `$` 符号作为简写，如 `$Sprite2D`",
+      "n_chunks": 3,
+      "faithfulness": 1.0,
+      "context_precision": 0.333
+    },
+    {
+      "query": "load a resource",
+      "gold": [
+        "Resource Class",
+        "load Function"
+      ],
+      "answer": "在 Godot 中，你可以使用 `load()` 函数在运行时随时加载资源，或者使用 `preload()` 函数在编译时加载资源（注意 `preload()` 只能使用常量字符串路径，且在 C# 中不可用）。当引擎从磁盘加载资源时，无论尝试加载多少次，它都只会将其加载到内存中一次并返回同一个副本。加载场景文件时，它会作为 `PackedScene` 资源被加载，你需要进一步调用 `instant",
+      "n_chunks": 3,
+      "faithfulness": 1.0,
+      "context_precision": 0.333
+    },
+    {
+      "query": "global singleton autoload",
+      "gold": [
+        "Singleton Pattern"
+      ],
+      "answer": "在 Godot 中，Autoload（自动加载）机制用于解决场景系统无法跨场景存储持久信息（如玩家分数或物品栏）的问题。通过在 **Project > Project Settings > Globals > Autoload** 中添加脚本或场景，可以创建始终加载的全局单例节点，这些节点在根视口加载其他场景之前被添加到场景树中。\n\nAutoload 节点具有以下特性：\n- 始终保持加载状态，无论",
+      "n_chunks": 1,
+      "faithfulness": 1.0,
+      "context_precision": 1.0
+    },
+    {
+      "query": "bezier curve path",
+      "gold": [
+        "Cubic Bezier Curve",
+        "Curve2D Class",
+        "Quadratic Bezier Curve"
+      ],
+      "answer": "贝塞尔曲线（Bezier curves）是一种用于以尽可能少的信息和极高的灵活性来表示自然几何形状的数学近似方法，最初为工业设计而创建。它们通过结合多个插值步骤来生成平滑的曲线，最简单的形式是使用三个点的二次贝塞尔（Quadratic Bezier）。为了获得更多的控制权，可以使用四个点的三次贝塞尔（Cubic Bezier），并通过引入相对于端点的控制点来自由调整曲线的形状。",
+      "n_chunks": 1,
+      "faithfulness": 1.0,
+      "context_precision": 1.0
+    },
+    {
+      "query": "matrix rotation transform 2d 3d",
+      "gold": [
+        "Matrix Rotation",
+        "Transform2D Class",
+        "Transform3D Class"
+      ],
+      "answer": "提供的 context 中并未提及“matrix rotation transform”（矩阵旋转变换）的相关内容。文本主要介绍了向量数学（如加减法、标量乘法、点乘）、平面（法向量与距离）以及贝塞尔曲线的插值计算。虽然文中提到这些数学规则在 2D 和 3D 空间中均适用，但并未涉及任何关于矩阵或旋转变换的具体说明。",
+      "n_chunks": 3,
+      "faithfulness": 1.0,
+      "context_precision": 0.0
+    },
+    {
+      "query": "random number generation noise",
+      "gold": [
+        "RandomNumberGenerator Class"
+      ],
+      "answer": "在 Godot 中，你可以学习如何在 GDScript 中使用噪声生成器（noise generator）来实现随机性。文档指出，计算机无法生成“真正”的随机数，而是依赖于伪随机数生成器（PRNGs），Godot 内部使用的是 PCG 系列的伪随机数生成器。此外，Godot 还支持密码学安全的随机数生成，这与典型的随机数生成有所不同。",
+      "n_chunks": 2,
+      "faithfulness": 1.0,
+      "context_precision": 0.5
+    }
+  ],
+  "lockfile": {
+    "temperature": 0.0,
+    "llm_model": "",
+    "cmm_version": "0.9.0",
+    "graphify_version": "0.9.13",
+    "mem0_version": "",
+    "mempalace_version": "3.5.0"
+  },
+  "archive_meta": {
+    "id": "20260713T012756Z-doc-quality-ragas-protocol-docs-ragas",
+    "ts": "20260713T012756Z",
+    "readable_ts": "2026-07-13 09:27:56 +0800",
+    "path": "eval/reports/archive/20260713T012756Z-doc-quality-ragas-protocol-docs-ragas.json"
+  }
+}

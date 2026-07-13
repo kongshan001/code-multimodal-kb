@@ -1,0 +1,138 @@
+{
+  "subject": "doc-quality-ragas-protocol",
+  "variant": "docs-ragas",
+  "target": "docs",
+  "n": 10,
+  "aggregate": {
+    "n": 10,
+    "mean_faithfulness": 0.99,
+    "mean_context_precision": 0.567,
+    "llm_judge": "glm-5.x（self-preference 风险，相对参考值）"
+  },
+  "per_query": [
+    {
+      "query": "how do nodes communicate with signals",
+      "gold": [
+        "Signals Concept"
+      ],
+      "answer": "Nodes communicate with signals by having one node \"emit\" a signal that other connected nodes can \"receive\" and respond to. This decouples game objects, allowing a node to trigger an action without nee",
+      "n_chunks": 2,
+      "faithfulness": 1.0,
+      "context_precision": 0.5
+    },
+    {
+      "query": "vector normalization and dot product",
+      "gold": [
+        "Dot Product",
+        "Vector Normalization",
+        "Vector2 Class"
+      ],
+      "answer": "在向量数学中，归一化后的单位向量（常被称为法线，Normal）可以用来表示表面或平面的朝向。通过计算该单位向量与空间中任意点的点积，可以得出该点到平面的距离，并据此判断点位于平面的哪一侧。如果平面不经过原点，则只需用该点积减去原点到平面的距离标量 D，即可得到带有正负号的真实距离。",
+      "n_chunks": 3,
+      "faithfulness": 1.0,
+      "context_precision": 0.333
+    },
+    {
+      "query": "node lifecycle ready callback",
+      "gold": [
+        "Node Class",
+        "_ready Callback"
+      ],
+      "answer": "在 Godot 的节点生命周期中，`_ready()` 是一个核心的回调函数。该函数在节点及其所有子节点都进入场景树后仅被调用一次，因此你可以安全地在其中调用 `get_node()` 来获取子节点引用。此外，`_enter_tree()` 会在节点每次进入场景树时被调用，而 `_exit_tree()` 则在节点即将离开场景树时被调用。",
+      "n_chunks": 3,
+      "faithfulness": 1.0,
+      "context_precision": 0.333
+    },
+    {
+      "query": "per-frame process physics update",
+      "gold": [
+        "_physics_process Virtual Function",
+        "_process Virtual Function"
+      ],
+      "answer": "在 Godot 中，每帧的物理更新通过 `Node._physics_process()` 虚函数实现，引擎会在每个物理步骤前自动调用它。该方法以固定时间间隔运行（默认每秒 60 次），与实际帧率无关，确保物理交互稳定。你可以用它处理涉及物理引擎的计算，如移动碰撞体或角色。",
+      "n_chunks": 1,
+      "faithfulness": 1.0,
+      "context_precision": 1.0
+    },
+    {
+      "query": "attach child node get node path",
+      "gold": [
+        "add_child Method",
+        "get_node Method"
+      ],
+      "answer": "在 Godot 中，可以通过调用节点的 `new()` 方法创建新节点，并使用 `add_child()` 方法将其添加为当前节点的子节点。要获取子节点的引用，可以使用 `get_node()` 方法并传入节点名称或路径，例如 `get_node(\"Sprite2D\")` 或 `get_node(\"ShieldBar/AnimationPlayer\")`。在 GDScript 中，还可以使用 `$",
+      "n_chunks": 3,
+      "faithfulness": 1.0,
+      "context_precision": 0.333
+    },
+    {
+      "query": "load a resource",
+      "gold": [
+        "Resource Class",
+        "load Function"
+      ],
+      "answer": "在 Godot 中，可以通过代码使用 `load()` 或 `preload()` 函数来加载资源。`load()` 函数可以在任何时候调用，并在执行到该行代码时加载资源；而 `preload()` 函数则会在编译时读取并加载资源，因此只能使用常量字符串路径，不能使用变量路径。",
+      "n_chunks": 3,
+      "faithfulness": 1.0,
+      "context_precision": 0.333
+    },
+    {
+      "query": "global singleton autoload",
+      "gold": [
+        "Singleton Pattern"
+      ],
+      "answer": "在 Godot 中，Autoload（自动加载）用于创建始终加载的全局单例对象，解决场景系统无法跨场景存储持久信息（如玩家分数或物品栏）的问题。通过 **Project > Project Settings > Globals > Autoload** 添加场景或脚本，这些节点会在其他场景加载前被添加到根视口，并可通过名称直接访问（如 `PlayerVariables.health`）。  \n\nA",
+      "n_chunks": 1,
+      "faithfulness": 0.9,
+      "context_precision": 1.0
+    },
+    {
+      "query": "bezier curve path",
+      "gold": [
+        "Cubic Bezier Curve",
+        "Curve2D Class",
+        "Quadratic Bezier Curve"
+      ],
+      "answer": "贝塞尔曲线（Bezier curves）是一种用于以尽可能少的信息和极高的灵活性来表示自然几何形状的数学近似方法，最初为工业设计而创建。它们通过结合多个插值步骤来生成平滑的曲线，最简单的形式是使用三个点的二次贝塞尔（Quadratic Bezier）。为了获得更多控制权，可以使用四个点的三次贝塞尔（Cubic Bezier），甚至可以通过引入相对的控制点来自由调整曲线的形状。",
+      "n_chunks": 1,
+      "faithfulness": 1.0,
+      "context_precision": 1.0
+    },
+    {
+      "query": "matrix rotation transform 2d 3d",
+      "gold": [
+        "Matrix Rotation",
+        "Transform2D Class",
+        "Transform3D Class"
+      ],
+      "answer": "在2D中，矩阵旋转变换是通过改变矩阵的列向量（X轴和Y轴）来实现的。例如，要将对象顺时针旋转90度，可以将X列向量设置为(0, 1)（向下），Y列向量设置为(-1, 0)（向左）。这种变换通过重新定义坐标轴的方向来旋转对象，而无需直接操作矩阵的行。",
+      "n_chunks": 3,
+      "faithfulness": 1.0,
+      "context_precision": 0.333
+    },
+    {
+      "query": "random number generation noise",
+      "gold": [
+        "RandomNumberGenerator Class"
+      ],
+      "answer": "在 Godot 中，你可以学习如何在 GDScript 中使用噪声生成器（noise generator）来实现随机性。计算机本身无法生成“真正”的随机数，而是依赖于伪随机数生成器（PRNGs），Godot 内部使用的是 PCG 系列的伪随机数生成器。此外，Godot 还提供了加密安全的随机数生成功能，它与典型的随机数生成方式有所不同。",
+      "n_chunks": 2,
+      "faithfulness": 1.0,
+      "context_precision": 0.5
+    }
+  ],
+  "lockfile": {
+    "temperature": 0.0,
+    "llm_model": "",
+    "cmm_version": "0.9.0",
+    "graphify_version": "0.9.13",
+    "mem0_version": "",
+    "mempalace_version": "3.5.0"
+  },
+  "archive_meta": {
+    "id": "20260713T015231Z-doc-quality-ragas-protocol-docs-ragas",
+    "ts": "20260713T015231Z",
+    "readable_ts": "2026-07-13 09:52:31 +0800",
+    "path": "eval/reports/archive/20260713T015231Z-doc-quality-ragas-protocol-docs-ragas.json"
+  }
+}
