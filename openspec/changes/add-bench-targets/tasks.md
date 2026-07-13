@@ -46,10 +46,11 @@
 
 ## 6. 删 gold_*.py + 改快照测试
 
-- [ ] 6.1 删除 `eval/gold_godot.py` / `gold_code.py` / `gold_docs.py` / `gold_crosstool.py` / `gold_memory.py` / `gold_gen.py` / `gold_godot_gen.py`
-- [ ] 6.2 重写 `eval/tests/test_gold_regression.py`：pin 每个 target 的 `problems.json`（题数 + 首条 id），断言 `target.json` 的 id/subjects/language（不断言 PROJECT 绝对路径）
-- [ ] 6.3 重写 memory 快照测试：pin `targets/engineer-demo-memory/problems.json`（recall + routing 两段）
-- [ ] 6.4 证据：`pytest eval/tests/ -v` 全绿（含新 loader / goldgen / 快照测试）
+- [x] 6.1 删除 7 个 `eval/gold_*.py`（godot/code/docs/crosstool/memory/gen/godot_gen）+ 一次性 `eval/migrate_gold.py`（迁移完即删）
+- [x] 6.2 重写 `eval/tests/test_gold_regression.py`：pin 4 个 target 的 `problems.json`（题数 + 首条 id）+ target.json 元信息（subjects/language/deps）；**拔除 PROJECT 绝对路径断言**
+- [x] 6.3 重写 `eval/tests/test_memory.py`：recall/routing 题、snapshot、recall_smoke 全改读 `targets/engineer-demo-memory/problems.json`（不再 import gold_memory）
+- [x] 6.4 修 `eval/tests/test_memory_quality.py`：删 gold_memory monkeypatch，`target_id="engineer-demo-memory"`（anthropic-gated，编译通过）
+- [x] 6.5 证据：`pytest eval/tests/`（除 3 anthropic-blocked）64 passed；`grep gold_*` 零 importer；CLI `--help` 子命令正确（goldgen-fold 已无）
 
 ## 7. server 路由 + 前端 Gold lab 编辑器
 

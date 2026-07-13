@@ -15,10 +15,8 @@ def test_memory_quality_smoke(monkeypatch):
     monkeypatch.setattr(M, "make_client", lambda: None)
     monkeypatch.setattr(M, "detect_lockfile", lambda: type("L", (), {"to_dict": lambda s: {}})())
 
-    # 用 2 条 RECALL_GOLD
-    import eval.gold_memory as gm
-    monkeypatch.setattr(gm, "RECALL_GOLD", gm.RECALL_GOLD[:2])
-    rep = M.run(target="memory", subset=2)
+    # subset=2 取前 2 条 memory_recall 题（经 loader 读 problems.json）
+    rep = M.run(target_id="engineer-demo-memory", subset=2)
     assert rep["n"] == 2
     assert rep["aggregate"]["mean_faithfulness"] == 1.0
     assert rep["aggregate"]["mean_context_precision"] == 0.5

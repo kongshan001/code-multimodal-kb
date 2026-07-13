@@ -1,23 +1,38 @@
-"""task 3.3 gold 回归门禁：gold_*.py 快照（长度 + 首条）防漂移。
+"""problems.json 回归门禁：每 target 题数 + 首条 id + target 元信息防漂移。
 
-改 gold 长度 / 首条时本测试失败，强制确认是有意改动。
+改题数 / 首条顺序时本测试失败，强制确认是有意改动。
+不再断言机器特定的 PROJECT 绝对路径（design：不断言 cmm_project 字面量）。
 """
+from eval.targets import load_problems, load_target
 
 
-def test_gold_godot_snapshot():
-    from eval.gold_godot import GOLD, PROJECT
-    assert PROJECT == "Users-ks_128-Documents-godot-src-core"
-    assert len(GOLD) == 26
-    assert GOLD[0] == ("string format", {"vformat"})
+def test_godot_core_snapshot():
+    problems = load_problems("godot-core")
+    assert len(problems) == 26
+    assert problems[0]["id"] == "godot-core-string-format"
+    t = load_target("godot-core")
+    assert t["subjects"] == ["code_retrieval"]
+    assert t["language"] == "C++"
 
 
-def test_gold_docs_snapshot():
-    from eval.gold_docs import GOLD
-    assert len(GOLD) == 10
-    assert GOLD[0] == ("how do nodes communicate with signals", {"Signals Concept"})
+def test_graphify_pkg_snapshot():
+    problems = load_problems("graphify-pkg")
+    assert len(problems) == 21
+    assert problems[0]["id"] == "graphify-pkg-id-construction"
+    assert load_target("graphify-pkg")["subjects"] == ["code_retrieval"]
 
 
-def test_gold_crosstool_snapshot():
-    from eval.gold_crosstool import GOLD
-    assert len(GOLD) == 8
-    assert GOLD[0] == ("vector2 normalization length", "Vector2 Class", "Vector2", "math/vector2")
+def test_godot_docs_snapshot():
+    problems = load_problems("godot-docs")
+    assert len(problems) == 10
+    assert problems[0]["id"] == "godot-docs-how-do-nodes"
+    assert load_target("godot-docs")["subjects"] == ["doc_retrieval"]
+
+
+def test_godot_cross_snapshot():
+    problems = load_problems("godot-cross")
+    assert len(problems) == 8
+    assert problems[0]["id"] == "godot-cross-vector2-normalization-length"
+    t = load_target("godot-cross")
+    assert t["subjects"] == ["cross_anchor"]
+    assert t["deps"] == {"doc_graph": "godot-docs", "cmm": "godot-core"}

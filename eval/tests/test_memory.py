@@ -2,13 +2,24 @@
 
 四项，零外部依赖（mock mempalace CLI / 不连真 palace）：
   test_mempalace_parser      — 录样锁 mempalace search 文本格式
-  test_routing_accuracy      — D1 router 对 ROUTING_GOLD 的四类准确率
+  test_routing_accuracy      — D1 router 对 memory_routing 题的四类准确率
   test_memory_recall_smoke   — L2 端到端：mock search → run() aggregate 预期
-  test_gold_memory_snapshot  — gold 集 drift 门禁
+  test_gold_memory_snapshot  — problems.json drift 门禁
 """
-from eval.gold_memory import RECALL_GOLD, ROUTING_GOLD, LAYERS
 from eval.routing import route, routing_accuracy
 from eval.subjects_memory import parse_search_output
+from eval.targets import load_problems
+
+_LAYERS = ("objective", "procedural", "episodic", "subjective")
+
+
+def _recall():
+    return [p for p in load_problems("engineer-demo-memory") if p["type"] == "memory_recall"]
+
+
+def _routing():
+    return [p for p in load_problems("engineer-demo-memory") if p["type"] == "memory_routing"]
+
 
 # ── 录样：真实 mempalace search 输出片段（2 结果 + 分隔线），锁格式 ──
 _SAMPLE = """
@@ -50,11 +61,12 @@ def test_mempalace_parser():
 
 
 def test_routing_accuracy():
-    """D1 router 对 ROUTING_GOLD：四类全覆盖 + 总体达标。"""
-    res = routing_accuracy([(f, g) for f, g, _ in ROUTING_GOLD])
-    assert res["n"] == len(ROUTING_GOLD)
+    """D1 router 对 memory_routing 题：四类全覆盖 + 总体达标。"""
+    routing = _routing()
+    res = routing_accuracy([(p["fact"], p["gold"]["layer"]) for p in routing])
+    assert res["n"] == len(routing)
     # 四类都被测到
-    assert set(res["per_class"]) == set(LAYERS)
+    assert set(res["per_class"]) == set(_LAYERS)
     # 总体达标（D1 规则在标注集上可操作）
     assert res["overall"] >= 0.85
     # 清晰样例逐条断言
@@ -68,9 +80,8 @@ def test_memory_recall_smoke(monkeypatch):
     """L2 端到端：mock mempalace_search（命中 gold）→ run() aggregate 预期。"""
     import eval.run_memory_baseline as rm
     from eval.repro import Lockfile
-    from eval.targets import load_problems
 
-    recall = [p for p in load_problems("engineer-demo-memory") if p["type"] == "memory_recall"]
+    recall = _recall()
 
     def fake_search(query, limit=10, wing=None, room=None):
         # 返回每个 gold source 各一条 → recall@k=1（含多 gold 项）
@@ -94,14 +105,16 @@ def test_memory_recall_smoke(monkeypatch):
 
 
 def test_gold_memory_snapshot():
-    """gold 集 drift 门禁：规模 + 首条稳定（防意外增删 gold）。"""
-    assert len(RECALL_GOLD) == 15
-    assert len(ROUTING_GOLD) == 13
-    # 首条 query 稳定
-    assert RECALL_GOLD[0][0] == "记忆层选型 MemPalace 还是 Mem0"
-    assert "agent-memory-approach.md" in RECALL_GOLD[0][1]
-    # 路由首条
-    assert ROUTING_GOLD[0][1] == "objective"
+    """problems.json drift 门禁：规模 + 首条稳定（防意外增删题）。"""
+    recall = _recall()
+    routing = _routing()
+    assert len(recall) == 15
+    assert len(routing) == 13
+    # 首条 recall query 稳定
+    assert recall[0]["query"] == "记忆层选型 MemPalace 还是 Mem0"
+    assert "agent-memory-approach.md" in recall[0]["gold"]["source_files"]
+    # 路由首条 layer
+    assert routing[0]["gold"]["layer"] == "objective"
     # 四类各至少 3 条
-    counts = {l: sum(1 for _, g, _ in ROUTING_GOLD if g == l) for l in LAYERS}
+    counts = {l: sum(1 for p in routing if p["gold"]["layer"] == l) for l in _LAYERS}
     assert all(c >= 3 for c in counts.values()), counts
