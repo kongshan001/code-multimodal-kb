@@ -1,7 +1,7 @@
 # 待办事务 / 路线图
 
-> 2026-07-12 快照。变更：`add-bench-frontend` 15/16 · `add-benchmark-runner` 已完成 · `add-code-multimodal-kb` 进行中。
-> `add-evaluation-baseline` + `add-agent-memory` 已归档（主 spec 已同步）。
+> 2026-07-13 快照。已归档（本会话）：`add-bench-targets` / `add-bench-frontend` / `add-benchmark-runner`（主 spec 已同步，5 capability）。
+> 活跃：`add-code-multimodal-kb`（9/33）。`add-evaluation-baseline` + `add-agent-memory` 更早归档。
 
 ## ✅ 已完成 / 已证明
 
@@ -17,13 +17,17 @@
 - **召回**：hit@5=**0.933** · D1 路由准确率 **1.0** · 去重 unique@5=0.64
 - **答案质量**：faithfulness=**0.951** / context_precision=0.360（Ragas 协议）
 
-### 评测 benchmark
-- **harness**：eval/（指标 + gold + lockfile + 归档留底，48 测试绿）
-- **bench CLI**：run code/doc/cross/memory/ab/ab-agent/doc-ragas/memory-quality + list-reports/show/compare
+### 评测 benchmark（`benchmark-runner` + `benchmark-targets` + `bench-frontend` capability）
+- **harness**：eval/（指标 + lockfile + 归档留底，64 测试绿）
+- **题库配置化**：`targets/<id>/{target.json, problems.json}` 声明式（5 type + 稳定 id + 元数据），替旧 gold_*.py 字面量；`target.local.json` overlay 让引擎可移植（fork 模板）
+- **bench CLI**：run code/doc/cross/memory/ab/ab-agent/doc-ragas/memory-quality + list-reports/show/compare（--target = target id）
 - **A/B Stage 0**：context 压缩 **12.71×**（KB 省 58% token）
 - **A/B Stage 1**：四臂横评 baseline/cmm/doc/codegraph（准确度并列天花板 0.923，codegraph 最准 0.962）
 - **答案质量**：文档 faithfulness **0.971** + 记忆 **0.951**（Ragas 协议，LLM-judged）
-- **goldgen 扩题**：symbol-driven agent 挖题 + 两层验收（实证 + 独立 subagent）+ 人审 → fold
+- **goldgen 扩题**：symbol-driven agent 挖题 + 实证验收 + 人审（候选直写 problems.json status:pending，前端 approve，**废 fold/pending.md**）
+- **前端 Gold lab 编辑器**：浏览器内 CRUD 题库（Playwright 验证 round-trip），不自动 git commit
+- **bench-dock-target skill**：对接目标工程的 SOP（`.claude/skills/`）
+- **Windows 兼容**：subprocess UTF-8（全仓）+ npm CLI `.cmd` 包装器解析
 - **工具注册表**：ab_tools.py（接新 KB 零改 loop）
 
 ### 前端 + 工具链
@@ -34,9 +38,12 @@
 
 ## 🔶 进行中
 
-- **`add-bench-frontend`** 15/16：onboarding 向导 localStorage 持久化（1.3）待接
-- **`add-code-multimodal-kb`**：代码/文档 KB 规模化 + path/explain 补全
-- **`add-benchmark-runner`**：已完成核心（CLI + 归档 + goldgen + verify）
+- **`add-code-multimodal-kb`**（9/33）：代码/文档 KB 规模化 + path/explain 补全
+
+## 📋 已登记延期（独立后续 change）
+
+- **F1 `add-bench-doc-quality-targets`**：`run_doc_quality`/`run_doc_quality_ragas` 的文档语料路径配置化（需扩 `doc.rst_dir` schema + 可能第 6 个 target）
+- **F2 `add-scaffold-portable-project-default`**：`web/app.js` `_targetProject` 默认路径（scaffold 能力目录扫描，非 bench）
 
 ## 📋 待办（按价值）
 
