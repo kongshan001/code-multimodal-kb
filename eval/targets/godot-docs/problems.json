@@ -1,0 +1,126 @@
+{
+  "version": 1,
+  "target": "godot-docs",
+  "problems": [
+    {
+      "type": "doc_retrieval",
+      "query": "how do nodes communicate with signals",
+      "gold": {
+        "node_labels": [
+          "Signals Concept"
+        ]
+      },
+      "status": "accepted",
+      "id": "godot-docs-how-do-nodes"
+    },
+    {
+      "type": "doc_retrieval",
+      "query": "vector normalization and dot product",
+      "gold": {
+        "node_labels": [
+          "Dot Product",
+          "Vector Normalization",
+          "Vector2 Class"
+        ]
+      },
+      "status": "accepted",
+      "id": "godot-docs-vector-normalization-and"
+    },
+    {
+      "type": "doc_retrieval",
+      "query": "node lifecycle ready callback",
+      "gold": {
+        "node_labels": [
+          "Node Class",
+          "_ready Callback"
+        ]
+      },
+      "status": "accepted",
+      "id": "godot-docs-node-lifecycle-ready"
+    },
+    {
+      "type": "doc_retrieval",
+      "query": "per-frame process physics update",
+      "gold": {
+        "node_labels": [
+          "_physics_process Virtual Function",
+          "_process Virtual Function"
+        ]
+      },
+      "status": "accepted",
+      "id": "godot-docs-per-frame-process"
+    },
+    {
+      "type": "doc_retrieval",
+      "query": "attach child node get node path",
+      "gold": {
+        "node_labels": [
+          "add_child Method",
+          "get_node Method"
+        ]
+      },
+      "status": "accepted",
+      "id": "godot-docs-attach-child-node"
+    },
+    {
+      "type": "doc_retrieval",
+      "query": "load a resource",
+      "gold": {
+        "node_labels": [
+          "Resource Class",
+          "load Function"
+        ]
+      },
+      "status": "accepted",
+      "id": "godot-docs-load-a-resource"
+    },
+    {
+      "type": "doc_retrieval",
+      "query": "global singleton autoload",
+      "gold": {
+        "node_labels": [
+          "Singleton Pattern"
+        ]
+      },
+      "status": "accepted",
+      "id": "godot-docs-global-singleton-autoload"
+    },
+    {
+      "type": "doc_retrieval",
+      "query": "bezier curve path",
+      "gold": {
+        "node_labels": [
+          "Cubic Bezier Curve",
+          "Curve2D Class",
+          "Quadratic Bezier Curve"
+        ]
+      },
+      "status": "accepted",
+      "id": "godot-docs-bezier-curve-path"
+    },
+    {
+      "type": "doc_retrieval",
+      "query": "matrix rotation transform 2d 3d",
+      "gold": {
+        "node_labels": [
+          "Matrix Rotation",
+          "Transform2D Class",
+          "Transform3D Class"
+        ]
+      },
+      "status": "accepted",
+      "id": "godot-docs-matrix-rotation-transform"
+    },
+    {
+      "type": "doc_retrieval",
+      "query": "random number generation noise",
+      "gold": {
+        "node_labels": [
+          "RandomNumberGenerator Class"
+        ]
+      },
+      "status": "accepted",
+      "id": "godot-docs-random-number-generation"
+    }
+  ]
+}

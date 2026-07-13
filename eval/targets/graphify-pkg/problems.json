@@ -1,0 +1,237 @@
+{
+  "version": 1,
+  "target": "graphify-pkg",
+  "problems": [
+    {
+      "type": "code_retrieval",
+      "query": "id construction",
+      "gold": {
+        "symbols": [
+          "_make_id"
+        ]
+      },
+      "status": "accepted",
+      "id": "graphify-pkg-id-construction"
+    },
+    {
+      "type": "code_retrieval",
+      "query": "build graph from json",
+      "gold": {
+        "symbols": [
+          "build_from_json"
+        ]
+      },
+      "status": "accepted",
+      "id": "graphify-pkg-build-graph-from"
+    },
+    {
+      "type": "code_retrieval",
+      "query": "graph file size cap",
+      "gold": {
+        "symbols": [
+          "check_graph_file_size_cap"
+        ]
+      },
+      "status": "accepted",
+      "id": "graphify-pkg-graph-file-size"
+    },
+    {
+      "type": "code_retrieval",
+      "query": "security",
+      "gold": {
+        "symbols": [
+          "check_graph_file_size_cap"
+        ]
+      },
+      "status": "accepted",
+      "id": "graphify-pkg-security"
+    },
+    {
+      "type": "code_retrieval",
+      "query": "classify file",
+      "gold": {
+        "symbols": [
+          "classify_file"
+        ]
+      },
+      "status": "accepted",
+      "id": "graphify-pkg-classify-file"
+    },
+    {
+      "type": "code_retrieval",
+      "query": "xlsx to markdown",
+      "gold": {
+        "symbols": [
+          "xlsx_to_markdown"
+        ]
+      },
+      "status": "accepted",
+      "id": "graphify-pkg-xlsx-to-markdown"
+    },
+    {
+      "type": "code_retrieval",
+      "query": "google workspace",
+      "gold": {
+        "symbols": [
+          "convert_google_workspace_file"
+        ]
+      },
+      "status": "accepted",
+      "id": "graphify-pkg-google-workspace"
+    },
+    {
+      "type": "code_retrieval",
+      "query": "call llm",
+      "gold": {
+        "symbols": [
+          "_call_llm"
+        ]
+      },
+      "status": "accepted",
+      "id": "graphify-pkg-call-llm"
+    },
+    {
+      "type": "code_retrieval",
+      "query": "backend api key",
+      "gold": {
+        "symbols": [
+          "_get_backend_api_key"
+        ]
+      },
+      "status": "accepted",
+      "id": "graphify-pkg-backend-api-key"
+    },
+    {
+      "type": "code_retrieval",
+      "query": "fetch arxiv",
+      "gold": {
+        "symbols": [
+          "_fetch_arxiv"
+        ]
+      },
+      "status": "accepted",
+      "id": "graphify-pkg-fetch-arxiv"
+    },
+    {
+      "type": "code_retrieval",
+      "query": "transcribe audio",
+      "gold": {
+        "symbols": [
+          "transcribe"
+        ]
+      },
+      "status": "accepted",
+      "id": "graphify-pkg-transcribe-audio"
+    },
+    {
+      "type": "code_retrieval",
+      "query": "score nodes",
+      "gold": {
+        "symbols": [
+          "_score_nodes"
+        ]
+      },
+      "status": "accepted",
+      "id": "graphify-pkg-score-nodes"
+    },
+    {
+      "type": "code_retrieval",
+      "query": "query graph text",
+      "gold": {
+        "symbols": [
+          "_query_graph_text"
+        ]
+      },
+      "status": "accepted",
+      "id": "graphify-pkg-query-graph-text"
+    },
+    {
+      "type": "code_retrieval",
+      "query": "rebuild code",
+      "gold": {
+        "symbols": [
+          "_rebuild_code"
+        ]
+      },
+      "status": "accepted",
+      "id": "graphify-pkg-rebuild-code"
+    },
+    {
+      "type": "code_retrieval",
+      "query": "suggest questions",
+      "gold": {
+        "symbols": [
+          "suggest_questions"
+        ]
+      },
+      "status": "accepted",
+      "id": "graphify-pkg-suggest-questions"
+    },
+    {
+      "type": "code_retrieval",
+      "query": "cross community surprises",
+      "gold": {
+        "symbols": [
+          "_cross_community_surprises"
+        ]
+      },
+      "status": "accepted",
+      "id": "graphify-pkg-cross-community-surprises"
+    },
+    {
+      "type": "code_retrieval",
+      "query": "derive sections from communities",
+      "gold": {
+        "symbols": [
+          "derive_sections_from_communities"
+        ]
+      },
+      "status": "accepted",
+      "id": "graphify-pkg-derive-sections-from"
+    },
+    {
+      "type": "code_retrieval",
+      "query": "write callflow html",
+      "gold": {
+        "symbols": [
+          "write_callflow_html"
+        ]
+      },
+      "status": "accepted",
+      "id": "graphify-pkg-write-callflow-html"
+    },
+    {
+      "type": "code_retrieval",
+      "query": "pick text",
+      "gold": {
+        "symbols": [
+          "pick_text"
+        ]
+      },
+      "status": "accepted",
+      "id": "graphify-pkg-pick-text"
+    },
+    {
+      "type": "code_retrieval",
+      "query": "load graph",
+      "gold": {
+        "symbols": [
+          "load_graph"
+        ]
+      },
+      "status": "accepted",
+      "id": "graphify-pkg-load-graph"
+    },
+    {
+      "type": "code_retrieval",
+      "query": "deduplicate entities",
+      "gold": {
+        "symbols": [
+          "deduplicate_entities"
+        ]
+      },
+      "status": "accepted",
+      "id": "graphify-pkg-deduplicate-entities"
+    }
+  ]
+}

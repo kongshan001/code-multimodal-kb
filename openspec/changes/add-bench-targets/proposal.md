@@ -10,7 +10,7 @@ benchmark 的题目（gold）当前是 `eval/gold_<target>.py` 里的 Python 字
 - **移除 13 处硬编码**（`ab_tools.py:28-29` / `run_ab_value.py:27-28` / `gold_crosstool.py:8` / `run_memory_baseline.py:85` / `run_memory_quality.py:54` / `cli.py:205,215` / `goldgen.py:29,167` / `web/app.js:92,107,382`）：root / project / graph 路径全部改读 `target.json`。
 - **前端 Gold lab 升级**：从「只读 markdown 队列」→ 可读写题库编辑器（列表 / 新增 / 改 / 删 / 批量打标 / approve pending）。前端只写 `problems.json` 文件不碰 git，显示「待提交」diff 指示器，用户自己 commit（同 catalog install 改 `settings.json` 模式）。
 - **CLI 改造**：`--root` 参数删除（root 从 `target.json` 读）；`--target` 语义从「gold 模块名」变为「target id」（如 `godot-core`）。
-- **一次性迁移**（受控 big-bang，数据量小约 70 题 / 6 文件）：6 个 `gold_*.py` → 5 个 `targets/<id>/`（godot-core / graphify-pkg / godot-docs / godot-cross / engineer-demo-memory）；快照测试同步改 pin `problems.json`。
+- **一次性迁移**（受控 big-bang，数据量小约 93 题 / 6 文件）：6 个 `gold_*.py` → 5 个 `targets/<id>/`（godot-core / graphify-pkg / godot-docs / godot-cross / engineer-demo-memory）；快照测试同步改 pin `problems.json`。题数守恒：godot 26 / code 21 / docs 10 / cross 8 / memory recall 15 + routing 13。
 - **BREAKING**：`eval/gold_*.py` 删除（importer 改走 `eval/targets.py` loader）；CLI `--root` 删除；`--target` 取值语义变更（旧 gold 模块名 → 新 target id）。
 
 ## Capabilities

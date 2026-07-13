@@ -1,0 +1,312 @@
+{
+  "version": 1,
+  "target": "engineer-demo-memory",
+  "problems": [
+    {
+      "type": "memory_recall",
+      "query": "记忆层选型 MemPalace 还是 Mem0",
+      "gold": {
+        "source_files": [
+          "agent-memory-approach.md"
+        ]
+      },
+      "status": "accepted",
+      "id": "engineer-demo-memory-记忆层选型-mempalace-还是"
+    },
+    {
+      "type": "memory_recall",
+      "query": "为什么不用 Mem0 改用 MemPalace",
+      "gold": {
+        "source_files": [
+          "agent-memory-approach.md"
+        ]
+      },
+      "status": "accepted",
+      "id": "engineer-demo-memory-为什么不用-mem0-改用"
+    },
+    {
+      "type": "memory_recall",
+      "query": "Mem0 三容器凭据墙阻塞",
+      "gold": {
+        "source_files": [
+          "agent-memory-approach.md"
+        ]
+      },
+      "status": "accepted",
+      "id": "engineer-demo-memory-mem0-三容器凭据墙阻塞"
+    },
+    {
+      "type": "memory_recall",
+      "query": "工具 skills commands 全局共享 ~/.claude",
+      "gold": {
+        "source_files": [
+          "prefer-global-tool-sharing.md"
+        ]
+      },
+      "status": "accepted",
+      "id": "engineer-demo-memory-工具-skills-commands"
+    },
+    {
+      "type": "memory_recall",
+      "query": "openspec skills 提取到全局 ~/.claude",
+      "gold": {
+        "source_files": [
+          "prefer-global-tool-sharing.md"
+        ]
+      },
+      "status": "accepted",
+      "id": "engineer-demo-memory-openspec-skills-提取到全局"
+    },
+    {
+      "type": "memory_recall",
+      "query": "每次改动提交 git main 并 push",
+      "gold": {
+        "source_files": [
+          "MEMORY.md",
+          "commit-every-change-to-git.md"
+        ]
+      },
+      "status": "accepted",
+      "id": "engineer-demo-memory-每次改动提交-git-main"
+    },
+    {
+      "type": "memory_recall",
+      "query": "commit message 结尾 Co-Authored-By",
+      "gold": {
+        "source_files": [
+          "MEMORY.md",
+          "commit-every-change-to-git.md"
+        ]
+      },
+      "status": "accepted",
+      "id": "engineer-demo-memory-commit-message-结尾"
+    },
+    {
+      "type": "memory_recall",
+      "query": "MEMORY.md 索引现在有几条记忆",
+      "gold": {
+        "source_files": [
+          "MEMORY.md"
+        ]
+      },
+      "status": "accepted",
+      "id": "engineer-demo-memory-memory-md-索引现在有几条记忆"
+    },
+    {
+      "type": "memory_recall",
+      "query": "新需求一律走 openspec 先 spec 后码",
+      "gold": {
+        "source_files": [
+          "f4c1e4e6-d496-4489-a33b-a9c43b6bdac8.jsonl"
+        ]
+      },
+      "status": "accepted",
+      "id": "engineer-demo-memory-新需求一律走-openspec-先"
+    },
+    {
+      "type": "memory_recall",
+      "query": "Intel Mac onnxruntime 必须 python 3.11 装 mempalace",
+      "gold": {
+        "source_files": [
+          "de6c53eb-9070-4c8d-8ea1-70ff16c41f83.jsonl"
+        ]
+      },
+      "status": "accepted",
+      "id": "engineer-demo-memory-intel-mac-onnxruntime"
+    },
+    {
+      "type": "memory_recall",
+      "query": "代码检索 BM25 broad@5 0.846 grep 0.692",
+      "gold": {
+        "source_files": [
+          "de6c53eb-9070-4c8d-8ea1-70ff16c41f83.jsonl"
+        ]
+      },
+      "status": "accepted",
+      "id": "engineer-demo-memory-代码检索-bm25-broad"
+    },
+    {
+      "type": "memory_recall",
+      "query": "跨工具 anchoring 文档到代码 成功率",
+      "gold": {
+        "source_files": [
+          "agent-af1fd348c7bad4c83.jsonl",
+          "de6c53eb-9070-4c8d-8ea1-70ff16c41f83.jsonl"
+        ]
+      },
+      "status": "accepted",
+      "id": "engineer-demo-memory-跨工具-anchoring-文档到代码"
+    },
+    {
+      "type": "memory_recall",
+      "query": "图检索对精确片段召回弱于向量",
+      "gold": {
+        "source_files": [
+          "4cc582e9-94b7-4559-a0b6-c9f668c50c08.jsonl"
+        ]
+      },
+      "status": "accepted",
+      "id": "engineer-demo-memory-图检索对精确片段召回弱于向量"
+    },
+    {
+      "type": "memory_recall",
+      "query": "记忆四层归属判定测试金句",
+      "gold": {
+        "source_files": [
+          "f4c1e4e6-d496-4489-a33b-a9c43b6bdac8.jsonl"
+        ]
+      },
+      "status": "accepted",
+      "tags": [
+        "known_weak_probe"
+      ],
+      "notes": "诚实探针：答案原文未 mine，预期召回偏弱（原 gold_memory 注释）",
+      "id": "engineer-demo-memory-记忆四层归属判定测试金句"
+    },
+    {
+      "type": "memory_recall",
+      "query": "文档答案质量 faithfulness 卡 429 限流",
+      "gold": {
+        "source_files": [
+          "f4c1e4e6-d496-4489-a33b-a9c43b6bdac8.jsonl"
+        ]
+      },
+      "status": "accepted",
+      "tags": [
+        "known_weak_probe"
+      ],
+      "notes": "诚实探针：答案原文未 mine，预期召回偏弱（原 gold_memory 注释）",
+      "id": "engineer-demo-memory-文档答案质量-faithfulness-卡"
+    },
+    {
+      "type": "memory_routing",
+      "fact": "cmm 的 search_code 接口返回 node 和 file 字段",
+      "gold": {
+        "layer": "objective",
+        "signal": "API 结构事实"
+      },
+      "status": "accepted",
+      "id": "engineer-demo-memory-cmm-的-search"
+    },
+    {
+      "type": "memory_routing",
+      "fact": "metrics.py 的 recall_at_k 计算 top-k 命中 gold 的比例",
+      "gold": {
+        "layer": "objective",
+        "signal": "代码事实"
+      },
+      "status": "accepted",
+      "id": "engineer-demo-memory-metrics-py-的"
+    },
+    {
+      "type": "memory_routing",
+      "fact": "graphify 文档图节点带 source_location 属性",
+      "gold": {
+        "layer": "objective",
+        "signal": "文档结构事实"
+      },
+      "status": "accepted",
+      "id": "engineer-demo-memory-graphify-文档图节点带-source"
+    },
+    {
+      "type": "memory_routing",
+      "fact": "部署 MemPalace 用 uv tool install --python 3.11",
+      "gold": {
+        "layer": "procedural",
+        "signal": "安装步骤"
+      },
+      "status": "accepted",
+      "id": "engineer-demo-memory-部署-mempalace-用"
+    },
+    {
+      "type": "memory_routing",
+      "fact": "跑代码侧评测用 bench run code --target godot --method bm25",
+      "gold": {
+        "layer": "procedural",
+        "signal": "运行命令"
+      },
+      "status": "accepted",
+      "id": "engineer-demo-memory-跑代码侧评测用-bench-run"
+    },
+    {
+      "type": "memory_routing",
+      "fact": "给项目装 openspec 工具的步骤",
+      "gold": {
+        "layer": "procedural",
+        "signal": "how-to"
+      },
+      "status": "accepted",
+      "id": "engineer-demo-memory-给项目装-openspec-工具的步骤"
+    },
+    {
+      "type": "memory_routing",
+      "fact": "2026-07-11 归档了 add-agent-memory change",
+      "gold": {
+        "layer": "episodic",
+        "signal": "日期+事件"
+      },
+      "status": "accepted",
+      "id": "engineer-demo-memory-2026-07-11"
+    },
+    {
+      "type": "memory_routing",
+      "fact": "commit a940259 同步了 agent-memory 主 spec",
+      "gold": {
+        "layer": "episodic",
+        "signal": "commit SHA+事件"
+      },
+      "status": "accepted",
+      "id": "engineer-demo-memory-commit-a940259-同步了"
+    },
+    {
+      "type": "memory_routing",
+      "fact": "昨天装好 MemPalace 3.5.0 并 mine 了 1484 drawers",
+      "gold": {
+        "layer": "episodic",
+        "signal": "时态+事件"
+      },
+      "status": "accepted",
+      "id": "engineer-demo-memory-昨天装好-mempalace-3"
+    },
+    {
+      "type": "memory_routing",
+      "fact": "用户偏好工具装全局 ~/.claude 共享",
+      "gold": {
+        "layer": "subjective",
+        "signal": "用户偏好"
+      },
+      "status": "accepted",
+      "id": "engineer-demo-memory-用户偏好工具装全局-claude-共享"
+    },
+    {
+      "type": "memory_routing",
+      "fact": "记忆层选型决定走 MemPalace 而非 Mem0",
+      "gold": {
+        "layer": "subjective",
+        "signal": "决策结论"
+      },
+      "status": "accepted",
+      "id": "engineer-demo-memory-记忆层选型决定走-mempalace-而非"
+    },
+    {
+      "type": "memory_routing",
+      "fact": "每次改动都要提交 git main 并 push",
+      "gold": {
+        "layer": "subjective",
+        "signal": "工作方式铁则"
+      },
+      "status": "accepted",
+      "id": "engineer-demo-memory-每次改动都要提交-git-main"
+    },
+    {
+      "type": "memory_routing",
+      "fact": "用户最看重 agent 用证据消解不确定",
+      "gold": {
+        "layer": "subjective",
+        "signal": "用户工作偏好"
+      },
+      "status": "accepted",
+      "id": "engineer-demo-memory-用户最看重-agent-用证据消解不确定"
+    }
+  ]
+}

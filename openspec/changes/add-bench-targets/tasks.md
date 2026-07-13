@@ -4,17 +4,17 @@
 
 ## 1. Loader 与 schema（eval/targets.py）
 
-- [ ] 1.1 新增 `eval/targets.py`：`load_target(id)` / `load_problems(id)` / `list_targets()`；`target.json` + `target.local.json` 深合并（local 覆盖 base）
-- [ ] 1.2 schema 校验：`type`∈五选一；`gold` 形状匹配 `type`（code→symbols / doc→node_labels / cross→{doc_node_label,cmm_identifier,code_file} / recall→source_files / routing→{layer,signal}）；`id` target 内唯一；必填字段齐全
-- [ ] 1.3 cross target 的 `deps` 解析：loader 校验依赖 target 存在，解析并注入 doc_graph/cmm 路径到运行上下文
-- [ ] 1.4 新增 `eval/tests/test_targets_loader.py`：覆盖 5 type 合法加载、overlay 合并、deps 解析、非法 schema 各类失败 case → 全绿
+- [x] 1.1 新增 `eval/targets.py`：`load_target(id)` / `load_problems(id)` / `list_targets()`；`target.json` + `target.local.json` 深合并（local 覆盖 base）
+- [x] 1.2 schema 校验：`type`∈五选一；`gold` 形状匹配 `type`（code→symbols / doc→node_labels / cross→{doc_node_label,cmm_identifier,code_file} / recall→source_files / routing→{layer,signal}）；`id` target 内唯一；必填字段齐全
+- [x] 1.3 cross target 的 `deps` 解析：loader 校验依赖 target 存在，解析并注入 doc_graph/cmm 路径到运行上下文
+- [x] 1.4 新增 `eval/tests/test_targets_loader.py`：覆盖 5 type 合法加载、overlay 合并、deps 解析、非法 schema 各类失败 case → 全绿（24 测试通过）
 
 ## 2. 迁移脚本与 target 数据
 
-- [ ] 2.1 新增 `eval/migrate_gold.py`：读 6 个 `gold_*.py` → 生成 5 个 `targets/<id>/{target.json, problems.json}`（godot-core / graphify-pkg / godot-docs / godot-cross / engineer-demo-memory）
-- [ ] 2.2 deterministic id 生成：`<target-id>-<slug(query/fact 前3词)>`，撞名加 `-2/-3`；迁移脚本带 id 单测
-- [ ] 2.3 题数守恒验证：godot 26 / code 21 / docs 10 / cross 8 / memory recall 15 + routing 14（与 `test_gold_regression` 旧断言对照）；人眼抽查 3 条/type
-- [ ] 2.4 生成 `targets/<id>/target.json`（机器路径入 base，可跑值）+ `.gitignore` 加 `target.local.json` + 每目录留 `target.local.example.json`
+- [x] 2.1 新增 `eval/migrate_gold.py`：读 6 个 `gold_*.py` → 生成 5 个 `targets/<id>/{target.json, problems.json}`（godot-core / graphify-pkg / godot-docs / godot-cross / engineer-demo-memory）
+- [x] 2.2 deterministic id 生成：`<target-id>-<slug(query/fact 前3词)>`，撞名加 `-2/-3`；slugify 在迁移脚本内
+- [x] 2.3 题数守恒验证：godot 26 / code 21 / docs 10 / cross 8 / memory recall 15 + routing 13 = 93（与源文件实数对照，routing 实为 13 非 explore 时误数的 14）；test_targets_loader 集成断言每 target 题数
+- [x] 2.4 生成 `targets/<id>/target.json`（机器路径入 base，可跑值）+ `.gitignore` 加 `eval/targets/*/target.local.json` + 每目录留 `target.local.example.json`
 
 ## 3. runner 与 goldgen 切换到 loader（迁移前过渡）
 

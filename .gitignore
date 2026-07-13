@@ -28,6 +28,9 @@ __pycache__/
 .pytest_cache/
 .playwright
 
+# bench targets 机器路径 overlay（design D4，照搬 catalog.local.json 范式）
+eval/targets/*/target.local.json
+
 # MemPalace per-project files (issue #185)
 mempalace.yaml
 entities.json

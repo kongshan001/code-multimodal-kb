@@ -103,7 +103,7 @@ slug = query/fact 前 ~3 词 lowercase kebab。撞名加 `-2` / `-3`。迁移脚
 
 ### D7. 迁移 = 受控 big-bang（C1）
 
-数据量小（~70 题 / 6 文件），单次连续提交收口。**不用** dual-read shim（双源易飘）、**不用** yaml-source-py-gen（引入 build 步骤）。快照测试同 PR 改 pin `problems.json`。
+数据量小（~93 题 / 6 文件），单次连续提交收口。**不用** dual-read shim（双源易飘）、**不用** yaml-source-py-gen（引入 build 步骤）。快照测试同 PR 改 pin `problems.json`。
 
 ### D8. 前端只写文件，不碰 git（D1）
 
@@ -189,7 +189,7 @@ memory_routing / memory_recall / doc_retrieval / cross_anchor 的 gold 形状见
 受控 big-bang，连续提交（每步独立提交 main + push）：
 
 1. **加 `eval/targets.py` loader**：`load_target(id)` / `load_problems(id)` / `merge_local()` / `validate_schema()`。→ 验证：单测覆盖 5 type + overlay 合并 + schema 校验。
-2. **迁移脚本 `eval/migrate_gold.py`**：读 6 个 `gold_*.py` → 生成 5 个 `targets/<id>/{target.json, problems.json}`，deterministic id。→ 验证：题数守恒（godot 26 / code 21 / docs 10 / cross 8 / memory recall 15 + routing 14），人眼抽查几条。
+2. **迁移脚本 `eval/migrate_gold.py`**：读 6 个 `gold_*.py` → 生成 5 个 `targets/<id>/{target.json, problems.json}`，deterministic id。→ 验证：题数守恒（godot 26 / code 21 / docs 10 / cross 8 / memory recall 15 + routing 13 = 93），人眼抽查几条。
 3. **改 runner + goldgen 读 targets/**：`run_code/doc/crosstool/memory_baseline` + `run_memory_quality` + `run_ab_value` + `ab_tools` + `goldgen` 全部经 loader 取数据，root/project 从 `target.json` 读。→ 验证：`pytest eval/tests/` 全绿（除快照，下一步改）。
 4. **拔 13 处硬编码**：删 `cli.py` `--root` 参数及默认值；`goldgen.py` `DEFAULT_ROOT`/`_CMM_PROJ_FALLBACK` 删；`app.js` 默认路径改从首个 target 读或留空提示。→ 验证：`grep -rn "godot-src\|ks-128\|ks_128" eval/ web/` 仅剩 target.json 内（合理）。
 5. **重写 goldgen**：generate 直写 `problems.json`（status: pending）；verify 原地标 verdict/reason；删 `write_gold_module`/`fold`/`write_pending`/`parse_pending`/`pending_path`。→ 验证：`test_goldgen.py` 改后全绿；前端 Gold lab ① 挖拟题 → ② verify → ③ approve 走通。

@@ -1,0 +1,94 @@
+{
+  "version": 1,
+  "target": "godot-cross",
+  "problems": [
+    {
+      "type": "cross_anchor",
+      "query": "vector2 normalization length",
+      "gold": {
+        "doc_node_label": "Vector2 Class",
+        "cmm_identifier": "Vector2",
+        "code_file": "math/vector2"
+      },
+      "status": "accepted",
+      "id": "godot-cross-vector2-normalization-length"
+    },
+    {
+      "type": "cross_anchor",
+      "query": "vector3 cross product",
+      "gold": {
+        "doc_node_label": "Vector3 Class",
+        "cmm_identifier": "Vector3",
+        "code_file": "math/vector3"
+      },
+      "status": "accepted",
+      "id": "godot-cross-vector3-cross-product"
+    },
+    {
+      "type": "cross_anchor",
+      "query": "transform2d matrix",
+      "gold": {
+        "doc_node_label": "Transform2D Class",
+        "cmm_identifier": "Transform2D",
+        "code_file": "math/transform_2d"
+      },
+      "status": "accepted",
+      "id": "godot-cross-transform2d-matrix"
+    },
+    {
+      "type": "cross_anchor",
+      "query": "resource load",
+      "gold": {
+        "doc_node_label": "Resource Class",
+        "cmm_identifier": "Resource",
+        "code_file": "io/resource"
+      },
+      "status": "accepted",
+      "id": "godot-cross-resource-load"
+    },
+    {
+      "type": "cross_anchor",
+      "query": "random number generator",
+      "gold": {
+        "doc_node_label": "RandomNumberGenerator Class",
+        "cmm_identifier": "RandomNumberGenerator",
+        "code_file": "math/random_number_generator"
+      },
+      "status": "accepted",
+      "id": "godot-cross-random-number-generator"
+    },
+    {
+      "type": "cross_anchor",
+      "query": "expression evaluate",
+      "gold": {
+        "doc_node_label": "Expression Class",
+        "cmm_identifier": "Expression",
+        "code_file": "math/expression"
+      },
+      "status": "accepted",
+      "id": "godot-cross-expression-evaluate"
+    },
+    {
+      "type": "cross_anchor",
+      "query": "quaternion rotation",
+      "gold": {
+        "doc_node_label": "Quaternion Struct",
+        "cmm_identifier": "Quaternion",
+        "code_file": "math/quaternion"
+      },
+      "status": "accepted",
+      "id": "godot-cross-quaternion-rotation"
+    },
+    {
+      "type": "cross_anchor",
+      "query": "signal connect object",
+      "gold": {
+        "doc_node_label": "Signals Concept",
+        "cmm_identifier": "connect",
+        "code_file": "object/object"
+      },
+      "status": "accepted",
+      "id": "godot-cross-signal-connect-object"
+    }
+  ]
+}

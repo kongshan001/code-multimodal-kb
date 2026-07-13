@@ -1,0 +1,11 @@
+{
+  "id": "godot-docs",
+  "language": "rst",
+  "subjects": [
+    "doc_retrieval"
+  ],
+  "doc": {
+    "graph": "/Users/ks_128/Documents/godot-docs-subset/graphify-out/graph.json"
+  },
+  "notes": "Godot 文档子集图 17 rst → 72 节点（原 gold_docs）"
+}

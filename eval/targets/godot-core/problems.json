@@ -1,0 +1,292 @@
+{
+  "version": 1,
+  "target": "godot-core",
+  "problems": [
+    {
+      "type": "code_retrieval",
+      "query": "string format",
+      "gold": {
+        "symbols": [
+          "vformat"
+        ]
+      },
+      "status": "accepted",
+      "id": "godot-core-string-format"
+    },
+    {
+      "type": "code_retrieval",
+      "query": "int to string",
+      "gold": {
+        "symbols": [
+          "itos"
+        ]
+      },
+      "status": "accepted",
+      "id": "godot-core-int-to-string"
+    },
+    {
+      "type": "code_retrieval",
+      "query": "delete object free memory",
+      "gold": {
+        "symbols": [
+          "memdelete"
+        ]
+      },
+      "status": "accepted",
+      "id": "godot-core-delete-object-free"
+    },
+    {
+      "type": "code_retrieval",
+      "query": "a star pathfinding",
+      "gold": {
+        "symbols": [
+          "AStar"
+        ]
+      },
+      "status": "accepted",
+      "id": "godot-core-a-star-pathfinding"
+    },
+    {
+      "type": "code_retrieval",
+      "query": "operating system abstraction",
+      "gold": {
+        "symbols": [
+          "OS"
+        ]
+      },
+      "status": "accepted",
+      "id": "godot-core-operating-system-abstraction"
+    },
+    {
+      "type": "code_retrieval",
+      "query": "color",
+      "gold": {
+        "symbols": [
+          "Color"
+        ]
+      },
+      "status": "accepted",
+      "id": "godot-core-color"
+    },
+    {
+      "type": "code_retrieval",
+      "query": "vector2",
+      "gold": {
+        "symbols": [
+          "Vector2"
+        ]
+      },
+      "status": "accepted",
+      "id": "godot-core-vector2"
+    },
+    {
+      "type": "code_retrieval",
+      "query": "vector3",
+      "gold": {
+        "symbols": [
+          "Vector3"
+        ]
+      },
+      "status": "accepted",
+      "id": "godot-core-vector3"
+    },
+    {
+      "type": "code_retrieval",
+      "query": "quaternion",
+      "gold": {
+        "symbols": [
+          "Quaternion"
+        ]
+      },
+      "status": "accepted",
+      "id": "godot-core-quaternion"
+    },
+    {
+      "type": "code_retrieval",
+      "query": "rect2",
+      "gold": {
+        "symbols": [
+          "Rect2"
+        ]
+      },
+      "status": "accepted",
+      "id": "godot-core-rect2"
+    },
+    {
+      "type": "code_retrieval",
+      "query": "json",
+      "gold": {
+        "symbols": [
+          "JSON"
+        ]
+      },
+      "status": "accepted",
+      "id": "godot-core-json"
+    },
+    {
+      "type": "code_retrieval",
+      "query": "image",
+      "gold": {
+        "symbols": [
+          "Image"
+        ]
+      },
+      "status": "accepted",
+      "id": "godot-core-image"
+    },
+    {
+      "type": "code_retrieval",
+      "query": "resource loader",
+      "gold": {
+        "symbols": [
+          "ResourceLoader"
+        ]
+      },
+      "status": "accepted",
+      "id": "godot-core-resource-loader"
+    },
+    {
+      "type": "code_retrieval",
+      "query": "resource saver",
+      "gold": {
+        "symbols": [
+          "ResourceSaver"
+        ]
+      },
+      "status": "accepted",
+      "id": "godot-core-resource-saver"
+    },
+    {
+      "type": "code_retrieval",
+      "query": "file access",
+      "gold": {
+        "symbols": [
+          "FileAccess"
+        ]
+      },
+      "status": "accepted",
+      "id": "godot-core-file-access"
+    },
+    {
+      "type": "code_retrieval",
+      "query": "directory access",
+      "gold": {
+        "symbols": [
+          "DirAccess"
+        ]
+      },
+      "status": "accepted",
+      "id": "godot-core-directory-access"
+    },
+    {
+      "type": "code_retrieval",
+      "query": "message queue",
+      "gold": {
+        "symbols": [
+          "MessageQueue"
+        ]
+      },
+      "status": "accepted",
+      "id": "godot-core-message-queue"
+    },
+    {
+      "type": "code_retrieval",
+      "query": "engine",
+      "gold": {
+        "symbols": [
+          "Engine"
+        ]
+      },
+      "status": "accepted",
+      "id": "godot-core-engine"
+    },
+    {
+      "type": "code_retrieval",
+      "query": "main loop",
+      "gold": {
+        "symbols": [
+          "MainLoop"
+        ]
+      },
+      "status": "accepted",
+      "id": "godot-core-main-loop"
+    },
+    {
+      "type": "code_retrieval",
+      "query": "undo redo",
+      "gold": {
+        "symbols": [
+          "UndoRedo"
+        ]
+      },
+      "status": "accepted",
+      "id": "godot-core-undo-redo"
+    },
+    {
+      "type": "code_retrieval",
+      "query": "node path",
+      "gold": {
+        "symbols": [
+          "NodePath"
+        ]
+      },
+      "status": "accepted",
+      "id": "godot-core-node-path"
+    },
+    {
+      "type": "code_retrieval",
+      "query": "string name",
+      "gold": {
+        "symbols": [
+          "StringName"
+        ]
+      },
+      "status": "accepted",
+      "id": "godot-core-string-name"
+    },
+    {
+      "type": "code_retrieval",
+      "query": "random number generator",
+      "gold": {
+        "symbols": [
+          "RandomNumberGenerator"
+        ]
+      },
+      "status": "accepted",
+      "id": "godot-core-random-number-generator"
+    },
+    {
+      "type": "code_retrieval",
+      "query": "crypto",
+      "gold": {
+        "symbols": [
+          "Crypto"
+        ]
+      },
+      "status": "accepted",
+      "id": "godot-core-crypto"
+    },
+    {
+      "type": "code_retrieval",
+      "query": "translation server",
+      "gold": {
+        "symbols": [
+          "TranslationServer"
+        ]
+      },
+      "status": "accepted",
+      "id": "godot-core-translation-server"
+    },
+    {
+      "type": "code_retrieval",
+      "query": "http client",
+      "gold": {
+        "symbols": [
+          "HTTPClient"
+        ]
+      },
+      "status": "accepted",
+      "id": "godot-core-http-client"
+    }
+  ]
+}
