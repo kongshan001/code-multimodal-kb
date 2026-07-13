@@ -27,11 +27,22 @@ _NON_SYMBOL_KINDS = {"file", "import", "directory", "unknown", "module", "packag
 
 
 # ── 符号枚举（codegraph，零 LLM）──────────────────────────────────────────
+def _run_codegraph(args: list[str], timeout: int = 30) -> str:
+    """跑 codegraph 子命令，强制 UTF-8 解码。
+
+    Windows 中文系统默认用 GBK(cp936) 解码子进程 stdout；codegraph 输出含 UTF-8 非
+    ASCII 字节（符号名/路径）会 UnicodeDecodeError → reader 线程崩 → stdout=None →
+    后续 .strip() AttributeError。显式 encoding=utf-8 + errors=replace 修掉，跨平台一致。
+    兜底返回 ""（绝不返 None）。
+    """
+    return subprocess.run(
+        ["codegraph", *args], capture_output=True, text=True,
+        encoding="utf-8", errors="replace", timeout=timeout,
+    ).stdout or ""
+
+
 def _codegraph_query(seed: str, root: str, limit: int) -> list[dict]:
-    out = subprocess.run(
-        ["codegraph", "query", seed, "--path", root, "--limit", str(limit), "--json"],
-        capture_output=True, text=True, timeout=30,
-    ).stdout
+    out = _run_codegraph(["query", seed, "--path", root, "--limit", str(limit), "--json"])
     try:
         data = json.loads(out) if out.strip() else []
     except json.JSONDecodeError:
@@ -62,10 +73,7 @@ def list_symbols(seeds: list[str], root: str, per_seed: int = 5) -> list[dict]:
 def seeds_from_dir(dir_path: str, root: str, max_files: int = 8) -> list[str]:
     """目录 → 文件 basename 当 seed（兜底；snake/camelCase 可能漏，人审时补）。"""
     try:
-        out = subprocess.run(
-            ["codegraph", "files", "--path", root, "--json"],
-            capture_output=True, text=True, timeout=30,
-        ).stdout
+        out = _run_codegraph(["files", "--path", root, "--json"])
         files = [f["path"] for f in json.loads(out) if isinstance(f, dict)]
     except Exception:
         files = []
