@@ -1035,6 +1035,57 @@
         "injection_cap_memory_md": 20
       },
       "path": "eval/reports/archive/20260713T015351Z-mempalace-engineer_demo.json"
+    },
+    {
+      "id": "20260713T094318Z-cmm.bm25-graphify-pkg-bm25",
+      "ts": "20260713T094318Z",
+      "readable_ts": "2026-07-13 17:43:18 +0800",
+      "subject": "cmm.bm25",
+      "variant": "graphify-pkg-bm25",
+      "target": "graphify-pkg",
+      "n": 21,
+      "lockfile": {
+        "temperature": 0.0,
+        "llm_model": "",
+        "cmm_version": "0.9.0",
+        "graphify_version": "0.9.13",
+        "mem0_version": "",
+        "mempalace_version": "3.5.0"
+      },
+      "aggregate": {
+        "mean_recall@1": 0.81,
+        "mean_broad_recall@1": 0.857,
+        "mean_recall@3": 0.952,
+        "mean_broad_recall@3": 0.952,
+        "mean_recall@5": 1.0,
+        "mean_broad_recall@5": 0.952,
+        "mean_recall@10": 1.048,
+        "mean_broad_recall@10": 0.952
+      },
+      "path": "eval/reports/archive/20260713T094318Z-cmm.bm25-graphify-pkg-bm25.json"
+    },
+    {
+      "id": "20260713T094339Z-cross-tool-anchoring-(graphify→cmm)-godot-cross",
+      "ts": "20260713T094339Z",
+      "readable_ts": "2026-07-13 17:43:39 +0800",
+      "subject": "cross-tool anchoring (graphify→cmm)",
+      "variant": "godot-cross",
+      "target": "godot-cross",
+      "n": 8,
+      "lockfile": {
+        "temperature": 0.0,
+        "llm_model": "",
+        "cmm_version": "0.9.0",
+        "graphify_version": "0.9.13",
+        "mem0_version": "",
+        "mempalace_version": "3.5.0"
+      },
+      "aggregate": {
+        "graphify_hit_rate": 1.0,
+        "cmm_hit_rate@5": 1.0,
+        "crosstool_success_rate": 1.0
+      },
+      "path": "eval/reports/archive/20260713T094339Z-cross-tool-anchoring-(graphify→cmm)-godot-cross.json"
     }
   ]
 }
