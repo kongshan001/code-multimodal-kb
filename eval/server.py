@@ -25,6 +25,8 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
 from eval._subproc import run_text
+from eval.targets import (TargetError, list_targets, load_problems,
+                          load_target, save_problems)
 
 # Windows 中文系统默认 stdout/文件编码是 GBK(cp936)：print 的 emoji(✓⚠) 和读 UTF-8
 # 文件(含中文/emoji)都会 UnicodeEncode/DecodeError。统一强制 UTF-8——跨平台一致。
@@ -122,7 +124,6 @@ class Handler(BaseHTTPRequestHandler):
             return self._send_json(200, merged(project))
         if p.startswith("/api/pending/"):
             tgt = p[len("/api/pending/"):]
-            from eval.targets import load_problems
             try:
                 pending = [x for x in load_problems(tgt) if x.get("status") == "pending"]
             except Exception as e:
@@ -140,6 +141,25 @@ class Handler(BaseHTTPRequestHandler):
                 lines.append("")
             return self._send_json(200, {"exists": bool(pending), "count": len(pending),
                                          "content": "\n".join(lines)})
+        if p == "/api/targets":
+            out = []
+            for tid in list_targets():
+                try:
+                    t = load_target(tid)
+                    out.append({"id": tid, "subjects": t.get("subjects", []),
+                                "language": t.get("language", "")})
+                except Exception:
+                    out.append({"id": tid})
+            return self._send_json(200, {"targets": out})
+        if p.startswith("/api/gold/"):
+            tgt = p[len("/api/gold/"):]
+            if not tgt or "/" in tgt:
+                return self._send_json(400, {"error": "GET /api/gold/<target>"})
+            try:
+                return self._send_json(200, {"target": load_target(tgt),
+                                             "problems": load_problems(tgt)})
+            except TargetError as e:
+                return self._send_json(404, {"error": str(e)})
         return self._send(404, b"not found", "text/plain")
 
     def do_POST(self):
@@ -187,12 +207,66 @@ class Handler(BaseHTTPRequestHandler):
                 out = run_text(["python", "-m", "eval.cli", "goldgen-verify", "--target", tgt],
                                timeout=120, cwd=str(REPO))
                 return self._send_json(200, {"rc": out.returncode, "stdout": out.stdout[-1500:]})
+            if u.path.startswith("/api/gold/"):
+                # 新增一道题：POST /api/gold/<target>（body = 新题目，无需 id，save_problems 分配）
+                tgt = u.path[len("/api/gold/"):]
+                if not tgt or "/" in tgt:
+                    return self._send_json(400, {"error": "POST /api/gold/<target>"})
+                try:
+                    problems = load_problems(tgt)
+                    new = dict(body)
+                    new.pop("id", None)  # id 由 save_problems 分配
+                    new.setdefault("status", "accepted")
+                    problems.append(new)
+                    save_problems(tgt, problems)
+                    return self._send_json(200, {"ok": True, "id": new["id"],
+                                                 "problems": load_problems(tgt)})
+                except TargetError as e:
+                    return self._send_json(400, {"error": str(e)})
         except Exception as e:
             return self._send_json(500, {"error": str(e)})
         return self._send_json(404, {"error": "unknown route"})
 
-    # GET pending（gold lab 读审核队列）
-    # （在 do_GET 里加 /api/pending/<target>）
+    def _gold_write(self, method: str, path: str, body: dict):
+        """PUT/DELETE /api/gold/<target>/<id> 的共用处理。"""
+        rest = path[len("/api/gold/"):]
+        parts = rest.split("/", 1)
+        if len(parts) != 2 or not parts[0] or not parts[1]:
+            return self._send_json(400, {"error": f"{method} /api/gold/<target>/<id>"})
+        tgt, pid = parts
+        try:
+            problems = load_problems(tgt)
+            if method == "DELETE":
+                new = [p for p in problems if p["id"] != pid]
+                if len(new) == len(problems):
+                    return self._send_json(404, {"error": f"题目 {pid} 不存在"})
+                save_problems(tgt, new, assign=False)
+                return self._send_json(200, {"ok": True, "problems": new})
+            # PUT：替换单题（id 以 URL 为准）
+            body = dict(body)
+            body["id"] = pid
+            for i, p in enumerate(problems):
+                if p["id"] == pid:
+                    problems[i] = body
+                    save_problems(tgt, problems, assign=False)
+                    return self._send_json(200, {"ok": True, "problems": load_problems(tgt)})
+            return self._send_json(404, {"error": f"题目 {pid} 不存在"})
+        except TargetError as e:
+            return self._send_json(400, {"error": str(e)})
+
+    def do_PUT(self):
+        u = urllib.parse.urlparse(self.path)
+        if u.path.startswith("/api/gold/"):
+            length = int(self.headers.get("Content-Length", 0))
+            body = json.loads(self.rfile.read(length)) if length else {}
+            return self._gold_write("PUT", u.path, body)
+        return self._send_json(404, {"error": "unknown route"})
+
+    def do_DELETE(self):
+        u = urllib.parse.urlparse(self.path)
+        if u.path.startswith("/api/gold/"):
+            return self._gold_write("DELETE", u.path, {})
+        return self._send_json(404, {"error": "unknown route"})
 
 
 def main(argv=None):

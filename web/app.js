@@ -330,45 +330,217 @@ function onboardView() {
 }
 
 // ── gold lab（扩题 4 阶段）──
-function goldlabView() {
-  view().innerHTML = `
-    <h1>gold lab <em>· 扩题</em></h1>
-    <p class="lede">agent 挖符号 + LLM 拟题 → 实证验收 → 人审 approve/删。候选直接进 problems.json（status: pending），无 fold。gold 构造即正确（零 judge）。</p>
-    <div style="border:1.5px solid var(--ink);background:#fff;padding:20px;margin-bottom:16px">
-      <label class="mono" style="font-size:10px;color:var(--ink2)">seed 词（空格分，指一片代码）</label>
-      <div style="display:flex;gap:8px;margin:6px 0 10px">
-        <input id="gl_seeds" class="btn" placeholder="Vector color Node Resource" style="flex:1;text-align:left"/>
-        <input id="gl_target" class="btn" value="godot-core" style="width:120px"/>
-        <button class="btn fill" onclick="glGen()">① 挖+拟题 ▸</button>
-      </div>
-      <div class="mono" style="font-size:11px;color:var(--ink2)">→ codegraph 枚举真实符号 + GLM 拟 NL 题 → 候选进 problems.json（pending）</div>
-      <div id="gl_out_gen" class="mono" style="margin-top:10px;font-size:11px;min-height:14px"></div>
-    </div>
-    <div style="display:flex;gap:8px;margin-bottom:16px">
-      <button class="btn" onclick="glVerify()">② 实证验收</button>
-      <button class="btn" onclick="glShow()">③ 看 pending 候选</button>
-    </div>
-    <div id="gl_pending" class="mono" style="background:#fff;border:1px solid var(--rule);padding:16px;font-size:11px;white-space:pre-wrap;min-height:60px;color:var(--ink2)">pending 候选显示在这里（来自 problems.json）。approve/删 编辑器见后续。</div>`;
-  const tgt = () => $("#gl_target").value;
-  window.glGen = async () => {
-    $("#gl_out_gen").textContent = "running…（codegraph + GLM，~10s）";
-    const seeds = $("#gl_seeds").value.split(/\s+/).filter(Boolean);
-    const r = await fetch("/api/goldgen", {method:"POST", headers:{"Content-Type":"application/json"},
-      body: JSON.stringify({seeds, target: tgt()})});
-    const o = await r.json();
-    $("#gl_out_gen").innerHTML = `<b style="color:${o.rc===0?"var(--good)":"var(--bad)"}">exit ${o.rc}</b> ${(o.stdout||"").slice(-400)}`;
-  };
-  window.glVerify = async () => {
-    const r = await fetch("/api/goldgen-verify", {method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({target: tgt()})});
-    const o = await r.json(); glShow();
-    $("#gl_out_gen").innerHTML = `<b>verify exit ${o.rc}</b>`;
-  };
-  window.glShow = async () => {
-    const d = await fetchJSON("/api/pending/" + tgt());
-    $("#gl_pending").textContent = d.exists ? d.content : "(无 pending——先 ① 挖+拟题)";
-  };
-  glShow();
+// ── gold lab 题库编辑器（读写 targets/<id>/problems.json）──
+const _GOLD_FIELDS = {
+  code_retrieval:  [{k:'symbols', label:'gold 符号（逗号分隔，如 Color, vformat）', list:true}],
+  doc_retrieval:   [{k:'node_labels', label:'文档节点 label（逗号分隔）', list:true}],
+  cross_anchor:    [{k:'doc_node_label', label:'文档节点 label'},
+                    {k:'cmm_identifier', label:'喂给 cmm 的标识符'},
+                    {k:'code_file', label:'期望代码文件（子串，如 math/vector2）'}],
+  memory_recall:   [{k:'source_files', label:'source 文件（逗号分隔，如 agent-memory-approach.md）', list:true}],
+  memory_routing:  [{k:'layer', label:'归属层', select:['objective','procedural','episodic','subjective']},
+                    {k:'signal', label:'判定线索 signal（如 用户偏好）'}],
+};
+const _TEXT_FIELD = {memory_routing:'fact'};  // 其余 type 用 query
+const _TYPES = Object.keys(_GOLD_FIELDS);
+function _esc(s){return String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+function _goldText(p){return p[_TEXT_FIELD[p.type]||'query']||'';}
+function _goldSummary(p){
+  const g=p.gold||{};
+  switch(p.type){
+    case 'code_retrieval': return (g.symbols||[]).join(', ');
+    case 'doc_retrieval': return (g.node_labels||[]).join(', ');
+    case 'memory_recall': return (g.source_files||[]).join(', ');
+    case 'memory_routing': return `layer=${g.layer}` + (g.signal?` · ${g.signal}`:'');
+    case 'cross_anchor': return `${g.cmm_identifier} → ${g.code_file}`;
+  } return JSON.stringify(g);
 }
+
+async function goldlabView() {
+  window._goldTarget = window._goldTarget || 'godot-core';
+  let targets = [];
+  try { targets = (await fetchJSON('/api/targets')).targets; }
+  catch(e) {}
+  if (!targets.length) targets = [{id: window._goldTarget, subjects:[]}];
+  view().innerHTML = `
+    <h1>gold lab <em>· 题库编辑器</em></h1>
+    <p class="lede">直接读写 <code>targets/&lt;id&gt;/problems.json</code>——列表 / 新增 / 改 / 删 / approve pending。<b>前端不自动 git commit</b>，改完记得自行提交。</p>
+    <div id="goldDirty" style="display:none;border-left:3px solid var(--warn);background:#fdf6e9;padding:10px 14px;margin-bottom:14px;font-size:12px">
+      ⚠ 题库已改 —— 记得 <code class="mono">git add eval/targets/ && git commit && git push</code>（前端不替你提交）
+      <button class="btn" style="font-size:10px;margin-left:12px" onclick="$('#goldDirty').style.display='none'">已提交，隐藏</button>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:14px">
+      <label class="mono" style="font-size:10px;color:var(--ink2)">target</label>
+      <select id="glTarget" class="btn" onchange="window._goldTarget=this.value;goldRender()">${targets.map(t=>`<option value="${t.id}" ${t.id===window._goldTarget?'selected':''}>${t.id} [${(t.subjects||[]).join(',')||'?'})]</option>`).join('')}</select>
+      <button class="btn" onclick="goldRender()">刷新</button>
+      <span style="flex:1"></span>
+      <input id="glSeeds" class="btn" placeholder="seed 词（goldgen 用，如 Vector color）" style="width:220px;text-align:left"/>
+      <button class="btn" onclick="goldGen()">① goldgen</button>
+      <button class="btn" onclick="goldVerify()">② 验收</button>
+      <button class="btn fill" onclick="goldFormOpen(null)">+ 新增题目</button>
+    </div>
+    <div id="goldForm"></div>
+    <div id="goldOut" class="mono" style="font-size:11px;color:var(--ink2);min-height:14px;margin:8px 0"></div>
+    <div class="h"><span class="n">题库</span><h2 id="goldCount">…</h2><span class="line"></span></div>
+    <div id="goldTable"><div class="loading">loading…</div></div>`;
+  await goldRender();
+}
+
+async function goldRender() {
+  const tgt = window._goldTarget;
+  let data;
+  try { data = await fetchJSON('/api/gold/' + encodeURIComponent(tgt)); }
+  catch(e){ $('#goldTable').innerHTML = `<div class="loading">⚠ ${e}</div>`; return; }
+  window._goldProblems = data.problems;
+  const ps = data.problems;
+  const npend = ps.filter(p=>p.status==='pending').length;
+  $('#goldCount').textContent = `${tgt} · ${ps.length} 题（pending ${npend}）`;
+  $('#goldForm').innerHTML = '';  // 收起表单
+  if (!ps.length) { $('#goldTable').innerHTML = `<p class="lede">（空）点 "+ 新增题目" 手动加，或 ① goldgen 自动造题</p>`; return; }
+  $('#goldTable').innerHTML = `<table class="t"><tr><th>id</th><th>type</th><th>query / fact</th><th>gold</th><th>status</th><th>tags</th><th style="text-align:right">操作</th></tr>
+    ${ps.map(p=>{
+      const pend = p.status==='pending';
+      return `<tr>
+        <td class="mono" style="font-size:10px;color:var(--ink2)">${_esc(p.id)}</td>
+        <td style="font-size:11px">${p.type}</td>
+        <td style="max-width:280px">${_esc(_goldText(p)).slice(0,60)}</td>
+        <td style="font-size:11px;color:var(--ink2)">${_esc(_goldSummary(p))}</td>
+        <td><span class="st ${pend?'miss':'ok'}" style="font-size:10px">${pend?'.Pending':'.accepted'}</span>${p.verdict?` <span style="font-size:9px;color:${p.verdict==='pass'?'var(--good)':'var(--warn)'}">${p.verdict}</span>`:''}</td>
+        <td style="font-size:10px;color:var(--accent)">${(p.tags||[]).join(' ')}</td>
+        <td style="text-align:right;white-space:nowrap">
+          ${pend?`<button class="btn" style="font-size:10px;padding:3px 10px" onclick="goldApprove('${_esc(p.id)}')">✓ approve</button>`:''}
+          <button class="btn" style="font-size:10px;padding:3px 10px" onclick="goldFormOpen('${_esc(p.id)}')">✎</button>
+          <button class="btn" style="font-size:10px;padding:3px 10px" onclick="goldDelete('${_esc(p.id)}')">🗑</button>
+        </td></tr>`;
+    }).join('')}</table>`;
+}
+
+function _goldFieldsHTML(type, gold) {
+  gold = gold || {};
+  return _GOLD_FIELDS[type].map(f=>{
+    const val = f.list ? (gold[f.k]||[]).join(', ') : (gold[f.k]||'');
+    if (f.select) return ` <select id="gf_${f.k}" class="btn">${f.select.map(o=>`<option ${o===val?'selected':''}>${o}</option>`).join('')}</select>`;
+    return ` <input id="gf_${f.k}" class="btn" value="${_esc(val)}" placeholder="${_esc(f.label)}" style="flex:1;text-align:left;min-width:160px"/>`;
+  }).join('');
+}
+function _goldRead(type) {
+  const gold = {};
+  for (const f of _GOLD_FIELDS[type]) {
+    const el = document.getElementById('gf_'+f.k);
+    const raw = el ? el.value : '';
+    gold[f.k] = f.list ? raw.split(/[,，]\s*/).map(s=>s.trim()).filter(Boolean) : raw.trim();
+  }
+  return gold;
+}
+
+function goldFormOpen(pid) {
+  const ps = window._goldProblems || [];
+  const p = pid ? ps.find(x=>x.id===pid) : null;
+  const edit = !!p;
+  window._goldEditId = edit ? pid : null;
+  const type = p ? p.type : 'code_retrieval';
+  const tf = _TEXT_FIELD[type]||'query';
+  $('#goldForm').innerHTML = `
+    <div style="border:1.5px solid var(--ink);background:#fff;padding:18px 20px;margin-bottom:16px">
+      <div class="mono" style="font-size:10px;color:var(--accent);letter-spacing:1px;margin-bottom:10px">${edit?'✎ 编辑 '+_esc(pid):'+ 新增题目'}</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+        <label class="mono" style="font-size:10px;color:var(--ink2);width:50px">type</label>
+        <select id="gfType" class="btn" ${edit?'disabled':''} onchange="goldFormRerender()">${_TYPES.map(t=>`<option value="${t}" ${t===type?'selected':''}>${t}</option>`).join('')}</select>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:10px">
+        <label class="mono" style="font-size:10px;color:var(--ink2);width:50px">${tf}</label>
+        <input id="gfText" class="btn" value="${_esc(p?_goldText(p):'')}" placeholder="${tf==='fact'?'候选事实':'自然语言查询'}" style="flex:1;text-align:left;min-width:240px"/>
+      </div>
+      <div id="gfGold" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:10px">
+        <label class="mono" style="font-size:10px;color:var(--ink2);width:50px">gold</label>${_goldFieldsHTML(type, p?p.gold:null)}
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:10px">
+        <label class="mono" style="font-size:10px;color:var(--ink2);width:50px">tags</label>
+        <input id="gfTags" class="btn" value="${_esc((p&&p.tags||[]).join(', '))}" placeholder="逗号分隔，如 concept_query, known_weak_probe" style="flex:1;text-align:left;min-width:200px"/>
+        <label class="mono" style="font-size:10px;color:var(--ink2)">status</label>
+        <select id="gfStatus" class="btn"><option ${(!p||p.status==='accepted')?'selected':''}>accepted</option><option ${(p&&p.status==='pending')?'selected':''}>pending</option></select>
+      </div>
+      <div style="margin-top:14px">
+        <button class="btn fill" onclick="goldSave()">💾 保存</button>
+        <button class="btn" onclick="$('#goldForm').innerHTML=''">取消</button>
+        <span id="gfErr" style="color:var(--bad);font-size:11px;margin-left:12px"></span>
+      </div>
+    </div>`;
+  $('#goldForm').scrollIntoView({behavior:'smooth'});
+}
+function goldFormRerender() {
+  // type 变了 → 重渲染 gold 字段 + text label（保留已输入的 text/tags/status）
+  const type = $('#gfType').value;
+  $('#gfGold').innerHTML = `<label class="mono" style="font-size:10px;color:var(--ink2);width:50px">gold</label>${_goldFieldsHTML(type, null)}`;
+  // text label 跟着 type
+}
+
+async function goldSave() {
+  const tgt = window._goldTarget;
+  const type = $('#gfType').value;
+  const tf = _TEXT_FIELD[type]||'query';
+  const problem = {
+    type,
+    [tf]: $('#gfText').value.trim(),
+    gold: _goldRead(type),
+    status: $('#gfStatus').value,
+    tags: $('#gfTags').value.split(/[,，]\s*/).map(s=>s.trim()).filter(Boolean),
+  };
+  if (!problem[tf]) { $('#gfErr').textContent = `${tf} 不能空`; return; }
+  const editId = window._goldEditId;
+  const url = `/api/gold/${encodeURIComponent(tgt)}` + (editId?`/${encodeURIComponent(editId)}`:'');
+  const method = editId ? 'PUT' : 'POST';
+  const r = await fetch(url, {method, headers:{'Content-Type':'application/json'}, body: JSON.stringify(problem)});
+  const o = await r.json();
+  if (!r.ok || o.error) { $('#gfErr').textContent = o.error || `HTTP ${r.status}`; return; }
+  $('#goldForm').innerHTML = '';
+  $('#goldDirty').style.display = '';
+  await goldRender();
+}
+
+async function goldDelete(pid) {
+  if (!confirm(`确定删 ${pid}？`)) return;
+  const tgt = window._goldTarget;
+  const r = await fetch(`/api/gold/${encodeURIComponent(tgt)}/${encodeURIComponent(pid)}`, {method:'DELETE'});
+  const o = await r.json();
+  if (!r.ok || o.error) { alert(o.error || `HTTP ${r.status}`); return; }
+  $('#goldDirty').style.display = '';
+  await goldRender();
+}
+
+async function goldApprove(pid) {
+  // pending → accepted（PUT 仅改 status）
+  const tgt = window._goldTarget;
+  const p = (window._goldProblems||[]).find(x=>x.id===pid);
+  if (!p) return;
+  const upd = Object.assign({}, p, {status:'accepted'});
+  delete upd.verdict; delete upd.reason;  // approve 后清掉验收标记（可选）
+  const r = await fetch(`/api/gold/${encodeURIComponent(tgt)}/${encodeURIComponent(pid)}`, {method:'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify(upd)});
+  const o = await r.json();
+  if (!r.ok || o.error) { alert(o.error || `HTTP ${r.status}`); return; }
+  $('#goldDirty').style.display = '';
+  await goldRender();
+}
+
+async function goldGen() {
+  $('#goldOut').textContent = 'running…（codegraph + GLM，~10s）';
+  const seeds = ($('#glSeeds').value||'').split(/\s+/).filter(Boolean);
+  if (!seeds.length) { $('#goldOut').textContent = '⚠ 先填 seed 词'; return; }
+  const r = await fetch('/api/goldgen', {method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({seeds, target: window._goldTarget})});
+  const o = await r.json();
+  $('#goldOut').innerHTML = `<b style="color:${o.rc===0?'var(--good)':'var(--bad)'}">exit ${o.rc}</b> ${(o.stdout||'').slice(-300)}`;
+  $('#goldDirty').style.display = '';
+  await goldRender();
+}
+async function goldVerify() {
+  $('#goldOut').textContent = 'verifying…';
+  const r = await fetch('/api/goldgen-verify', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({target: window._goldTarget})});
+  const o = await r.json();
+  $('#goldOut').innerHTML = `<b style="color:${o.rc===0?'var(--good)':'var(--bad)'}">verify exit ${o.rc}</b> ${(o.stdout||'').slice(-300)}`;
+  await goldRender();
+}
+
 
 // ── router ──
 // ── 工程实践（独立分页）──

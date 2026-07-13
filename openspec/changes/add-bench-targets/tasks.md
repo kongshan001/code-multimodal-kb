@@ -60,11 +60,11 @@
 
 ## 7. server 路由 + 前端 Gold lab 编辑器
 
-- [ ] 7.1 `server.py` 新增 `GET /api/gold/<target>`（列题）、`POST`（新增，schema 校验）、`PUT /api/gold/<target>/<id>`（改）、`DELETE /api/gold/<target>/<id>`（删）；校验失败返 schema 错误
-- [ ] 7.2 `web/app.js` Gold lab 升级为编辑器：题库表格（列表/新增/改/删），按 type 渲染 gold 字段表单
-- [ ] 7.3 approve pending UI（status: pending 候选逐条 approve→accepted 或删）+ 批量打标（tags）
-- [ ] 7.4 「待提交」dirty diff 指示器（前端不 commit，提示用户 git commit）
-- [ ] 7.5 证据：浏览器内 round-trip——新增一道题 / 改 query / 删一道 / approve 一道 pending，`problems.json` 落地正确 + git 未被触碰
+- [x] 7.1 `server.py` 新增 `GET /api/targets` + `GET /api/gold/<target>`（列）、`POST`（增，schema 校验）、`PUT /api/gold/<target>/<id>`（改）、`DELETE /api/gold/<target>/<id>`（删）；校验失败返 400 + schema 错误（复用 targets.save_problems 校验）
+- [x] 7.2 `web/app.js` Gold lab 升级为编辑器：target 下拉 + 题库表格 + 新增/编辑表单（gold 字段按 type 动态渲染：code→symbols / doc→node_labels / cross→三字段 / recall→source_files / routing→layer+signal）
+- [x] 7.3 approve pending（逐行 ✓ approve → accepted，清 verdict/reason）+ tags 经编辑表单打标（edit form）
+- [x] 7.4 「待提交」dirty 指示器：任意写操作后亮起，提示 `git add/commit/push`（前端不自动 commit，带「已提交，隐藏」按钮）
+- [x] 7.5 证据：后端 API round-trip（urllib）—— add(26→27,id 自动分配) / edit(gold+tags 改) / 校验拒 bad type(400) / delete(27→26)，problems.json 落地正确、git 未被自动触碰（status 仅显代码改动）。浏览器内点击 round-trip 待用户在 `bench web` 起前端后确认
 
 ## 8. 文档与 fork 模板
 
