@@ -39,10 +39,11 @@ def _problem(pid, ptype="code_retrieval", **kw):
     return p
 
 
-# ── 真实迁移产物：5 target 全部 schema 合法 + 题数守恒 ─────────────────────
+# ── 真实题库：每个 target schema 合法 + 题数快照（drift 门禁）──────────────
 EXPECTED_COUNTS = {
     "godot-core": 26, "graphify-pkg": 21, "godot-docs": 10,
     "godot-cross": 8, "engineer-demo-memory": 28,  # recall 15 + routing 13
+    "claude-gui": 18,
 }
 
 
