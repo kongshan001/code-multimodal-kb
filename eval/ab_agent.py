@@ -15,8 +15,8 @@ from typing import Any
 
 from eval import ab_tools
 
-MAX_STEPS = 6            # 非 skills 臂最多轮（控成本）；skills 臂放宽到 SKILL_MAX_STEPS
-SKILL_MAX_STEPS = 10     # skills 臂 SOP 更费步
+MAX_STEPS = 8            # 非 skills 臂最多轮（给 grep 臂更多收敛空间，避免空截断）；skills 臂 SKILL_MAX_STEPS
+SKILL_MAX_STEPS = 12     # skills 臂 SOP 更费步
 DEFAULT_BASE_URL = "https://open.bigmodel.cn/api/anthropic"
 DEFAULT_MODEL = "glm-5.1"
 
@@ -190,8 +190,24 @@ def run_episode(client, question: str, arm: str, target: dict | None = None,
             answer = turn_text
             break
     else:
+        # 跑满步数还没自然收敛 → 强制要一个最佳答案（不留空截断；tools=[] 使模型无法再 tool_use）
         truncated = True
-        answer = last_text or "(max_steps reached without final answer)"
+        try:
+            force_msgs = messages + [{"role": "user",
+                "content": "你已用完工具调用次数。现在必须基于已获取的信息直接给出最终答案（用符号名），不要再调用工具。"}]
+            forced = _create_with_retry(client, mdl,
+                sys_prompt + "\n\n现在必须直接给出最终答案（符号名），不要再调工具。",
+                force_msgs, [])
+            in_tok += getattr(forced.usage, "input_tokens", 0)
+            out_tok += getattr(forced.usage, "output_tokens", 0)
+            llm_calls += 1
+            f_blocks, f_text, f_thinking = _serialize_turn(forced)
+            session.append({"role": "user", "content": "（用完工具次数，强制作答）"})
+            session.append({"role": "assistant", "content": f_blocks})
+            thinking.append(f_thinking)
+            answer = f_text.strip() or last_text or "(max_steps: 未能给出答案)"
+        except Exception:
+            answer = last_text or "(max_steps: 未能给出答案)"
 
     wall = round(time.time() - t0, 2)
     return {

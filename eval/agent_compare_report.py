@@ -104,9 +104,9 @@ def _result_md(result: dict, aggregates: dict) -> str:
         "**答对（✓）怎么判**：终答里含 gold 符号或文件名就算对（broad 子串匹配，零 LLM judge）。",
         "**gold 是什么**：每题的标准答案——来自 codegraph 挖出的真实代码符号/文件，构造即正确（不是人拍脑袋写的）。",
         "",
-        "**答案写着 `(max_steps reached without final answer)`**：agent 跑满步数上限（非 skills 臂 **6 轮**、"
-        "skills 臂 **10 轮**）还没给出最终答案——**步数被掐了**。多半发生在 no-kb（grep 瞎翻找不到、烧满步数）。"
-        "对应指标 `truncated_rate`（越高越糟）。这个上限是控成本的护栏，防 agent 无限调工具。",
+        "**某题被标截断（逐题表 `截断` 列 ⚠ / `truncated_rate` > 0）**：agent 跑满步数上限（非 skills 臂 **8 轮**、"
+        "skills 臂 **12 轮**）没自然收敛，系统**强制要了一个最佳答案**（不让它空着）——所以那题的答案是它的**猜测**，"
+        "不一定对。多半发生在 no-kb（grep 找不到、烧满步数）。上限是控成本护栏，防无限调工具。",
         "",
         "**`thinking` / 思考过程**：GLM-5.1 经这个端点不返独立 thinking block，所以思考 = agent 的推理文本（assistant 回答），"
         "不是单独的隐藏思维链——别当成完整思考链。",

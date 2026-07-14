@@ -43,7 +43,7 @@ def test_run_episode_tool_then_answer(monkeypatch):
 
 
 def test_run_episode_truncation(monkeypatch):
-    """一直 tool_use 到 max_steps → truncated=True。"""
+    """一直 tool_use 到 max_steps → truncated=True + 强制要一个最佳答案（多 1 次调用）。"""
     import eval.ab_agent as ag
 
     resp = _Resp("tool_use", [_Block("tool_use", name="grep_code", input={"pattern": "x"}, id="t")], _Usage(50, 5))
@@ -53,8 +53,10 @@ def test_run_episode_truncation(monkeypatch):
 
     ep = ag.run_episode(client=None, question="x", arm="baseline", max_steps=3)
     assert ep["truncated"] is True
-    assert ep["steps"] == 3
-    assert ep["input_tokens"] == 150          # 50 × 3
+    # 3 轮 loop + 1 轮强制作答 = 4 次 LLM 调用
+    assert ep["llm_calls"] == 4
+    assert ep["input_tokens"] == 200          # 50 × 4
+    assert ep["answer"]                       # 有答案（force-answer 不留空；mock 无 text → fallback 串）
 
 
 def test_judge_broad():
