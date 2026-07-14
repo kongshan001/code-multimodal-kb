@@ -13,8 +13,6 @@ import os
 import time
 from typing import Any
 
-import anthropic
-
 from eval import ab_tools
 
 MAX_STEPS = 6            # 非 skills 臂最多轮（控成本）；skills 臂放宽到 SKILL_MAX_STEPS
@@ -108,7 +106,8 @@ def load_creds() -> tuple[str, str, str]:
         raise RuntimeError(f"找不到 LLM 凭据（设 AB_API_KEY 或配 ~/.cc-connect/config.toml）: {e}")
 
 
-def make_client() -> anthropic.Anthropic:
+def make_client():
+    import anthropic  # 延迟导入（smoke/mock 不需要）
     key, base_url, _ = load_creds()
     return anthropic.Anthropic(api_key=key, base_url=base_url)
 
@@ -117,6 +116,7 @@ def make_client() -> anthropic.Anthropic:
 
 def _create_with_retry(client, model, system, messages, tools, retries=4) -> Any:
     """带 429/529/503 退避重试。"""
+    import anthropic  # 延迟导入：smoke/mock 模式无需装 anthropic（spec 无凭据降级）
     last = None
     for i in range(retries + 1):
         try:

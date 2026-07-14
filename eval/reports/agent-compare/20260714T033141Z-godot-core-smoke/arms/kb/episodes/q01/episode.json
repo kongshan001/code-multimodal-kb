@@ -1,0 +1,27 @@
+{
+  "answer": "The answer involves `vformat`.",
+  "input_tokens": 100,
+  "output_tokens": 20,
+  "total_tokens": 120,
+  "steps": 2,
+  "llm_calls": 2,
+  "tool_calls": [
+    "cmm_search"
+  ],
+  "tool_steps": 1,
+  "tool_texts": [
+    "(mock result)"
+  ],
+  "truncated": false,
+  "wall_clock_s": 0.5,
+  "cost_$": 0.0001,
+  "query": "string format",
+  "type": "code_retrieval",
+  "gold": [
+    "vformat"
+  ],
+  "arm": "kb",
+  "run": 0,
+  "qid": "q01",
+  "correct": 1
+}

@@ -58,6 +58,20 @@ def _cmd_run(args) -> int:
         from eval.run_ab_agent import run as run_ab1  # agent A/B Stage 1 真跑 agent
         report = run_ab1(args.target, args.runs, args.subset)
         variant = f"{args.target}-stage1-r{args.runs}" + (f"-n{args.subset}" if args.subset else "")
+    elif args.subject == "agent-compare":
+        from eval.run_ab_agent import run_compare
+        from eval.agent_compare_report import write_compare_report
+        import datetime
+        arms = tuple(a.strip() for a in args.arms.split(",") if a.strip())
+        result = run_compare(args.target, arms, args.runs, args.subset, smoke=args.smoke)
+        ts = datetime.datetime.now(datetime.timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+        mode = "-smoke" if args.smoke else ""
+        out = write_compare_report(result, f"eval/reports/agent-compare/{ts}-{args.target}{mode}")
+        print(f"agent-compare 报告: {out}")
+        print(f"  结论:   {out}/conclusion.md")
+        print(f"  矩阵:   {out}/summary.json")
+        print(f"  提示:   session.jsonl/thinking.md 是本地文件（.gitignore），结论类已入库")
+        return 0
     elif args.subject == "doc-ragas":
         from eval.run_doc_quality_ragas import run as run_dr  # 文档答案质量（Ragas 协议，LLM judge）
         report = run_dr(args.target, args.subset)
@@ -179,6 +193,12 @@ def main(argv: list[str] | None = None) -> int:
     ag_p.add_argument("--target", default="godot-core")
     ag_p.add_argument("--runs", type=int, default=1)
     ag_p.add_argument("--subset", type=int, default=None, help="只跑前 N 题（pilot）")
+    ac_p = run_sub.add_parser("agent-compare", help="4 臂(KB×skills) 对比 → 目录报告（含会话+思考）")
+    ac_p.add_argument("--target", default="godot-core")
+    ac_p.add_argument("--arms", default="no-kb,kb,kb+superpowers,kb+openspec", help="逗号分隔的臂")
+    ac_p.add_argument("--runs", type=int, default=1)
+    ac_p.add_argument("--subset", type=int, default=None)
+    ac_p.add_argument("--smoke", action="store_true", help="mock 模式（无凭据跑通写器/流水线）")
 
     # list-reports
     sub.add_parser("list-reports", help="列出归档报告")

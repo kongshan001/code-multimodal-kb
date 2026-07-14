@@ -1,0 +1,29 @@
+{
+  "answer": "I could not locate it.",
+  "input_tokens": 134,
+  "output_tokens": 29,
+  "total_tokens": 163,
+  "steps": 3,
+  "llm_calls": 3,
+  "tool_calls": [
+    "cmm_search",
+    "read_file"
+  ],
+  "tool_steps": 2,
+  "tool_texts": [
+    "(mock result)",
+    "(mock result)"
+  ],
+  "truncated": false,
+  "wall_clock_s": 1.01,
+  "cost_$": 0.0001,
+  "query": "a star pathfinding",
+  "type": "code_retrieval",
+  "gold": [
+    "AStar"
+  ],
+  "arm": "kb+superpowers",
+  "run": 0,
+  "qid": "q04",
+  "correct": 0
+}

@@ -1,0 +1,157 @@
+"""agent-compare 目录报告写器：多臂 episode 结果 → 目录化对比报告。
+
+输入 run_ab_agent.run_compare 的结果 dict，写出：
+  <root>/conclusion.md / summary.json / matrix.md
+  <root>/arms/<arm>/{config.md, aggregate.json, episodes/qNN/{episode.json, session.jsonl, thinking.md}}
+
+入库：conclusion/summary/matrix/arms/<arm>/{config,aggregate,episodes/episode.json}。
+本地（.gitignore）：episodes/qNN/{session.jsonl, thinking.md}。
+"""
+from __future__ import annotations
+
+import json
+import statistics
+from pathlib import Path
+
+from eval import ab_tools
+
+# summary 里展示的指标（顺序即矩阵列序）
+_METRIC_KEYS = [
+    "accuracy", "mean_total_tokens", "mean_llm_calls", "mean_tool_steps",
+    "mean_wall_clock_s", "mean_cost_$", "tool_diversity", "truncated_rate", "n_episodes",
+]
+
+
+def _aggregate(eps: list[dict]) -> dict:
+    """单臂指标聚合。"""
+    n = len(eps) or 1
+    tot = [e["total_tokens"] for e in eps]
+    return {
+        "accuracy": round(statistics.mean(e["correct"] for e in eps), 3),
+        "mean_input_tokens": round(statistics.mean(e["input_tokens"] for e in eps), 1),
+        "mean_output_tokens": round(statistics.mean(e["output_tokens"] for e in eps), 1),
+        "mean_total_tokens": round(statistics.mean(tot), 1),
+        "mean_llm_calls": round(statistics.mean(e["llm_calls"] for e in eps), 2),
+        "mean_tool_steps": round(statistics.mean(e["tool_steps"] for e in eps), 2),
+        "mean_wall_clock_s": round(statistics.mean(e["wall_clock_s"] for e in eps), 2),
+        "mean_cost_$": round(statistics.mean(e["cost_$"] or 0 for e in eps), 4),
+        "tool_diversity": round(statistics.mean(len(set(e["tool_calls"])) for e in eps), 2),
+        "truncated_rate": round(sum(1 for e in eps if e["truncated"]) / n, 3),
+        "n_episodes": len(eps),
+    }
+
+
+def _summary_matrix(arms: list[str], aggregates: dict, result: dict) -> dict:
+    """臂×指标矩阵 + 跨臂派生指标（context_compression）。"""
+    mat = {a: {k: aggregates[a].get(k) for k in _METRIC_KEYS} for a in arms}
+    # context_compression = no-kb 总 token / kb 总 token（>1 = KB 省）
+    comp = None
+    if "no-kb" in aggregates and "kb" in aggregates:
+        kb_tok = aggregates["kb"]["mean_total_tokens"]
+        if kb_tok:
+            comp = round(aggregates["no-kb"]["mean_total_tokens"] / kb_tok, 2)
+    return {
+        "target": result["target_id"], "model": result["model"], "smoke": result["smoke"],
+        "n_questions": result["n_questions"], "runs": result["runs"],
+        "arms": arms, "matrix": mat,
+        "context_compression_kb_vs_no_kb": comp,
+        "metric_keys": _METRIC_KEYS,
+    }
+
+
+def _winner(arms, aggregates, key, lower_better=False):
+    """哪臂在该指标上最优（accuracy 等越高越好；tokens/cost/time 越低越好）。"""
+    vals = [(a, aggregates[a].get(key)) for a in arms if aggregates[a].get(key) is not None]
+    if not vals:
+        return None, None
+    best_a, best_v = min(vals, key=lambda x: x[1]) if lower_better else max(vals, key=lambda x: x[1])
+    return best_a, best_v
+
+
+def _conclusion_md(result: dict, aggregates: dict) -> str:
+    arms = result["arms"]
+    acc_win, acc_v = _winner(arms, aggregates, "accuracy")
+    tok_win, tok_v = _winner(arms, aggregates, "mean_total_tokens", lower_better=True)
+    cost_win, cost_v = _winner(arms, aggregates, "mean_cost_$", lower_better=True)
+    comp = _summary_matrix(arms, aggregates, result)["context_compression_kb_vs_no_kb"]
+    mode = "（**SMOKE / mock**，非真实 LLM 跑）" if result["smoke"] else ""
+    lines = [
+        f"# agent-compare 结论 · target={result['target_id']} · model={result['model']}{mode}",
+        f"> {result['n_questions']} 题 × {result['runs']} runs × {len(arms)} 臂。",
+        "",
+        "## 谁赢",
+        f"- **准确率最高**：`{acc_win}`（accuracy={acc_v}）" if acc_win else "- 准确率：无数据",
+        f"- **最省 token**：`{tok_win}`（mean_total_tokens={tok_v}）" if tok_win else "",
+        f"- **最省钱**：`{cost_win}`（mean_cost_$={cost_v}）" if cost_win and cost_v else "",
+        f"- **KB vs 无 KB token 压缩**：{comp}×（>1 = KB 省）" if comp else "",
+        "",
+        "## 诚实边界（必须看）",
+        "- **accuracy 由 GLM 生成 + GLM 判分**（同家族 self-preference）→ 相对参考值，非绝对回归值。",
+        "- **skills 臂注入的是 bundled 精简 SOP 文本**（`eval/arms/skills_bundled/`），**非完整 Claude Code skill 运行时**"
+        "（无触发机制/hook）。是 headless 可复现近似，不等于真实 skill 效果。",
+        "- **`cost_$` 依赖 MODEL_PRICES 单价**，单价未知则 0（占位）；当前价格为占位，勿当真实成本。",
+        f"- 样本量小（{result['n_questions']} 题），结论显著性有限——看趋势勿绝对化。",
+        "- bug_fix 题仍用 symbol/file broad match 判分（非修复质量 LLM-judge）。",
+        "",
+        "## 各臂速览",
+    ]
+    for a in arms:
+        ag = aggregates[a]
+        lines.append(f"- `{a}`: acc={ag['accuracy']} · tokens={ag['mean_total_tokens']} · "
+                     f"llm_calls={ag['mean_llm_calls']} · steps={ag['mean_tool_steps']} · "
+                     f"t={ag['mean_wall_clock_s']}s · tools={ag['tool_diversity']}")
+    lines.append("\n详见 `summary.json`（臂×指标矩阵）、`matrix.md`、各臂 `arms/<arm>/`。")
+    return "\n".join(lines) + "\n"
+
+
+def _matrix_md(arms, aggregates) -> str:
+    head = "| 臂 | " + " | ".join(_METRIC_KEYS) + " |"
+    sep = "|---|" + "|".join(["---"] * len(_METRIC_KEYS)) + "|"
+    rows = [head, sep]
+    for a in arms:
+        vals = [str(aggregates[a].get(k, "")) for k in _METRIC_KEYS]
+        rows.append(f"| `{a}` | " + " | ".join(vals) + " |")
+    return "\n".join(rows) + "\n"
+
+
+def _config_md(arm: str, cfg: dict) -> str:
+    skills = cfg.get("skills", [])
+    lines = [f"# 臂 `{arm}` 配置", "", f"**工具**：{', '.join(cfg['tools'])}",
+             f"**注入 skills**：{', '.join(skills) or '（无）'}"]
+    for s in skills:
+        lines.append(f"\n---\n## 注入的 skill：{s}\n（详见 `eval/arms/skills_bundled/{s}.md`）")
+    return "\n".join(lines) + "\n"
+
+
+def _clean_episode(ep: dict) -> dict:
+    """episode.json：去掉 session/thinking（单独落 jsonl/md），留指标 + 逐步 tool。"""
+    return {k: v for k, v in ep.items() if k not in ("session", "thinking")}
+
+
+def write_compare_report(result: dict, report_root: str) -> str:
+    """把 run_compare 结果写成目录报告。返报告根目录。"""
+    out = Path(report_root)
+    out.mkdir(parents=True, exist_ok=True)
+    arms = result["arms"]
+    by_arm = result["episodes_by_arm"]
+
+    aggregates = {a: _aggregate(by_arm[a]) for a in arms}
+    for arm in arms:
+        arm_dir = out / "arms" / arm
+        arm_dir.mkdir(parents=True, exist_ok=True)
+        (arm_dir / "config.md").write_text(_config_md(arm, ab_tools.arm_config(arm)), encoding="utf-8")
+        (arm_dir / "aggregate.json").write_text(json.dumps(aggregates[arm], ensure_ascii=False, indent=2), encoding="utf-8")
+        for ep in by_arm[arm]:
+            edir = arm_dir / "episodes" / ep["qid"]
+            edir.mkdir(parents=True, exist_ok=True)
+            (edir / "episode.json").write_text(json.dumps(_clean_episode(ep), ensure_ascii=False, indent=2), encoding="utf-8")
+            (edir / "session.jsonl").write_text(
+                "\n".join(json.dumps(m, ensure_ascii=False) for m in ep["session"]) + "\n", encoding="utf-8")
+            (edir / "thinking.md").write_text(
+                "# thinking\n\n" + "\n\n---\n\n".join(ep["thinking"] or ["(无 thinking 捕获)"]) + "\n", encoding="utf-8")
+
+    summary = _summary_matrix(arms, aggregates, result)
+    (out / "summary.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8")
+    (out / "matrix.md").write_text(_matrix_md(arms, aggregates), encoding="utf-8")
+    (out / "conclusion.md").write_text(_conclusion_md(result, aggregates), encoding="utf-8")
+    return str(out)

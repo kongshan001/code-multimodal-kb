@@ -35,6 +35,82 @@ def _judge_retrieval(answer: str, tool_texts: list[str], goldset) -> int:
     return 1 if any(_norm(g) in hay for g in goldset) else 0
 
 
+def _problem_goldset(problem: dict) -> set[str]:
+    """code_retrieval→symbols；bug_fix→symbols+files；broad match 统一判分用。"""
+    g = problem.get("gold", {})
+    return set(g.get("symbols", [])) | set(g.get("files", []))
+
+
+# ── agent-compare：4 臂（KB×skills）多题对比 ──────────────────────────────
+def _mock_episode(question: str, arm: str, goldset: set[str], qi: int) -> dict:
+    """确定性 mock episode（smoke 模式用，不调 LLM）。产出结构完整的假 trace。
+
+    让无凭据环境也能跑通报告写器 + 流水线。命中模式：qi 偶数命中、奇数不中；
+    skills 臂多几步（模拟 SOP 更费步）。
+    """
+    hit = (qi % 2 == 0)
+    sym = sorted(goldset)[0] if goldset else "Unknown"
+    answer = f"The answer involves `{sym}`." if hit else "I could not locate it."
+    is_skill = "+" in arm
+    base_tools = ["cmm_search"] if arm.startswith("kb") else ["grep_code"]
+    tool_calls = (base_tools + ["read_file"]) if is_skill else base_tools
+    steps = 3 if is_skill else 2
+    in_tok, out_tok = 100 + qi * 8 + (10 if is_skill else 0), 20 + qi * 3
+    return {
+        "answer": answer, "input_tokens": in_tok, "output_tokens": out_tok,
+        "total_tokens": in_tok + out_tok, "steps": steps, "llm_calls": steps,
+        "tool_calls": tool_calls, "tool_steps": len(tool_calls),
+        "tool_texts": ["(mock result)"] * len(tool_calls),
+        "truncated": False, "wall_clock_s": round(0.5 + qi * 0.07 + (0.3 if is_skill else 0), 2),
+        "cost_$": 0.0001,
+        "session": [{"role": "user", "content": question},
+                    {"role": "assistant", "content": [{"type": "text", "text": answer}]}],
+        "thinking": [f"[mock] reasoning for q{qi} on arm {arm}: hypothesize → check → answer"],
+    }
+
+
+def run_compare(target_id: str = "godot-core",
+                arms: tuple[str, ...] = ("no-kb", "kb", "kb+superpowers", "kb+openspec"),
+                runs: int = 1, subset: int | None = None, smoke: bool = False) -> dict:
+    """4 臂 agent-compare：对 code_retrieval + bug_fix 题跑多臂，捕 trace + 指标。
+
+    smoke=True（或无凭据）→ 用 _mock_episode 产出假 trace，跑通写器/流水线。
+    返 {target_id, target, arms, episodes_by_arm, n_questions, runs, model, smoke}，
+    交 agent_compare_report.write_compare_report 写目录。
+    """
+    target = load_target(target_id)
+    problems = [p for p in load_problems(target_id)
+                if p["type"] in ("code_retrieval", "bug_fix")]
+    questions = problems[:subset] if subset else problems
+
+    client = None
+    model = "mock"
+    if not smoke:
+        client = make_client()
+        _, _, model = load_creds()
+
+    episodes_by_arm: dict[str, list[dict]] = {a: [] for a in arms}
+    for qi, p in enumerate(questions):
+        goldset = _problem_goldset(p)
+        for arm in arms:
+            for r in range(runs):
+                if smoke:
+                    ep = _mock_episode(p["query"], arm, goldset, qi)
+                else:
+                    ep = run_episode(client, p["query"], arm, target=target, model=model)
+                ep.update({"query": p["query"], "type": p["type"], "gold": sorted(goldset),
+                           "arm": arm, "run": r, "qid": f"q{qi + 1:02d}",
+                           "correct": _judge(ep["answer"], goldset)})
+                episodes_by_arm[arm].append(ep)
+        print(f"  [{qi + 1}/{len(questions)}] {p['type']:14} {p['query'][:30]:30} "
+              + " ".join(f"{a}={'✓' if episodes_by_arm[a][-1]['correct'] else '✗'}" for a in arms),
+              flush=True)
+
+    return {"target_id": target_id, "target": target, "arms": list(arms),
+            "episodes_by_arm": episodes_by_arm, "n_questions": len(questions),
+            "runs": runs, "model": model, "smoke": smoke}
+
+
 def run(target_id: str = "godot-core", runs: int = 1, subset: int | None = None,
         arms: tuple[str, ...] = ("baseline", "kb", "doc")) -> dict:
     problems = [p for p in load_problems(target_id) if p["type"] == "code_retrieval"]
