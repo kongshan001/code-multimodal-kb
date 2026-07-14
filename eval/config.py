@@ -12,6 +12,7 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
 _CONFIG_PATH = REPO / "bench.yaml"
+_LOCAL_PATH = REPO / "bench.local.yaml"   # gitignored；放 api_key 等敏感/机器特定项
 
 # 内置默认（bench.yaml 缺失或某键未填时用）
 _DEFAULTS = {
@@ -52,15 +53,18 @@ def load() -> dict:
     if _cached is not None:
         return _cached
     cfg = dict(_DEFAULTS)
-    if _CONFIG_PATH.is_file():
-        try:
-            import yaml  # 惰性：只在 bench.yaml 存在时 import
+    try:
+        import yaml  # 惰性：只在 bench.yaml/local 存在时 import
+        if _CONFIG_PATH.is_file():
             user = yaml.safe_load(_CONFIG_PATH.read_text(encoding="utf-8")) or {}
-            cfg = _deep_merge(_DEFAULTS, user)
-        except ImportError:
-            pass  # 无 pyyaml → 用默认值（不阻断）
-        except yaml.YAMLError as e:
-            raise RuntimeError(f"bench.yaml 解析失败: {e}")
+            cfg = _deep_merge(cfg, user)
+        if _LOCAL_PATH.is_file():   # bench.local.yaml 覆盖（api_key 等放这）
+            local = yaml.safe_load(_LOCAL_PATH.read_text(encoding="utf-8")) or {}
+            cfg = _deep_merge(cfg, local)
+    except ImportError:
+        pass  # 无 pyyaml → 用默认值（不阻断）
+    except yaml.YAMLError as e:
+        raise RuntimeError(f"bench.yaml / bench.local.yaml 解析失败: {e}")
     _cached = cfg
     return cfg
 

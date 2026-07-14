@@ -20,6 +20,12 @@ _ctx.verify_mode = ssl.CERT_NONE  # anaconda python CA 绕过（graphify 在 uv-
 
 
 def _key() -> str:
+    """LLM api_key。优先级：bench.local.yaml(llm.api_key) > env AB_API_KEY > ~/.claude.json(openspace)。"""
+    _cfg = config.llm()
+    if _cfg.get("api_key"):
+        return _cfg["api_key"]
+    if os.environ.get("AB_API_KEY"):
+        return os.environ["AB_API_KEY"]
     cfg = json.load(open(os.path.expanduser("~/.claude.json")))
     return cfg["mcpServers"]["openspace"]["env"]["OPENSPACE_LLM_API_KEY"]
 
