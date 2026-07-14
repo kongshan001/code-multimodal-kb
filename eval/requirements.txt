@@ -1,10 +1,11 @@
-# 评测 harness Python 依赖（实测兼容组合）
+# 评测 harness Python 依赖
 #
-# 检索层（code/doc/cross/memory/ab Stage0）零额外依赖——只 pytest。
-# agent 层 + 答案质量层（ab-agent/doc-ragas/memory-quality）需 anthropic SDK（走 GLM anthropic 兼容端点）。
-# 工具本体（cmm/graphify/codegraph/mempalace）非 pip 依赖，见 ../setup.sh。
+# 检索层（code/doc/cross/memory）只需 pytest + pyyaml（config）。
+# agent 层（ab-agent/agent-compare/goldgen）额外需 anthropic SDK（GLM anthropic 兼容端点）。
+# 工具本体（cmm/graphify/codegraph/mempalace）非 pip 依赖，见 ../setup.sh / setup-bench.bat。
 pytest>=8
 anthropic>=0.90
+pyyaml>=6.0
 
 # ── 不要装这些（本会话踩坑实证）──
 # ragas：0.4.3 与 langchain_community 版本冲突（vertexai 路径变），本项目用 Ragas 协议直接实现，不装库

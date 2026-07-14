@@ -13,12 +13,7 @@ import os
 import time
 from typing import Any
 
-from eval import ab_tools
-
-MAX_STEPS = 8            # 非 skills 臂最多轮（给 grep 臂更多收敛空间，避免空截断）；skills 臂 SKILL_MAX_STEPS
-SKILL_MAX_STEPS = 12     # skills 臂 SOP 更费步
-DEFAULT_BASE_URL = "https://open.bigmodel.cn/api/anthropic"
-DEFAULT_MODEL = "glm-5.1"
+from eval import ab_tools, config
 
 # 目标感知的基底 system prompt（去 Godot 硬编码；目标信息由 _system_prompt 注入）
 BASE_SYS_PROMPT = (
@@ -26,14 +21,6 @@ BASE_SYS_PROMPT = (
     "答案简短：直接给类/函数/方法名（如 `Color`、`ResourceLoader`），不要长解释。\n"
     "**收敛纪律**：一旦工具返回了相关符号就立刻用符号名作答，不要反复查。查到即答。"
 )
-
-# 模型单价 $/Mtoken（OQ2：占位，待查 BigModel 实际定价；未知模型 → cost None）
-MODEL_PRICES = {
-    "glm-5.1": {"in": 0.70, "out": 0.70},
-    "glm-5.2": {"in": 0.70, "out": 0.70},
-}
-
-TOOL_RESULT_CAP = 2000   # tool_result 序列化截断（防 session.jsonl 膨胀）
 
 
 def _system_prompt(arm: str, target: dict | None = None) -> str:
@@ -54,7 +41,7 @@ def _system_prompt(arm: str, target: dict | None = None) -> str:
 
 def _cost(model: str, in_tok: int, out_tok: int):
     """token×单价 → $。单价未知返 None（不报错）。"""
-    p = MODEL_PRICES.get(model)
+    p = config.llm()["prices"].get(model)
     if not p:
         return None
     return round((in_tok * p["in"] + out_tok * p["out"]) / 1e6, 4)
@@ -94,14 +81,14 @@ def load_creds() -> tuple[str, str, str]:
     """返 (api_key, base_url, model)。env 优先，否则读 ~/.cc-connect/config.toml。"""
     if os.environ.get("AB_API_KEY"):
         return (os.environ["AB_API_KEY"],
-                os.environ.get("AB_BASE_URL", DEFAULT_BASE_URL),
-                os.environ.get("AB_MODEL", DEFAULT_MODEL))
+                os.environ.get("AB_BASE_URL", config.llm()["base_url"]),
+                os.environ.get("AB_MODEL", config.llm()["model"]))
     try:
         import tomllib
         with open(os.path.expanduser("~/.cc-connect/config.toml"), "rb") as f:
             data = tomllib.load(f)
         prov = data["projects"][0]["agent"]["providers"][0]
-        return prov["api_key"], prov.get("base_url", DEFAULT_BASE_URL), prov.get("model", DEFAULT_MODEL)
+        return prov["api_key"], prov.get("base_url", config.llm()["base_url"]), prov.get("model", config.llm()["model"])
     except Exception as e:
         raise RuntimeError(f"找不到 LLM 凭据（设 AB_API_KEY 或配 ~/.cc-connect/config.toml）: {e}")
 
@@ -147,7 +134,7 @@ def run_episode(client, question: str, arm: str, target: dict | None = None,
     sys_prompt = _system_prompt(arm, target)
     ab_tools.set_active(target)   # 臂 executor 读当前 target 的 cmm/codegraph/doc 路径（不再硬编码 godot-core）
     if max_steps is None:
-        max_steps = SKILL_MAX_STEPS if ab_tools.arm_skills(arm) else MAX_STEPS
+        max_steps = config.agent()["skill_max_steps"] if ab_tools.arm_skills(arm) else config.agent()["max_steps"]
     tools = ab_tools.arm_schemas(arm)
     messages: list[dict] = [{"role": "user", "content": question}]
     in_tok = out_tok = llm_calls = 0
@@ -183,7 +170,7 @@ def run_episode(client, question: str, arm: str, target: dict | None = None,
                     tool_texts.append(result_s)
                     results.append({"type": "tool_result", "tool_use_id": block.id, "content": result})
                     serialized_results.append({"type": "tool_result", "tool_use_id": block.id,
-                                               "content": result_s[:TOOL_RESULT_CAP]})
+                                               "content": result_s[:config.agent()["tool_result_cap"]]})
             messages.append({"role": "user", "content": results})
             session.append({"role": "user", "content": serialized_results})
         else:  # end_turn → 取本轮 text 作答

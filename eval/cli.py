@@ -15,6 +15,7 @@ import argparse
 import json
 import sys
 
+from eval import config
 from eval.archive import archive_report, compare_reports, get_report, list_reports
 
 
@@ -301,7 +302,7 @@ def main(argv: list[str] | None = None) -> int:
 
     # web：起前端可视化服务
     gw = sub.add_parser("web", help="起 bench 前端可视化（localhost，零依赖）")
-    gw.add_argument("--port", type=int, default=8765)
+    gw.add_argument("--port", type=int, default=config.server()["port"])
 
     args = ap.parse_args(argv)
     if args.cmd == "run":

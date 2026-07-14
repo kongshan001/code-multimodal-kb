@@ -12,7 +12,8 @@ import time
 import urllib.error
 import urllib.request
 
-_BASE = "https://open.bigmodel.cn/api/paas/v4"
+from eval import config
+
 _ctx = ssl.create_default_context()
 _ctx.check_hostname = False
 _ctx.verify_mode = ssl.CERT_NONE  # anaconda python CA 绕过（graphify 在 uv-venv 不需要）
@@ -23,12 +24,14 @@ def _key() -> str:
     return cfg["mcpServers"]["openspace"]["env"]["OPENSPACE_LLM_API_KEY"]
 
 
-def complete(prompt: str, model: str = "glm-4.6", temperature: float = 0,
+def complete(prompt: str, model: str = "", temperature: float = 0,
              max_tokens: int = 400) -> str:
-    """单轮补全，返回文本。429/5xx 退避重试（BigModel 并发限流）。"""
+    """单轮补全，返回文本。429/5xx 退避重试（BigModel 并发限流）。
+    model 默认走 config.llm()['model']（与 ab_agent 统一，修 glm-4.6 vs glm-5.1 不一致）。"""
+    mdl = model or config.llm()["model"]
     req = urllib.request.Request(
-        _BASE + "/chat/completions",
-        data=json.dumps({"model": model, "temperature": temperature,
+        config.llm()["judge_base_url"] + "/chat/completions",
+        data=json.dumps({"model": mdl, "temperature": temperature,
                          "max_tokens": max_tokens,
                          "messages": [{"role": "user", "content": prompt}]}).encode(),
         headers={"Authorization": "Bearer " + _key(), "Content-Type": "application/json"},

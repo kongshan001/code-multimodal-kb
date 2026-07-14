@@ -1,0 +1,28 @@
+# bench.yaml —— benchmark 全引擎可调项（用户配置）
+#
+# 改这个文件调模型/价格/上限/端口，不用改代码。
+# 缺失的键或整个文件不存在时用 eval/config.py 内置默认值。
+# 凭据（api_key）不在这里——走 env (AB_API_KEY) 或 ~/.cc-connect/config.toml。
+
+llm:
+  base_url: https://open.bigmodel.cn/api/anthropic    # agent 臂（anthropic SDK）
+  judge_base_url: https://open.bigmodel.cn/api/paas/v4 # 答案质量 judge（OpenAI 兼容）
+  model: glm-5.1                                       # 统一模型（agent + judge 都用这个）
+  prices:                                              # $/Mtoken（占位，勿当真实成本；未知模型 → cost null）
+    glm-5.1: {in: 0.70, out: 0.70}
+    glm-5.2: {in: 0.70, out: 0.70}
+
+agent:
+  max_steps: 8           # 非 skills 臂最多轮（grep 臂收敛空间）
+  skill_max_steps: 12    # skills 臂 SOP 更费步
+  tool_result_cap: 2000  # tool_result 序列化截断（防 session.jsonl 膨胀）
+  read_cap: 2000         # read_file 截断 chars（两臂公平）
+
+server:
+  port: 8765             # bench web 前端端口
+
+timeouts:                # 子进程超时默认（秒）
+  probe: 10
+  tool: 30
+  long: 120
+  run: 600

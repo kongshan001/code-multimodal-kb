@@ -26,6 +26,7 @@ from typing import Callable
 from eval._subproc import run_text
 from eval.subjects import cmm_bm25, norm_item
 from eval.targets import load_target
+from eval import config
 
 # ── 被测目标：运行时由 run_episode 经 set_active 注入（不再硬编码 godot-core）───
 # 历史 bug：模块级 load_target("godot-core") 导致 cmm/grep/codegraph 臂永远查 godot-core，
@@ -44,8 +45,6 @@ def set_active(target_cfg: dict | None) -> None:
     _active["codegraph_root"] = code.get("codegraph_root", "")
     _active["cmm_project"] = code.get("cmm_project", "")
     _active["doc_graph"] = doc.get("graph", "")
-
-READ_CAP = 2000
 
 
 @dataclass
@@ -72,7 +71,7 @@ def grep_code(pattern: str) -> str:
 def read_file(path: str) -> str:
     """读文件前 READ_CAP chars（两臂共有，保公平）。"""
     try:
-        return open(path, errors="ignore").read(READ_CAP)
+        return open(path, errors="ignore").read(config.agent()["read_cap"])
     except Exception as e:
         return f"(read error: {e})"
 

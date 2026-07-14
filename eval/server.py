@@ -25,6 +25,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
 from eval._subproc import run_text
+from eval import config
 from eval.targets import (TargetError, list_targets, load_problems,
                           load_target, save_problems)
 
@@ -271,7 +272,7 @@ class Handler(BaseHTTPRequestHandler):
 
 def main(argv=None):
     ap = argparse.ArgumentParser(description="bench 前端薄后端（stdlib，零依赖）")
-    ap.add_argument("--port", type=int, default=8765)
+    ap.add_argument("--port", type=int, default=config.server()["port"])
     ap.add_argument("--host", default="127.0.0.1")
     a = ap.parse_args(argv)
     srv = ThreadingHTTPServer((a.host, a.port), Handler)
