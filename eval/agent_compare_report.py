@@ -134,8 +134,43 @@ def _result_md(result: dict, aggregates: dict) -> str:
         "对比 `kb+superpowers` / `kb+openspec` vs `kb` 的 accuracy（skills 帮没帮）+ mean_total_tokens（skills 多花多少）。"
         "**bug_fix 题上差异最可能显现**（纯 code_retrieval 上 skills 显不出价值）。",
         "",
-        "详见 `summary.json`（臂×指标矩阵，程序消费用）、各臂 `arms/<arm>/`（config + aggregate + episodes）。",
+        "详见 `summary.json`（臂×指标矩阵，程序消费用）、`questions.md`（逐题各臂得分对照）、各臂 `arms/<arm>/`（config + aggregate + episodes）。",
     ]
+    return "\n".join(lines) + "\n"
+
+
+def _questions_md(result: dict) -> str:
+    """逐题得分对照：每题一张 臂×{答对/答案/指标} 表，看各臂在每题上的差异。"""
+    arms = result["arms"]
+    by_arm = result["episodes_by_arm"]
+    # 按 qid 顺序（取第一臂的 episode 序）
+    qids = [e["qid"] for e in by_arm[arms[0]]]
+    lines = [
+        "# 逐题得分对照",
+        "",
+        f"> 每题各臂的答对 / 答案 / 指标对照（{len(qids)} 题 × {len(arms)} 臂）。",
+        "> 看哪题谁答对、谁省 token、谁卡住（truncated）。",
+        "",
+    ]
+    for qid in qids:
+        eps = {a: next(e for e in by_arm[a] if e["qid"] == qid) for a in arms}
+        e0 = eps[arms[0]]
+        lines += [
+            f"## {qid} · {e0['type']}",
+            f"**题**：{e0['query']}",
+            f"**gold**：{', '.join(e0['gold'])}",
+            "",
+            "| 臂 | 答对 | 答案（节选） | tokens | llm_calls | tool_steps | 耗时s | 截断 |",
+            "|---|---|---|---|---|---|---|---|",
+        ]
+        for a in arms:
+            e = eps[a]
+            ans = (e.get("answer") or "").replace("|", "/").replace("\n", " ").strip()[:48]
+            mark = "✓" if e["correct"] else "✗"
+            trunc = "⚠卡住" if e["truncated"] else ""
+            lines.append(f"| `{a}` | {mark} | {ans} | {e['total_tokens']} | "
+                         f"{e['llm_calls']} | {e['tool_steps']} | {e['wall_clock_s']} | {trunc} |")
+        lines.append("")
     return "\n".join(lines) + "\n"
 
 
@@ -178,4 +213,5 @@ def write_compare_report(result: dict, report_root: str) -> str:
     summary = _summary_matrix(arms, aggregates, result)
     (out / "summary.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8")
     (out / "result.md").write_text(_result_md(result, aggregates), encoding="utf-8")
+    (out / "questions.md").write_text(_questions_md(result), encoding="utf-8")
     return str(out)

@@ -41,17 +41,22 @@
 
 ### Requirement: Directory-structured comparison report
 
-系统 SHALL 把多臂对比结果写成目录结构：`<report-root>/result.md`（人读：结论 + 指标小白说明 + 对比矩阵 + 诚实边界，合一份）+ `summary.json`（臂×指标矩阵，程序消费用）+ `arms/<arm>/config.md`（该臂工具+skill 透明可审计）+ `arms/<arm>/aggregate.json`（该臂指标聚合）+ `arms/<arm>/episodes/qNN/episode.json`（单题：query+gold+answer+correct+逐步 tool+指标）+ 同目录 `session.jsonl`（完整消息流）+ `thinking.md`（思考）。`result.md` / `summary.json` / `arms/<arm>/{config.md,aggregate.json,episodes/qNN/episode.json}` SHALL 入库；`session.jsonl` 与 `thinking.md` SHALL 经 gitignore 不入库。系统 SHALL NOT 自动 git commit 报告。结论与矩阵 SHALL 合并进单个 `result.md`（不再拆 conclusion.md / matrix.md）。
+系统 SHALL 把多臂对比结果写成目录结构：`<report-root>/result.md`（人读：结论 + 指标小白说明 + 对比矩阵 + 诚实边界，合一份）+ `summary.json`（臂×指标矩阵，程序消费用）+ `questions.md`（逐题各臂得分对照：每题一张 臂×{答对/答案/指标} 表）+ `arms/<arm>/config.md`（该臂工具+skill 透明可审计）+ `arms/<arm>/aggregate.json`（该臂指标聚合）+ `arms/<arm>/episodes/qNN/episode.json`（单题：query+gold+answer+correct+逐步 tool+指标）+ 同目录 `session.jsonl`（完整消息流）+ `thinking.md`（思考）。`result.md` / `summary.json` / `questions.md` / `arms/<arm>/{config.md,aggregate.json,episodes/qNN/episode.json}` SHALL 入库；`session.jsonl` 与 `thinking.md` SHALL 经 gitignore 不入库。系统 SHALL NOT 自动 git commit 报告。结论与矩阵 SHALL 合并进单个 `result.md`（不再拆 conclusion.md / matrix.md）。
 
 #### Scenario: 结论类入库、会话类本地
 
 - **WHEN** 一次 agent-compare 跑完
-- **THEN** `result.md`/`summary.json`/`arms/<arm>/aggregate.json`/`arms/<arm>/episodes/*/episode.json` SHALL 入库；同 episode 的 `session.jsonl`+`thinking.md` SHALL 被 .gitignore 忽略
+- **THEN** `result.md`/`summary.json`/`questions.md`/`arms/<arm>/aggregate.json`/`arms/<arm>/episodes/*/episode.json` SHALL 入库；同 episode 的 `session.jsonl`+`thinking.md` SHALL 被 .gitignore 忽略
 
 #### Scenario: result 人读
 
 - **WHEN** 打开 result.md
 - **THEN** SHALL 见哪臂赢、by 哪个指标、各指标的大白话说明、对比矩阵、诚实边界标注（LLM-judged / self-preference / bundled-SOP-not-runtime）
+
+#### Scenario: 逐题得分对照
+
+- **WHEN** 打开 questions.md
+- **THEN** SHALL 见每题（qNN）一段，含题面+gold+一张 臂×{答对/答案/tokens/llm_calls/耗时/截断} 表，可逐题看各臂差异
 
 ### Requirement: Comparison metrics matrix
 

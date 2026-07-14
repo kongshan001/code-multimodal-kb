@@ -1,0 +1,71 @@
+{
+  "target": "godot-core",
+  "model": "mock",
+  "smoke": true,
+  "n_questions": 3,
+  "runs": 1,
+  "arms": [
+    "no-kb",
+    "kb",
+    "kb+superpowers",
+    "kb+openspec"
+  ],
+  "matrix": {
+    "no-kb": {
+      "accuracy": 0.667,
+      "mean_total_tokens": 131,
+      "mean_llm_calls": 2,
+      "mean_tool_steps": 1,
+      "mean_wall_clock_s": 0.57,
+      "mean_cost_$": 0.0001,
+      "tool_diversity": 1,
+      "truncated_rate": 0.0,
+      "n_episodes": 3
+    },
+    "kb": {
+      "accuracy": 0.667,
+      "mean_total_tokens": 131,
+      "mean_llm_calls": 2,
+      "mean_tool_steps": 1,
+      "mean_wall_clock_s": 0.57,
+      "mean_cost_$": 0.0001,
+      "tool_diversity": 1,
+      "truncated_rate": 0.0,
+      "n_episodes": 3
+    },
+    "kb+superpowers": {
+      "accuracy": 0.667,
+      "mean_total_tokens": 141,
+      "mean_llm_calls": 3,
+      "mean_tool_steps": 2,
+      "mean_wall_clock_s": 0.87,
+      "mean_cost_$": 0.0001,
+      "tool_diversity": 2,
+      "truncated_rate": 0.0,
+      "n_episodes": 3
+    },
+    "kb+openspec": {
+      "accuracy": 0.667,
+      "mean_total_tokens": 141,
+      "mean_llm_calls": 3,
+      "mean_tool_steps": 2,
+      "mean_wall_clock_s": 0.87,
+      "mean_cost_$": 0.0001,
+      "tool_diversity": 2,
+      "truncated_rate": 0.0,
+      "n_episodes": 3
+    }
+  },
+  "context_compression_kb_vs_no_kb": 1.0,
+  "metric_keys": [
+    "accuracy",
+    "mean_total_tokens",
+    "mean_llm_calls",
+    "mean_tool_steps",
+    "mean_wall_clock_s",
+    "mean_cost_$",
+    "tool_diversity",
+    "truncated_rate",
+    "n_episodes"
+  ]
+}

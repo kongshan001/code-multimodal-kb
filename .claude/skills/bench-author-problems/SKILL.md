@@ -66,6 +66,7 @@ bench run agent-compare --target <id> --runs 1
 报告在 `eval/reports/agent-compare/<ts>-<id>/`：
 - `result.md`——**先看这个**：谁赢 + 指标小白说明 + 对比矩阵 + 诚实边界（结论与矩阵合并一份）
 - `summary.json`——臂×指标矩阵（accuracy/tokens/llm_calls/tool_steps/wall_clock/cost/tool_diversity + KB压缩比，程序消费用）
+- `questions.md`——逐题各臂得分对照（每题：答对/答案/指标 × 臂，看哪题谁答对谁省）
 - `arms/<arm>/config.md`——这臂工具+注入了哪个 skill（透明）
 - `arms/<arm>/episodes/qNN/episode.json`——单题执行过程（逐步 tool）+ 指标
 - `arms/<arm>/episodes/qNN/session.jsonl`——完整会话流（本地，gitignore）

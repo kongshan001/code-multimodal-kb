@@ -17,10 +17,15 @@ def test_smoke_pipeline_produces_complete_directory(tmp_path):
     out = tmp_path / "report"
     root = write_compare_report(result, str(out))
 
-    # 顶层结论类（conclusion + matrix 合并进 result.md）
-    for f in ("result.md", "summary.json"):
+    # 顶层：result.md（结论+矩阵）+ summary.json + questions.md（逐题对照）
+    for f in ("result.md", "summary.json", "questions.md"):
         assert (out / f).is_file(), f"缺 {f}"
     assert not (out / "conclusion.md").exists() and not (out / "matrix.md").exists(), "旧 conclusion/matrix 应已并入 result.md"
+
+    # questions.md 含每题各臂对照表
+    qtxt = (out / "questions.md").read_text(encoding="utf-8")
+    assert "逐题得分对照" in qtxt
+    assert qtxt.count("## q0") == 3   # 3 题，每题一个 ## qNN 段
 
     # 每臂：config + aggregate + episodes/*/episode.json
     summary = json.loads((out / "summary.json").read_text(encoding="utf-8"))
