@@ -1,0 +1,49 @@
+{
+  "answer": "`memdelete`、`Object::_predelete`、`Object::cancel_free`、`Object::free_instance_binding`、`predelete_handler`、`Memory::free_static`、`DefaultAllocator::free`、`operator delete`",
+  "input_tokens": 21548,
+  "output_tokens": 268,
+  "total_tokens": 21816,
+  "steps": 13,
+  "llm_calls": 13,
+  "tool_calls": [
+    "cmm_search",
+    "cmm_search",
+    "cmm_search",
+    "cmm_search",
+    "cmm_search",
+    "cmm_search",
+    "cmm_search",
+    "read_file",
+    "read_file",
+    "cmm_search",
+    "cmm_search",
+    "cmm_search"
+  ],
+  "tool_steps": 12,
+  "tool_texts": [
+    "- free_static  (Users-ks_128-Documents-godot-src-core.os.memory.Memory.free_static)  os/memory.cpp\n- free  (Users-ks_128-Documents-godot-src-core.os.memory.DefaultAllocator.free)  os/memory.h\n- cancel_free  (Users-ks_128-Documents-godot-src-core.object.object.Object.cancel_free)  object/object.cpp\n- free_aligned_static  (Users-ks_128-Documents-godot-src-core.os.memory.Memory.free_aligned_static)  os/memory.cpp\n- free_instance_binding  (Users-ks_128-Documents-godot-src-core.object.object.Object.free_instance_binding)  object/object.cpp",
+    "- _predelete  (Users-ks_128-Documents-godot-src-core.object.object.Object._predelete)  object/object.cpp\n- _postinitialize  (Users-ks_128-Documents-godot-src-core.object.object.Object._postinitialize)  object/object.cpp\n- predelete_handler  (Users-ks_128-Documents-godot-src-core.object.object.predelete_handler)  object/object.cpp\n- postinitialize_handler  (Users-ks_128-Documents-godot-src-core.object.object.postinitialize_handler)  object/object.cpp\n- postinitialize_handler  (Users-ks_128-Documents-godot-src-core.object.ref_counted.postinitialize_handler)  object/ref_counted.h",
+    "- free_instance_binding  (Users-ks_128-Documents-godot-src-core.object.object.Object.free_instance_binding)  object/object.cpp\n- gdextension_object_free_instance_binding  (Users-ks_128-Documents-godot-src-core.extension.gdextension_interface.gdextension_object_free_instance_binding)  extension/gdextension_interface.cpp\n- placeholder_class_free_instance  (Users-ks_128-Documents-godot-src-core.object.class_db.PlaceholderExtensionInstance.placeholder_class_free_instance)  object/class_db.cpp\n- placeholder_instance_free_property_list  (Users-ks_128-Documents-godot-src-core.object.class_db.PlaceholderExtensionInstance.placeholder_instance_free_property_list)  object/class_db.cpp\n- cancel_free  (Users-ks_128-Documents-godot-src-core.object.object.Object.cancel_free)  object/object.cpp",
+    "- make_template  (Users-ks_128-Documents-godot-src-core.object.script_language.ScriptLanguage.make_template)  object/script_language.h\n- memdelete  (Users-ks_128-Documents-godot-src-core.os.memory.memdelete)  os/memory.h\n- memdelete_allocator  (Users-ks_128-Documents-godot-src-core.os.memory.memdelete_allocator)  os/memory.h\n- memdelete_arr  (Users-ks_128-Documents-godot-src-core.os.memory.memdelete_arr)  os/memory.h\n- cancel_free  (Users-ks_128-Documents-godot-src-core.object.object.Object.cancel_free)  object/object.cpp",
+    "- node_free_node_and_leaf  (Users-ks_128-Documents-godot-src-core.math.bvh_tree.BVH_Tree.node_free_node_and_leaf)  math/bvh_tree.h\n- cancel_free  (Users-ks_128-Documents-godot-src-core.object.object.Object.cancel_free)  object/object.cpp\n- free_instance_binding  (Users-ks_128-Documents-godot-src-core.object.object.Object.free_instance_binding)  object/object.cpp\n- gdextension_object_free_instance_binding  (Users-ks_128-Documents-godot-src-core.extension.gdextension_interface.gdextension_object_free_instance_binding)  extension/gdextension_interface.cpp\n- placeholder_class_free_instance  (Users-ks_128-Documents-godot-src-core.object.class_db.PlaceholderExtensionInstance.placeholder_class_free_instance)  object/class_db.cpp",
+    "- _delete_node  (Users-ks_128-Documents-godot-src-core.math.dynamic_bvh.DynamicBVH._delete_node)  math/dynamic_bvh.cpp\n- _recurse_delete_node  (Users-ks_128-Documents-godot-src-core.math.dynamic_bvh.DynamicBVH._recurse_delete_node)  math/dynamic_bvh.cpp\n- operator delete  (Users-ks_128-Documents-godot-src-core.os.memory.operator delete)  os/memory.h\n- delete_allocation  (Users-ks_128-Documents-godot-src-core.os.memory.DefaultTypedAllocator.delete_allocation)  os/memory.h\n- _delete_ctx  (Users-ks_128-Documents-godot-src-core.crypto.hashing_context.HashingContext._delete_ctx)  crypto/hashing_context.cpp",
+    "- cancel_free  (Users-ks_128-Documents-godot-src-core.object.object.Object.cancel_free)  object/object.cpp\n- free_instance_binding  (Users-ks_128-Documents-godot-src-core.object.object.Object.free_instance_binding)  object/object.cpp\n- node_free_node_and_leaf  (Users-ks_128-Documents-godot-src-core.math.bvh_tree.BVH_Tree.node_free_node_and_leaf)  math/bvh_tree.h\n- gdextension_object_free_instance_binding  (Users-ks_128-Documents-godot-src-core.extension.gdextension_interface.gdextension_object_free_instance_binding)  extension/gdextension_interface.cpp\n- placeholder_class_free_instance  (Users-ks_128-Documents-godot-src-core.object.class_db.PlaceholderExtensionInstance.placeholder_class_free_instance)  object/class_db.cpp",
+    "(read error: [Errno 2] No such file or directory: 'core/object/object.h')",
+    "(read error: [Errno 2] No such file or directory: 'object/object.h')",
+    "- _predelete  (Users-ks_128-Documents-godot-src-core.object.object.Object._predelete)  object/object.cpp\n- predelete_handler  (Users-ks_128-Documents-godot-src-core.object.object.predelete_handler)  object/object.cpp\n- _notification  (Users-ks_128-Documents-godot-src-core.object.object.Object._notification)  object/object.h\n- notification  (Users-ks_128-Documents-godot-src-core.object.object.Object.notification)  object/object.h\n- _notification_forward  (Users-ks_128-Documents-godot-src-core.object.object.Object._notification_forward)  object/object.cpp",
+    "- Object  (Users-ks_128-Documents-godot-src-core.object.object.Object.Object)  object/object.cpp\n- ~Object  (Users-ks_128-Documents-godot-src-core.object.object.Object.~Object)  object/object.cpp\n- _construct_object  (Users-ks_128-Documents-godot-src-core.object.object.Object._construct_object)  object/object.cpp\n- get_object_count  (Users-ks_128-Documents-godot-src-core.object.object.ObjectDB.get_object_count)  object/object.cpp\n- _predelete  (Users-ks_128-Documents-godot-src-core.object.object.Object._predelete)  object/object.cpp",
+    "- set_deferred  (Users-ks_128-Documents-godot-src-core.object.object.Object.set_deferred)  object/object.cpp\n- _call_deferred_bind  (Users-ks_128-Documents-godot-src-core.object.object.Object._call_deferred_bind)  object/object.cpp\n- frame  (Users-ks_128-Documents-godot-src-core.object.script_language.ScriptLanguage.frame)  object/script_language.cpp\n- operator delete  (Users-ks_128-Documents-godot-src-core.os.memory.operator delete)  os/memory.h\n- func_Callable_call_deferred  (Users-ks_128-Documents-godot-src-core.variant.variant_call._VariantCall.func_Callable_call_deferred)  variant/variant_call.cpp"
+  ],
+  "truncated": true,
+  "wall_clock_s": 94.1,
+  "cost_$": 0.0153,
+  "query": "delete object free memory",
+  "type": "code_retrieval",
+  "gold": [
+    "memdelete"
+  ],
+  "arm": "kb+superpowers",
+  "run": 0,
+  "qid": "q03",
+  "correct": 1
+}

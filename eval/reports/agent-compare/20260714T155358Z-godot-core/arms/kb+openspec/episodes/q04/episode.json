@@ -1,0 +1,29 @@
+{
+  "answer": "Godot core 中 A* 寻路相关的核心符号：\n\n| 符号 | 位置 |\n|---|---|\n| **`AStar3D`** | `math/a_star.cpp` / `a_star.h` |\n| **`AStar2D`** | `math/a_star.cpp` / `a_star.h` |\n| **`AStarGrid2D`** | `math/a_star_grid.cpp` / `a_star_grid.h` |\n\n关键方法：\n\n- **`AStar3D::_solve`** — A* 算法核心求解逻辑（`a_star.cpp`）\n- **`AStar3D::clear`** — 清除所有点/边\n- `add_point` / `remove_point` — 添加/移除节点\n- `connect_points` / `disconnect_points` — 连接/断开边\n- `get_id_path` — 返回从起点到终点的 ID 路径\n- `get_point_path` — 返回从起点到终点的坐标路径\n- `set_point_weight_scale` — 设置节点权重\n\n`AStarGrid2D` 是专门针对 2D 网格的封装，内置障碍物（`set_point_solid`）和区域支持。",
+  "input_tokens": 2450,
+  "output_tokens": 305,
+  "total_tokens": 2755,
+  "steps": 3,
+  "llm_calls": 3,
+  "tool_calls": [
+    "cmm_search",
+    "cmm_search"
+  ],
+  "tool_steps": 2,
+  "tool_texts": [
+    "- ~AStar3D  (Users-ks_128-Documents-godot-src-core.math.a_star.AStar3D.~AStar3D)  math/a_star.cpp\n- AHashMap  (Users-ks_128-Documents-godot-src-core.templates.a_hash_map.AHashMap.AHashMap)  templates/a_hash_map.h\n- ~AHashMap  (Users-ks_128-Documents-godot-src-core.templates.a_hash_map.AHashMap.~AHashMap)  templates/a_hash_map.h\n- clear  (Users-ks_128-Documents-godot-src-core.math.a_star.AStar3D.clear)  math/a_star.cpp\n- _solve  (Users-ks_128-Documents-godot-src-core.math.a_star.AStar3D._solve)  math/a_star.cpp",
+    "- get_path  (Users-ks_128-Documents-godot-src-core.io.resource.Resource.get_path)  io/resource.cpp\n- get_path  (Users-ks_128-Documents-godot-src-core.io.file_access.FileAccess.get_path)  io/file_access.h\n- get_path  (Users-ks_128-Documents-godot-src-core.io.net_socket.NetSocket.Address.get_path)  io/net_socket.h\n- get_path  (Users-ks_128-Documents-godot-src-core.io.file_access_compressed.FileAccessCompressed.get_path)  io/file_access_compressed.cpp\n- get_path  (Users-ks_128-Documents-godot-src-core.io.file_access_encrypted.FileAccessEncrypted.get_path)  io/file_access_encrypted.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 27.17,
+  "cost_$": 0.0019,
+  "query": "a star pathfinding",
+  "type": "code_retrieval",
+  "gold": [
+    "AStar"
+  ],
+  "arm": "kb+openspec",
+  "run": 0,
+  "qid": "q04",
+  "correct": 1
+}

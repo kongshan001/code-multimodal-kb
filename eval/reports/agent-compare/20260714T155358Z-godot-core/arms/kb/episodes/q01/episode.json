@@ -1,0 +1,37 @@
+{
+  "answer": "核心符号是 **`String::format`**（定义于 `core/string/ustring.cpp`）。\n\n它支持两种占位符替换方式：\n\n1. **数组方式** — 用 `String` 的 `sarray`（即 `Vector<String>`）传入值，占位符为 `{0}`, `{1}`, `{2}` …\n2. **字典方式** — 用 `Dictionary` 传入键值对，占位符为 `{key}`。\n\n相关辅助符号：\n- `String::replace` / `String::replace_first` / `String::replace_char` — 底层替换实现\n- `sarray` — 字符串数组辅助类型（`ustring.h`）\n- `Dictionary::values` — 获取字典值\n\n**用法示例（GDScript 层等价）：**\n```cpp\n// 数组方式\nString s = \"{0} is {1}\".format(sarray(\"Godot\", \"great\"));\n// → \"Godot is great\"\n\n// 字典方式\nString s2 = \"{name} is {adj}\".format(Dictionary{...});\n```",
+  "input_tokens": 4786,
+  "output_tokens": 335,
+  "total_tokens": 5121,
+  "steps": 7,
+  "llm_calls": 7,
+  "tool_calls": [
+    "cmm_search",
+    "read_file",
+    "read_file",
+    "cmm_search",
+    "read_file",
+    "cmm_search"
+  ],
+  "tool_steps": 6,
+  "tool_texts": [
+    "- format  (Users-ks_128-Documents-godot-src-core.string.ustring.String.format)  string/ustring.cpp\n- format_number  (Users-ks_128-Documents-godot-src-core.string.translation_server.TranslationServer.format_number)  string/translation_server.cpp\n- _get_string  (Users-ks_128-Documents-godot-src-core.io.resource_format_binary.ResourceLoaderBinary._get_string)  io/resource_format_binary.cpp\n- get_unicode_string  (Users-ks_128-Documents-godot-src-core.io.resource_format_binary.ResourceLoaderBinary.get_unicode_string)  io/resource_format_binary.cpp\n- save_unicode_string  (Users-ks_128-Documents-godot-src-core.io.resource_format_binary.ResourceFormatSaverBinaryInstance.save_unicode_string)  io/resource_format_binary.cpp",
+    "(read error: [Errno 2] No such file or directory: 'core/string/ustring.cpp')",
+    "(read error: [Errno 2] No such file or directory: 'string/ustring.cpp')",
+    "- _is_placeholder  (Users-ks_128-Documents-godot-src-core.string.translation_domain.TranslationDomain._is_placeholder)  string/translation_domain.cpp\n- placeholder_instance_to_string  (Users-ks_128-Documents-godot-src-core.object.class_db.PlaceholderExtensionInstance.placeholder_instance_to_string)  object/class_db.cpp\n- format  (Users-ks_128-Documents-godot-src-core.string.ustring.String.format)  string/ustring.cpp\n- format_number  (Users-ks_128-Documents-godot-src-core.string.translation_server.TranslationServer.format_number)  string/translation_server.cpp\n- is_placeholder  (Users-ks_128-Documents-godot-src-core.object.script_instance.ScriptInstance.is_placeholder)  object/script_instance.h",
+    "(read error: [Errno 2] No such file or directory: 'Users-ks_128-Documents-godot-src-core.string.ustring.cpp')",
+    "- values  (Users-ks_128-Documents-godot-src-core.variant.dictionary.Dictionary.values)  variant/dictionary.cpp\n- sarray  (Users-ks_128-Documents-godot-src-core.string.ustring.sarray)  string/ustring.h\n- replace  (Users-ks_128-Documents-godot-src-core.string.ustring.String.replace)  string/ustring.cpp\n- replace_first  (Users-ks_128-Documents-godot-src-core.string.ustring.String.replace_first)  string/ustring.cpp\n- replace_char  (Users-ks_128-Documents-godot-src-core.string.ustring.String.replace_char)  string/ustring.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 36.01,
+  "cost_$": 0.0036,
+  "query": "string format",
+  "type": "code_retrieval",
+  "gold": [
+    "vformat"
+  ],
+  "arm": "kb",
+  "run": 0,
+  "qid": "q01",
+  "correct": 0
+}

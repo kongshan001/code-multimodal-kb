@@ -1,0 +1,35 @@
+{
+  "answer": "在 Godot core 中，删除对象/释放内存涉及以下关键符号：\n\n## 内存释放（底层）\n\n| 符号 | 用途 |\n|---|---|\n| **`memdelete`** | 删除单个堆对象（调用析构 + 释放内存），最常用 |\n| **`memdelete_allocator`** | 用自定义 allocator 分配的对象删除 |\n| **`memdelete_arr`** | 删除数组（`memnew_arr` 分配的） |\n| **`operator delete`** | 全局 delete 重载 |\n| **`Memory::free_static`** | 静态释放（不经过自定义 allocator） |\n| **`Memory::free_aligned_static`** | 对齐内存的静态释放 |\n| **`DefaultAllocator::free`** | 默认 allocator 的 free |\n| **`DefaultTypedAllocator::delete_allocation`** | 类型化 allocator 的删除 |\n\n## Object 生命周期\n\n| 符号 | 用途 |\n|---|---|\n| **`Object::is_queued_for_deletion`** | 检查对象是否已排队等待删除 |\n| **`ObjectDB::cleanup`** | 全局 Object 数据库清理（引擎关闭时） |\n\n## 核心用法\n\n```cpp\n// 创建\nObject *obj = memnew(Object);\n\n// 删除（释放内存）\nmemdelete(obj);\n\n// 数组\nint *arr = memnew_arr(int, 10);\nmemdelete_arr(arr);\n```\n\n**总结**：Godot 不直接用 `delete`，而是统一通过 **`memdelete`** / **`memdelete_arr`** 宏来删除对象并释放内存，这些宏定义在 `os/memory.h` 中，底层调用 `Memory::free_static` 或对应 allocator 的 `free`。",
+  "input_tokens": 4863,
+  "output_tokens": 465,
+  "total_tokens": 5328,
+  "steps": 5,
+  "llm_calls": 5,
+  "tool_calls": [
+    "cmm_search",
+    "cmm_search",
+    "read_file",
+    "read_file",
+    "cmm_search"
+  ],
+  "tool_steps": 5,
+  "tool_texts": [
+    "- memdelete  (Users-ks_128-Documents-godot-src-core.os.memory.memdelete)  os/memory.h\n- memdelete_allocator  (Users-ks_128-Documents-godot-src-core.os.memory.memdelete_allocator)  os/memory.h\n- memdelete_arr  (Users-ks_128-Documents-godot-src-core.os.memory.memdelete_arr)  os/memory.h\n- operator delete  (Users-ks_128-Documents-godot-src-core.os.memory.operator delete)  os/memory.h\n- delete_allocation  (Users-ks_128-Documents-godot-src-core.os.memory.DefaultTypedAllocator.delete_allocation)  os/memory.h",
+    "- cleanup  (Users-ks_128-Documents-godot-src-core.io.file_access_memory.FileAccessMemory.cleanup)  io/file_access_memory.cpp\n- free_static  (Users-ks_128-Documents-godot-src-core.os.memory.Memory.free_static)  os/memory.cpp\n- free  (Users-ks_128-Documents-godot-src-core.os.memory.DefaultAllocator.free)  os/memory.h\n- free_aligned_static  (Users-ks_128-Documents-godot-src-core.os.memory.Memory.free_aligned_static)  os/memory.cpp\n- cleanup  (Users-ks_128-Documents-godot-src-core.object.object.ObjectDB.cleanup)  object/object.cpp",
+    "(read error: [Errno 2] No such file or directory: 'core/os/memory.h')",
+    "(read error: [Errno 2] No such file or directory: 'Users-ks_128-Documents-godot-src-core.os.memory.memdelete')",
+    "- is_queued_for_deletion  (Users-ks_128-Documents-godot-src-core.object.object.Object.is_queued_for_deletion)  object/object.cpp\n- make_template  (Users-ks_128-Documents-godot-src-core.object.script_language.ScriptLanguage.make_template)  object/script_language.h\n- memdelete  (Users-ks_128-Documents-godot-src-core.os.memory.memdelete)  os/memory.h\n- memdelete_allocator  (Users-ks_128-Documents-godot-src-core.os.memory.memdelete_allocator)  os/memory.h\n- memdelete_arr  (Users-ks_128-Documents-godot-src-core.os.memory.memdelete_arr)  os/memory.h"
+  ],
+  "truncated": false,
+  "wall_clock_s": 54.26,
+  "cost_$": 0.0037,
+  "query": "delete object free memory",
+  "type": "code_retrieval",
+  "gold": [
+    "memdelete"
+  ],
+  "arm": "kb+openspec",
+  "run": 0,
+  "qid": "q03",
+  "correct": 1
+}
