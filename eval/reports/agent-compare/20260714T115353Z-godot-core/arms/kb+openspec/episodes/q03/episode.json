@@ -1,0 +1,29 @@
+{
+  "answer": "Godot 中删除对象并释放内存涉及以下关键符号：\n\n| 操作 | 符号 | 位置 |\n|---|---|---|\n| 删除对象（调用析构 + 释放内存） | `memdelete` | `os/memory.h` |\n| 删除前的回调钩子 | `predelete_handler` | `os/memory.h` / `object/object.cpp` |\n| 对象删除前虚函数（可阻止删除） | `Object::_predelete` | `object/object.cpp` |\n| 删除前检查是否允许 | `Object::_predelete_ok` | `object/object.h` |\n| 取消待删除标记 | `Object::cancel_free` | `object/object.cpp` |\n| 底层内存释放 | `DefaultAllocator::free` / `Memory::free_static` | `os/memory.h` / `os/memory.cpp` |\n\n**核心流程**：调用 `memdelete(obj)` → 触发 `predelete_handler` → 调用 `Object::_predelete`（若返回 false 则中止）→ 析构 → `DefaultAllocator::free` 释放内存。\n\n> 注意：Godot 不直接用 `delete`，而是统一通过 `memdelete` 宏/模板，以便走自定义内存分配器和 `predelete_handler` 钩子链。",
+  "input_tokens": 2058,
+  "output_tokens": 316,
+  "total_tokens": 2374,
+  "steps": 3,
+  "llm_calls": 3,
+  "tool_calls": [
+    "cmm_search",
+    "cmm_search"
+  ],
+  "tool_steps": 2,
+  "tool_texts": [
+    "- free_static  (Users-ks_128-Documents-godot-src-core.os.memory.Memory.free_static)  os/memory.cpp\n- free  (Users-ks_128-Documents-godot-src-core.os.memory.DefaultAllocator.free)  os/memory.h\n- cancel_free  (Users-ks_128-Documents-godot-src-core.object.object.Object.cancel_free)  object/object.cpp\n- free_aligned_static  (Users-ks_128-Documents-godot-src-core.os.memory.Memory.free_aligned_static)  os/memory.cpp\n- free_instance_binding  (Users-ks_128-Documents-godot-src-core.object.object.Object.free_instance_binding)  object/object.cpp",
+    "- _predelete  (Users-ks_128-Documents-godot-src-core.object.object.Object._predelete)  object/object.cpp\n- predelete_handler  (Users-ks_128-Documents-godot-src-core.object.object.predelete_handler)  object/object.cpp\n- predelete_handler  (Users-ks_128-Documents-godot-src-core.os.memory.predelete_handler)  os/memory.h\n- _predelete_ok  (Users-ks_128-Documents-godot-src-core.object.object.Object._predelete_ok)  object/object.h\n- memdelete  (Users-ks_128-Documents-godot-src-core.os.memory.memdelete)  os/memory.h"
+  ],
+  "truncated": false,
+  "wall_clock_s": 18.21,
+  "cost_$": 0.0017,
+  "query": "delete object free memory",
+  "type": "code_retrieval",
+  "gold": [
+    "memdelete"
+  ],
+  "arm": "kb+openspec",
+  "run": 0,
+  "qid": "q03",
+  "correct": 1
+}

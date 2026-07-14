@@ -1,0 +1,29 @@
+{
+  "answer": "`itos`（定义于 `core/string/ustring.cpp`）——将 `int` 转为 `String`。\n\n另有 `String::num()` / `String::num_int64()` 可用于更灵活的整数→字符串转换。",
+  "input_tokens": 2571,
+  "output_tokens": 84,
+  "total_tokens": 2655,
+  "steps": 3,
+  "llm_calls": 3,
+  "tool_calls": [
+    "cmm_search",
+    "cmm_search"
+  ],
+  "tool_steps": 2,
+  "tool_texts": [
+    "- to_int  (Users-ks_128-Documents-godot-src-core.string.ustring.String.to_int)  string/ustring.cpp\n- _to_int  (Users-ks_128-Documents-godot-src-core.string.ustring._to_int)  string/ustring.cpp\n- hex_to_int  (Users-ks_128-Documents-godot-src-core.string.ustring.String.hex_to_int)  string/ustring.cpp\n- bin_to_int  (Users-ks_128-Documents-godot-src-core.string.ustring.String.bin_to_int)  string/ustring.cpp\n- as_int  (Users-ks_128-Documents-godot-src-core.string.string_buffer.as_int)  string/string_buffer.h",
+    "- itos  (Users-ks_128-Documents-godot-src-core.string.ustring.itos)  string/ustring.cpp\n- convert_rgba8_to_bgra8  (Users-ks_128-Documents-godot-src-core.io.image.Image.convert_rgba8_to_bgra8)  io/image.cpp\n- _convert_to_last_version  (Users-ks_128-Documents-godot-src-core.config.project_settings.ProjectSettings._convert_to_last_version)  config/project_settings.cpp\n- convert_rg_to_ra_rgba8  (Users-ks_128-Documents-godot-src-core.io.image.Image.convert_rg_to_ra_rgba8)  io/image.cpp\n- convert_ra_rgba8_to_rg  (Users-ks_128-Documents-godot-src-core.io.image.Image.convert_ra_rgba8_to_rg)  io/image.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 11.56,
+  "cost_$": 0.0019,
+  "query": "int to string",
+  "type": "code_retrieval",
+  "gold": [
+    "itos"
+  ],
+  "arm": "kb+superpowers",
+  "run": 0,
+  "qid": "q02",
+  "correct": 1
+}
