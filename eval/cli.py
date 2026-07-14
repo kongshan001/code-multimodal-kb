@@ -163,6 +163,78 @@ def _cmd_goldgen_verify(args) -> int:
     return 0
 
 
+def _probe_target(tid: str) -> dict:
+    """探一个 target 的状态：docked/codegraph/cmm/problems/reports + 下一步建议。"""
+    from pathlib import Path
+    from eval.targets import load_target, load_problems, TARGETS_DIR
+    docked = (TARGETS_DIR / tid / "target.json").is_file()
+    if not docked:
+        return {"target": tid, "docked": False, "next": "未对接：建 target.json + 索引（见 bench-dock-target）"}
+    t = load_target(tid)
+    root = t.get("code", {}).get("codegraph_root", "")
+    cmm_proj = t.get("code", {}).get("cmm_project", "")
+    codegraph_ok = bool(root) and Path(root, ".codegraph").is_dir()
+    cmm_ok = False
+    if cmm_proj:
+        try:
+            from eval.subjects import cmm_list_projects
+            cmm_ok = any(p.get("name") == cmm_proj for p in cmm_list_projects())
+        except Exception:
+            cmm_ok = False
+    try:
+        probs = load_problems(tid)
+        from collections import Counter
+        types = Counter(p["type"] for p in probs)
+        n = len(probs)
+        type_str = "+".join(f"{k[0]}{v}" for k, v in types.items()) or "0"
+    except Exception:
+        n, type_str = 0, "0"
+    # 报告数（archive 里 target==tid 的）
+    try:
+        from eval.archive import list_reports
+        n_reports = sum(1 for r in list_reports() if r.get("target") == tid)
+    except Exception:
+        n_reports = 0
+    # 下一步建议
+    if not codegraph_ok or not cmm_ok:
+        nxt = f"建索引：codegraph init + cmm index（见 bench-dock-target）"
+    elif n == 0:
+        nxt = f"造题：bench goldgen <seed> --target {tid}"
+    else:
+        nxt = f"跑：bench run code --target {tid} --method bm25  |  对比 skills：bench run agent-compare --target {tid} --subset 6"
+    return {"target": tid, "docked": True, "codegraph": codegraph_ok, "cmm": cmm_ok,
+            "n_problems": n, "types": type_str, "n_reports": n_reports, "next": nxt}
+
+
+def _cmd_status(args) -> int:
+    """探对接状态 + 建议下一步。无参数列全部 target；给 id 看单个详情。"""
+    from eval.targets import list_targets
+    if args.target:
+        # 给的可能是 id 或路径
+        s = _probe_target(args.target) if args.target in list_targets() else {"target": args.target, "docked": False,
+              "next": f"未对接（{args.target} 不是已知 target）：建 target.json + 索引（见 bench-dock-target）"}
+        print(f"target: {s['target']}")
+        if s.get("docked"):
+            print(f"  对接:✓  codegraph:{'✓' if s['codegraph'] else '✗'}  cmm:{'✓' if s['cmm'] else '✗'}")
+            print(f"  题数: {s['n_problems']} ({s['types']})    报告: {s['n_reports']} 份")
+        print(f"  下一步: {s['next']}")
+    else:
+        tids = list_targets()
+        if not tids:
+            print("（尚无 target）下一步：对接一个工程（见 bench-dock-target）")
+            return 0
+        print(f"{'target':22} {'对接':4} {'cgraph':6} {'cmm':4} {'题数(types)':16} {'报告':4} 下一步")
+        print("-" * 110)
+        for tid in tids:
+            s = _probe_target(tid)
+            if s["docked"]:
+                print(f"{tid:22} ✓    {'✓' if s['codegraph'] else '✗':6} {'✓' if s['cmm'] else '✗':4} "
+                      f"{str(s['n_problems'])+'('+s['types']+')':16} {s['n_reports']:4} {s['next'][:48]}")
+            else:
+                print(f"{tid:22} ✗    {s['next'][:60]}")
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(prog="bench", description="engineer_demo benchmark 运行器")
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -203,6 +275,10 @@ def main(argv: list[str] | None = None) -> int:
     # list-reports
     sub.add_parser("list-reports", help="列出归档报告")
 
+    # status [target]：探对接状态 + 建议下一步（单一入口的低成本探针）
+    st = sub.add_parser("status", help="探对接状态 + 建议下一步（无参列全部 target）")
+    st.add_argument("target", nargs="?", default=None, help="target id 或工程路径（可选）")
+
     # show <id>
     show_p = sub.add_parser("show", help="查看单份报告")
     show_p.add_argument("id")
@@ -232,6 +308,8 @@ def main(argv: list[str] | None = None) -> int:
         return _cmd_run(args)
     if args.cmd == "list-reports":
         return _cmd_list(args)
+    if args.cmd == "status":
+        return _cmd_status(args)
     if args.cmd == "show":
         return _cmd_show(args)
     if args.cmd == "compare":
