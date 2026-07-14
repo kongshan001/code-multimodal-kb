@@ -16,7 +16,7 @@ Confirm the target tools are installed (`bench web` → 环境体检, or `./setu
 - **doc retrieval** → `graphify`
 - **memory** → `mempalace`
 
-If a tool is missing, install it via the scaffold (能力目录 → 安装) or its runbook. The harness itself is zero-extra-dependency (pytest only); never `pip install ragas` or bump `numpy≥2` (known conflicts in this repo).
+If a tool is missing, install it via the scaffold (能力目录 → 安装) or its runbook. Python 依赖：`pip install -r eval/requirements.txt`（Windows 双击 `setup-bench.bat`）。改全局配置（模型/步数/端口）：编辑 `bench.yaml`。never `pip install ragas` or bump `numpy≥2`（known conflicts）。
 
 ## The 6-step docking workflow
 

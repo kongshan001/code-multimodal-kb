@@ -71,7 +71,14 @@ bench run agent-compare --target <id> --runs 1
 - `arms/<arm>/episodes/qNN/session.jsonl`——完整会话流（本地，gitignore）
 - `arms/<arm>/episodes/qNN/thinking.md`——思考过程（本地，gitignore）
 
-**看 skills 价值**：对比 `kb+superpowers`/`kb+openspec` vs `kb` 的 accuracy（skills 帮没帮）+ mean_total_tokens（skills 多花了多少 token）。bug_fix 题上差异最可能显现。
+**看 skills 价值**：对比 `kb+superpowers`/`kb+openspec` vs `kb`：
+- **accuracy**：skills 帮没帮（检索题上通常持平；bug_fix 题上可能拉开）。
+- **truncated_rate**：实测发现 skills 臂截断率 = **0.0**（纯 kb 0.125）——**SOP 让 agent 更有条理、防卡住**，这是 skills 在检索任务上的真实优势。
+- **mean_total_tokens**：skills 多花 ~15%（SOP 文本撑大 system prompt）——代价。
+- bug_fix 题上 skills 优势最可能显现（更难、更容易卡）。
+
+> **改配置**（模型/步数/截断上限/端口）：编辑 `bench.yaml`（无需改代码）。
+> **force-answer**：跑满步数（8/12 轮）没收敛时，系统强制要一个最佳答案——不留空截断。
 
 ## 诚实边界（报告里也有，重申）
 

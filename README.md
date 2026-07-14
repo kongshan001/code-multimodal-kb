@@ -26,7 +26,10 @@ python -m eval.cli web            # 起前端 → http://127.0.0.1:8765
 # → 浏览器开 Dashboard / Run console / Setup 体检 / Gold lab
 ```
 
-命令行同样可用：`python -m pytest eval/tests/`（零依赖测试）→ `python -m eval.cli run code/memory/ab/...`（跑评测）。
+Windows：双击 `setup-bench.bat`（装 Python 依赖）→ `deploy.bat <代码目录>`（装 KB 工具 + 接入项目）。
+
+命令行同样可用：`python -m pytest eval/tests/`（测试）→ `python -m eval.cli run code/memory/ab/...`（跑评测）。
+改配置（模型/价格/步数上限/端口）：编辑 **`bench.yaml`**（无需改代码）。
 
 ## 对接你自己的工程（fork 模板）
 

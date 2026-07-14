@@ -8,15 +8,17 @@
 | 依赖 | 用途 | 必需 |
 |---|---|---|
 | Python 3.12+ | 运行 CLI / 测试 | 是 |
-| pytest | 跑测试套件 | 跑测试时 |
+| pytest + pyyaml | 跑测试套件 / 读 bench.yaml 配置 | 是 |
 | codebase-memory-mcp（cmm） | 代码 KB 评测（code/ab/ab-agent/goldgen 枚举）| 跑真评测时 |
 | graphify | 文档 KB 评测（doc/cross、ab doc 臂）| 跑 doc 时 |
 | codegraph | 第二代码 KB（ab-agent codegraph 臂、goldgen 枚举）| 跑该臂时 |
 | MemPalace 3.5+ | 记忆侧评测（memory）| 跑 memory 时 |
 | anthropic SDK + GLM key | agent A/B（ab-agent）、goldgen LLM 拟题 | 跑 ab-agent/goldgen 时 |
 
+> **装 Python 依赖**：`pip install -r eval/requirements.txt`（pytest + anthropic + pyyaml）。Windows：双击 `setup-bench.bat`。
+> **改配置**（模型/价格/步数上限/端口）：编辑 `bench.yaml`（无需改代码；无 pyyaml 时用内置默认值）。
 > GLM 凭据走 `~/.cc-connect/config.toml`（zhipu/BigModel anthropic 兼容端点）或 env `AB_API_KEY/AB_BASE_URL/AB_MODEL`，**不入库**。
-> 测试套件零外部依赖（mock subject），无任何 KB/凭据也能 `pytest eval/tests/`。
+> 测试套件无 KB/凭据也能 `pytest eval/tests/`（mock subject）。
 
 ## 2. 跑（`bench` CLI）
 
