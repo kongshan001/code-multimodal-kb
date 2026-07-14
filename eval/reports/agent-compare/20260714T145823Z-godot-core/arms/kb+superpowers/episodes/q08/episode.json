@@ -1,0 +1,27 @@
+{
+  "answer": "`Vector3` — 定义在 `core/math/vector3.h`，实现在 `core/math/vector3.cpp`。\n\n主要成员/方法：\n\n- **坐标分量**：`x`, `y`, `z`\n- **构造**：`Vector3()`, `Vector3(real_t, real_t, real_t)`\n- **运算**：`operator+`, `operator-`, `operator*`, `operator/`, `dot()`, `cross()`\n- **长度/归一化**：`length()`, `length_squared()`, `normalized()`, `is_normalized()`\n- **旋转**：`rotate()`, `rotated()`\n- **吸附**：`snap()`, `snapped()`\n- **插值**：`lerp()`, `slerp()`\n- **方向**：`direction_to()`, `distance_to()`, `distance_squared_to()`\n- **轴操作**：`min_axis_index()`, `max_axis_index()`, `clamp()`\n- **常量**：`ZERO`, `ONE`, `LEFT`, `RIGHT`, `UP`, `DOWN`, `FORWARD`, `BACK`\n\n需要了解某个具体方法的细节可以继续问。",
+  "input_tokens": 1190,
+  "output_tokens": 267,
+  "total_tokens": 1457,
+  "steps": 2,
+  "llm_calls": 2,
+  "tool_calls": [
+    "cmm_search"
+  ],
+  "tool_steps": 1,
+  "tool_texts": [
+    "- Vector3  (Users-ks_128-Documents-godot-src-core.math.vector3.Vector3)  math/vector3.h\n- rotate  (Users-ks_128-Documents-godot-src-core.math.vector3.Vector3.rotate)  math/vector3.cpp\n- rotated  (Users-ks_128-Documents-godot-src-core.math.vector3.Vector3.rotated)  math/vector3.cpp\n- snap  (Users-ks_128-Documents-godot-src-core.math.vector3.Vector3.snap)  math/vector3.cpp\n- snapped  (Users-ks_128-Documents-godot-src-core.math.vector3.Vector3.snapped)  math/vector3.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 12.49,
+  "cost_$": 0.001,
+  "query": "vector3",
+  "type": "code_retrieval",
+  "gold": [
+    "Vector3"
+  ],
+  "arm": "kb+superpowers",
+  "run": 0,
+  "qid": "q08",
+  "correct": 1
+}

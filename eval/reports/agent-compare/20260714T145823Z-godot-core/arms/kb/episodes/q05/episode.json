@@ -1,0 +1,29 @@
+{
+  "answer": "Godot 的操作系统抽象层核心是：\n\n- **`OS`** (`os/os.h`, `os/os.cpp`) — 抽象基类，定义所有平台相关接口（文件系统、时间、内存、命令行、系统目录、字体等）。\n- **`core_bind::OS`** (`core/core_bind.cpp`) — 暴露给 GDScript 的单例绑定层（即脚本中的 `OS` 单例）。\n\n平台子类（继承自 `OS`）：\n- `OS_Unix` (`os/unix/os_unix.h`)\n- `OS_LinuxBSD`\n- `OS_Windows`\n- `OS_MacOS`\n- `OS_iOS` / `OS_Android`\n- `OS_Web`\n\n相关辅助类：\n- **`Thread`** (`os/thread.h`) — 线程抽象，通过 `_set_platform_functions` 注入平台实现。\n- **`Mutex`** / **`RWLock`** / **`Semaphore`** (`os/`) — 同步原语抽象。",
+  "input_tokens": 1571,
+  "output_tokens": 253,
+  "total_tokens": 1824,
+  "steps": 3,
+  "llm_calls": 3,
+  "tool_calls": [
+    "cmm_search",
+    "cmm_search"
+  ],
+  "tool_steps": 2,
+  "tool_texts": [
+    "- get_system_fonts  (Users-ks_128-Documents-godot-src-core.core_bind.OS.get_system_fonts)  core_bind.cpp\n- get_system_dir  (Users-ks_128-Documents-godot-src-core.core_bind.OS.get_system_dir)  core_bind.cpp\n- get_system_dir  (Users-ks_128-Documents-godot-src-core.os.os.OS.get_system_dir)  os/os.cpp\n- get_system_fonts  (Users-ks_128-Documents-godot-src-core.os.os.OS.get_system_fonts)  os/os.h\n- get_system_ca_certificates  (Users-ks_128-Documents-godot-src-core.core_bind.OS.get_system_ca_certificates)  core_bind.cpp",
+    "- load_platform_gdextensions  (Users-ks_128-Documents-godot-src-core.os.os.OS.load_platform_gdextensions)  os/os.h\n- get_platform_string  (Users-ks_128-Documents-godot-src-core.os.os.OS.get_platform_string)  os/os.h\n- get_cmdline_platform_args  (Users-ks_128-Documents-godot-src-core.os.os.OS.get_cmdline_platform_args)  os/os.h\n- _set_platform_functions  (Users-ks_128-Documents-godot-src-core.os.thread.Thread._set_platform_functions)  os/thread.cpp\n- get_global_class_base  (Users-ks_128-Documents-godot-src-core.object.script_language.ScriptServer.get_global_class_base)  object/script_language.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 25.59,
+  "cost_$": 0.0013,
+  "query": "operating system abstraction",
+  "type": "code_retrieval",
+  "gold": [
+    "OS"
+  ],
+  "arm": "kb",
+  "run": 0,
+  "qid": "q05",
+  "correct": 1
+}

@@ -1,0 +1,33 @@
+{
+  "answer": "Godot core 中 A* 寻路相关的核心类/符号：\n\n- **`AStar3D`** — 3D A* 寻路，定义于 `math/a_star.h` / `math/a_star.cpp`\n- **`AStar2D`** — 2D A* 寻路，同文件\n- **`AStarGrid2D`** — 基于网格的 2D A* 寻路（同样在 `math/a_star.h`）\n\n关键方法（`AStar3D` / `AStar2D` 通用）：\n- `add_point()` / `remove_point()` / `get_point()` — 管理图节点\n- `connect_points()` / `disconnect_points()` — 建立节点间连接\n- `get_id_path()` — 返回从起点到终点的**节点 ID 路径**\n- `get_point_path()` — 返回**坐标点路径**（`Vector3` / `Vector2` 数组）\n- `set_point_weight_scale()` — 设置节点权重\n- `compute_cost()` / `estimate_cost()` — 可重写的代价计算虚函数（`_compute_cost` / `_estimate_cost` 在 GDScript 侧）\n- `is_point_disabled()` / `set_point_disabled()` — 禁用节点\n\n`AStarGrid2D` 额外提供：\n- `set_cell_size()` / `set_offset()` — 网格参数\n- `set_cell_solid()` / `is_point_solid()` — 标记障碍\n- `update()` — 重建网格图\n- `get_id_path()` / `get_point_path()` — 同上",
+  "input_tokens": 1933,
+  "output_tokens": 430,
+  "total_tokens": 2363,
+  "steps": 5,
+  "llm_calls": 5,
+  "tool_calls": [
+    "cmm_search",
+    "read_file",
+    "read_file",
+    "cmm_search"
+  ],
+  "tool_steps": 4,
+  "tool_texts": [
+    "- astar  (Users-ks_128-Documents-godot-src-core.math.a_star.AStar2D.astar)  math/a_star.h",
+    "(read error: [Errno 2] No such file or directory: 'core/math/a_star.h')",
+    "(read error: [Errno 2] No such file or directory: 'core/math/a_star.h')",
+    "- _ignore_definition  (Users-ks_128-Documents-godot-src-core.io.xml_parser.XMLParser._ignore_definition)  io/xml_parser.cpp\n- MethodDefinition  (Users-ks_128-Documents-godot-src-core.object.class_db.MethodDefinition.MethodDefinition)  object/class_db.h\n- ~AStar3D  (Users-ks_128-Documents-godot-src-core.math.a_star.AStar3D.~AStar3D)  math/a_star.cpp\n- MethodDefinition  (Users-ks_128-Documents-godot-src-core.object.class_db.MethodDefinition)  object/class_db.h\n- clear  (Users-ks_128-Documents-godot-src-core.math.a_star.AStar2D.clear)  math/a_star.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 31.74,
+  "cost_$": 0.0017,
+  "query": "a star pathfinding",
+  "type": "code_retrieval",
+  "gold": [
+    "AStar"
+  ],
+  "arm": "kb+superpowers",
+  "run": 0,
+  "qid": "q04",
+  "correct": 1
+}

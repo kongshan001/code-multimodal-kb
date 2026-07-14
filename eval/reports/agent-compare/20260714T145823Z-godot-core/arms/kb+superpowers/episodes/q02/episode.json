@@ -1,0 +1,27 @@
+{
+  "answer": "**`itos`** — `core/string/ustring.cpp`\n\n将 `int` 转为 `String`：\n\n```cpp\nString itos(int64_t p_val);\n```\n\n相关辅助函数还有：\n- **`uitos`** — `uint64_t` → `String`\n- **`rtos`** / **`rtoss`** — `double` → `String`",
+  "input_tokens": 1522,
+  "output_tokens": 101,
+  "total_tokens": 1623,
+  "steps": 2,
+  "llm_calls": 2,
+  "tool_calls": [
+    "cmm_search"
+  ],
+  "tool_steps": 1,
+  "tool_texts": [
+    "- to_int  (Users-ks_128-Documents-godot-src-core.string.ustring.String.to_int)  string/ustring.cpp\n- _to_int  (Users-ks_128-Documents-godot-src-core.string.ustring._to_int)  string/ustring.cpp\n- hex_to_int  (Users-ks_128-Documents-godot-src-core.string.ustring.String.hex_to_int)  string/ustring.cpp\n- bin_to_int  (Users-ks_128-Documents-godot-src-core.string.ustring.String.bin_to_int)  string/ustring.cpp\n- itos  (Users-ks_128-Documents-godot-src-core.string.ustring.itos)  string/ustring.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 10.34,
+  "cost_$": 0.0011,
+  "query": "int to string",
+  "type": "code_retrieval",
+  "gold": [
+    "itos"
+  ],
+  "arm": "kb+superpowers",
+  "run": 0,
+  "qid": "q02",
+  "correct": 1
+}

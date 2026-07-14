@@ -1,0 +1,27 @@
+{
+  "answer": "`Vector3` 定义在 **`core/math/vector3.h`**（实现文件 `core/math/vector3.cpp`）。\n\n主要符号：\n\n- **类**：`Vector3`\n- **成员**：`x`, `y`, `z`\n- **常用方法**：\n  - `length()`, `length_squared()`\n  - `normalized()`, `is_normalized()`\n  - `dot(p_with)`, `cross(p_with)`\n  - `abs()`, `clamp()`, `lerp()`, `snapped()`\n  - `rotated(p_axis, p_angle)` / `rotate(p_axis, p_angle)`\n  - `distance_to(p_to)`, `distance_squared_to(p_to)`\n  - `angle_to(p_to)`\n  - `direction_to(p_to)`\n  - `min(p_with)`, `max(p_with)`\n- **静态常量**：`ZERO`, `ONE`, `LEFT`, `RIGHT`, `UP`, `DOWN`, `FORWARD`, `BACK` 等\n- **运算符**：`+`, `-`, `*`, `/`, `==`, `<`（字典序）等",
+  "input_tokens": 1412,
+  "output_tokens": 255,
+  "total_tokens": 1667,
+  "steps": 2,
+  "llm_calls": 2,
+  "tool_calls": [
+    "cmm_search"
+  ],
+  "tool_steps": 1,
+  "tool_texts": [
+    "- _ignore_definition  (Users-ks_128-Documents-godot-src-core.io.xml_parser.XMLParser._ignore_definition)  io/xml_parser.cpp\n- MethodDefinition  (Users-ks_128-Documents-godot-src-core.object.class_db.MethodDefinition.MethodDefinition)  object/class_db.h\n- Vector3  (Users-ks_128-Documents-godot-src-core.math.vector3.Vector3)  math/vector3.h\n- rotate  (Users-ks_128-Documents-godot-src-core.math.vector3.Vector3.rotate)  math/vector3.cpp\n- rotated  (Users-ks_128-Documents-godot-src-core.math.vector3.Vector3.rotated)  math/vector3.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 14.95,
+  "cost_$": 0.0012,
+  "query": "vector3",
+  "type": "code_retrieval",
+  "gold": [
+    "Vector3"
+  ],
+  "arm": "kb+openspec",
+  "run": 0,
+  "qid": "q08",
+  "correct": 1
+}

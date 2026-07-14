@@ -1,0 +1,27 @@
+{
+  "answer": "Godot 的 A* 寻路实现位于 `core/math/a_star.cpp`，核心类和函数：\n\n- **`AStar3D`** — 3D A* 寻路主类（`core/math/a_star.cpp`）\n- **`AStar2D`** — 2D 版本（同一文件，封装 `AStar3D`）\n- **`AStar3D::_solve()`** — A* 算法核心求解函数\n- **`AStar3D::clear()`** — 清除所有点/边\n\n关键 API：\n- `add_point()` / `remove_point()` — 添加/删除节点\n- `connect_points()` / `disconnect_points()` — 连接/断开边\n- `get_id_path()` — 返回最短路径的节点 ID 数组\n- `get_point_path()` — 返回最短路径的坐标点数组\n- `get_closest_point()` / `get_closest_position_in_segment()` — 最近点查询\n\n`_solve()` 内部使用开放/关闭列表 + 优先队列（基于 `g_score` / `f_score`）实现标准 A* 搜索。",
+  "input_tokens": 1438,
+  "output_tokens": 265,
+  "total_tokens": 1703,
+  "steps": 2,
+  "llm_calls": 2,
+  "tool_calls": [
+    "cmm_search"
+  ],
+  "tool_steps": 1,
+  "tool_texts": [
+    "- ~AStar3D  (Users-ks_128-Documents-godot-src-core.math.a_star.AStar3D.~AStar3D)  math/a_star.cpp\n- AHashMap  (Users-ks_128-Documents-godot-src-core.templates.a_hash_map.AHashMap.AHashMap)  templates/a_hash_map.h\n- ~AHashMap  (Users-ks_128-Documents-godot-src-core.templates.a_hash_map.AHashMap.~AHashMap)  templates/a_hash_map.h\n- clear  (Users-ks_128-Documents-godot-src-core.math.a_star.AStar3D.clear)  math/a_star.cpp\n- _solve  (Users-ks_128-Documents-godot-src-core.math.a_star.AStar3D._solve)  math/a_star.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 16.27,
+  "cost_$": 0.0012,
+  "query": "a star pathfinding",
+  "type": "code_retrieval",
+  "gold": [
+    "AStar"
+  ],
+  "arm": "kb+openspec",
+  "run": 0,
+  "qid": "q04",
+  "correct": 1
+}

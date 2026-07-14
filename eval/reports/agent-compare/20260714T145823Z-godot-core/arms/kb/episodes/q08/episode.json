@@ -1,0 +1,27 @@
+{
+  "answer": "`Vector3` 定义在 **`core/math/vector3.h`**，实现在 **`core/math/vector3.cpp`**。\n\n主要成员/方法包括：\n\n- **坐标轴**：`x`, `y`, `z`\n- **常用方法**：`rotate()` / `rotated()`, `snap()` / `snapped()`, `length()`, `length_squared()`, `normalized()`, `dot()`, `cross()`, `lerp()`, `angle_to()`, `distance_to()`, `direction_to()`, `abs()`, `floor()`, `ceil()`, `clamp()` 等\n- **静态常量**：`ZERO`, `ONE`, `LEFT`, `RIGHT`, `UP`, `DOWN`, `FORWARD`, `BACK` 等\n- **运算符**：支持 `+`, `-`, `*`, `/`, `[]` 等向量运算",
+  "input_tokens": 848,
+  "output_tokens": 205,
+  "total_tokens": 1053,
+  "steps": 2,
+  "llm_calls": 2,
+  "tool_calls": [
+    "cmm_search"
+  ],
+  "tool_steps": 1,
+  "tool_texts": [
+    "- Vector3  (Users-ks_128-Documents-godot-src-core.math.vector3.Vector3)  math/vector3.h\n- rotate  (Users-ks_128-Documents-godot-src-core.math.vector3.Vector3.rotate)  math/vector3.cpp\n- rotated  (Users-ks_128-Documents-godot-src-core.math.vector3.Vector3.rotated)  math/vector3.cpp\n- snap  (Users-ks_128-Documents-godot-src-core.math.vector3.Vector3.snap)  math/vector3.cpp\n- snapped  (Users-ks_128-Documents-godot-src-core.math.vector3.Vector3.snapped)  math/vector3.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 10.93,
+  "cost_$": 0.0007,
+  "query": "vector3",
+  "type": "code_retrieval",
+  "gold": [
+    "Vector3"
+  ],
+  "arm": "kb",
+  "run": 0,
+  "qid": "q08",
+  "correct": 1
+}

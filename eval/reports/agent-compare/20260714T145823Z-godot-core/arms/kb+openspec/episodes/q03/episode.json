@@ -1,0 +1,27 @@
+{
+  "answer": "Godot 中删除对象/释放内存的核心函数：\n\n| 函数 | 用途 |\n|---|---|\n| **`memdelete`** | 删除单个 `Object`（最常用） |\n| **`memdelete_arr`** | 删除数组 |\n| **`memdelete_allocator`** | 用指定 allocator 删除 |\n| **`memdelete_allocator<T>`** | 模板版本 |\n\n全部定义在 **`os/memory.h`**。\n\n典型用法：\n```cpp\nObject *obj = memnew(Object);\n// ... 使用 ...\nmemdelete(obj);  // 释放\n```\n\n**要点**：Godot 不直接用 C++ `delete`，而是统一通过 `memnew` / `memdelete` 宏来分配和释放内存，以便引擎做内存统计和自定义分配器管理。",
+  "input_tokens": 1409,
+  "output_tokens": 190,
+  "total_tokens": 1599,
+  "steps": 2,
+  "llm_calls": 2,
+  "tool_calls": [
+    "cmm_search"
+  ],
+  "tool_steps": 1,
+  "tool_texts": [
+    "- memdelete  (Users-ks_128-Documents-godot-src-core.os.memory.memdelete)  os/memory.h\n- memdelete_allocator  (Users-ks_128-Documents-godot-src-core.os.memory.memdelete_allocator)  os/memory.h\n- memdelete_arr  (Users-ks_128-Documents-godot-src-core.os.memory.memdelete_arr)  os/memory.h\n- operator delete  (Users-ks_128-Documents-godot-src-core.os.memory.operator delete)  os/memory.h\n- delete_allocation  (Users-ks_128-Documents-godot-src-core.os.memory.DefaultTypedAllocator.delete_allocation)  os/memory.h"
+  ],
+  "truncated": false,
+  "wall_clock_s": 12.72,
+  "cost_$": 0.0011,
+  "query": "delete object free memory",
+  "type": "code_retrieval",
+  "gold": [
+    "memdelete"
+  ],
+  "arm": "kb+openspec",
+  "run": 0,
+  "qid": "q03",
+  "correct": 1
+}
