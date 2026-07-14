@@ -68,8 +68,7 @@ def _cmd_run(args) -> int:
         mode = "-smoke" if args.smoke else ""
         out = write_compare_report(result, f"eval/reports/agent-compare/{ts}-{args.target}{mode}")
         print(f"agent-compare 报告: {out}")
-        print(f"  结果:   {out}/result.md     （结论 + 指标说明 + 对比矩阵 + 诚实边界）")
-        print(f"  逐题:   {out}/questions.md  （每题各臂得分对照）")
+        print(f"  结果:   {out}/result.md     （结论 + 指标说明 + 对比矩阵 + 逐题得分对照 + 诚实边界）")
         print(f"  矩阵:   {out}/summary.json  （程序消费用）")
         print(f"  提示:   session.jsonl/thinking.md 是本地文件（.gitignore），结果/指标类已入库")
         return 0
