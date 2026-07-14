@@ -1,0 +1,27 @@
+{
+  "answer": "`String::format` — 定义在 `core/string/ustring.cpp`。\n\n该方法支持用字典或数组对模板字符串中的占位符（如 `{key}` 或 `{index}`）进行替换，返回格式化后的字符串。",
+  "input_tokens": 1431,
+  "output_tokens": 63,
+  "total_tokens": 1494,
+  "steps": 2,
+  "llm_calls": 2,
+  "tool_calls": [
+    "cmm_search"
+  ],
+  "tool_steps": 1,
+  "tool_texts": [
+    "- format  (Users-ks_128-Documents-godot-src-core.string.ustring.String.format)  string/ustring.cpp\n- format_number  (Users-ks_128-Documents-godot-src-core.string.translation_server.TranslationServer.format_number)  string/translation_server.cpp\n- _get_string  (Users-ks_128-Documents-godot-src-core.io.resource_format_binary.ResourceLoaderBinary._get_string)  io/resource_format_binary.cpp\n- get_unicode_string  (Users-ks_128-Documents-godot-src-core.io.resource_format_binary.ResourceLoaderBinary.get_unicode_string)  io/resource_format_binary.cpp\n- save_unicode_string  (Users-ks_128-Documents-godot-src-core.io.resource_format_binary.ResourceFormatSaverBinaryInstance.save_unicode_string)  io/resource_format_binary.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 10.0,
+  "cost_$": 0.001,
+  "query": "string format",
+  "type": "code_retrieval",
+  "gold": [
+    "vformat"
+  ],
+  "arm": "kb+openspec",
+  "run": 0,
+  "qid": "q01",
+  "correct": 0
+}

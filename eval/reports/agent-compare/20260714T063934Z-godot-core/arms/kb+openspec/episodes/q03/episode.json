@@ -1,0 +1,29 @@
+{
+  "answer": "在 Godot core 中，删除对象/释放内存涉及以下关键符号：\n\n## 内存释放宏/函数（`os/memory.h`）\n\n| 符号 | 用途 |\n|---|---|\n| **`memdelete`** | 删除单个对象（调用析构 + 释放内存），最常用 |\n| **`memdelete_allocator`** | 使用指定 Allocator 删除对象 |\n| **`memdelete_arr`** | 删除数组（`memnew_arr` 分配的） |\n| **`operator delete`** | 全局 delete 重载 |\n\n## 底层分配器（`os/memory.h` / `os/memory.cpp`）\n\n| 符号 | 用途 |\n|---|---|\n| **`Memory::free_static`** | 静态释放内存（不调用析构） |\n| **`Memory::free_aligned_static`** | 释放对齐内存 |\n| **`DefaultAllocator::free`** | 默认分配器的 free |\n| **`DefaultTypedAllocator::delete_allocation`** | 类型化分配器删除 |\n\n## 对象系统清理（`object/object.cpp`）\n\n| 符号 | 用途 |\n|---|---|\n| **`ObjectDB::cleanup`** | 清理所有 Object 的数据库注册 |\n\n---\n\n**核心用法总结：**\n\n```cpp\n// 创建\nObject *obj = memnew(Object);\n\n// 删除（调用析构函数 + 释放内存）\nmemdelete(obj);\n\n// 数组\nint *arr = memnew_arr(int, 10);\nmemdelete_arr(arr);\n```\n\n**`memdelete`** 是日常最常用的删除对象方式，它等价于 `delete` 但走 Godot 自定义内存分配器。永远不要对 `memnew` 出来的对象直接用 C++ `delete`，要用 **`memdelete`**。",
+  "input_tokens": 1573,
+  "output_tokens": 419,
+  "total_tokens": 1992,
+  "steps": 2,
+  "llm_calls": 2,
+  "tool_calls": [
+    "cmm_search",
+    "cmm_search"
+  ],
+  "tool_steps": 2,
+  "tool_texts": [
+    "- memdelete  (Users-ks_128-Documents-godot-src-core.os.memory.memdelete)  os/memory.h\n- memdelete_allocator  (Users-ks_128-Documents-godot-src-core.os.memory.memdelete_allocator)  os/memory.h\n- memdelete_arr  (Users-ks_128-Documents-godot-src-core.os.memory.memdelete_arr)  os/memory.h\n- operator delete  (Users-ks_128-Documents-godot-src-core.os.memory.operator delete)  os/memory.h\n- delete_allocation  (Users-ks_128-Documents-godot-src-core.os.memory.DefaultTypedAllocator.delete_allocation)  os/memory.h",
+    "- cleanup  (Users-ks_128-Documents-godot-src-core.io.file_access_memory.FileAccessMemory.cleanup)  io/file_access_memory.cpp\n- free_static  (Users-ks_128-Documents-godot-src-core.os.memory.Memory.free_static)  os/memory.cpp\n- free  (Users-ks_128-Documents-godot-src-core.os.memory.DefaultAllocator.free)  os/memory.h\n- free_aligned_static  (Users-ks_128-Documents-godot-src-core.os.memory.Memory.free_aligned_static)  os/memory.cpp\n- cleanup  (Users-ks_128-Documents-godot-src-core.object.object.ObjectDB.cleanup)  object/object.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 19.72,
+  "cost_$": 0.0014,
+  "query": "delete object free memory",
+  "type": "code_retrieval",
+  "gold": [
+    "memdelete"
+  ],
+  "arm": "kb+openspec",
+  "run": 0,
+  "qid": "q03",
+  "correct": 1
+}

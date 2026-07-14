@@ -1,0 +1,27 @@
+{
+  "answer": "Godot core 中 A* 寻路相关的类：\n\n- **`AStar`** — 通用 2D/3D 图上 A* 寻路（`core/math/a_star.h`）\n- **`AStar3D`** — 3D 版本（同文件中的别名/子类）\n- **`AStar2D`** — 2D 版本\n- **`AStarGrid2D`** — 2D 网格专用 A* 寻路（`core/math/a_star_grid_2d.h`）\n\n核心方法：`add_point()`、`connect_points()`、`get_id_path()`、`get_point_path()`、`is_point_disabled()` 等。",
+  "input_tokens": 804,
+  "output_tokens": 166,
+  "total_tokens": 970,
+  "steps": 2,
+  "llm_calls": 2,
+  "tool_calls": [
+    "grep_code"
+  ],
+  "tool_steps": 1,
+  "tool_texts": [
+    "matched 6 files:\n/Users/ks_128/Documents/godot-src/core/extension/gdextension_special_compat_hashes.cpp\n/Users/ks_128/Documents/godot-src/core/math/a_star_grid_2d.h\n/Users/ks_128/Documents/godot-src/core/math/a_star_grid_2d.cpp\n/Users/ks_128/Documents/godot-src/core/math/a_star.h\n/Users/ks_128/Documents/godot-src/core/math/a_star.cpp\n/Users/ks_128/Documents/godot-src/core/register_core_types.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 18.37,
+  "cost_$": 0.0007,
+  "query": "a star pathfinding",
+  "type": "code_retrieval",
+  "gold": [
+    "AStar"
+  ],
+  "arm": "no-kb",
+  "run": 0,
+  "qid": "q04",
+  "correct": 1
+}

@@ -1,0 +1,27 @@
+{
+  "answer": "相关符号：\n\n- **`Memory::free_static`** — `os/memory.cpp`，释放静态分配的内存\n- **`Memory::free_aligned_static`** — `os/memory.cpp`，释放对齐分配的内存\n- **`DefaultAllocator::free`** — `os/memory.h`，默认分配器的释放方法\n- **`DefaultTypedAllocator::delete_allocation`** — `os/memory.h`，删除类型化分配\n- **`operator delete`** — `os/memory.h`，全局 delete 运算符重载\n\nGodot 中释放对象内存主要通过 `memdelete()` 宏（内部调用 `operator delete` / `free_static`），而非直接使用 C++ 原生 `delete`。",
+  "input_tokens": 848,
+  "output_tokens": 172,
+  "total_tokens": 1020,
+  "steps": 2,
+  "llm_calls": 2,
+  "tool_calls": [
+    "cmm_search"
+  ],
+  "tool_steps": 1,
+  "tool_texts": [
+    "- operator delete  (Users-ks_128-Documents-godot-src-core.os.memory.operator delete)  os/memory.h\n- delete_allocation  (Users-ks_128-Documents-godot-src-core.os.memory.DefaultTypedAllocator.delete_allocation)  os/memory.h\n- free_static  (Users-ks_128-Documents-godot-src-core.os.memory.Memory.free_static)  os/memory.cpp\n- free  (Users-ks_128-Documents-godot-src-core.os.memory.DefaultAllocator.free)  os/memory.h\n- free_aligned_static  (Users-ks_128-Documents-godot-src-core.os.memory.Memory.free_aligned_static)  os/memory.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 16.11,
+  "cost_$": 0.0007,
+  "query": "delete object free memory",
+  "type": "code_retrieval",
+  "gold": [
+    "memdelete"
+  ],
+  "arm": "kb",
+  "run": 0,
+  "qid": "q03",
+  "correct": 1
+}

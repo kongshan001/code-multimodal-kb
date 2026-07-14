@@ -1,0 +1,27 @@
+{
+  "answer": "Godot core 中的 A* 寻路实现：\n\n- **`AStar3D`** — 3D A* 寻路类，定义在 `core/math/a_star.cpp`\n- **`AStar2D`** — 2D 版本（封装 `AStar3D`）\n- **`AStar3D::_solve()`** — 核心寻路算法实现（A* 搜索）\n- **`AStarGrid2D`** — 基于网格的 2D A* 封装（`core/math/a_star_grid2d.cpp`）\n\n关键方法：\n- `add_point()` / `connect_points()` — 构建图\n- `get_id_path()` — 返回最短路径的节点 ID 列表\n- `get_point_path()` — 返回最短路径的坐标点列表\n- `_solve()` — 内部 A* 搜索核心",
+  "input_tokens": 862,
+  "output_tokens": 211,
+  "total_tokens": 1073,
+  "steps": 2,
+  "llm_calls": 2,
+  "tool_calls": [
+    "cmm_search"
+  ],
+  "tool_steps": 1,
+  "tool_texts": [
+    "- ~AStar3D  (Users-ks_128-Documents-godot-src-core.math.a_star.AStar3D.~AStar3D)  math/a_star.cpp\n- AHashMap  (Users-ks_128-Documents-godot-src-core.templates.a_hash_map.AHashMap.AHashMap)  templates/a_hash_map.h\n- ~AHashMap  (Users-ks_128-Documents-godot-src-core.templates.a_hash_map.AHashMap.~AHashMap)  templates/a_hash_map.h\n- clear  (Users-ks_128-Documents-godot-src-core.math.a_star.AStar3D.clear)  math/a_star.cpp\n- _solve  (Users-ks_128-Documents-godot-src-core.math.a_star.AStar3D._solve)  math/a_star.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 14.74,
+  "cost_$": 0.0008,
+  "query": "a star pathfinding",
+  "type": "code_retrieval",
+  "gold": [
+    "AStar"
+  ],
+  "arm": "kb+openspec",
+  "run": 0,
+  "qid": "q04",
+  "correct": 1
+}
