@@ -93,6 +93,26 @@ def _result_md(result: dict, aggregates: dict) -> str:
         f"# agent-compare 结果 · target={result['target_id']} · model={result['model']}{mode}",
         f"> {result['n_questions']} 题 × {result['runs']} runs × {len(arms)} 臂。",
         "",
+        "## 怎么读懂这份报告（规则，先看）",
+        "",
+        "**4 个臂是什么**：",
+        "- `no-kb` = 只给 grep + 读文件（朴素搜索，无知识库）",
+        "- `kb` = 给 cmm 代码知识库（语义检索符号）",
+        "- `kb+superpowers` / `kb+openspec` = kb + 往 agent 指令里注入 superpowers/openspec 的工程纪律 SOP",
+        "  （注入的是**精简 SOP 文本**，不是真 skill 运行时——见末尾诚实边界）",
+        "",
+        "**答对（✓）怎么判**：终答里含 gold 符号或文件名就算对（broad 子串匹配，零 LLM judge）。",
+        "**gold 是什么**：每题的标准答案——来自 codegraph 挖出的真实代码符号/文件，构造即正确（不是人拍脑袋写的）。",
+        "",
+        "**答案写着 `(max_steps reached without final answer)`**：agent 跑满步数上限（非 skills 臂 **6 轮**、"
+        "skills 臂 **10 轮**）还没给出最终答案——**步数被掐了**。多半发生在 no-kb（grep 瞎翻找不到、烧满步数）。"
+        "对应指标 `truncated_rate`（越高越糟）。这个上限是控成本的护栏，防 agent 无限调工具。",
+        "",
+        "**`thinking` / 思考过程**：GLM-5.1 经这个端点不返独立 thinking block，所以思考 = agent 的推理文本（assistant 回答），"
+        "不是单独的隐藏思维链——别当成完整思考链。",
+        "**`cost_$`**：token × 单价；单价是**占位**（待确认 GLM 定价），勿当真实成本，看相对大小即可。",
+        "**`tool_diversity` 高**：可能 agent 在乱试不同工具（没方向），未必好事。",
+        "",
         "## 谁赢",
         f"- **准确率最高**：`{acc_win}`（accuracy={acc_v}）" if acc_win else "- 准确率：无数据",
     ]
