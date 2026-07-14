@@ -238,3 +238,5 @@ measurement lab → http://127.0.0.1:8765
 | Gold lab | `bench goldgen` / `goldgen-verify` + 题库 CRUD（`/api/gold/*`，前端编辑器）|
 
 **前端和 CLI 完全等价**——同一后端，两种入口。自动化用 CLI，日常用前端。
+
+> **agent-compare（4 臂 KB×skills 对比 → 目录报告）目前 CLI only**：`bench run agent-compare --target <id>`，产出 `eval/reports/agent-compare/<ts>-<id>/` 目录（conclusion + 每臂执行过程 + 会话 + 思考）。前端视图后续。详见 `docs/benchmark-runbook.md`。

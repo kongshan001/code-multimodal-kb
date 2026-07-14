@@ -78,6 +78,46 @@ bench run ab-agent --target godot-core --runs 1 [--arms baseline,kb,doc,codegrap
 - 手动增/改/删题也走前端 Gold lab 编辑器（schema 校验）或直接编 `problems.json`（loader 校验）
 - 改完 `git commit`——前端不自动提交（顶部"待提交"黄条会提示）
 
+### `bench run agent-compare` —— 4 臂（KB×skills）对比 → 目录报告
+
+回答"KB 值不值"和"软件开发 skills（superpowers/openspec）值不值"。4 臂 = 工具集 × skills 注入：
+
+| 臂 | 工具 | 注入 skill |
+|---|---|---|
+| `no-kb` | grep + read | 无 |
+| `kb` | cmm + read | 无 |
+| `kb+superpowers` | cmm + read | superpowers SOP |
+| `kb+openspec` | cmm + read | openspec SOP |
+
+```bash
+bench run agent-compare --target <id> --runs 1           # 4 臂全跑（code_retrieval + bug_fix）
+bench run agent-compare --target <id> --subset 6         # pilot（省时省钱）
+bench run agent-compare --target <id> --smoke            # mock（无凭据验管道，假数据）
+bench run agent-compare --target <id> --arms no-kb,kb    # 只测 KB 价值，省 skill 臂
+```
+
+产出**目录报告**（不是单 JSON）：`eval/reports/agent-compare/<ts>-<id>/`
+```
+conclusion.md    人读结论：谁赢+by指标+诚实边界（先看这个）
+summary.json     臂×指标矩阵（accuracy/tokens/llm_calls/tool_steps/wall_clock/cost/tool_diversity + KB压缩比）
+matrix.md        可视化网格
+arms/<arm>/
+  config.md                这臂工具+注入的 skill（透明可审计）
+  aggregate.json           这臂指标聚合
+  episodes/qNN/
+    episode.json           单题执行过程（逐步 tool）+ 指标       [入库]
+    session.jsonl          完整会话流                          [本地 gitignore]
+    thinking.md            思考过程                            [本地 gitignore]
+```
+
+**指标**：accuracy / input·output·total_tokens / llm_calls（LLM 轮数）/ tool_steps / wall_clock_s / cost_$ / context_compression（KB vs 无KB token 比）/ tool_diversity。
+
+**看 skills 价值**：对比 `kb+superpowers`/`kb+openspec` vs `kb` 的 accuracy + tokens。**bug_fix 题上差异最可能显现**（纯 code_retrieval 上 skills 显不出价值——见 `bench-author-problems` skill 的 bug_fix curate 步）。
+
+**诚实边界**（conclusion.md 也标）：① skills 臂注入的是 `eval/arms/skills_bundled/` 的**精简 SOP 文本**，非完整 Claude Code skill 运行时（无触发机制/hook），是 headless 近似 ② accuracy 由 GLM 生成+判分（同家族 self-preference），相对值 ③ `cost_$` 依赖 MODEL_PRICES 单价，可能为 0（占位）④ 样本量小，看趋势勿绝对化。
+
+> bug_fix 题型：`query`=bug 复现，`gold={symbols,files}`，复用 broad match 判分。给 skills 臂发挥空间。
+
 ## 3. 读报告
 
 统一 schema（所有 subject 顶层一致）：

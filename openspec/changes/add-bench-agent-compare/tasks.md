@@ -59,12 +59,12 @@
 
 ## 9. bench-author-problems skill
 
-- [ ] 9.1 `.claude/skills/bench-author-problems/SKILL.md`：编排"给目标工程 → goldgen 设计 code_retrieval → 手动 curate bug_fix → AI 审（goldgen-verify 实证 + 独立 subagent 语义审，固化 subagent 提示词）→ 人工 approve 入库 → bench run agent-compare → 目录报告"
-- [ ] 9.2 界定 skill 编排 vs 引擎做（skill 不实现，只编排 + 固化 subagent 语义审提示词）
-- [ ] 9.3 触发描述覆盖"给 X 工程 benchmark + 对比 skills"、"测 superpowers/openspec 价值"
+- [x] 9.1 `.claude/skills/bench-author-problems/SKILL.md`：编排"给目标工程 → goldgen 设计 code_retrieval → 手动 curate bug_fix → AI 审（goldgen-verify 实证 + 独立 subagent 语义审，固化 subagent 提示词）→ 人工 approve 入库 → bench run agent-compare → 目录报告"
+- [x] 9.2 界定 skill 编排 vs 引擎做（skill 不实现，只编排 + 固化 subagent 语义审提示词）
+- [x] 9.3 触发描述覆盖"给 X 工程 benchmark + 对比 skills"、"测 superpowers/openspec 价值"
 
 ## 10. 文档
 
-- [ ] 10.1 `docs/benchmark-runbook.md`：agent-compare 段（4 臂 + 指标 + 目录报告 + 诚实边界）
-- [ ] 10.2 `docs/frontend-guide.md`：若前端触发 agent-compare，补说明（否则标后续）
-- [ ] 10.3 README/target README 提及 bug_fix 题型 + agent-compare（按需）
+- [x] 10.1 `docs/benchmark-runbook.md`：agent-compare 段（4 臂 + 指标 + 目录报告 + 诚实边界）
+- [x] 10.2 `docs/frontend-guide.md`：若前端触发 agent-compare，补说明（否则标后续）
+- [x] 10.3 README/target README 提及 bug_fix 题型 + agent-compare（按需）
