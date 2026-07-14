@@ -41,21 +41,21 @@
 
 ### Requirement: Directory-structured comparison report
 
-系统 SHALL 把多臂对比结果写成目录结构：`<report-root>/conclusion.md`（人读结论）+ `summary.json`（臂×指标矩阵）+ `matrix.md`（可视化网格）+ `arms/<arm>/config.md`（该臂工具+skill 透明可审计）+ `arms/<arm>/aggregate.json`（该臂指标聚合）+ `arms/<arm>/episodes/qNN/episode.json`（单题：query+gold+answer+correct+逐步 tool+指标）+ 同目录 `session.jsonl`（完整消息流）+ `thinking.md`（思考）。`conclusion.md` / `summary.json` / `matrix.md` / `arms/<arm>/{config.md,aggregate.json,episodes/qNN/episode.json}` SHALL 入库；`session.jsonl` 与 `thinking.md` SHALL 经 gitignore 不入库。系统 SHALL NOT 自动 git commit 报告。
+系统 SHALL 把多臂对比结果写成目录结构：`<report-root>/result.md`（人读：结论 + 指标小白说明 + 对比矩阵 + 诚实边界，合一份）+ `summary.json`（臂×指标矩阵，程序消费用）+ `arms/<arm>/config.md`（该臂工具+skill 透明可审计）+ `arms/<arm>/aggregate.json`（该臂指标聚合）+ `arms/<arm>/episodes/qNN/episode.json`（单题：query+gold+answer+correct+逐步 tool+指标）+ 同目录 `session.jsonl`（完整消息流）+ `thinking.md`（思考）。`result.md` / `summary.json` / `arms/<arm>/{config.md,aggregate.json,episodes/qNN/episode.json}` SHALL 入库；`session.jsonl` 与 `thinking.md` SHALL 经 gitignore 不入库。系统 SHALL NOT 自动 git commit 报告。结论与矩阵 SHALL 合并进单个 `result.md`（不再拆 conclusion.md / matrix.md）。
 
 #### Scenario: 结论类入库、会话类本地
 
 - **WHEN** 一次 agent-compare 跑完
-- **THEN** `conclusion.md`/`summary.json`/`arms/<arm>/aggregate.json`/`arms/<arm>/episodes/*/episode.json` SHALL 入库；同 episode 的 `session.jsonl`+`thinking.md` SHALL 被 .gitignore 忽略
+- **THEN** `result.md`/`summary.json`/`arms/<arm>/aggregate.json`/`arms/<arm>/episodes/*/episode.json` SHALL 入库；同 episode 的 `session.jsonl`+`thinking.md` SHALL 被 .gitignore 忽略
 
-#### Scenario: conclusion 人读
+#### Scenario: result 人读
 
-- **WHEN** 打开 conclusion.md
-- **THEN** SHALL 见哪臂赢、by 哪个指标、显著性提示、诚实边界标注（LLM-judged / self-preference / bundled-SOP-not-runtime）
+- **WHEN** 打开 result.md
+- **THEN** SHALL 见哪臂赢、by 哪个指标、各指标的大白话说明、对比矩阵、诚实边界标注（LLM-judged / self-preference / bundled-SOP-not-runtime）
 
 ### Requirement: Comparison metrics matrix
 
-每臂 SHALL 产出完整指标集：`accuracy` / `input_tokens` / `output_tokens` / `total_tokens` / `llm_calls` / `tool_steps` / `wall_clock_s` / `cost_$` / `context_compression`（有 KB vs 无 KB 的注入 token 比）/ `tool_diversity`（distinct 工具数）。`summary.json` SHALL 是臂×指标的对比矩阵；`matrix.md` SHALL 可视化该矩阵。
+每臂 SHALL 产出完整指标集：`accuracy` / `input_tokens` / `output_tokens` / `total_tokens` / `llm_calls` / `tool_steps` / `wall_clock_s` / `cost_$` / `context_compression`（有 KB vs 无 KB 的注入 token 比）/ `tool_diversity`（distinct 工具数）。`summary.json` SHALL 是臂×指标的对比矩阵；`result.md` SHALL 含该矩阵的人读版 + 每个指标的小白说明。
 
 #### Scenario: summary 是臂×指标矩阵
 
@@ -64,12 +64,12 @@
 
 ### Requirement: Honest comparison boundaries
 
-`conclusion.md` 与每臂 `config.md` SHALL 明确标注：（a）skills 臂注入的是**精简 SOP 文本**，非完整 Claude Code skill 运行时触发机制——是 headless 可复现近似，非真实 skill 效果；（b）`accuracy` 由 GLM 生成 + GLM 判分（同家族 self-preference），是相对参考值非绝对回归值；（c）`cost_$` 依赖模型单价，可能为 null；（d）样本量（题数×runs）影响显著性，小样本结论须标注。
+`result.md` 与每臂 `config.md` SHALL 明确标注：（a）skills 臂注入的是**精简 SOP 文本**，非完整 Claude Code skill 运行时触发机制——是 headless 可复现近似，非真实 skill 效果；（b）`accuracy` 由 GLM 生成 + GLM 判分（同家族 self-preference），是相对参考值非绝对回归值；（c）`cost_$` 依赖模型单价，可能为 null；（d）样本量（题数×runs）影响显著性，小样本结论须标注。
 
 #### Scenario: 结论不藏诚实边界
 
 - **WHEN** 展示任一指标结论
-- **THEN** conclusion.md SHALL 在该结论旁标注适用边界（至少 LLM-judged / SOP-not-runtime 之一）
+- **THEN** result.md SHALL 在该结论旁标注适用边界（至少 LLM-judged / SOP-not-runtime 之一）
 
 ### Requirement: Low-credential degradation
 

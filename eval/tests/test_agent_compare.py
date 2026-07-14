@@ -17,9 +17,10 @@ def test_smoke_pipeline_produces_complete_directory(tmp_path):
     out = tmp_path / "report"
     root = write_compare_report(result, str(out))
 
-    # 顶层结论类
-    for f in ("conclusion.md", "summary.json", "matrix.md"):
+    # 顶层结论类（conclusion + matrix 合并进 result.md）
+    for f in ("result.md", "summary.json"):
         assert (out / f).is_file(), f"缺 {f}"
+    assert not (out / "conclusion.md").exists() and not (out / "matrix.md").exists(), "旧 conclusion/matrix 应已并入 result.md"
 
     # 每臂：config + aggregate + episodes/*/episode.json
     summary = json.loads((out / "summary.json").read_text(encoding="utf-8"))
@@ -39,14 +40,16 @@ def test_smoke_pipeline_produces_complete_directory(tmp_path):
 
 
 def test_conclusion_has_honest_boundaries(tmp_path):
-    """conclusion.md 必含诚实边界标注（self-preference / SOP-not-runtime / 样本量）。"""
+    """result.md 必含诚实边界标注（self-preference / SOP-not-runtime / 样本量）+ 指标小白说明。"""
     result = run_compare("godot-core", arms=("no-kb", "kb"), runs=1, subset=2, smoke=True)
     out = tmp_path / "r"
     write_compare_report(result, str(out))
-    txt = (out / "conclusion.md").read_text(encoding="utf-8")
+    txt = (out / "result.md").read_text(encoding="utf-8")
     assert "self-preference" in txt
     assert "非完整 Claude Code skill 运行时" in txt or "SOP" in txt
     assert "SMOKE" in txt  # smoke 模式标注
+    assert "指标怎么看" in txt  # 小白指标说明
+    assert "对比矩阵" in txt    # 矩阵并入
 
 
 def test_skills_arm_config_shows_injected_skill():

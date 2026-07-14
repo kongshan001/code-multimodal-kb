@@ -68,22 +68,59 @@ def _winner(arms, aggregates, key, lower_better=False):
     return best_a, best_v
 
 
-def _conclusion_md(result: dict, aggregates: dict) -> str:
+def _result_md(result: dict, aggregates: dict) -> str:
+    """合并 结论 + 指标说明(小白版) + 对比矩阵 + 诚实边界 为人读 result.md。"""
     arms = result["arms"]
     acc_win, acc_v = _winner(arms, aggregates, "accuracy")
     tok_win, tok_v = _winner(arms, aggregates, "mean_total_tokens", lower_better=True)
     cost_win, cost_v = _winner(arms, aggregates, "mean_cost_$", lower_better=True)
     comp = _summary_matrix(arms, aggregates, result)["context_compression_kb_vs_no_kb"]
     mode = "（**SMOKE / mock**，非真实 LLM 跑）" if result["smoke"] else ""
+
+    glossary = [  # 指标大白话
+        ("accuracy", "答对率 = 答对的题 ÷ 总题数。0~1，越高越好"),
+        ("mean_total_tokens", "平均每题烧多少 token（≈字数）。越少越省"),
+        ("mean_llm_calls", "平均每题调几次大模型。越少越快越省"),
+        ("mean_tool_steps", "平均每题用几次工具（cmm/grep/read）"),
+        ("mean_wall_clock_s", "平均每题跑多久（秒）"),
+        ("mean_cost_$", "平均每题花多少钱（≈ token × 单价）"),
+        ("tool_diversity", "平均用了几种不同工具（高了可能在乱试）"),
+        ("truncated_rate", "多少题没在步数内答完（卡住了）。0 最好"),
+        ("context_compression", "有 KB 比无 KB 省几倍 token（>1=KB 省；仅 no-kb+kb 都跑时给）"),
+    ]
+
     lines = [
-        f"# agent-compare 结论 · target={result['target_id']} · model={result['model']}{mode}",
+        f"# agent-compare 结果 · target={result['target_id']} · model={result['model']}{mode}",
         f"> {result['n_questions']} 题 × {result['runs']} runs × {len(arms)} 臂。",
         "",
         "## 谁赢",
         f"- **准确率最高**：`{acc_win}`（accuracy={acc_v}）" if acc_win else "- 准确率：无数据",
-        f"- **最省 token**：`{tok_win}`（mean_total_tokens={tok_v}）" if tok_win else "",
-        f"- **最省钱**：`{cost_win}`（mean_cost_$={cost_v}）" if cost_win and cost_v else "",
-        f"- **KB vs 无 KB token 压缩**：{comp}×（>1 = KB 省）" if comp else "",
+    ]
+    if tok_win:
+        lines.append(f"- **最省 token**：`{tok_win}`（mean_total_tokens={tok_v}）")
+    if cost_win and cost_v:
+        lines.append(f"- **最省钱**：`{cost_win}`（mean_cost_$={cost_v}）")
+    if comp:
+        lines.append(f"- **KB vs 无 KB token 压缩**：{comp}×（>1 = KB 省）")
+
+    lines += ["", "## 指标怎么看（小白版）", "| 指标 | 大白话 |", "|---|---|"]
+    for k, v in glossary:
+        lines.append(f"| `{k}` | {v} |")
+
+    lines += ["", "## 对比矩阵", "| 臂 | " + " | ".join(_METRIC_KEYS) + " |",
+              "|---|" + "|".join(["---"] * len(_METRIC_KEYS)) + "|"]
+    for a in arms:
+        vals = [str(aggregates[a].get(k, "")) for k in _METRIC_KEYS]
+        lines.append(f"| `{a}` | " + " | ".join(vals) + " |")
+
+    lines += ["", "## 各臂速览"]
+    for a in arms:
+        ag = aggregates[a]
+        lines.append(f"- `{a}`: acc={ag['accuracy']} · tokens={ag['mean_total_tokens']} · "
+                     f"llm_calls={ag['mean_llm_calls']} · steps={ag['mean_tool_steps']} · "
+                     f"t={ag['mean_wall_clock_s']}s · tools={ag['tool_diversity']}")
+
+    lines += [
         "",
         "## 诚实边界（必须看）",
         "- **accuracy 由 GLM 生成 + GLM 判分**（同家族 self-preference）→ 相对参考值，非绝对回归值。",
@@ -93,25 +130,13 @@ def _conclusion_md(result: dict, aggregates: dict) -> str:
         f"- 样本量小（{result['n_questions']} 题），结论显著性有限——看趋势勿绝对化。",
         "- bug_fix 题仍用 symbol/file broad match 判分（非修复质量 LLM-judge）。",
         "",
-        "## 各臂速览",
+        "## 怎么看 skills 值不值",
+        "对比 `kb+superpowers` / `kb+openspec` vs `kb` 的 accuracy（skills 帮没帮）+ mean_total_tokens（skills 多花多少）。"
+        "**bug_fix 题上差异最可能显现**（纯 code_retrieval 上 skills 显不出价值）。",
+        "",
+        "详见 `summary.json`（臂×指标矩阵，程序消费用）、各臂 `arms/<arm>/`（config + aggregate + episodes）。",
     ]
-    for a in arms:
-        ag = aggregates[a]
-        lines.append(f"- `{a}`: acc={ag['accuracy']} · tokens={ag['mean_total_tokens']} · "
-                     f"llm_calls={ag['mean_llm_calls']} · steps={ag['mean_tool_steps']} · "
-                     f"t={ag['mean_wall_clock_s']}s · tools={ag['tool_diversity']}")
-    lines.append("\n详见 `summary.json`（臂×指标矩阵）、`matrix.md`、各臂 `arms/<arm>/`。")
     return "\n".join(lines) + "\n"
-
-
-def _matrix_md(arms, aggregates) -> str:
-    head = "| 臂 | " + " | ".join(_METRIC_KEYS) + " |"
-    sep = "|---|" + "|".join(["---"] * len(_METRIC_KEYS)) + "|"
-    rows = [head, sep]
-    for a in arms:
-        vals = [str(aggregates[a].get(k, "")) for k in _METRIC_KEYS]
-        rows.append(f"| `{a}` | " + " | ".join(vals) + " |")
-    return "\n".join(rows) + "\n"
 
 
 def _config_md(arm: str, cfg: dict) -> str:
@@ -152,6 +177,5 @@ def write_compare_report(result: dict, report_root: str) -> str:
 
     summary = _summary_matrix(arms, aggregates, result)
     (out / "summary.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8")
-    (out / "matrix.md").write_text(_matrix_md(arms, aggregates), encoding="utf-8")
-    (out / "conclusion.md").write_text(_conclusion_md(result, aggregates), encoding="utf-8")
+    (out / "result.md").write_text(_result_md(result, aggregates), encoding="utf-8")
     return str(out)
