@@ -35,6 +35,15 @@
 
 成本分离：gold 自证（0）+ LLM 拟措辞（便宜）+ 人审 query（轻）。
 
+## 4. ab_agent.py — run_episode() 执行流程
+
+![run_episode 执行流程](ab_agent_flow.svg)
+
+Stage 1 agent loop 控制流（ReAct + token 累计 + 429 退避 + 收敛纪律）：初始化 → 迭代守卫 `i < max_steps` → `_create_with_retry()` LLM 调用 → 序列化本轮响应/累计 token → 判定 `stop_reason`：
+- **tool_use**（循环回边）：遍历 tool_use blocks → `_exec_tool` / `ab_tools.exec_tool` → 截断 2000 写回 messages → 下一轮 `i++`
+- **end_turn**：`break` 直接收尾
+- **max_steps 耗尽**（for-else）：`truncated=True` + 强制作答（再调 LLM，`tools=[]` 禁 tool_use）→ 收尾
+
 ---
 
 ## 重新生成
