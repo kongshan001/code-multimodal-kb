@@ -145,6 +145,7 @@ def run_episode(client, question: str, arm: str, target: dict | None = None,
     """
     _, _, mdl = load_creds() if not model else (None, None, model)
     sys_prompt = _system_prompt(arm, target)
+    ab_tools.set_active(target)   # 臂 executor 读当前 target 的 cmm/codegraph/doc 路径（不再硬编码 godot-core）
     if max_steps is None:
         max_steps = SKILL_MAX_STEPS if ab_tools.arm_skills(arm) else MAX_STEPS
     tools = ab_tools.arm_schemas(arm)

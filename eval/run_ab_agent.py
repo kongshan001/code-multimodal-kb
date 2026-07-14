@@ -113,6 +113,7 @@ def run_compare(target_id: str = "godot-core",
 
 def run(target_id: str = "godot-core", runs: int = 1, subset: int | None = None,
         arms: tuple[str, ...] = ("baseline", "kb", "doc")) -> dict:
+    target = load_target(target_id)
     problems = [p for p in load_problems(target_id) if p["type"] == "code_retrieval"]
     questions = problems[:subset] if subset else problems
     client = make_client()
@@ -124,7 +125,7 @@ def run(target_id: str = "godot-core", runs: int = 1, subset: int | None = None,
         results_this_q = {}
         for arm in arms:
             for r in range(runs):
-                ep = run_episode(client, query, arm)
+                ep = run_episode(client, query, arm, target=target)
                 ep.update({"query": query, "gold": sorted(goldset), "arm": arm, "run": r,
                            "correct": _judge(ep["answer"], goldset),
                            "correct_retrieval": _judge_retrieval(ep["answer"], ep.get("tool_texts", []), goldset)})
@@ -161,7 +162,7 @@ def run(target_id: str = "godot-core", runs: int = 1, subset: int | None = None,
 
     report = stamp(
         {"subject": "ab-agent-stage1", "target": target_id,
-         "project": load_target(target_id)["code"]["cmm_project"],
+         "project": target["code"]["cmm_project"],
          "n_questions": len(questions), "runs": runs, "arms": list(arms), "llm_model": model,
          "aggregate": agg, "per_query": rows, "stage": 1,
          "note": "Stage 1 agent A/B：真跑 agent loop（temp=0），测答对率 + 端到端 token + 步数"},

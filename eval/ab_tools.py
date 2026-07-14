@@ -13,7 +13,8 @@
 
 注：executor 必须是代码（无法纯配置——它调外部 CLI/API）；本注册表让"哪些工具组成哪个臂"
 完全数据化，新工具接入成本从"改 3 处"降到"写 1 个 executor + 注册 + 挂臂"。
-换代码库：改下面的 GODOT_CORE / CMM_PROJECT / DOC_GRAPH 常量。
+换代码库：换 target（run_episode 经 set_active 把当前 target 的 cmm/codegraph/doc 路径
+注入 _active，executor 读 _active，不再硬编码）。
 """
 from __future__ import annotations
 
@@ -26,13 +27,24 @@ from eval._subproc import run_text
 from eval.subjects import cmm_bm25, norm_item
 from eval.targets import load_target
 
-# ── 代码库 / 索引目标：从 targets/ 读（无硬编码路径）─────────────────────
-# ab 默认针对 godot-core（代码）+ godot-docs（文档图）。换代码库 = 换 target.json。
-_CODE_TARGET = load_target("godot-core")
-_DOC_TARGET = load_target("godot-docs")
-GODOT_CORE = _CODE_TARGET["code"]["codegraph_root"]
-CMM_PROJECT = _CODE_TARGET["code"]["cmm_project"]
-DOC_GRAPH = _DOC_TARGET["doc"]["graph"]
+# ── 被测目标：运行时由 run_episode 经 set_active 注入（不再硬编码 godot-core）───
+# 历史 bug：模块级 load_target("godot-core") 导致 cmm/grep/codegraph 臂永远查 godot-core，
+# 跟 agent-compare 实际跑的 target 无关。现改为 _active + set_active，由 runner 注入。
+_active = {"codegraph_root": "", "cmm_project": "", "doc_graph": ""}
+
+
+def set_active(target_cfg: dict | None) -> None:
+    """runner 在跑 episode 前注入当前 target 的路径（cmm_project / codegraph_root / doc_graph）。
+    臂 executor 读 _active，不再硬编码具体 target。target_cfg=None → 清空（仅 mock/测试用）。"""
+    if not target_cfg:
+        _active.update({"codegraph_root": "", "cmm_project": "", "doc_graph": ""})
+        return
+    code = target_cfg.get("code", {}) or {}
+    doc = target_cfg.get("doc", {}) or {}
+    _active["codegraph_root"] = code.get("codegraph_root", "")
+    _active["cmm_project"] = code.get("cmm_project", "")
+    _active["doc_graph"] = doc.get("graph", "")
+
 READ_CAP = 2000
 
 
@@ -44,10 +56,11 @@ class ToolSpec:
 
 # ── 工具 executor（每个包一个被测工具的 CLI/API）────────────────────────
 def grep_code(pattern: str) -> str:
-    """朴素 grep -rli（baseline 臂）：返 top-20 文件路径。"""
+    """朴素 grep -rli（baseline 臂）：返 top-20 文件路径。grep 当前 target 的 codegraph_root。"""
+    root = _active["codegraph_root"]
     try:
         out = run_text(
-            ["grep", "-rli", pattern, GODOT_CORE, "--include=*.h", "--include=*.cpp", "--include=*.hpp"],
+            ["grep", "-rli", pattern, root, "--include=*.h", "--include=*.cpp", "--include=*.hpp"],
             timeout=30,
         ).stdout.strip()
         files = [ln for ln in out.splitlines() if ln][:20]
@@ -65,9 +78,9 @@ def read_file(path: str) -> str:
 
 
 def cmm_search(query: str) -> str:
-    """cmm bm25 top-5（kb 臂）：返符号 name/qualified_name/file。"""
+    """cmm bm25 top-5（kb 臂）：查当前 target 的 cmm_project，返符号 name/qualified_name/file。"""
     try:
-        raw = [r for r in cmm_bm25(CMM_PROJECT, query, 5) if isinstance(r, dict)]
+        raw = [r for r in cmm_bm25(_active["cmm_project"], query, 5) if isinstance(r, dict)]
         items = [norm_item(r) for r in raw]
         lines = [f"- {it['node']}  ({it['qualified_name']})  {it['file']}" for it in items]
         return "\n".join(lines) if lines else "(no results)"
@@ -76,10 +89,10 @@ def cmm_search(query: str) -> str:
 
 
 def graphify_query(question: str) -> str:
-    """graphify BFS 查文档图（doc 臂）：返文档概念节点（仅 vector/math 子集覆盖的主题）。"""
+    """graphify BFS 查文档图（doc 臂）：查当前 target 的 doc_graph。"""
     try:
         out = run_text(
-            ["graphify", "query", question, "--graph", DOC_GRAPH, "--budget", "800"],
+            ["graphify", "query", question, "--graph", _active["doc_graph"], "--budget", "800"],
             timeout=30,
         ).stdout
         nodes = [ln for ln in out.splitlines() if ln.startswith("NODE ")]
@@ -90,11 +103,10 @@ def graphify_query(question: str) -> str:
 
 
 def codegraph_search(query: str) -> str:
-    """codegraph 符号检索（codegraph 臂）：返 name/kind/file。
-    需先在 GODOT_CORE 跑 `codegraph init` 建索引。JSON 输出。"""
+    """codegraph 符号检索（codegraph 臂）：查当前 target 的 codegraph_root。需先 codegraph init。"""
     try:
         out = run_text(
-            ["codegraph", "query", query, "--path", GODOT_CORE, "--limit", "5", "--json"],
+            ["codegraph", "query", query, "--path", _active["codegraph_root"], "--limit", "5", "--json"],
             timeout=30,
         ).stdout
         data = json.loads(out) if out.strip() else []
