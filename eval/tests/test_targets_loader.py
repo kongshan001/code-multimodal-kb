@@ -41,9 +41,9 @@ def _problem(pid, ptype="code_retrieval", **kw):
 
 # ── 真实题库：每个 target schema 合法 + 题数快照（drift 门禁）──────────────
 EXPECTED_COUNTS = {
-    "godot-core": 26, "graphify-pkg": 21, "godot-docs": 10,
+    "godot-core": 29, "graphify-pkg": 21, "godot-docs": 10,
     "godot-cross": 8, "engineer-demo-memory": 28,  # recall 15 + routing 13
-    "claude-gui": 18,
+    "claude-gui": 36,
 }
 
 
@@ -77,7 +77,7 @@ def test_load_real_uses_all_five_types():
         for p in T.load_problems(tid):
             seen.add(p["type"])
     assert seen == {"code_retrieval", "doc_retrieval", "cross_anchor",
-                    "memory_recall", "memory_routing"}
+                    "memory_recall", "memory_routing", "bug_fix"}
 
 
 # ── hermetic：overlay 深合并 ───────────────────────────────────────────────
@@ -142,6 +142,8 @@ def test_deps_resolved_to_neighbor_target(tmp_path, monkeypatch):
     # cross_anchor 缺 code_file
     ({"type": "cross_anchor", "query": "q",
       "gold": {"doc_node_label": "L", "cmm_identifier": "I"}, "status": "accepted"}, "code_file"),
+    # bug_fix 缺 files
+    ({"type": "bug_fix", "query": "q", "gold": {"symbols": ["X"]}, "status": "accepted"}, "files"),
 ])
 def test_invalid_problem_rejected(tmp_path, monkeypatch, bad, label):
     monkeypatch.setattr(T, "TARGETS_DIR", tmp_path)
@@ -175,7 +177,9 @@ def test_each_type_valid_shape_loads(tmp_path, monkeypatch):
         _problem("t-recall", "memory_recall", gold={"source_files": ["a.md", "b.jsonl"]}),
         _problem("t-route", "memory_routing", fact="some fact",
                  gold={"layer": "subjective", "signal": "用户偏好"}),
+        _problem("t-bug", "bug_fix", query="memory leak on free",
+                 gold={"symbols": ["memdelete"], "files": ["memory.h"]}),
     ]
     _make_target(tmp_path, "t1", {"id": "t1"}, valid)
     problems = T.load_problems("t1")
-    assert len(problems) == 5
+    assert len(problems) == 6

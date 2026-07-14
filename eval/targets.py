@@ -27,6 +27,7 @@ _GOLD_FIELDS: dict[str, set[str]] = {
     "cross_anchor": {"doc_node_label", "cmm_identifier", "code_file"},
     "memory_recall": {"source_files"},
     "memory_routing": {"layer"},
+    "bug_fix": {"symbols", "files"},
 }
 
 # memory_routing 的 layer 取值（D1 四层归属）
@@ -35,7 +36,7 @@ _ROUTING_LAYERS = {"objective", "procedural", "episodic", "subjective"}
 _VALID_STATUS = {"pending", "accepted"}
 
 # 列表型 gold 字段（值须为非空 list[str]）
-_LIST_GOLD = {"symbols", "node_labels", "source_files"}
+_LIST_GOLD = {"symbols", "node_labels", "source_files", "files"}
 
 
 class TargetError(Exception):

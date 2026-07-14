@@ -287,6 +287,51 @@
       },
       "status": "accepted",
       "id": "godot-core-http-client"
+    },
+    {
+      "id": "godot-core-memory-leak-free",
+      "type": "bug_fix",
+      "query": "Object memory leak: an object is freed but a dangling reference is still held, causing a use-after-free. Where is the bug most likely fixed?",
+      "gold": {
+        "symbols": [
+          "memdelete"
+        ],
+        "files": [
+          "core/memory/memory.h"
+        ]
+      },
+      "status": "accepted",
+      "notes": "bug_fix 示例：定位内存释放相关符号"
+    },
+    {
+      "id": "godot-core-string-format-garbage",
+      "type": "bug_fix",
+      "query": "String formatting produces garbled output on a locale edge case. Which formatting routine is the culprit?",
+      "gold": {
+        "symbols": [
+          "vformat"
+        ],
+        "files": [
+          "core/string/print_string.cpp"
+        ]
+      },
+      "status": "accepted",
+      "notes": "bug_fix 示例：定位格式化例程"
+    },
+    {
+      "id": "godot-core-pathfinding-wrong-path",
+      "type": "bug_fix",
+      "query": "Pathfinding returns a wrong path between two points, ignoring an obstacle. Which class computes the path?",
+      "gold": {
+        "symbols": [
+          "AStar"
+        ],
+        "files": [
+          "core/math/a_star.h"
+        ]
+      },
+      "status": "accepted",
+      "notes": "bug_fix 示例：定位寻路类"
     }
   ]
 }
