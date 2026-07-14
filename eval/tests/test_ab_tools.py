@@ -43,7 +43,7 @@ def test_register_new_tool_and_arm():
     schema = {"name": "newkb_search", "description": "新代码KB",
               "input_schema": {"type": "object", "properties": {"query": {"type": "string"}}, "required": ["query"]}}
     ab_tools.register_tool("newkb_search", newkb, schema)
-    ab_tools.ARMS["newarm"] = ["newkb_search", "read_file"]
+    ab_tools.ARMS["newarm"] = {"tools": ["newkb_search", "read_file"], "skills": []}
     try:
         names = [s["name"] for s in ab_tools.arm_schemas("newarm")]
         assert names == ["newkb_search", "read_file"]

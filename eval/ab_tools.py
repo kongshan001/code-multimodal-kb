@@ -19,6 +19,7 @@ from __future__ import annotations
 
 import json
 from dataclasses import dataclass
+from pathlib import Path
 from typing import Callable
 
 from eval._subproc import run_text
@@ -140,18 +141,47 @@ register_tool("graphify_query", graphify_query, _GRAPHIFY_DEF)
 register_tool("codegraph_search", codegraph_search, _CODEGRAPH_DEF)
 
 
-# ── 臂（数据：哪些工具组成哪个臂）────────────────────────────────────────
-ARMS: dict[str, list[str]] = {
-    "baseline": ["grep_code", "read_file"],
-    "kb": ["cmm_search", "read_file"],
-    "doc": ["graphify_query", "read_file"],
-    "codegraph": ["codegraph_search", "read_file"],
+# ── 臂（数据：工具集 + skills 注入）──────────────────────────────────────
+# agent-compare 4 臂 = {KB on/off} × {skills}；旧臂名保留兼容（ab-agent 旧入口）
+ARMS: dict[str, dict] = {
+    # 新 4 臂（add-bench-agent-compare）
+    "no-kb":          {"tools": ["grep_code", "read_file"], "skills": []},
+    "kb":             {"tools": ["cmm_search", "read_file"], "skills": []},
+    "kb+superpowers": {"tools": ["cmm_search", "read_file"], "skills": ["superpowers"]},
+    "kb+openspec":    {"tools": ["cmm_search", "read_file"], "skills": ["openspec"]},
+    # 旧臂名兼容（保原工具行为，无 skills 注入）
+    "baseline":  {"tools": ["grep_code", "read_file"], "skills": []},
+    "doc":       {"tools": ["graphify_query", "read_file"], "skills": []},
+    "codegraph": {"tools": ["codegraph_search", "read_file"], "skills": []},
 }
+
+_SKILLS_DIR = Path(__file__).resolve().parent / "arms" / "skills_bundled"
 
 
 def arm_schemas(arm: str) -> list[dict]:
     """臂名 → 该臂的工具 schema 列表（喂给 LLM tool_use）。"""
-    return [TOOL_REGISTRY[n].schema for n in ARMS[arm]]
+    return [TOOL_REGISTRY[n].schema for n in ARMS[arm]["tools"]]
+
+
+def arm_skills(arm: str) -> list[str]:
+    """臂名 → 注入的 skill 名列表。"""
+    return ARMS[arm].get("skills", [])
+
+
+def load_skill_content(name: str) -> str:
+    """读 bundled skill 精简 SOP 文本（eval/arms/skills_bundled/<name>.md）。无则空串。"""
+    f = _SKILLS_DIR / f"{name}.md"
+    return f.read_text(encoding="utf-8") if f.is_file() else ""
+
+
+def arm_config(arm: str) -> dict:
+    """臂名 → 完整配置（工具 + skills + 各 skill 的 SOP 文本），供报告 config.md 用。"""
+    skills = arm_skills(arm)
+    return {
+        "tools": ARMS[arm]["tools"],
+        "skills": skills,
+        "skill_contents": {s: load_skill_content(s) for s in skills},
+    }
 
 
 def exec_tool(name: str, inputs: dict) -> str:
