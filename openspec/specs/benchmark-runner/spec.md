@@ -3,7 +3,6 @@
 ## Purpose
 
 统一 benchmark 运行器：一个 `bench` CLI（子命令式）替代散装 `run_*` 脚本，每次评测自动归档（不覆盖）+ 结构化报告 schema + 可复现 lockfile + pytest 三层测试 + gold 回归门禁。使评测可脚本化、可管道、跨设备/跨时间可比，并为前端（bench-frontend）预留统一入口。
-
 ## Requirements
 ### Requirement: Unified benchmark CLI
 
@@ -88,4 +87,18 @@
 
 - **WHEN** 本变更实施完成
 - **THEN** 不新增任何 HTTP 服务 / 端点（前端 UI / API 为后续 change）
+
+### Requirement: agent-compare run subcommand
+
+统一 bench CLI SHALL 提供 `bench run agent-compare --target <id>` 子命令：对该 target 的题目（code_retrieval + bug_fix）跑多臂（no-kb / kb / kb+superpowers / kb+openspec）agent episode，捕获 trace + 指标，产出目录化对比报告（`eval/reports/agent-compare/<ts>-<target>/`，含 conclusion/summary/matrix/arms）。子命令 SHALL 支持 `--arms`（默认 4 臂全跑，可指定子集）、`--runs`（每题重复次数，控成本）、`--subset`（只跑前 N 题 pilot）、`--smoke`（无凭据 mock 模式）。每次跑 SHALL 入库结论类、gitignore 会话/思考类。
+
+#### Scenario: 跑 4 臂出目录报告
+
+- **WHEN** 执行 `bench run agent-compare --target <id>`
+- **THEN** SHALL 跑 4 臂 agent episode，在 `eval/reports/agent-compare/<ts>-<id>/` 下产出 conclusion.md + summary.json + matrix.md + arms/<arm>/{config,aggregate,episodes}
+
+#### Scenario: smoke 模式无凭据跑通
+
+- **WHEN** 执行 `bench run agent-compare --target <id> --smoke` 且无 LLM 凭据
+- **THEN** SHALL 用 mock LLM 跑通流水线，产出结构完整的目录报告，不报错
 
