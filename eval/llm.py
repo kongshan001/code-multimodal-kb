@@ -1,54 +1,43 @@
-"""LLM judge 调用（BigModel/GLM，OpenAI-compatible 端点）。
+"""LLM judge 调用（统一走 anthropic 兼容端点，与 agent 共用同一把 base_url+key）。
 
-复用 ~/.claude.json openspace 的 key。eval 跑在 anaconda python（CA 有坑）→ 关 SSL 校验。
-凭据与 graphify/Mem0 同一把（design：一把 key 解锁）。
+迁移自 OpenAI 兼容 /chat/completions（judge_base_url 已废弃）—— judge 现与 agent 共用
+config.llm()['base_url']（BigModel anthropic 端点），经 ab_agent.make_client() 构造 anthropic
+客户端。judge 是单轮补全（无工具无 loop），用 messages.create 即可。
+凭据与 agent 同源（load_creds），一把 key/一个端点解锁全部。
 """
 from __future__ import annotations
 
-import json
-import os
-import ssl
 import time
-import urllib.error
-import urllib.request
 
 from eval import config
-
-_ctx = ssl.create_default_context()
-_ctx.check_hostname = False
-_ctx.verify_mode = ssl.CERT_NONE  # anaconda python CA 绕过（graphify 在 uv-venv 不需要）
-
-
-def _key() -> str:
-    """LLM api_key。优先级：bench.local.yaml(llm.api_key) > env AB_API_KEY > ~/.claude.json(openspace)。"""
-    _cfg = config.llm()
-    if _cfg.get("api_key"):
-        return _cfg["api_key"]
-    if os.environ.get("AB_API_KEY"):
-        return os.environ["AB_API_KEY"]
-    cfg = json.load(open(os.path.expanduser("~/.claude.json")))
-    return cfg["mcpServers"]["openspace"]["env"]["OPENSPACE_LLM_API_KEY"]
 
 
 def complete(prompt: str, model: str = "", temperature: float = 0,
              max_tokens: int = 400) -> str:
     """单轮补全，返回文本。429/5xx 退避重试（BigModel 并发限流）。
-    model 默认走 config.llm()['model']（与 ab_agent 统一，修 glm-4.6 vs glm-5.1 不一致）。"""
+    model 默认走 config.llm()['model']（与 ab_agent 统一）。"""
+    import anthropic  # 延迟导入
+    from eval.ab_agent import make_client   # 避免循环导入：ab_agent 不导入 llm
     mdl = model or config.llm()["model"]
-    req = urllib.request.Request(
-        config.llm()["judge_base_url"] + "/chat/completions",
-        data=json.dumps({"model": mdl, "temperature": temperature,
-                         "max_tokens": max_tokens,
-                         "messages": [{"role": "user", "content": prompt}]}).encode(),
-        headers={"Authorization": "Bearer " + _key(), "Content-Type": "application/json"},
-        method="POST",
-    )
+    client = make_client()
     for attempt in range(4):
         try:
-            resp = urllib.request.urlopen(req, timeout=90, context=_ctx)
-            return json.loads(resp.read())["choices"][0]["message"]["content"]
-        except urllib.error.HTTPError as e:
-            if e.code in (429, 500, 502, 503) and attempt < 3:
-                time.sleep(5 * (attempt + 1))  # 5s / 10s / 15s 退避
+            resp = client.messages.create(
+                model=mdl, max_tokens=max_tokens, temperature=temperature,
+                messages=[{"role": "user", "content": prompt}],
+            )
+            for b in resp.content:
+                tx = getattr(b, "text", None)   # 取首个 text block（模型无关）
+                if tx:
+                    return tx
+            return ""
+        except anthropic.APIStatusError as e:
+            if e.status_code in (429, 500, 502, 503) and attempt < 3:
+                time.sleep(5 * (attempt + 1))   # 5/10/15s 退避
+                continue
+            raise
+        except anthropic.RateLimitError:
+            if attempt < 3:
+                time.sleep(5 * (attempt + 1))
                 continue
             raise
