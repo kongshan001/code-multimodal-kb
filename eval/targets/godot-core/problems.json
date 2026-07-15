@@ -291,7 +291,7 @@
     {
       "id": "godot-core-memory-leak-free",
       "type": "bug_fix",
-      "query": "Object memory leak: an object is freed but a dangling reference is still held, causing a use-after-free. Where is the bug most likely fixed?",
+      "query": "对象内存泄漏：某对象被释放后仍被引用（use-after-free）。Godot 里删除/释放对象的底层函数叫什么？",
       "gold": {
         "symbols": [
           "memdelete"
@@ -306,7 +306,7 @@
     {
       "id": "godot-core-string-format-garbage",
       "type": "bug_fix",
-      "query": "String formatting produces garbled output on a locale edge case. Which formatting routine is the culprit?",
+      "query": "字符串格式化在某些 locale 边界情况下输出乱码，疑是底层格式化例程的 bug。Godot 里字符串格式化的底层函数叫什么？",
       "gold": {
         "symbols": [
           "vformat"
@@ -321,7 +321,7 @@
     {
       "id": "godot-core-pathfinding-wrong-path",
       "type": "bug_fix",
-      "query": "Pathfinding returns a wrong path between two points, ignoring an obstacle. Which class computes the path?",
+      "query": "A* 寻路在两点间返回了错误路径，忽略了一个障碍物。Godot 里负责计算寻路路径的是哪个类？",
       "gold": {
         "symbols": [
           "AStar"

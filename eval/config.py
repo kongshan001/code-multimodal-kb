@@ -25,8 +25,8 @@ _DEFAULTS = {
                    "glm-5.2": {"in": 0.70, "out": 0.70}},
     },
     "agent": {
-        "max_steps": 8,           # 非 skills 臂最多轮（grep 臂收敛空间）
-        "skill_max_steps": 12,    # skills 臂 SOP 更费步
+        "max_steps": 30,          # run-until-answer 的 backstop（防死循环；正常题远在此之前自然收敛）
+        "skill_max_steps": 30,    # 同上（skills 臂不再单独收紧——30 轮足够 SOP 展开）
         "tool_result_cap": 2000,  # tool_result 序列化截断（防 session.jsonl 膨胀）
         "read_cap": 2000,         # read_file 截断 chars（两臂公平）
     },

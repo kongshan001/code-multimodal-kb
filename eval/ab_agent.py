@@ -1,7 +1,7 @@
 """Stage 1 agent A/B harness：claude_agent_sdk 驱动 agent loop 测 agent 答对率 + token。
 
 **工具与臂在 `eval/ab_tools.py` 注册表**（接新 KB 工具只改注册表，本文件不动）。
-本文件只管：组装 SDK options / 消费消息流抽 trace / force-answer 兜底 / 凭据 / 收敛纪律。
+本文件只管：组装 SDK options / 消费消息流抽 trace / run-until-answer backstop / 凭据 / 收敛纪律。
 loop / 重试 / tool_use 往返 / 序列化全交 claude_agent_sdk（claude CLI 封装）。
 
 两臂差异 = 发现工具（baseline=词面 grep / kb=语义 cmm / doc=文档 graphify），都给 read_file 保公平。
@@ -143,7 +143,7 @@ async def _consume(query_fn, prompt, options, session, thinking, sink=None):
                 if r.strip():
                     answer = r
     except Exception:
-        pass   # max_turns 耗尽等 → answer 留空，run_episode 走 force-answer
+        pass   # max_turns 耗尽等 → answer 留空，run_episode 标 truncated（不 inject 猜测）
     return answer, last_text, in_tok, out_tok, cache_read, cost, llm_calls, tool_calls
 
 
@@ -174,30 +174,10 @@ async def _run_episode_async(question: str, arm: str, target: dict | None,
     answer, last_text, in_tok, out_tok, cache_read, cost, llm_calls, tool_calls = await _consume(
         query, question, options, session, thinking)
 
-    truncated = False
-    if not answer.strip():
-        # max_turns 耗尽未自然作答 → D4 force-answer（无工具，强制作答；带已获信息）
-        truncated = True
-        gathered = "\n".join(f"- [{n}] {str(r)[:500]}" for n, r in tool_sink[-8:]) or "(无工具结果)"
-        force_prompt = ("你已用完工具调用次数。必须基于已获取的信息直接给出最终答案（用符号名），不要再调工具。\n"
-                        f"已获取信息：\n{gathered}\n原问题：{question}")
-        force_opts = ClaudeAgentOptions(
-            model=mdl, env=env, max_turns=1,
-            system_prompt=sys_prompt + "\n\n现在必须直接给最终答案（符号名），不要再调工具。",
-            tools=[], setting_sources=[], include_hook_events=False,
-        )
-        try:
-            f_answer, f_last, f_in, f_out, f_cr, f_cost, f_calls, _ = await _consume(
-                query, force_prompt, force_opts, session, thinking)
-            in_tok += f_in; out_tok += f_out; cache_read += f_cr; llm_calls += f_calls
-            if f_cost:
-                cost = f_cost
-            answer = f_answer
-        except Exception:
-            pass
-        answer = (answer or last_text or "(max_steps: 未能给出答案)").strip()
-        session.append({"role": "user", "content": "（用完工具次数，强制作答）"})
-        session.append({"role": "assistant", "content": [{"type": "text", "text": answer}]})
+    # run-until-answer：不 inject 猜测。跑满 backstop 仍未自然作答 → 真卡住，诚实标 truncated。
+    truncated = not bool(answer.strip())
+    if truncated:
+        answer = (last_text or "(未在限定步数内自然作答)").strip()
 
     # tool_results 进 session（从 sink，截断；review 用）
     cap = config.agent()["tool_result_cap"]

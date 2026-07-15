@@ -72,31 +72,20 @@ def test_run_episode_tool_then_answer(monkeypatch):
 
 
 def test_run_episode_truncation(monkeypatch):
-    """max_turns 耗尽、无自然作答 → truncated=True + force-answer（多 1 次调用，答案非空）。"""
+    """跑满 backstop 仍未自然作答 → truncated=True，不 inject 猜测（run-until-answer）。"""
     import eval.ab_agent as ag
     monkeypatch.setattr(ag, "load_creds", lambda: ("k", "u", "glm-test"))
-    calls = []
-
-    def fake_query(prompt=None, options=None):
-        calls.append(prompt)
-        if len(calls) == 1:
-            # 主 query：只 tool_use，result 空 → 无答案
-            return _stream(
-                AssistantMessage([ToolUseBlock(name="grep_code", input={"pattern": "x"})]),
-                ResultMessage("", {"input_tokens": 50, "output_tokens": 5}),
-            )
-        # force-answer：文本答案
-        return _stream(
-            AssistantMessage([TextBlock("`XClass`")]),
-            ResultMessage("`XClass`", {"input_tokens": 30, "output_tokens": 8}),
-        )
-
-    monkeypatch.setattr("claude_agent_sdk.query", fake_query)
+    # 主 query：只 tool_use、result 空 → 无自然答案
+    stream = _stream(
+        AssistantMessage([ToolUseBlock(name="grep_code", input={"pattern": "x"})]),
+        ResultMessage("", {"input_tokens": 50, "output_tokens": 5}),
+    )
+    monkeypatch.setattr("claude_agent_sdk.query", lambda prompt=None, options=None: stream)
     ep = ag.run_episode(question="x", arm="baseline", max_steps=1)
     assert ep["truncated"] is True
-    assert ep["answer"]                               # force-answer 不留空
-    assert ep["llm_calls"] == 2                       # 1 主 + 1 force
-    assert ep["input_tokens"] == 80                   # 50 + 30
+    assert ep["llm_calls"] == 1                       # 只主 query，无 force-answer
+    assert ep["input_tokens"] == 50
+    assert "未在限定步数内自然作答" in ep["answer"]     # 诚实占位，非 inject 猜测
 
 
 def test_judge_broad():
