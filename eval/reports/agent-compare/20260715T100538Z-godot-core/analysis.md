@@ -103,3 +103,36 @@ KB 既没空间帮忙、又有空间误导。3 道 bug_fix 才是真分化点（
 2. **多 run 取均值**（n≥3）：压住 API 非确定性，§2 的"方差"才不会污染结论。
 3. 用本次新行为（中文题 + run-until-answer）重跑一份，作为新基线。
 4. 归档 openspec change `migrate-ab-agent-to-claude-sdk`。
+
+---
+
+## 7. 双 engine A/B（补充：原生 LLM loop vs claude_agent_sdk）
+
+应"对比原生 LLM 和 claude-agent-sdk"：恢复迁移前的裸 anthropic loop 作第二 engine（`run_episode_raw`，
+`--engine raw`），与 sdk engine 用**同一套策略**（同 system_prompt/工具/backstop 30/无 force-answer），
+只差 loop 本身（裸 `messages.create` 不请求 thinking vs SDK/CLI 带 thinking + prompt caching）。
+
+**全量 29题×4臂，两 engine 各跑 1 次**（sdk=20260715T151116Z、raw=20260715T154635Z-godot-core-raw）：
+
+| 臂 | accuracy sdk→raw | mean_total_tokens sdk→raw | truncated |
+|---|---|---|---|
+| no-kb | 0.931→0.966 | 997→945 | 0/0 |
+| kb | 0.966→0.966 | 1062→831 | 0/0 |
+| kb+superpowers | 0.966→0.931 | 680→1433 ⚠ | 0/0 |
+| kb+openspec | 0.931→0.966 | 1360→1398 | 0/0 |
+
+**头条：逐题对齐 116 episode，113/116（97.4%）两 engine 判分完全一致**；仅 3 个不同，**全在 q28**
+（bug_fix「格式化乱码」gold=`vformat`，borderline 题：模型答不答出 vformat 全凭运气，两 engine 各落一边）。
+其余 28 题逐臂结果一模一样。
+
+**结论：对这套 benchmark，engine 可互换——迁移 SDK 既没让 agent 变强也没变弱。**
+- accuracy 各臂 ±1 题（噪声带内），唯一翻动是一道 borderline bug_fix。
+- tokens/steps/截断无系统性差异。（kb+superpowers 那个 token 跳变 680↔1433 是 step 数的 run-to-run
+  抖动——sdk 那次多数题 1 轮收敛、raw 那次几题 2 轮；accuracy 却一样。）
+- 预期的"raw 无 caching → token 更高"在这套 1-2 轮的短 episode 上没显著体现。
+
+**那为什么用 SDK？纯工程理由**：少维护 ~80 行手写 loop、把 API 格式敏感度甩给官方 SDK。不是为了测量更准——raw 一样准。
+
+> 诚实前提：n=1 各一；但 97.4% 一致这个事实本身让"无 engine 效应"的结论相当稳，即便单次跑也只有 1 道边界题在抖。
+> 双 engine 都保留（`--engine sdk|raw`），可随时复跑对比。
+
