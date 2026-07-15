@@ -58,9 +58,16 @@ SDK 的 `max_turns` 到顶后停止；为保现有契约（非空答案 + `trunc
 - 决定：`wall_clock_s` 保持端到端（诚实、且是用户感知的实际耗时），不引入 `llm_wall_clock` 拆分（避免无谓复杂度，违 KISS）。
 - 若后续需要纯 LLM 计时，单列变更。
 
+### D7. 最小配置为硬约束（spike2 实证）——防 CLI token 税污染指标
+spike（2026-07-15）实测：默认配置下 CLI 强塞 ~22k（无工具）/ ~40k（带工具）input token 的脚手架（内置 Bash/Read/Grep 等工具定义 + 用户 settings/hooks），trivial echo 单次 cost $0.22——会**淹没 benchmark 的 token/cost 核心指标**。
+但 `tools=[]`（关所有内置工具）+ `setting_sources=[]`（不加载 `~/.claude` 用户 settings）+ 自定义 `system_prompt` + 仅留我方 MCP 工具 → input 降到 **392（无工具）/ 632（带工具）token**，cost $0.005，与手写 loop 同量级。
+→ **`run_episode` 构造 `ClaudeAgentOptions` MUST 用这套最小配置**（非可选优化）。回归测试 SHALL 断言单 episode `input_tokens < 阈值`（如 5k），防 SDK 默认行为变更把税加回来。
+- **消息流噪声过滤**：最小配置下流里仍可能大量 `SystemMessage`/`HookEventMessage`（spike2 M1 见 496 条 SystemMsg，但 input 仅 392 token → 纯事件噪声非 token）。`session`/trace 抽取 SHALL 只认 `AssistantMessage`/`ResultMessage`，忽略其余。
+- **cache token 处理**：`ResultMessage.usage` 含 `input_tokens` + `cache_read_input_tokens` + `output_tokens`（prompt caching 命中时 cache_read 单列且更便宜）。trace 的 `input_tokens` SHALL 记 `input_tokens`（新读），cache_read 单独记或并入并在报告注明；`cost_$` 优先用 `total_cost_usd`（SDK 已按 cache 价算），无则 token×单价 fallback。
+
 ## Risks / Trade-offs
 
-- **[CLI 自带 system prompt 改变 agent 行为 / accuracy 基线]** → `claude` CLI 注入比 `BASE_SYS_PROMPT` 大得多的默认 system prompt + 工具描述；即使 `system_prompt=` 覆盖，CLI 可能 prepend 自身指令，使 agent 答题行为偏离历史 run，accuracy 数字跨版本不可比。→ **缓解**：实现期 spike 验证 `system_prompt=` 是否**完全替换** CLI 默认（非 prepend）；若 prepend，需 `setting_sources`/`--append-system-prompt` 关闭默认，或接受"迁移后重立基线"。这是最大未定项，见 Open Questions。
+- **[CLI 自带 system prompt 改变 agent 行为 / accuracy 基线]** → ~~最大未定项~~ **spike 已基本排除**：`system_prompt=` 覆盖 CLI 默认身份（P1/P3 实证）。残留风险：CLI 的 agent loop 工具选择策略仍可能微调各臂行为 → task 4.3 before/after subset 复核 accuracy 是否合理漂移。
 - **[BigModel 端点对 CLI 重负载请求的兼容]** → CLI 请求体比最小 SDK 调用重（多特性），可能撞上端点未实现的字段。→ 缓解：spike 已通；消息流解析保留 getattr 防御；实现期用真 episode 端到端跑 `godot-core` subset 验。
 - **[async / 事件流抽取比承诺费事]** → token/session 从消息流抽，非简单 `.usage`。→ 缓解：D5 映射表 + 单测（录一份 fixture 消息流，断言抽出的 trace 字段）。
 - **[`anthropic` 移除是 BREAKING]** → 迁移后 ab_agent 不再 import；env 需重装。→ 缓解：改 `eval/requirements.txt` + `setup-bench.bat` 注明；移除前全仓 grep 确认无其他引用。
@@ -78,6 +85,13 @@ SDK 的 `max_turns` 到顶后停止；为保现有契约（非空答案 + `trunc
 
 ## Open Questions
 
-1. **`ClaudeAgentOptions(system_prompt=...)` 是完全替换 CLI 默认 system prompt，还是 prepend？** 决定 agent 行为是否偏离历史 baseline、accuracy 跨版本可比性。实现期 spike 验证；若 prepend 且无法关闭 → 接受"迁移后重立基线"并在 result.md 标注。
-2. **`anthropic` SDK 迁移后是否全仓无其他 import？** 决定能否从 requirements 移除（grep 验证）。
-3. **SDK 消息流是否稳定暴露每轮 usage（还是只在 ResultMessage 汇总）？** 影响 `llm_calls`/逐轮 token 粒度；若仅汇总，`session` 逐轮仍可序列化但逐轮 token 粒度降级（total 仍准）。
+1. ~~**`ClaudeAgentOptions(system_prompt=...)` 是完全替换 CLI 默认 system prompt，还是 prepend？**~~ **✅ RESOLVED（spike 2026-07-15）**：`system_prompt=` **覆盖** CLI 默认身份（冲突 prompt 下 agent 自认"刺猬 Foo"、否认 Claude Code）。行为可控，accuracy 基线可比（仍建议 task 4.3 before/after subset 复核）。
+2. **`anthropic` SDK 迁移后是否全仓无其他 import？** 决定能否从 requirements 移除（task 5.1 grep 验证）。
+3. ~~**SDK 消息流是否稳定暴露每轮 usage？**~~ **✅ RESOLVED**：`usage` 在 `ResultMessage` 汇总（cumulative），含 `cache_read_input_tokens`；逐轮 token 粒度需从各 `AssistantMessage` 累加或接受汇总（见 D7）。流含大量 `SystemMessage`/`HookEventMessage` 噪声须过滤。
+
+## Spike 结论（2026-07-15，go/no-go gate）
+
+- **system_prompt 覆盖**：P1/P3 强冲突 prompt 下 agent 不认 Claude Code 身份 → ✅
+- **token 税可剥**：默认 22-40k input → 最小配置（`tools=[]`+`setting_sources=[]`）降至 392-632 token → ✅（D7 硬约束）
+- **tool_use 往返**：P4 in-process MCP `@tool` 回显成功 → ✅
+- **裁定：GO**（带 D7 最小配置 + 流过滤 + cache token 三约束）。spike 脚本：`/tmp/sdk_spike.py`、`/tmp/sdk_spike2.py`（一次性，不入库）。
