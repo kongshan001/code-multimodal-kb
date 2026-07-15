@@ -77,6 +77,7 @@ bench run ab-agent --target godot-core --runs 1 [--arms baseline,kb,doc,codegrap
 
 - **scope** = 搜索 seed 词（Vector/color/...）指一片代码；`--dir core/math` 从文件名派生 seed 兜底
 - gold 来自 codegraph 真实符号 = 构造即正确，**零 LLM judge**（绕开循环）；LLM 只拟 query 措辞
+- **题目（query/fact）必须用中文自然语言**（如"加载资源用哪个类？"），不用英文关键词。goldgen 自动出中文。
 - 手动增/改/删题也走前端 Gold lab 编辑器（schema 校验）或直接编 `problems.json`（loader 校验）
 - 改完 `git commit`——前端不自动提交（顶部"待提交"黄条会提示）
 

@@ -83,6 +83,7 @@ Run only what your `subjects` need:
 bench goldgen <seed words> --target <id>          # codegraph enumerates real symbols + LLM phrases NL questions
 bench goldgen-verify --target <id>                 # empirical vetting: flags ambiguous gold (zero LLM)
 ```
+> **题目必须用中文自然语言**（goldgen 自动出中文；手动加题也用中文，如"加载资源用哪个类？"）。不用英文关键词。
 > `goldgen` 需要 `anthropic` SDK + LLM 凭据（GLM 走 `~/.cc-connect/config.toml`）。没装/没凭据 → `pip install anthropic`，或走下面的手动路径（不调 LLM）。
 Then review the `status: pending` candidates and approve the good ones:
 ```bash

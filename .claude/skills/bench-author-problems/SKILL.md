@@ -15,6 +15,8 @@ python -c "from eval.targets import load; print(load('<id>')['target']['subjects
 ```
 未 dock → 先走 `bench-dock-target`。本流程产出 `code_retrieval` + `bug_fix` 两类题。
 
+> **题目规范（强制）**：所有题目 query/fact **必须用中文自然语言**——像中国开发者日常会问的问法（如"加载资源用哪个类？"、"内存泄漏怎么排查？"）。**不用英文关键词**（如 `color`、`string format`）。goldgen 自动出中文；手动加题（bug_fix）也用中文。
+
 ### 2. 自动出 code_retrieval 题
 ```bash
 bench goldgen <seed词> --target <id>          # codegraph 挖真符号 + LLM 拟 NL 题（gold=符号，构造即正确）

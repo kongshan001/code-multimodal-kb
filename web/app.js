@@ -453,7 +453,7 @@ function goldFormOpen(pid) {
       </div>
       <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:10px">
         <label class="mono" style="font-size:10px;color:var(--ink2);width:50px">${tf}</label>
-        <input id="gfText" class="btn" value="${_esc(p?_goldText(p):'')}" placeholder="${tf==='fact'?'候选事实':'自然语言查询'}" style="flex:1;text-align:left;min-width:240px"/>
+        <input id="gfText" class="btn" value="${_esc(p?_goldText(p):'')}" placeholder="${tf==='fact'?'中文 bug 描述/复现':'中文自然语言（如：加载资源用哪个类？）'}" style="flex:1;text-align:left;min-width:240px"/>
       </div>
       <div id="gfGold" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:10px">
         <label class="mono" style="font-size:10px;color:var(--ink2);width:50px">gold</label>${_goldFieldsHTML(type, p?p.gold:null)}
