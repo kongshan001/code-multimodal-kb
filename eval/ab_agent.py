@@ -78,12 +78,12 @@ def _exec_tool(name: str, inputs: dict) -> str:
 # ── 凭据 ──────────────────────────────────────────────────────────────────
 
 def load_creds() -> tuple[str, str, str]:
-    """返 (api_key, base_url, model)。优先级：env > bench.local.yaml > ~/.cc-connect/config.toml。"""
+    """返 (api_key, base_url, model)。
+    api_key 优先级：env AB_API_KEY > bench.local.yaml > config.toml。
+    base_url + model **永远从 config（bench.yaml）读**——env 只提供 key，不覆盖 URL/model。"""
     _cfg = config.llm()
     if os.environ.get("AB_API_KEY"):
-        return (os.environ["AB_API_KEY"],
-                os.environ.get("AB_BASE_URL", _cfg["base_url"]),
-                os.environ.get("AB_MODEL", _cfg["model"]))
+        return (os.environ["AB_API_KEY"], _cfg["base_url"], _cfg["model"])
     if _cfg.get("api_key"):   # bench.local.yaml → llm.api_key
         return (_cfg["api_key"], _cfg["base_url"], _cfg["model"])
     try:
@@ -91,7 +91,7 @@ def load_creds() -> tuple[str, str, str]:
         with open(os.path.expanduser("~/.cc-connect/config.toml"), "rb") as f:
             data = tomllib.load(f)
         prov = data["projects"][0]["agent"]["providers"][0]
-        return prov["api_key"], prov.get("base_url", _cfg["base_url"]), prov.get("model", _cfg["model"])
+        return prov["api_key"], _cfg["base_url"], _cfg["model"]
     except Exception as e:
         raise RuntimeError(f"找不到 LLM 凭据（设 AB_API_KEY 或配 ~/.cc-connect/config.toml）: {e}")
 
