@@ -64,10 +64,11 @@ def _cmd_run(args) -> int:
         from eval.agent_compare_report import write_compare_report
         import datetime
         arms = tuple(a.strip() for a in args.arms.split(",") if a.strip())
-        result = run_compare(args.target, arms, args.runs, args.subset, smoke=args.smoke)
+        result = run_compare(args.target, arms, args.runs, args.subset, smoke=args.smoke, engine=args.engine)
         ts = datetime.datetime.now(datetime.timezone.utc).strftime("%Y%m%dT%H%M%SZ")
         mode = "-smoke" if args.smoke else ""
-        out = write_compare_report(result, f"eval/reports/agent-compare/{ts}-{args.target}{mode}")
+        eng = "" if args.engine == "sdk" else f"-{args.engine}"
+        out = write_compare_report(result, f"eval/reports/agent-compare/{ts}-{args.target}{mode}{eng}")
         print(f"agent-compare 报告: {out}")
         print(f"  结果:   {out}/result.md     （结论 + 指标说明 + 对比矩阵 + 逐题得分对照 + 诚实边界）")
         print(f"  矩阵:   {out}/summary.json  （程序消费用）")
@@ -272,6 +273,8 @@ def main(argv: list[str] | None = None) -> int:
     ac_p.add_argument("--runs", type=int, default=1)
     ac_p.add_argument("--subset", type=int, default=None)
     ac_p.add_argument("--smoke", action="store_true", help="mock 模式（无凭据跑通写器/流水线）")
+    ac_p.add_argument("--engine", default="sdk", choices=("sdk", "raw"),
+                      help="agent loop 引擎：sdk=claude_agent_sdk（默认）| raw=裸 anthropic loop（A/B 对照）")
 
     # list-reports
     sub.add_parser("list-reports", help="列出归档报告")

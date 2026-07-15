@@ -71,7 +71,8 @@ def _mock_episode(question: str, arm: str, goldset: set[str], qi: int) -> dict:
 
 def run_compare(target_id: str = "godot-core",
                 arms: tuple[str, ...] = ("no-kb", "kb", "kb+superpowers", "kb+openspec"),
-                runs: int = 1, subset: int | None = None, smoke: bool = False) -> dict:
+                runs: int = 1, subset: int | None = None, smoke: bool = False,
+                engine: str = "sdk") -> dict:
     """4 臂 agent-compare：对 code_retrieval + bug_fix 题跑多臂，捕 trace + 指标。
 
     smoke=True（或无凭据）→ 用 _mock_episode 产出假 trace，跑通写器/流水线。
@@ -96,7 +97,7 @@ def run_compare(target_id: str = "godot-core",
                 if smoke:
                     ep = _mock_episode(p["query"], arm, goldset, qi)
                 else:
-                    ep = run_episode(p["query"], arm, target=target, model=model)
+                    ep = run_episode(p["query"], arm, target=target, model=model, engine=engine)
                 ep.update({"query": p["query"], "type": p["type"], "gold": sorted(goldset),
                            "arm": arm, "run": r, "qid": f"q{qi + 1:02d}",
                            "correct": _judge(ep["answer"], goldset)})
@@ -107,11 +108,11 @@ def run_compare(target_id: str = "godot-core",
 
     return {"target_id": target_id, "target": target, "arms": list(arms),
             "episodes_by_arm": episodes_by_arm, "n_questions": len(questions),
-            "runs": runs, "model": model, "smoke": smoke}
+            "runs": runs, "model": model, "smoke": smoke, "engine": engine}
 
 
 def run(target_id: str = "godot-core", runs: int = 1, subset: int | None = None,
-        arms: tuple[str, ...] = ("baseline", "kb", "doc")) -> dict:
+        arms: tuple[str, ...] = ("baseline", "kb", "doc"), engine: str = "sdk") -> dict:
     target = load_target(target_id)
     problems = [p for p in load_problems(target_id) if p["type"] == "code_retrieval"]
     questions = problems[:subset] if subset else problems
@@ -123,7 +124,7 @@ def run(target_id: str = "godot-core", runs: int = 1, subset: int | None = None,
         results_this_q = {}
         for arm in arms:
             for r in range(runs):
-                ep = run_episode(query, arm, target=target)
+                ep = run_episode(query, arm, target=target, engine=engine)
                 ep.update({"query": query, "gold": sorted(goldset), "arm": arm, "run": r,
                            "correct": _judge(ep["answer"], goldset),
                            "correct_retrieval": _judge_retrieval(ep["answer"], ep.get("tool_texts", []), goldset)})

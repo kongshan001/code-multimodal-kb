@@ -199,11 +199,122 @@ async def _run_episode_async(question: str, arm: str, target: dict | None,
     }
 
 
+# ── 原生 LLM engine（裸 anthropic.messages.create loop，迁移前的实现）─────────
+# 保留作 A/B 对照：与 sdk engine 用**同一套策略**（同一 system_prompt/工具/backstop/无 force-answer），
+# 只差 loop 本身（裸 API 直连 + 不请求 thinking vs claude_agent_sdk/CLI 带 thinking）。
+# trace 字段与 sdk engine 逐一对齐（cache_read_tokens 恒 0：裸调用无 prompt caching 账）。
+
+def _create_with_retry(client, model, system, messages, tools, retries=4):
+    """裸 messages.create + 429/5xx 退避重试（原生 engine 用）。"""
+    import anthropic
+    last = None
+    for i in range(retries + 1):
+        try:
+            return client.messages.create(model=model, max_tokens=1024, system=system,
+                                          messages=messages, tools=tools, temperature=0.0)
+        except anthropic.RateLimitError as e:
+            last = e
+        except anthropic.APIStatusError as e:
+            last = e
+            if e.status_code not in (429, 500, 502, 503, 529):
+                raise
+        if i < retries:
+            time.sleep(2 ** i)
+    raise RuntimeError(f"LLM 调用重试 {retries} 次仍失败: {last}")
+
+
+def _serialize_turn(resp) -> tuple[list, str, str]:
+    """裸 resp.content → JSON-friendly blocks + text + thinking（模型无关 fallback）。"""
+    blocks, texts, thinks = [], [], []
+    for b in resp.content:
+        t = getattr(b, "type", "")
+        if t == "text":
+            tx = getattr(b, "text", ""); blocks.append({"type": "text", "text": tx}); texts.append(tx)
+        elif t == "tool_use":
+            blocks.append({"type": "tool_use", "name": b.name, "input": dict(b.input)})
+        elif t == "thinking":
+            th = getattr(b, "thinking", "") or getattr(b, "text", "")
+            blocks.append({"type": "thinking", "text": th}); thinks.append(th)
+    text = "".join(texts)
+    think = "".join(thinks) if thinks else text
+    return blocks, text, think
+
+
+def run_episode_raw(question: str, arm: str, target: dict | None,
+                    mdl: str, max_steps: int | None) -> dict:
+    """原生 engine：手写 ReAct loop（裸 anthropic messages.create）。
+    策略与 sdk engine 一致（backstop、无 force-answer、run-until-answer）；trace 契约同。"""
+    client = make_client()
+    sys_prompt = _system_prompt(arm, target)
+    ab_tools.set_active(target)
+    if max_steps is None:
+        max_steps = config.agent()["skill_max_steps"] if ab_tools.arm_skills(arm) else config.agent()["max_steps"]
+    tools = ab_tools.arm_schemas(arm)
+    messages: list[dict] = [{"role": "user", "content": question}]
+    in_tok = out_tok = llm_calls = 0
+    tool_calls: list[str] = []
+    tool_texts: list[str] = []
+    session: list[dict] = [{"role": "user", "content": question}]
+    thinking: list[str] = []
+    last_text = ""
+    answer = ""
+    truncated = False
+    t0 = time.time()
+
+    for _ in range(max_steps):
+        resp = _create_with_retry(client, mdl, sys_prompt, messages, tools)
+        in_tok += getattr(resp.usage, "input_tokens", 0)
+        out_tok += getattr(resp.usage, "output_tokens", 0)
+        llm_calls += 1
+        turn_blocks, turn_text, turn_thinking = _serialize_turn(resp)
+        session.append({"role": "assistant", "content": turn_blocks})
+        thinking.append(turn_thinking)
+        if turn_text.strip():
+            last_text = turn_text
+        messages.append({"role": "assistant", "content": resp.content})
+        if resp.stop_reason == "tool_use":
+            results, serialized = [], []
+            for block in resp.content:
+                if getattr(block, "type", "") == "tool_use":
+                    result = ab_tools.exec_tool(block.name, dict(block.input))
+                    result_s = str(result)
+                    tool_calls.append(block.name)
+                    tool_texts.append(result_s)
+                    results.append({"type": "tool_result", "tool_use_id": block.id, "content": result})
+                    serialized.append({"type": "tool_result", "tool_use_id": block.id,
+                                       "content": result_s[:config.agent()["tool_result_cap"]]})
+            messages.append({"role": "user", "content": results})
+            session.append({"role": "user", "content": serialized})
+        else:                                   # end_turn → 自然作答
+            answer = turn_text
+            break
+    else:
+        # run-until-answer：跑满 backstop 未自然作答 → 真卡住，不 inject 猜测
+        truncated = True
+        answer = (last_text or "(未在限定步数内自然作答)").strip()
+
+    total = in_tok + out_tok
+    return {
+        "answer": answer.strip(), "input_tokens": in_tok, "output_tokens": out_tok,
+        "total_tokens": total,
+        "steps": llm_calls, "llm_calls": llm_calls,
+        "tool_calls": tool_calls, "tool_steps": len(tool_calls), "tool_texts": tool_texts,
+        "truncated": truncated, "wall_clock_s": round(time.time() - t0, 2),
+        "cost_$": _cost(mdl, in_tok, out_tok),
+        "session": session, "thinking": thinking,
+        "cache_read_tokens": 0,                 # 裸调用无 prompt caching
+    }
+
+
 def run_episode(question: str, arm: str, target: dict | None = None,
-                model: str = "", max_steps: int | None = None) -> dict:
-    """跑一次 agent episode（同步；内部 anyio.run 包 async query）。arm 决定工具集 + skills 注入。
-    返回 trace（字段与迁移前逐一对齐，见 openspec specs delta）。"""
+                model: str = "", max_steps: int | None = None,
+                engine: str = "sdk") -> dict:
+    """跑一次 agent episode（同步）。engine="sdk"（默认，claude_agent_sdk）| "raw"（裸 anthropic loop）。
+    两 engine 同策略（system_prompt/工具/backstop/无 force-answer），只差 loop——供 A/B 对照。
+    返回 trace（字段逐一对齐，见 openspec specs delta）。"""
     _, _, mdl = load_creds() if not model else (None, None, model)
+    if engine == "raw":
+        return run_episode_raw(question, arm, target, mdl, max_steps)
     t0 = time.time()
     trace = anyio.run(_run_episode_async, question, arm, target, mdl, max_steps)
     trace["wall_clock_s"] = round(time.time() - t0, 2)

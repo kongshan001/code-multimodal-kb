@@ -52,6 +52,7 @@ def _summary_matrix(arms: list[str], aggregates: dict, result: dict) -> dict:
             comp = round(aggregates["no-kb"]["mean_total_tokens"] / kb_tok, 2)
     return {
         "target": result["target_id"], "model": result["model"], "smoke": result["smoke"],
+        "engine": result.get("engine", "sdk"),
         "n_questions": result["n_questions"], "runs": result["runs"],
         "arms": arms, "matrix": mat,
         "context_compression_kb_vs_no_kb": comp,
@@ -91,7 +92,7 @@ def _result_md(result: dict, aggregates: dict) -> str:
     ]
 
     lines = [
-        f"# agent-compare 结果 · target={result['target_id']} · model={result['model']}{mode}",
+        f"# agent-compare 结果 · target={result['target_id']} · model={result['model']} · engine={result.get('engine', 'sdk')}{mode}",
         f"> {result['n_questions']} 题 × {result['runs']} runs × {len(arms)} 臂。",
         ""]
 
