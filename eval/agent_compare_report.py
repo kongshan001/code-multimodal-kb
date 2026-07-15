@@ -2,9 +2,9 @@
 
 输入 run_ab_agent.run_compare 的结果 dict，写出：
   <root>/conclusion.md / summary.json / matrix.md
-  <root>/arms/<arm>/{config.md, aggregate.json, episodes/qNN/{episode.json, session.jsonl, thinking.md}}
+  <root>/arms/<arm>/{config.md, aggregate.json, episodes/qNN/{episode.json, episode.md, session.jsonl, thinking.md}}
 
-入库：conclusion/summary/matrix/arms/<arm>/{config,aggregate,episodes/episode.json}。
+入库：conclusion/summary/matrix/arms/<arm>/{config,aggregate,episodes/episode.json, episodes/episode.md}。
 本地（.gitignore）：episodes/qNN/{session.jsonl, thinking.md}。
 """
 from __future__ import annotations
@@ -217,7 +217,55 @@ def _config_md(arm: str, cfg: dict) -> str:
 
 
 def _clean_episode(ep: dict) -> dict:
-    """episode.json：去掉 session/thinking（单独落 jsonl/md），留指标 + 逐步 tool。"""
+    """episode.json：去掉 session/thinking（单独落 jsonl/md/episode.md），留指标 + 逐步 tool。"""
+
+
+def _episode_md(ep: dict) -> str:
+    """人可读的对话+思考 markdown（session 逐轮渲染，便于审核完整过程）。"""
+    lines = [
+        f"# {ep['qid']} · {ep['type']} · arm: `{ep['arm']}`",
+        "",
+        f"**题**：{ep['query']}  ·  **gold**：{', '.join(ep['gold'])}",
+        f"**答对**：{'✓' if ep['correct'] else '✗'}  ·  **答案**：{(ep.get('answer') or '')[:120]}",
+        f"**指标**：tokens={ep['total_tokens']} · llm_calls={ep['llm_calls']} · "
+        f"tool_steps={ep['tool_steps']} · 耗时={ep['wall_clock_s']}s · "
+        f"截断={'⚠是' if ep.get('truncated') else '否'}",
+        "",
+        "---",
+        "",
+    ]
+    for turn in ep.get("session", []):
+        role = turn.get("role", "")
+        content = turn.get("content")
+        if isinstance(content, str):
+            content = [{"type": "text", "text": content}]
+        if not isinstance(content, list):
+            content = [content]
+        for b in content:
+            if not isinstance(b, dict):
+                lines.append(str(b)[:200])
+                lines.append("")
+                continue
+            bt = b.get("type", "text")
+            if role == "user":
+                if bt == "tool_result":
+                    txt = str(b.get("content", b.get("text", "")))[:600]
+                    lines.append(f"**📋 工具结果**：\n```\n{txt}\n```")
+                elif bt == "text":
+                    lines.append(f"**👤 用户**：{b.get('text', '')[:200]}")
+            elif role == "assistant":
+                if bt == "thinking":
+                    lines.append(f"> 💭 **思考**：{b.get('text', '')[:300]}")
+                elif bt == "tool_use":
+                    name = b.get("name", "?")
+                    inp = json.dumps(b.get("input", {}), ensure_ascii=False)[:80]
+                    lines.append(f"**🔧 `{name}`**({inp})")
+                elif bt == "text":
+                    txt = b.get("text", "").strip()
+                    if txt:
+                        lines.append(f"**🤖 Agent**：{txt[:300]}")
+            lines.append("")
+    return "\n".join(lines) + "\n"
     return {k: v for k, v in ep.items() if k not in ("session", "thinking")}
 
 
@@ -242,6 +290,7 @@ def write_compare_report(result: dict, report_root: str) -> str:
                 "\n".join(json.dumps(m, ensure_ascii=False) for m in ep["session"]) + "\n", encoding="utf-8")
             (edir / "thinking.md").write_text(
                 "# thinking\n\n" + "\n\n---\n\n".join(ep["thinking"] or ["(无 thinking 捕获)"]) + "\n", encoding="utf-8")
+            (edir / "episode.md").write_text(_episode_md(ep), encoding="utf-8")
 
     summary = _summary_matrix(arms, aggregates, result)
     (out / "summary.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8")
