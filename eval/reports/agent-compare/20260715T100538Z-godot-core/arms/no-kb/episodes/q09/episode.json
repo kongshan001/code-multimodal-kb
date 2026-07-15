@@ -1,0 +1,24 @@
+{
+  "answer": "**`Quaternion`**（头文件 `core/math/quaternion.h`）。",
+  "input_tokens": 717,
+  "output_tokens": 47,
+  "total_tokens": 764,
+  "steps": 1,
+  "llm_calls": 1,
+  "tool_calls": [],
+  "tool_steps": 0,
+  "tool_texts": [],
+  "truncated": false,
+  "wall_clock_s": 8.09,
+  "cost_$": 0.0047599999999999995,
+  "cache_read_tokens": 0,
+  "query": "四元数用哪个类？",
+  "type": "code_retrieval",
+  "gold": [
+    "Quaternion"
+  ],
+  "arm": "no-kb",
+  "run": 0,
+  "qid": "q09",
+  "correct": 1
+}

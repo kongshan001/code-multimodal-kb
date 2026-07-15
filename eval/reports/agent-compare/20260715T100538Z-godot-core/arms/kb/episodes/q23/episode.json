@@ -1,0 +1,28 @@
+{
+  "answer": "用 **`RandomNumberGenerator`**（定义在 `math/random_number_generator.h`）。\n\n主要方法：\n- `randomize()` — 设置随机种子\n- `randi()` — 随机整数\n- `randf()` — 随机浮点数 [0,1]\n- `randfn()` — 正态分布随机数",
+  "input_tokens": 950,
+  "output_tokens": 110,
+  "total_tokens": 1060,
+  "steps": 2,
+  "llm_calls": 2,
+  "tool_calls": [
+    "cmm_search"
+  ],
+  "tool_steps": 1,
+  "tool_texts": [
+    "- RandomNumberGenerator  (Users-ks_128-Documents-godot-src-core.math.random_number_generator.RandomNumberGenerator.RandomNumberGenerator)  math/random_number_generator.h\n- randomize  (Users-ks_128-Documents-godot-src-core.math.random_number_generator.RandomNumberGenerator.randomize)  math/random_number_generator.h\n- randi  (Users-ks_128-Documents-godot-src-core.math.random_number_generator.RandomNumberGenerator.randi)  math/random_number_generator.h\n- randf  (Users-ks_128-Documents-godot-src-core.math.random_number_generator.RandomNumberGenerator.randf)  math/random_number_generator.h\n- randfn  (Users-ks_128-Documents-godot-src-core.math.random_number_generator.RandomNumberGenerator.randfn)  math/random_number_generator.h"
+  ],
+  "truncated": false,
+  "wall_clock_s": 7.3,
+  "cost_$": 0.007852,
+  "cache_read_tokens": 704,
+  "query": "随机数生成器用哪个类？",
+  "type": "code_retrieval",
+  "gold": [
+    "RandomNumberGenerator"
+  ],
+  "arm": "kb",
+  "run": 0,
+  "qid": "q23",
+  "correct": 1
+}

@@ -1,0 +1,28 @@
+{
+  "answer": "保存资源用 **`ResourceSaver`**（核心入口类），具体格式由 `ResourceFormatSaver` 子类实现，如 `ResourceFormatSaverBinaryInstance`、`ResourceFormatSaverJSON`、`ResourceFormatSaverCrypto`。",
+  "input_tokens": 1281,
+  "output_tokens": 87,
+  "total_tokens": 1368,
+  "steps": 2,
+  "llm_calls": 2,
+  "tool_calls": [
+    "cmm_search"
+  ],
+  "tool_steps": 1,
+  "tool_texts": [
+    "- save  (Users-ks_128-Documents-godot-src-core.io.resource_saver.ResourceFormatSaver.save)  io/resource_saver.cpp\n- save  (Users-ks_128-Documents-godot-src-core.io.resource_saver.ResourceSaver.save)  io/resource_saver.cpp\n- save  (Users-ks_128-Documents-godot-src-core.crypto.crypto_resource_format.ResourceFormatSaverCrypto.save)  crypto/crypto_resource_format.cpp\n- save  (Users-ks_128-Documents-godot-src-core.io.json_resource_format.ResourceFormatSaverJSON.save)  io/json_resource_format.cpp\n- save  (Users-ks_128-Documents-godot-src-core.io.resource_format_binary.ResourceFormatSaverBinaryInstance.save)  io/resource_format_binary.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 13.21,
+  "cost_$": 0.009092,
+  "cache_read_tokens": 1024,
+  "query": "保存资源用哪个类？",
+  "type": "code_retrieval",
+  "gold": [
+    "ResourceSaver"
+  ],
+  "arm": "kb+superpowers",
+  "run": 0,
+  "qid": "q14",
+  "correct": 1
+}

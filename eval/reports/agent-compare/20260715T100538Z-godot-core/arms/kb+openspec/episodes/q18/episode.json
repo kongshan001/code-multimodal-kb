@@ -1,0 +1,28 @@
+{
+  "answer": "Godot 的引擎主类是 **`Engine`**（C++ 内为 `core_bind::Engine`，位于 `core/core_bind.cpp`），它是暴露给脚本层的引擎单例，提供版本、主循环、帧率等全局信息。\n\n与之相关的核心抽象还有 `MainLoop`（主循环基类，`core/os/main_loop.h`）。",
+  "input_tokens": 1240,
+  "output_tokens": 249,
+  "total_tokens": 1489,
+  "steps": 2,
+  "llm_calls": 2,
+  "tool_calls": [
+    "cmm_search"
+  ],
+  "tool_steps": 1,
+  "tool_texts": [
+    "- get_main_loop  (Users-ks_128-Documents-godot-src-core.core_bind.Engine.get_main_loop)  core_bind.cpp\n- ~MainLoop  (Users-ks_128-Documents-godot-src-core.os.main_loop.MainLoop.~MainLoop)  os/main_loop.h\n- is_main_thread  (Users-ks_128-Documents-godot-src-core.core_bind.Thread.is_main_thread)  core_bind.cpp\n- get_main_diagonal  (Users-ks_128-Documents-godot-src-core.math.basis.Basis.get_main_diagonal)  math/basis.h\n- make_main_thread  (Users-ks_128-Documents-godot-src-core.os.thread.Thread.make_main_thread)  os/thread.h"
+  ],
+  "truncated": false,
+  "wall_clock_s": 18.24,
+  "cost_$": 0.012905,
+  "cache_read_tokens": 960,
+  "query": "引擎主类叫什么？",
+  "type": "code_retrieval",
+  "gold": [
+    "Engine"
+  ],
+  "arm": "kb+openspec",
+  "run": 0,
+  "qid": "q18",
+  "correct": 1
+}

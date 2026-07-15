@@ -1,0 +1,28 @@
+{
+  "answer": "Godot 的主循环基类是 **`MainLoop`**，定义在 `core/os/main_loop.h` 中。",
+  "input_tokens": 823,
+  "output_tokens": 70,
+  "total_tokens": 893,
+  "steps": 2,
+  "llm_calls": 2,
+  "tool_calls": [
+    "grep_code"
+  ],
+  "tool_steps": 1,
+  "tool_texts": [
+    "matched 3 files:\n/Users/ks_128/Documents/godot-src/core/os/os.h\n/Users/ks_128/Documents/godot-src/core/os/main_loop.h\n/Users/ks_128/Documents/godot-src/core/core_bind.h"
+  ],
+  "truncated": false,
+  "wall_clock_s": 10.23,
+  "cost_$": 0.006217,
+  "cache_read_tokens": 704,
+  "query": "主循环基类叫什么？",
+  "type": "code_retrieval",
+  "gold": [
+    "MainLoop"
+  ],
+  "arm": "no-kb",
+  "run": 0,
+  "qid": "q19",
+  "correct": 1
+}

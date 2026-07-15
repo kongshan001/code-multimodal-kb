@@ -1,0 +1,28 @@
+{
+  "answer": "`itos` — 定义于 `core/string/ustring.cpp`。",
+  "input_tokens": 950,
+  "output_tokens": 75,
+  "total_tokens": 1025,
+  "steps": 2,
+  "llm_calls": 2,
+  "tool_calls": [
+    "cmm_search"
+  ],
+  "tool_steps": 1,
+  "tool_texts": [
+    "- itos  (Users-ks_128-Documents-godot-src-core.string.ustring.itos)  string/ustring.cpp\n- bind_integer_constant  (Users-ks_128-Documents-godot-src-core.object.gdtype.GDType.bind_integer_constant)  object/gdtype.cpp\n- bind_integer_constant  (Users-ks_128-Documents-godot-src-core.object.class_db.ClassDB.bind_integer_constant)  object/class_db.cpp\n- get_integer_constant  (Users-ks_128-Documents-godot-src-core.object.class_db.ClassDB.get_integer_constant)  object/class_db.cpp\n- has_integer_constant  (Users-ks_128-Documents-godot-src-core.object.class_db.ClassDB.has_integer_constant)  object/class_db.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 8.82,
+  "cost_$": 0.0069770000000000006,
+  "cache_read_tokens": 704,
+  "query": "整数转成字符串用哪个函数？",
+  "type": "code_retrieval",
+  "gold": [
+    "itos"
+  ],
+  "arm": "kb",
+  "run": 0,
+  "qid": "q02",
+  "correct": 1
+}

@@ -1,0 +1,30 @@
+{
+  "answer": "Godot 核心提供了两个层级的类：\n\n- **`RandomNumberGenerator`**（`core/math/random_number_generator.h`）— 对外暴露给脚本的随机数生成器，推荐使用。\n- **`RandomPCG`**（`core/math/random_pcg.h`）— 底层 PCG 算法实现，`RandomNumberGenerator` 内部基于它。",
+  "input_tokens": 920,
+  "output_tokens": 193,
+  "total_tokens": 1113,
+  "steps": 3,
+  "llm_calls": 3,
+  "tool_calls": [
+    "grep_code",
+    "grep_code"
+  ],
+  "tool_steps": 2,
+  "tool_texts": [
+    "matched 1 files:\n/Users/ks_128/Documents/godot-src/core/math/random_number_generator.h",
+    "matched 6 files:\n/Users/ks_128/Documents/godot-src/core/io/resource.cpp\n/Users/ks_128/Documents/godot-src/core/io/resource_uid.cpp\n/Users/ks_128/Documents/godot-src/core/math/random_pcg.cpp\n/Users/ks_128/Documents/godot-src/core/math/math_funcs.cpp\n/Users/ks_128/Documents/godot-src/core/math/random_number_generator.h\n/Users/ks_128/Documents/godot-src/core/math/random_pcg.h"
+  ],
+  "truncated": false,
+  "wall_clock_s": 16.34,
+  "cost_$": 0.009777000000000001,
+  "cache_read_tokens": 704,
+  "query": "随机数生成器用哪个类？",
+  "type": "code_retrieval",
+  "gold": [
+    "RandomNumberGenerator"
+  ],
+  "arm": "no-kb",
+  "run": 0,
+  "qid": "q23",
+  "correct": 1
+}

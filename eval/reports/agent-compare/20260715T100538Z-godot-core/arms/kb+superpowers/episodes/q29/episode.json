@@ -1,0 +1,33 @@
+{
+  "answer": "The path is computed by one of these A* pathfinding classes:\n\n- **`AStar3D`** — `core/math/a_star.cpp`\n- **`AStar2D`** — `core/math/a_star.cpp`\n- **`AStarGrid2D`** — `core/math/a_star_grid_2d.cpp`\n\nThe path itself is returned by the **`get_point_path()`** method on each of these classes. `get_id_path()` returns just the point IDs.\n\nFor navigation meshes (character pathfinding with avoidance), look at **`NavigationServer`** (and its 2D/3D variants) plus `NavigationRegion`/`NavigationObstacle`. But the actual A* graph search that computes the ordered list of points lives in the `AStar*` classes above.",
+  "input_tokens": 817,
+  "output_tokens": 521,
+  "total_tokens": 1338,
+  "steps": 4,
+  "llm_calls": 4,
+  "tool_calls": [
+    "cmm_search",
+    "cmm_search",
+    "cmm_search"
+  ],
+  "tool_steps": 3,
+  "tool_texts": [
+    "- get_closest_points_between_segments  (Users-ks_128-Documents-godot-src-core.core_bind.Geometry2D.get_closest_points_between_segments)  core_bind.cpp\n- get_closest_points_between_segments  (Users-ks_128-Documents-godot-src-core.core_bind.Geometry3D.get_closest_points_between_segments)  core_bind.cpp\n- get_closest_points_between_segments  (Users-ks_128-Documents-godot-src-core.math.geometry_2d.Geometry2D.get_closest_points_between_segments)  math/geometry_2d.h\n- get_closest_points_between_segments  (Users-ks_128-Documents-godot-src-core.math.geometry_3d.Geometry3D.get_closest_points_between_segments)  math/geometry_3d.cpp\n- compute_convex_mesh_points  (Users-ks_128-Documents-godot-src-core.core_bind.Geometry3D.compute_convex_mesh_points)  core_bind.cpp",
+    "- rel_path_to  (Users-ks_128-Documents-godot-src-core.string.node_path.NodePath.rel_path_to)  string/node_path.cpp\n- get_as_property_path  (Users-ks_128-Documents-godot-src-core.string.node_path.NodePath.get_as_property_path)  string/node_path.cpp\n- set_path  (Users-ks_128-Documents-godot-src-core.io.resource.Resource.set_path)  io/resource.cpp\n- get_path  (Users-ks_128-Documents-godot-src-core.io.resource.Resource.get_path)  io/resource.cpp\n- _set_path  (Users-ks_128-Documents-godot-src-core.io.resource.Resource._set_path)  io/resource.cpp",
+    "- get_point_path  (Users-ks_128-Documents-godot-src-core.math.a_star_grid_2d.AStarGrid2D.get_point_path)  math/a_star_grid_2d.cpp\n- get_point_path  (Users-ks_128-Documents-godot-src-core.math.a_star.AStar3D.get_point_path)  math/a_star.cpp\n- get_point_path  (Users-ks_128-Documents-godot-src-core.math.a_star.AStar2D.get_point_path)  math/a_star.cpp\n- _compute_cost  (Users-ks_128-Documents-godot-src-core.math.a_star_grid_2d.AStarGrid2D._compute_cost)  math/a_star_grid_2d.cpp\n- set_default_compute_heuristic  (Users-ks_128-Documents-godot-src-core.math.a_star_grid_2d.AStarGrid2D.set_default_compute_heuristic)  math/a_star_grid_2d.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 23.52,
+  "cost_$": 0.018774,
+  "cache_read_tokens": 3328,
+  "query": "Pathfinding returns a wrong path between two points, ignoring an obstacle. Which class computes the path?",
+  "type": "bug_fix",
+  "gold": [
+    "AStar",
+    "core/math/a_star.h"
+  ],
+  "arm": "kb+superpowers",
+  "run": 0,
+  "qid": "q29",
+  "correct": 1
+}

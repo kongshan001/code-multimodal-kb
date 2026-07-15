@@ -1,0 +1,28 @@
+{
+  "answer": "用 `MessageQueue`（定义在 `core/object/message_queue.cpp`，继承自 `CallQueue`）。\n\n- `MessageQueue` — 主类，单例，负责延迟调用（`call_deferred`）的消息队列。\n- `CallQueue` — 基类，提供队列的底层逻辑（如 `push_call`、`flush`、`pop_front` 等）。",
+  "input_tokens": 941,
+  "output_tokens": 130,
+  "total_tokens": 1071,
+  "steps": 2,
+  "llm_calls": 2,
+  "tool_calls": [
+    "cmm_search"
+  ],
+  "tool_steps": 1,
+  "tool_texts": [
+    "- MessageQueue  (Users-ks_128-Documents-godot-src-core.object.message_queue.MessageQueue.MessageQueue)  object/message_queue.cpp\n- ~MessageQueue  (Users-ks_128-Documents-godot-src-core.object.message_queue.MessageQueue.~MessageQueue)  object/message_queue.cpp\n- CallQueue  (Users-ks_128-Documents-godot-src-core.object.message_queue.CallQueue.CallQueue)  object/message_queue.cpp\n- ~CallQueue  (Users-ks_128-Documents-godot-src-core.object.message_queue.CallQueue.~CallQueue)  object/message_queue.cpp\n- flush  (Users-ks_128-Documents-godot-src-core.object.message_queue.CallQueue.flush)  object/message_queue.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 16.28,
+  "cost_$": 0.008307,
+  "cache_read_tokens": 704,
+  "query": "消息队列用哪个类？",
+  "type": "code_retrieval",
+  "gold": [
+    "MessageQueue"
+  ],
+  "arm": "kb",
+  "run": 0,
+  "qid": "q17",
+  "correct": 1
+}

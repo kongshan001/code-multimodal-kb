@@ -1,0 +1,30 @@
+{
+  "answer": "`memdelete` — Godot core 的内存释放宏，与 `memnew` 配对，用于删除通过 `memnew` 分配的对象（定义在 `core/os/memory.h`）。\n\n补充几个相关符号：\n- `memnew` — 分配（构造）。\n- `memalloc` / `memfree` — 原始内存（无构造析构）。\n- 引用计数对象用 `ref`/`ref_ptr`（`Ref<T>`），由 `RefCounted` 管理生命周期，不直接调 `memdelete`。",
+  "input_tokens": 1489,
+  "output_tokens": 195,
+  "total_tokens": 1684,
+  "steps": 3,
+  "llm_calls": 3,
+  "tool_calls": [
+    "grep_code",
+    "grep_code"
+  ],
+  "tool_steps": 2,
+  "tool_texts": [
+    "matched 20 files:\n/Users/ks_128/Documents/godot-src/core/crypto/hashing_context.cpp\n/Users/ks_128/Documents/godot-src/core/extension/gdextension_interface.cpp\n/Users/ks_128/Documents/godot-src/core/extension/gdextension.cpp\n/Users/ks_128/Documents/godot-src/core/io/udp_server.cpp\n/Users/ks_128/Documents/godot-src/core/io/xml_parser.cpp\n/Users/ks_128/Documents/godot-src/core/io/image.cpp\n/Users/ks_128/Documents/godot-src/core/io/resource.cpp\n/Users/ks_128/Documents/godot-src/core/io/file_access_memory.cpp\n/Users/ks_128/Documents/godot-src/core/io/resource_loader.cpp\n/Users/ks_128/Documents/godot-src/core/io/ip.cpp\n/Users/ks_128/Documents/godot-src/core/io/file_access_encrypted.cpp\n/Users/ks_128/Documents/godot-src/core/io/file_access_zip.cpp\n/Users/ks_128/Documents/godot-src/core/io/resource_format_binary.cpp\n/Users/ks_128/Documents/godot-src/core/io/file_access_pack.cpp\n/Users/ks_128/Documents/godot-src/core/io/resource_uid.cpp\n/Users/ks_128/Documents/godot-src/core/io/logger.cpp\n/Users/ks_128/Documents/godot-src/core/math/geometry_3d.cpp\n/Users/ks_128/Documents/godot-src/core/math/expression.h\n/Users/ks_128/Documents/godot-src/core/math/disjoint_set.h\n/Users/ks_128/Documents/godot-src/core/math/expression.cpp",
+    "matched 20 files:\n/Users/ks_128/Documents/godot-src/core/crypto/hashing_context.cpp\n/Users/ks_128/Documents/godot-src/core/crypto/crypto_resource_format.cpp\n/Users/ks_128/Documents/godot-src/core/crypto/crypto_core.cpp\n/Users/ks_128/Documents/godot-src/core/crypto/crypto.h\n/Users/ks_128/Documents/godot-src/core/crypto/hashing_context.h\n/Users/ks_128/Documents/godot-src/core/crypto/aes_context.h\n/Users/ks_128/Documents/godot-src/core/crypto/crypto_resource_format.h\n/Users/ks_128/Documents/godot-src/core/crypto/crypto_core.h\n/Users/ks_128/Documents/godot-src/core/crypto/crypto.cpp\n/Users/ks_128/Documents/godot-src/core/crypto/aes_context.cpp\n/Users/ks_128/Documents/godot-src/core/core_globals.h\n/Users/ks_128/Documents/godot-src/core/version.h\n/Users/ks_128/Documents/godot-src/core/extension/gdextension_resource_format.cpp\n/Users/ks_128/Documents/godot-src/core/extension/gdextension_interface.cpp\n/Users/ks_128/Documents/godot-src/core/extension/extension_api_dump.h\n/Users/ks_128/Documents/godot-src/core/extension/gdextension_interface_header_generator.cpp\n/Users/ks_128/Documents/godot-src/core/extension/gdextension_function_loader.h\n/Users/ks_128/Documents/godot-src/core/extension/libgodot.h\n/Users/ks_128/Documents/godot-src/core/extension/gdextension_loader.h\n/Users/ks_128/Documents/godot-src/core/extension/gdextension_library_loader.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 21.63,
+  "cost_$": 0.012672,
+  "cache_read_tokens": 704,
+  "query": "删除对象、释放内存用哪个函数？",
+  "type": "code_retrieval",
+  "gold": [
+    "memdelete"
+  ],
+  "arm": "no-kb",
+  "run": 0,
+  "qid": "q03",
+  "correct": 1
+}

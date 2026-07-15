@@ -1,0 +1,30 @@
+{
+  "answer": "二维向量用 `Vector2`（定义在 `math/vector2.h`）。",
+  "input_tokens": 1474,
+  "output_tokens": 114,
+  "total_tokens": 1588,
+  "steps": 3,
+  "llm_calls": 3,
+  "tool_calls": [
+    "cmm_search",
+    "cmm_search"
+  ],
+  "tool_steps": 2,
+  "tool_texts": [
+    "- Vector  (Users-ks_128-Documents-godot-src-core.templates.vector.Vector.Vector)  templates/vector.h\n- operator Vector<T>() const  (Users-ks_128-Documents-godot-src-core.templates.local_vector.LocalVector.operator Vector<T>() const)  templates/local_vector.h\n- append  (Users-ks_128-Documents-godot-src-core.templates.vector.Vector.append)  templates/vector.h\n- erase  (Users-ks_128-Documents-godot-src-core.templates.vector.Vector.erase)  templates/vector.h\n- ptrw  (Users-ks_128-Documents-godot-src-core.templates.vector.Vector.ptrw)  templates/vector.h",
+    "- flipped_y  (Users-ks_128-Documents-godot-src-core.math.projection.Projection.flipped_y)  math/projection.cpp\n- flip_y  (Users-ks_128-Documents-godot-src-core.math.projection.Projection.flip_y)  math/projection.cpp\n- Vector2  (Users-ks_128-Documents-godot-src-core.math.vector2.Vector2)  math/vector2.h\n- angle  (Users-ks_128-Documents-godot-src-core.math.vector2.Vector2.angle)  math/vector2.cpp\n- length  (Users-ks_128-Documents-godot-src-core.math.vector2.Vector2.length)  math/vector2.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 15.46,
+  "cost_$": 0.011276000000000001,
+  "cache_read_tokens": 2112,
+  "query": "二维向量用哪个类？",
+  "type": "code_retrieval",
+  "gold": [
+    "Vector2"
+  ],
+  "arm": "kb+openspec",
+  "run": 0,
+  "qid": "q07",
+  "correct": 1
+}

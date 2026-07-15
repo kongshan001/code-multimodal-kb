@@ -1,0 +1,24 @@
+{
+  "answer": "`Rect2`",
+  "input_tokens": 25,
+  "output_tokens": 18,
+  "total_tokens": 43,
+  "steps": 1,
+  "llm_calls": 1,
+  "tool_calls": [],
+  "tool_steps": 0,
+  "tool_texts": [],
+  "truncated": false,
+  "wall_clock_s": 6.0,
+  "cost_$": 0.0010869999999999999,
+  "cache_read_tokens": 1024,
+  "query": "二维矩形用哪个类？",
+  "type": "code_retrieval",
+  "gold": [
+    "Rect2"
+  ],
+  "arm": "kb+superpowers",
+  "run": 0,
+  "qid": "q10",
+  "correct": 1
+}

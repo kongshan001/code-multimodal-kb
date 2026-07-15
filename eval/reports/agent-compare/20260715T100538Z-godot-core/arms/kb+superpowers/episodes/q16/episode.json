@@ -1,0 +1,30 @@
+{
+  "answer": "**`DirAccess`**（`core/io/dir_access.h`）\n\n常用操作：\n- 创建目录：`make_dir` / `make_dir_recursive`\n- 列举内容：`list_dir_begin` / `get_next` / `list_dir_end`\n- 切换目录：`change_dir` / `get_current_dir`\n- 复制：`copy` / `copy_dir` / `copy_absolute`\n- 删除：`remove` / `erase_contents_recursive`\n- 查询：`dir_exists` / `file_exists`",
+  "input_tokens": 1583,
+  "output_tokens": 229,
+  "total_tokens": 1812,
+  "steps": 3,
+  "llm_calls": 3,
+  "tool_calls": [
+    "cmm_search",
+    "cmm_search"
+  ],
+  "tool_steps": 2,
+  "tool_texts": [
+    "- list_directory  (Users-ks_128-Documents-godot-src-core.core_bind.ResourceLoader.list_directory)  core_bind.cpp\n- list_directory  (Users-ks_128-Documents-godot-src-core.io.resource_loader.ResourceLoader.list_directory)  io/resource_loader.cpp\n- add_directory  (Users-ks_128-Documents-godot-src-core.io.file_access_pack.PackedSourceDirectory.add_directory)  io/file_access_pack.cpp\n- has_directory  (Users-ks_128-Documents-godot-src-core.io.file_access_pack.PackedData.has_directory)  io/file_access_pack.h\n- try_open_directory  (Users-ks_128-Documents-godot-src-core.io.file_access_pack.PackedData.try_open_directory)  io/file_access_pack.h",
+    "- _copy_dir  (Users-ks_128-Documents-godot-src-core.io.dir_access.DirAccess._copy_dir)  io/dir_access.cpp\n- copy_dir  (Users-ks_128-Documents-godot-src-core.io.dir_access.DirAccess.copy_dir)  io/dir_access.cpp\n- copy  (Users-ks_128-Documents-godot-src-core.io.dir_access.DirAccess.copy)  io/dir_access.cpp\n- copy_absolute  (Users-ks_128-Documents-godot-src-core.io.dir_access.DirAccess.copy_absolute)  io/dir_access.cpp\n- make_dir_recursive  (Users-ks_128-Documents-godot-src-core.io.dir_access.DirAccess.make_dir_recursive)  io/dir_access.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 22.19,
+  "cost_$": 0.014759999999999999,
+  "cache_read_tokens": 2240,
+  "query": "目录操作用哪个类？",
+  "type": "code_retrieval",
+  "gold": [
+    "DirAccess"
+  ],
+  "arm": "kb+superpowers",
+  "run": 0,
+  "qid": "q16",
+  "correct": 1
+}

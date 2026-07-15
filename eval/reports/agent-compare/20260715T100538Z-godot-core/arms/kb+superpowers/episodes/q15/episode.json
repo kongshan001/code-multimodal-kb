@@ -1,0 +1,28 @@
+{
+  "answer": "文件读写操作用 **`FileAccess`** 类，位于 `core/io/file_access.cpp`。\n\n常用方法：\n- `FileAccess::open(path, flags)` — 打开文件\n- `FileAccess::open_encrypted()` — 打开加密文件\n- `FileAccess::open_compressed()` — 打开压缩文件",
+  "input_tokens": 1283,
+  "output_tokens": 109,
+  "total_tokens": 1392,
+  "steps": 2,
+  "llm_calls": 2,
+  "tool_calls": [
+    "cmm_search"
+  ],
+  "tool_steps": 1,
+  "tool_texts": [
+    "- open  (Users-ks_128-Documents-godot-src-core.io.file_access.FileAccess.open)  io/file_access.cpp\n- _open  (Users-ks_128-Documents-godot-src-core.io.file_access.FileAccess._open)  io/file_access.cpp\n- godot_write  (Users-ks_128-Documents-godot-src-core.io.file_access_zip.godot_write)  io/file_access_zip.cpp\n- open_encrypted  (Users-ks_128-Documents-godot-src-core.io.file_access.FileAccess.open_encrypted)  io/file_access.cpp\n- open_compressed  (Users-ks_128-Documents-godot-src-core.io.file_access.FileAccess.open_compressed)  io/file_access.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 33.67,
+  "cost_$": 0.009651999999999999,
+  "cache_read_tokens": 1024,
+  "query": "文件读写操作用哪个类？",
+  "type": "code_retrieval",
+  "gold": [
+    "FileAccess"
+  ],
+  "arm": "kb+superpowers",
+  "run": 0,
+  "qid": "q15",
+  "correct": 1
+}

@@ -1,0 +1,30 @@
+{
+  "answer": "二维矩形用 **`Rect2`**（浮点坐标）或 **`Rect2i`**（整数坐标），定义在 `core/math/rect2.h` 和 `core/math/rect2i.h`。",
+  "input_tokens": 1248,
+  "output_tokens": 120,
+  "total_tokens": 1368,
+  "steps": 3,
+  "llm_calls": 3,
+  "tool_calls": [
+    "cmm_search",
+    "cmm_search"
+  ],
+  "tool_steps": 2,
+  "tool_texts": [
+    "- interpolate_transform_2d  (Users-ks_128-Documents-godot-src-core.math.transform_interpolator.TransformInterpolator.interpolate_transform_2d)  math/transform_interpolator.cpp\n- triangulate  (Users-ks_128-Documents-godot-src-core.math.delaunay_2d.Delaunay2D.triangulate)  math/delaunay_2d.h\n- operator<  (Users-ks_128-Documents-godot-src-core.math.geometry_2d._AtlasWorkRect.operator<)  math/geometry_2d.cpp\n- Transform2D  (Users-ks_128-Documents-godot-src-core.math.transform_2d.Transform2D.Transform2D)  math/transform_2d.cpp\n- operator*=  (Users-ks_128-Documents-godot-src-core.math.transform_2d.Transform2D.operator*=)  math/transform_2d.cpp",
+    "- get_area  (Users-ks_128-Documents-godot-src-core.math.rect2.Rect2.get_area)  math/rect2.h\n- has_area  (Users-ks_128-Documents-godot-src-core.math.rect2.Rect2.has_area)  math/rect2.h\n- get_area  (Users-ks_128-Documents-godot-src-core.math.face3.Face3.get_area)  math/face3.cpp\n- get_area  (Users-ks_128-Documents-godot-src-core.math.rect2i.Rect2i.get_area)  math/rect2i.h\n- has_area  (Users-ks_128-Documents-godot-src-core.math.rect2i.Rect2i.has_area)  math/rect2i.h"
+  ],
+  "truncated": false,
+  "wall_clock_s": 13.24,
+  "cost_$": 0.01004,
+  "cache_read_tokens": 1600,
+  "query": "二维矩形用哪个类？",
+  "type": "code_retrieval",
+  "gold": [
+    "Rect2"
+  ],
+  "arm": "kb",
+  "run": 0,
+  "qid": "q10",
+  "correct": 1
+}

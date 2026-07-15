@@ -1,0 +1,24 @@
+{
+  "answer": "引擎主类是 `Engine`。",
+  "input_tokens": 716,
+  "output_tokens": 43,
+  "total_tokens": 759,
+  "steps": 1,
+  "llm_calls": 1,
+  "tool_calls": [],
+  "tool_steps": 0,
+  "tool_texts": [],
+  "truncated": false,
+  "wall_clock_s": 7.46,
+  "cost_$": 0.004654999999999999,
+  "cache_read_tokens": 0,
+  "query": "引擎主类叫什么？",
+  "type": "code_retrieval",
+  "gold": [
+    "Engine"
+  ],
+  "arm": "no-kb",
+  "run": 0,
+  "qid": "q18",
+  "correct": 1
+}

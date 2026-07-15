@@ -1,0 +1,24 @@
+{
+  "answer": "`ResourceLoader`",
+  "input_tokens": 716,
+  "output_tokens": 35,
+  "total_tokens": 751,
+  "steps": 1,
+  "llm_calls": 1,
+  "tool_calls": [],
+  "tool_steps": 0,
+  "tool_texts": [],
+  "truncated": false,
+  "wall_clock_s": 9.25,
+  "cost_$": 0.004455,
+  "cache_read_tokens": 0,
+  "query": "加载资源用哪个类？",
+  "type": "code_retrieval",
+  "gold": [
+    "ResourceLoader"
+  ],
+  "arm": "no-kb",
+  "run": 0,
+  "qid": "q13",
+  "correct": 1
+}

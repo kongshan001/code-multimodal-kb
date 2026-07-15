@@ -1,0 +1,28 @@
+{
+  "answer": "A* 寻路算法用 **`AStar3D`**（3D）和 **`AStar2D`**（2D）。核心实现在 `core/math/a_star.cpp`，其中 `_solve` 方法是 A* 搜索的主逻辑。",
+  "input_tokens": 982,
+  "output_tokens": 97,
+  "total_tokens": 1079,
+  "steps": 2,
+  "llm_calls": 2,
+  "tool_calls": [
+    "cmm_search"
+  ],
+  "tool_steps": 1,
+  "tool_texts": [
+    "- ~AStar3D  (Users-ks_128-Documents-godot-src-core.math.a_star.AStar3D.~AStar3D)  math/a_star.cpp\n- AHashMap  (Users-ks_128-Documents-godot-src-core.templates.a_hash_map.AHashMap.AHashMap)  templates/a_hash_map.h\n- ~AHashMap  (Users-ks_128-Documents-godot-src-core.templates.a_hash_map.AHashMap.~AHashMap)  templates/a_hash_map.h\n- clear  (Users-ks_128-Documents-godot-src-core.math.a_star.AStar3D.clear)  math/a_star.cpp\n- _solve  (Users-ks_128-Documents-godot-src-core.math.a_star.AStar3D._solve)  math/a_star.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 9.54,
+  "cost_$": 0.008007,
+  "cache_read_tokens": 1344,
+  "query": "A* 寻路算法用哪个类？",
+  "type": "code_retrieval",
+  "gold": [
+    "AStar"
+  ],
+  "arm": "kb+superpowers",
+  "run": 0,
+  "qid": "q04",
+  "correct": 1
+}

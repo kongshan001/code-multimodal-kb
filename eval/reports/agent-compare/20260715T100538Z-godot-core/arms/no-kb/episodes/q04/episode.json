@@ -1,0 +1,28 @@
+{
+  "answer": "Godot 中的 A* 寻路算法使用以下类：\n\n- **`AStar`** — 通用的 A* 寻路（2D/3D 通用，自定义图结构），定义在 `core/math/a_star.h`\n- **`AStar2D`** — 2D 版本\n- **`AStar3D`** — 3D 版本\n- **`AStarGrid2D`** — 专用于 2D 网格的 A* 寻路，定义在 `core/math/a_star_grid_2d.h`\n\n如果需要基于网格的 2D 寻路，推荐用 `AStarGrid2D`；自定义节点图寻路则用 `AStar2D` / `AStar3D`。",
+  "input_tokens": 887,
+  "output_tokens": 203,
+  "total_tokens": 1090,
+  "steps": 2,
+  "llm_calls": 2,
+  "tool_calls": [
+    "grep_code"
+  ],
+  "tool_steps": 1,
+  "tool_texts": [
+    "matched 6 files:\n/Users/ks_128/Documents/godot-src/core/extension/gdextension_special_compat_hashes.cpp\n/Users/ks_128/Documents/godot-src/core/math/a_star_grid_2d.h\n/Users/ks_128/Documents/godot-src/core/math/a_star_grid_2d.cpp\n/Users/ks_128/Documents/godot-src/core/math/a_star.h\n/Users/ks_128/Documents/godot-src/core/math/a_star.cpp\n/Users/ks_128/Documents/godot-src/core/register_core_types.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 24.57,
+  "cost_$": 0.009862,
+  "cache_read_tokens": 704,
+  "query": "A* 寻路算法用哪个类？",
+  "type": "code_retrieval",
+  "gold": [
+    "AStar"
+  ],
+  "arm": "no-kb",
+  "run": 0,
+  "qid": "q04",
+  "correct": 1
+}

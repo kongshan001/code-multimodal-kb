@@ -1,0 +1,28 @@
+{
+  "answer": "加密解密用 **`Crypto`** 类（`core/crypto/crypto.cpp`）。\n\n主要方法包括：\n- `Crypto::create()` — 创建实例\n- `Crypto::hmac_digest()` — HMAC 摘要\n- `Crypto::load_default_certificates()` — 加载默认证书",
+  "input_tokens": 246,
+  "output_tokens": 103,
+  "total_tokens": 349,
+  "steps": 2,
+  "llm_calls": 2,
+  "tool_calls": [
+    "cmm_search"
+  ],
+  "tool_steps": 1,
+  "tool_texts": [
+    "- encryption_key_builder  (Users-ks_128-Documents-godot-src-core.core_builders.encryption_key_builder)  core_builders.py\n- create  (Users-ks_128-Documents-godot-src-core.crypto.crypto.Crypto.create)  crypto/crypto.cpp\n- hmac_digest  (Users-ks_128-Documents-godot-src-core.crypto.crypto.Crypto.hmac_digest)  crypto/crypto.cpp\n- _bind_methods  (Users-ks_128-Documents-godot-src-core.crypto.crypto.Crypto._bind_methods)  crypto/crypto.cpp\n- load_default_certificates  (Users-ks_128-Documents-godot-src-core.crypto.crypto.Crypto.load_default_certificates)  crypto/crypto.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 15.43,
+  "cost_$": 0.004829,
+  "cache_read_tokens": 2048,
+  "query": "加密解密用哪个类？",
+  "type": "code_retrieval",
+  "gold": [
+    "Crypto"
+  ],
+  "arm": "kb+superpowers",
+  "run": 0,
+  "qid": "q24",
+  "correct": 1
+}

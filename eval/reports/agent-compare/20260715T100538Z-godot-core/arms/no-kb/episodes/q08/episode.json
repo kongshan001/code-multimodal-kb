@@ -1,0 +1,24 @@
+{
+  "answer": "`Vector3`",
+  "input_tokens": 716,
+  "output_tokens": 23,
+  "total_tokens": 739,
+  "steps": 1,
+  "llm_calls": 1,
+  "tool_calls": [],
+  "tool_steps": 0,
+  "tool_texts": [],
+  "truncated": false,
+  "wall_clock_s": 8.0,
+  "cost_$": 0.004155,
+  "cache_read_tokens": 0,
+  "query": "三维向量用哪个类？",
+  "type": "code_retrieval",
+  "gold": [
+    "Vector3"
+  ],
+  "arm": "no-kb",
+  "run": 0,
+  "qid": "q08",
+  "correct": 1
+}

@@ -1,0 +1,32 @@
+{
+  "answer": "Godot 字符串格式化的底层函数是 **`String::sprintf`**（定义在 `core/string/ustring.cpp`），对应的面向用户的便捷方法是 **`String::format`**。\n\n- `String::sprintf` — C 风格的格式化底层实现\n- `String::format` — 接受 `Array`/`Dictionary` 参数的格式化方法\n- 全局辅助函数 **`vformat`**（在 `core/typedefs.h` 中声明）— 变参包装，调用 `String::sprintf`",
+  "input_tokens": 662,
+  "output_tokens": 214,
+  "total_tokens": 876,
+  "steps": 4,
+  "llm_calls": 4,
+  "tool_calls": [
+    "grep_code",
+    "grep_code",
+    "grep_code"
+  ],
+  "tool_steps": 3,
+  "tool_texts": [
+    "matched 5 files:\n/Users/ks_128/Documents/godot-src/core/io/logger.cpp\n/Users/ks_128/Documents/godot-src/core/variant/variant_op.h\n/Users/ks_128/Documents/godot-src/core/variant/variant.h\n/Users/ks_128/Documents/godot-src/core/string/ustring.h\n/Users/ks_128/Documents/godot-src/core/string/ustring.cpp",
+    "matched 1 files:\n/Users/ks_128/Documents/godot-src/core/string/ustring.cpp",
+    "matched 20 files:\n/Users/ks_128/Documents/godot-src/core/crypto/crypto_resource_format.cpp\n/Users/ks_128/Documents/godot-src/core/crypto/crypto_core.cpp\n/Users/ks_128/Documents/godot-src/core/crypto/crypto.h\n/Users/ks_128/Documents/godot-src/core/crypto/crypto_resource_format.h\n/Users/ks_128/Documents/godot-src/core/crypto/crypto.cpp\n/Users/ks_128/Documents/godot-src/core/extension/gdextension_resource_format.cpp\n/Users/ks_128/Documents/godot-src/core/extension/gdextension_interface.cpp\n/Users/ks_128/Documents/godot-src/core/extension/gdextension_interface_header_generator.cpp\n/Users/ks_128/Documents/godot-src/core/extension/gdextension_library_loader.cpp\n/Users/ks_128/Documents/godot-src/core/extension/gdextension.cpp\n/Users/ks_128/Documents/godot-src/core/extension/gdextension_manager.cpp\n/Users/ks_128/Documents/godot-src/core/extension/gdextension_interface_header_generator.h\n/Users/ks_128/Documents/godot-src/core/extension/extension_api_dump.cpp\n/Users/ks_128/Documents/godot-src/core/extension/gdextension_special_compat_hashes.cpp\n/Users/ks_128/Documents/godot-src/core/extension/gdextension_resource_format.h\n/Users/ks_128/Documents/godot-src/core/typedefs.h\n/Users/ks_128/Documents/godot-src/core/config/project_settings.cpp\n/Users/ks_128/Documents/godot-src/core/config/engine.cpp\n/Users/ks_128/Documents/godot-src/core/input/input.cpp\n/Users/ks_128/Documents/godot-src/core/input/input_event_codec.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 24.33,
+  "cost_$": 0.00978,
+  "cache_read_tokens": 2240,
+  "query": "Godot 里字符串格式化的底层函数叫什么？",
+  "type": "code_retrieval",
+  "gold": [
+    "vformat"
+  ],
+  "arm": "no-kb",
+  "run": 0,
+  "qid": "q01",
+  "correct": 1
+}

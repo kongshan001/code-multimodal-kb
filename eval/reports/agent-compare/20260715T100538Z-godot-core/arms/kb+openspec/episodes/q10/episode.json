@@ -1,0 +1,30 @@
+{
+  "answer": "二维矩形用 **`Rect2`** 类（定义在 `core/math/rect2.h`）。\n\n它由 `position`（`Vector2`）和 `size`（`Vector2`）组成，常用方法包括 `intersects()`、`encloses()`、`intersection()`、`merge()` 等。\n\n> 补充：如果是整数坐标的矩形，对应的是 `Rect2i`。",
+  "input_tokens": 1504,
+  "output_tokens": 171,
+  "total_tokens": 1675,
+  "steps": 3,
+  "llm_calls": 3,
+  "tool_calls": [
+    "cmm_search",
+    "cmm_search"
+  ],
+  "tool_steps": 2,
+  "tool_texts": [
+    "- interpolate_transform_2d  (Users-ks_128-Documents-godot-src-core.math.transform_interpolator.TransformInterpolator.interpolate_transform_2d)  math/transform_interpolator.cpp\n- get_variant_type  (Users-ks_128-Documents-godot-src-core.variant.type_info.get_variant_type)  variant/type_info.h\n- triangulate  (Users-ks_128-Documents-godot-src-core.math.delaunay_2d.Delaunay2D.triangulate)  math/delaunay_2d.h\n- operator<  (Users-ks_128-Documents-godot-src-core.math.geometry_2d._AtlasWorkRect.operator<)  math/geometry_2d.cpp\n- Transform2D  (Users-ks_128-Documents-godot-src-core.math.transform_2d.Transform2D.Transform2D)  math/transform_2d.cpp",
+    "- Rect2  (Users-ks_128-Documents-godot-src-core.math.rect2.Rect2.Rect2)  math/rect2.h\n- intersects  (Users-ks_128-Documents-godot-src-core.math.rect2.Rect2.intersects)  math/rect2.h\n- encloses  (Users-ks_128-Documents-godot-src-core.math.rect2.Rect2.encloses)  math/rect2.h\n- intersection  (Users-ks_128-Documents-godot-src-core.math.rect2.Rect2.intersection)  math/rect2.h\n- merge  (Users-ks_128-Documents-godot-src-core.math.rect2.Rect2.merge)  math/rect2.h"
+  ],
+  "truncated": false,
+  "wall_clock_s": 18.74,
+  "cost_$": 0.012883,
+  "cache_read_tokens": 2176,
+  "query": "二维矩形用哪个类？",
+  "type": "code_retrieval",
+  "gold": [
+    "Rect2"
+  ],
+  "arm": "kb+openspec",
+  "run": 0,
+  "qid": "q10",
+  "correct": 1
+}

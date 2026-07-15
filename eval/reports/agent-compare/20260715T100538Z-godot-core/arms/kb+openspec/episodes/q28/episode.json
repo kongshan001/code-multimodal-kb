@@ -1,0 +1,41 @@
+{
+  "answer": "罪魁祸首是 **`String::sprintf`**（`string/ustring.cpp`）。\n\n这是 Godot 核心的 `%` 格式化例程。在处理浮点数的 locale 边界情况（如小数分隔符 `.` vs `,`）时，sprintf 没有正确隔离 locale，导致输出乱码。`String::format` 和 `vformat` 最终都委托给它。",
+  "input_tokens": 2580,
+  "output_tokens": 642,
+  "total_tokens": 3222,
+  "steps": 8,
+  "llm_calls": 8,
+  "tool_calls": [
+    "cmm_search",
+    "cmm_search",
+    "cmm_search",
+    "cmm_search",
+    "read_file",
+    "read_file",
+    "cmm_search"
+  ],
+  "tool_steps": 7,
+  "tool_texts": [
+    "- check_formatting  (Users-ks_128-Documents-godot-src-core.extension.make_interface_header.check_formatting)  extension/make_interface_header.py\n- set_locale  (Users-ks_128-Documents-godot-src-core.string.translation.Translation.set_locale)  string/translation.cpp\n- get_locale  (Users-ks_128-Documents-godot-src-core.string.translation.Translation.get_locale)  string/translation.h\n- standardize_locale  (Users-ks_128-Documents-godot-src-core.string.translation_server.TranslationServer.standardize_locale)  string/translation_server.cpp\n- set_locale  (Users-ks_128-Documents-godot-src-core.string.translation_server.TranslationServer.set_locale)  string/translation_server.cpp",
+    "- set_locale  (Users-ks_128-Documents-godot-src-core.string.translation.Translation.set_locale)  string/translation.cpp\n- get_locale  (Users-ks_128-Documents-godot-src-core.string.translation.Translation.get_locale)  string/translation.h\n- standardize_locale  (Users-ks_128-Documents-godot-src-core.string.translation_server.TranslationServer.standardize_locale)  string/translation_server.cpp\n- set_locale  (Users-ks_128-Documents-godot-src-core.string.translation_server.TranslationServer.set_locale)  string/translation_server.cpp\n- get_locale  (Users-ks_128-Documents-godot-src-core.string.translation_server.TranslationServer.get_locale)  string/translation_server.cpp",
+    "- sprintf  (Users-ks_128-Documents-godot-src-core.string.ustring.String.sprintf)  string/ustring.cpp\n- _humanize_digits  (Users-ks_128-Documents-godot-src-core.string.ustring._humanize_digits)  string/ustring.cpp\n- _pad_buffer  (Users-ks_128-Documents-godot-src-core.io.resource_format_binary.ResourceFormatSaverBinaryInstance._pad_buffer)  io/resource_format_binary.cpp\n- pad_decimals  (Users-ks_128-Documents-godot-src-core.string.ustring.String.pad_decimals)  string/ustring.cpp\n- pad_zeros  (Users-ks_128-Documents-godot-src-core.string.ustring.String.pad_zeros)  string/ustring.cpp",
+    "- vformat  (Users-ks_128-Documents-godot-src-core.variant.variant.vformat)  variant/variant.h\n- check_formatting  (Users-ks_128-Documents-godot-src-core.extension.make_interface_header.check_formatting)  extension/make_interface_header.py\n- format  (Users-ks_128-Documents-godot-src-core.string.ustring.String.format)  string/ustring.cpp\n- operator<  (Users-ks_128-Documents-godot-src-core.io.resource_format_binary.ResourceFormatSaverBinaryInstance.NonPersistentKey.operator<)  io/resource_format_binary.h\n- format_number  (Users-ks_128-Documents-godot-src-core.string.translation_server.TranslationServer.format_number)  string/translation_server.cpp",
+    "(read error: [Errno 2] No such file or directory: 'core/string/ustring.cpp')",
+    "(read error: [Errno 2] No such file or directory: 'string/ustring.cpp')",
+    "- sprintf  (Users-ks_128-Documents-godot-src-core.string.ustring.String.sprintf)  string/ustring.cpp\n- lower_case  (Users-ks_128-Documents-godot-src-core.string.ustring.lower_case)  string/ustring.cpp\n- check_formatting  (Users-ks_128-Documents-godot-src-core.extension.make_interface_header.check_formatting)  extension/make_interface_header.py\n- to_camel_case  (Users-ks_128-Documents-godot-src-core.string.ustring.String.to_camel_case)  string/ustring.cpp\n- to_pascal_case  (Users-ks_128-Documents-godot-src-core.string.ustring.String.to_pascal_case)  string/ustring.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 26.99,
+  "cost_$": 0.033142000000000005,
+  "cache_read_tokens": 8384,
+  "query": "String formatting produces garbled output on a locale edge case. Which formatting routine is the culprit?",
+  "type": "bug_fix",
+  "gold": [
+    "core/string/print_string.cpp",
+    "vformat"
+  ],
+  "arm": "kb+openspec",
+  "run": 0,
+  "qid": "q28",
+  "correct": 1
+}

@@ -1,0 +1,28 @@
+{
+  "answer": "四元数用 **`Quaternion`** 类，定义在 `core/math/quaternion.h`。",
+  "input_tokens": 610,
+  "output_tokens": 65,
+  "total_tokens": 675,
+  "steps": 2,
+  "llm_calls": 2,
+  "tool_calls": [
+    "cmm_search"
+  ],
+  "tool_steps": 1,
+  "tool_texts": [
+    "- Quaternion  (Users-ks_128-Documents-godot-src-core.math.quaternion.Quaternion.Quaternion)  math/quaternion.h\n- length  (Users-ks_128-Documents-godot-src-core.math.quaternion.Quaternion.length)  math/quaternion.cpp\n- normalize  (Users-ks_128-Documents-godot-src-core.math.quaternion.Quaternion.normalize)  math/quaternion.cpp\n- normalized  (Users-ks_128-Documents-godot-src-core.math.quaternion.Quaternion.normalized)  math/quaternion.cpp\n- inverse  (Users-ks_128-Documents-godot-src-core.math.quaternion.Quaternion.inverse)  math/quaternion.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 9.6,
+  "cost_$": 0.005187,
+  "cache_read_tokens": 1024,
+  "query": "四元数用哪个类？",
+  "type": "code_retrieval",
+  "gold": [
+    "Quaternion"
+  ],
+  "arm": "kb",
+  "run": 0,
+  "qid": "q09",
+  "correct": 1
+}

@@ -1,0 +1,28 @@
+{
+  "answer": "`StringName`\n\n定义在 `core/string/string_name.h`，是一种内部驻留（interned）的优化字符串，适合做键名/标识符（如节点名、属性名、信号名），比较时只比指针而非逐字符，代价是创建时有一次哈希查表开销。",
+  "input_tokens": 296,
+  "output_tokens": 136,
+  "total_tokens": 432,
+  "steps": 2,
+  "llm_calls": 2,
+  "tool_calls": [
+    "cmm_search"
+  ],
+  "tool_steps": 1,
+  "tool_texts": [
+    "- generate  (Users-ks_128-Documents-godot-src-core.string.optimized_translation.OptimizedTranslation.generate)  string/optimized_translation.cpp\n- _set  (Users-ks_128-Documents-godot-src-core.string.optimized_translation.OptimizedTranslation._set)  string/optimized_translation.cpp\n- _get  (Users-ks_128-Documents-godot-src-core.string.optimized_translation.OptimizedTranslation._get)  string/optimized_translation.cpp\n- hash  (Users-ks_128-Documents-godot-src-core.string.optimized_translation.OptimizedTranslation.hash)  string/optimized_translation.h\n- StringName  (Users-ks_128-Documents-godot-src-core.string.string_name.StringName.StringName)  string/string_name.h"
+  ],
+  "truncated": false,
+  "wall_clock_s": 14.53,
+  "cost_$": 0.0059039999999999995,
+  "cache_read_tokens": 2048,
+  "query": "字符串名（优化版字符串）用哪个类？",
+  "type": "code_retrieval",
+  "gold": [
+    "StringName"
+  ],
+  "arm": "kb+superpowers",
+  "run": 0,
+  "qid": "q22",
+  "correct": 1
+}

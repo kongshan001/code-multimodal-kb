@@ -1,0 +1,32 @@
+{
+  "answer": "在 Godot core 的 C++ 里，删除对象/释放内存主要用：\n\n- **`memdelete(ptr)`** — 释放用 `memnew(T)` 分配的对象（`core/os/memory.h`）\n- **`memfree(ptr)`** — 释放用 `memalloc()` 分配的裸内存\n- **`DefaultAllocator::free` / `DefaultTypedAllocator::delete_allocation`** — 底层分配器接口\n- **`operator delete`** — 全局 `operator delete` 重载\n\n典型配对：\n- `memnew` → `memdelete`\n- `memalloc` → `memfree`\n\n引用计数对象（继承 `RefCounted`）无需手动 delete，引用归零自动释放。",
+  "input_tokens": 1795,
+  "output_tokens": 352,
+  "total_tokens": 2147,
+  "steps": 4,
+  "llm_calls": 4,
+  "tool_calls": [
+    "cmm_search",
+    "cmm_search",
+    "cmm_search"
+  ],
+  "tool_steps": 3,
+  "tool_texts": [
+    "- free_static  (Users-ks_128-Documents-godot-src-core.os.memory.Memory.free_static)  os/memory.cpp\n- free  (Users-ks_128-Documents-godot-src-core.os.memory.DefaultAllocator.free)  os/memory.h\n- free_aligned_static  (Users-ks_128-Documents-godot-src-core.os.memory.Memory.free_aligned_static)  os/memory.cpp\n- _instance_binding_reference  (Users-ks_128-Documents-godot-src-core.object.object.Object._instance_binding_reference)  object/object.h\n- reference  (Users-ks_128-Documents-godot-src-core.object.ref_counted.RefCounted.reference)  object/ref_counted.cpp",
+    "- memnew_arr_template  (Users-ks_128-Documents-godot-src-core.os.memory.memnew_arr_template)  os/memory.h\n- memnew_arr_placement  (Users-ks_128-Documents-godot-src-core.os.memory.memnew_arr_placement)  os/memory.h\n- operator delete  (Users-ks_128-Documents-godot-src-core.os.memory.operator delete)  os/memory.h\n- delete_allocation  (Users-ks_128-Documents-godot-src-core.os.memory.DefaultTypedAllocator.delete_allocation)  os/memory.h\n- _delete_ctx  (Users-ks_128-Documents-godot-src-core.crypto.hashing_context.HashingContext._delete_ctx)  crypto/hashing_context.cpp",
+    "- placeholder_class_free_instance  (Users-ks_128-Documents-godot-src-core.object.class_db.PlaceholderExtensionInstance.placeholder_class_free_instance)  object/class_db.cpp\n- memdelete  (Users-ks_128-Documents-godot-src-core.os.memory.memdelete)  os/memory.h\n- delete_allocation  (Users-ks_128-Documents-godot-src-core.os.memory.DefaultTypedAllocator.delete_allocation)  os/memory.h\n- placeholder_instance_free_property_list  (Users-ks_128-Documents-godot-src-core.object.class_db.PlaceholderExtensionInstance.placeholder_instance_free_property_list)  object/class_db.cpp\n- delete_allocation  (Users-ks_128-Documents-godot-src-core.templates.paged_allocator.PagedAllocator.delete_allocation)  templates/paged_allocator.h"
+  ],
+  "truncated": false,
+  "wall_clock_s": 20.66,
+  "cost_$": 0.019567,
+  "cache_read_tokens": 3584,
+  "query": "删除对象、释放内存用哪个函数？",
+  "type": "code_retrieval",
+  "gold": [
+    "memdelete"
+  ],
+  "arm": "kb+openspec",
+  "run": 0,
+  "qid": "q03",
+  "correct": 1
+}

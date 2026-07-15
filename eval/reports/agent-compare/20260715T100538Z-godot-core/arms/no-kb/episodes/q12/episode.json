@@ -1,0 +1,24 @@
+{
+  "answer": "`Image`",
+  "input_tokens": 12,
+  "output_tokens": 33,
+  "total_tokens": 45,
+  "steps": 1,
+  "llm_calls": 1,
+  "tool_calls": [],
+  "tool_steps": 0,
+  "tool_texts": [],
+  "truncated": false,
+  "wall_clock_s": 4.13,
+  "cost_$": 0.0012370000000000003,
+  "cache_read_tokens": 704,
+  "query": "图像数据用哪个类？",
+  "type": "code_retrieval",
+  "gold": [
+    "Image"
+  ],
+  "arm": "no-kb",
+  "run": 0,
+  "qid": "q12",
+  "correct": 1
+}

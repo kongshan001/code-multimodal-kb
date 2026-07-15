@@ -1,0 +1,31 @@
+{
+  "answer": "罪魁祸首是 **`String::sprintf`**（`string/ustring.cpp`）。\n\n这是 Godot 中负责 `String::format()` / `%s` 风格格式化的核心例程，locale 边界场景下的乱码问题出在它对格式化占位符的解析与字符处理逻辑中。",
+  "input_tokens": 1171,
+  "output_tokens": 184,
+  "total_tokens": 1355,
+  "steps": 3,
+  "llm_calls": 3,
+  "tool_calls": [
+    "cmm_search",
+    "cmm_search"
+  ],
+  "tool_steps": 2,
+  "tool_texts": [
+    "- sprintf  (Users-ks_128-Documents-godot-src-core.string.ustring.String.sprintf)  string/ustring.cpp\n- check_formatting  (Users-ks_128-Documents-godot-src-core.extension.make_interface_header.check_formatting)  extension/make_interface_header.py\n- set_locale  (Users-ks_128-Documents-godot-src-core.string.translation.Translation.set_locale)  string/translation.cpp\n- get_locale  (Users-ks_128-Documents-godot-src-core.string.translation.Translation.get_locale)  string/translation.h\n- standardize_locale  (Users-ks_128-Documents-godot-src-core.string.translation_server.TranslationServer.standardize_locale)  string/translation_server.cpp",
+    "- lower_case  (Users-ks_128-Documents-godot-src-core.string.ustring.lower_case)  string/ustring.cpp\n- to_camel_case  (Users-ks_128-Documents-godot-src-core.string.ustring.String.to_camel_case)  string/ustring.cpp\n- to_pascal_case  (Users-ks_128-Documents-godot-src-core.string.ustring.String.to_pascal_case)  string/ustring.cpp\n- to_snake_case  (Users-ks_128-Documents-godot-src-core.string.ustring.String.to_snake_case)  string/ustring.cpp\n- to_kebab_case  (Users-ks_128-Documents-godot-src-core.string.ustring.String.to_kebab_case)  string/ustring.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 18.38,
+  "cost_$": 0.010807,
+  "cache_read_tokens": 704,
+  "query": "String formatting produces garbled output on a locale edge case. Which formatting routine is the culprit?",
+  "type": "bug_fix",
+  "gold": [
+    "core/string/print_string.cpp",
+    "vformat"
+  ],
+  "arm": "kb",
+  "run": 0,
+  "qid": "q28",
+  "correct": 0
+}

@@ -1,0 +1,30 @@
+{
+  "answer": "加密解密用 **`Crypto`** 类（定义于 `core/crypto/crypto.h`），底层辅助类为 `CryptoCore`（`core/crypto/crypto_core.h`）。\n\n- `Crypto` — 对外暴露的高层 API，提供 `generate_random_bytes`、`generate_rsa`、`encrypt`、`decrypt` 等方法。\n- `CryptoCore` — 底层封装（AES、RSA、MD5、SHA 等）。\n\n脚本层通过 `OS.get_singleton()->get_native_interface()` 或直接使用 `Crypto` 单例访问。",
+  "input_tokens": 881,
+  "output_tokens": 197,
+  "total_tokens": 1078,
+  "steps": 3,
+  "llm_calls": 3,
+  "tool_calls": [
+    "grep_code",
+    "grep_code"
+  ],
+  "tool_steps": 2,
+  "tool_texts": [
+    "matched 5 files:\n/Users/ks_128/Documents/godot-src/core/crypto/crypto.h\n/Users/ks_128/Documents/godot-src/core/crypto/crypto_resource_format.h\n/Users/ks_128/Documents/godot-src/core/crypto/crypto_core.h\n/Users/ks_128/Documents/godot-src/core/crypto/crypto.cpp\n/Users/ks_128/Documents/godot-src/core/register_core_types.cpp",
+    "(no matches)"
+  ],
+  "truncated": false,
+  "wall_clock_s": 16.32,
+  "cost_$": 0.009682,
+  "cache_read_tokens": 704,
+  "query": "加密解密用哪个类？",
+  "type": "code_retrieval",
+  "gold": [
+    "Crypto"
+  ],
+  "arm": "no-kb",
+  "run": 0,
+  "qid": "q24",
+  "correct": 1
+}

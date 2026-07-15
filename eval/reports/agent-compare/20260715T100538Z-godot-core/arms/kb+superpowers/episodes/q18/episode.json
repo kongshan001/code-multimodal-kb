@@ -1,0 +1,28 @@
+{
+  "answer": "引擎的主类是 **`Engine`**，定义在 `core_bind.cpp` / `core_bind.h` 中（即 `core_bind.Engine`），是暴露给脚本的引擎信息单例。\n\n此外还有：\n- **`MainLoop`**（`os/main_loop.h`）——引擎主循环基类，`SceneTree` 继承自它。",
+  "input_tokens": 1284,
+  "output_tokens": 253,
+  "total_tokens": 1537,
+  "steps": 2,
+  "llm_calls": 2,
+  "tool_calls": [
+    "cmm_search"
+  ],
+  "tool_steps": 1,
+  "tool_texts": [
+    "- get_main_loop  (Users-ks_128-Documents-godot-src-core.core_bind.Engine.get_main_loop)  core_bind.cpp\n- ~MainLoop  (Users-ks_128-Documents-godot-src-core.os.main_loop.MainLoop.~MainLoop)  os/main_loop.h\n- is_main_thread  (Users-ks_128-Documents-godot-src-core.core_bind.Thread.is_main_thread)  core_bind.cpp\n- get_main_diagonal  (Users-ks_128-Documents-godot-src-core.math.basis.Basis.get_main_diagonal)  math/basis.h\n- make_main_thread  (Users-ks_128-Documents-godot-src-core.os.thread.Thread.make_main_thread)  os/thread.h"
+  ],
+  "truncated": false,
+  "wall_clock_s": 17.0,
+  "cost_$": 0.013257,
+  "cache_read_tokens": 1024,
+  "query": "引擎主类叫什么？",
+  "type": "code_retrieval",
+  "gold": [
+    "Engine"
+  ],
+  "arm": "kb+superpowers",
+  "run": 0,
+  "qid": "q18",
+  "correct": 1
+}

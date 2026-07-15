@@ -1,0 +1,41 @@
+{
+  "answer": "In Godot core, pathfinding between two points is computed by one of these classes depending on the approach:\n\n**Generic A\\* (graph-based)**\n- `AStar3D` / `AStar2D` — methods `get_id_path()` / `get_point_path()`, with cost via `_compute_cost()` and `_estimate_cost()`\n- `AStarGrid2D` — grid variant; solid cells act as obstacles (`set_solid_point`, `fill_solid_region`); heuristic selectable via `set_default_compute_heuristic()` (`heuristic_euclidean`, `heuristic_manhattan`, `heuristic_octile`, `heuristic_chebyshev`)\n\n**Navigation mesh based** (server side)\n- `NavigationServer3D` / `NavigationServer2D` — `map_get_path()`; `NavigationRegion3D` / `NavigationRegion2D` supply the bake; `NavigationObstacle` for dynamic avoidance ( avoidance ≠ path bake — obstacles only steer, they don't recompute the baked path ).\n\nFor a \"wrong path ignoring an obstacle\" bug, the most likely suspects are `AStar3D`/`AStar2D`/`AStarGrid2D` (the cell/edge wasn't marked solid) or, on the navmesh side, the region bake in `NavigationServer3D`/`NavigationServer2D` (the obstacle isn't baked into the mesh — runtime `NavigationObstacle` only affects avoidance, not the path itself).",
+  "input_tokens": 2301,
+  "output_tokens": 764,
+  "total_tokens": 3065,
+  "steps": 8,
+  "llm_calls": 8,
+  "tool_calls": [
+    "cmm_search",
+    "cmm_search",
+    "cmm_search",
+    "cmm_search",
+    "cmm_search",
+    "cmm_search",
+    "cmm_search"
+  ],
+  "tool_steps": 7,
+  "tool_texts": [
+    "- get_closest_points_between_segments  (Users-ks_128-Documents-godot-src-core.core_bind.Geometry2D.get_closest_points_between_segments)  core_bind.cpp\n- get_closest_points_between_segments  (Users-ks_128-Documents-godot-src-core.core_bind.Geometry3D.get_closest_points_between_segments)  core_bind.cpp\n- get_closest_points_between_segments  (Users-ks_128-Documents-godot-src-core.math.geometry_2d.Geometry2D.get_closest_points_between_segments)  math/geometry_2d.h\n- get_closest_points_between_segments  (Users-ks_128-Documents-godot-src-core.math.geometry_3d.Geometry3D.get_closest_points_between_segments)  math/geometry_3d.cpp\n- get_closest_distance_between_segments  (Users-ks_128-Documents-godot-src-core.math.geometry_3d.Geometry3D.get_closest_distance_between_segments)  math/geometry_3d.cpp",
+    "- _compute_cost  (Users-ks_128-Documents-godot-src-core.math.a_star.AStar3D._compute_cost)  math/a_star.cpp\n- _compute_cost  (Users-ks_128-Documents-godot-src-core.math.a_star.AStar2D._compute_cost)  math/a_star.cpp\n- _compute_cost  (Users-ks_128-Documents-godot-src-core.math.a_star_grid_2d.AStarGrid2D._compute_cost)  math/a_star_grid_2d.cpp\n- set_default_compute_heuristic  (Users-ks_128-Documents-godot-src-core.math.a_star_grid_2d.AStarGrid2D.set_default_compute_heuristic)  math/a_star_grid_2d.cpp\n- get_default_compute_heuristic  (Users-ks_128-Documents-godot-src-core.math.a_star_grid_2d.AStarGrid2D.get_default_compute_heuristic)  math/a_star_grid_2d.cpp",
+    "- heuristic_euclidean  (Users-ks_128-Documents-godot-src-core.math.a_star_grid_2d.heuristic_euclidean)  math/a_star_grid_2d.cpp\n- heuristic_manhattan  (Users-ks_128-Documents-godot-src-core.math.a_star_grid_2d.heuristic_manhattan)  math/a_star_grid_2d.cpp\n- heuristic_octile  (Users-ks_128-Documents-godot-src-core.math.a_star_grid_2d.heuristic_octile)  math/a_star_grid_2d.cpp\n- heuristic_chebyshev  (Users-ks_128-Documents-godot-src-core.math.a_star_grid_2d.heuristic_chebyshev)  math/a_star_grid_2d.cpp\n- set_default_compute_heuristic  (Users-ks_128-Documents-godot-src-core.math.a_star_grid_2d.AStarGrid2D.set_default_compute_heuristic)  math/a_star_grid_2d.cpp",
+    "- seek  (Users-ks_128-Documents-godot-src-core.io.stream_peer.StreamPeerBuffer.seek)  io/stream_peer.cpp\n- seek  (Users-ks_128-Documents-godot-src-core.io.xml_parser.XMLParser.seek)  io/xml_parser.cpp\n- seek  (Users-ks_128-Documents-godot-src-core.io.file_access_compressed.FileAccessCompressed.seek)  io/file_access_compressed.cpp\n- seek  (Users-ks_128-Documents-godot-src-core.io.file_access_encrypted.FileAccessEncrypted.seek)  io/file_access_encrypted.cpp\n- seek  (Users-ks_128-Documents-godot-src-core.io.file_access_memory.FileAccessMemory.seek)  io/file_access_memory.cpp",
+    "(no results)",
+    "- get_region  (Users-ks_128-Documents-godot-src-core.io.image.Image.get_region)  io/image.cpp\n- set_region  (Users-ks_128-Documents-godot-src-core.math.a_star_grid_2d.AStarGrid2D.set_region)  math/a_star_grid_2d.cpp\n- get_region  (Users-ks_128-Documents-godot-src-core.math.a_star_grid_2d.AStarGrid2D.get_region)  math/a_star_grid_2d.cpp\n- fill_solid_region  (Users-ks_128-Documents-godot-src-core.math.a_star_grid_2d.AStarGrid2D.fill_solid_region)  math/a_star_grid_2d.cpp\n- fill_weight_scale_region  (Users-ks_128-Documents-godot-src-core.math.a_star_grid_2d.AStarGrid2D.fill_weight_scale_region)  math/a_star_grid_2d.cpp",
+    "- get_point_path  (Users-ks_128-Documents-godot-src-core.math.a_star.AStar3D.get_point_path)  math/a_star.cpp\n- get_point_path  (Users-ks_128-Documents-godot-src-core.math.a_star.AStar2D.get_point_path)  math/a_star.cpp\n- get_id_path  (Users-ks_128-Documents-godot-src-core.io.resource_uid.ResourceUID.get_id_path)  io/resource_uid.cpp\n- get_id_path  (Users-ks_128-Documents-godot-src-core.math.a_star.AStar3D.get_id_path)  math/a_star.cpp\n- get_id_path  (Users-ks_128-Documents-godot-src-core.math.a_star.AStar2D.get_id_path)  math/a_star.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 41.28,
+  "cost_$": 0.033037,
+  "cache_read_tokens": 4864,
+  "query": "Pathfinding returns a wrong path between two points, ignoring an obstacle. Which class computes the path?",
+  "type": "bug_fix",
+  "gold": [
+    "AStar",
+    "core/math/a_star.h"
+  ],
+  "arm": "kb",
+  "run": 0,
+  "qid": "q29",
+  "correct": 1
+}

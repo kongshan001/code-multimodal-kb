@@ -1,0 +1,30 @@
+{
+  "answer": "Godot 中加密解密主要用以下类（均在 `core/crypto/` 下）：\n\n- **`Crypto`** — 高层加密工具类（`generate_random_bytes`、`generate_self_signed_certificate`、`hmac_digest` 等）\n- **`AESContext`** — AES 对称加密/解密（`start` → `update` → `finish`）\n- **`HMACContext`** — HMAC 消息认证码（用于完整性校验）\n\n如果需要对称加密解密，核心是 **`AESContext`**。",
+  "input_tokens": 1369,
+  "output_tokens": 200,
+  "total_tokens": 1569,
+  "steps": 3,
+  "llm_calls": 3,
+  "tool_calls": [
+    "cmm_search",
+    "cmm_search"
+  ],
+  "tool_steps": 2,
+  "tool_texts": [
+    "- encryption_key_builder  (Users-ks_128-Documents-godot-src-core.core_builders.encryption_key_builder)  core_builders.py",
+    "- hmac_digest  (Users-ks_128-Documents-godot-src-core.crypto.crypto.Crypto.hmac_digest)  crypto/crypto.cpp\n- ~HMACContext  (Users-ks_128-Documents-godot-src-core.crypto.crypto.HMACContext.~HMACContext)  crypto/crypto.h\n- start  (Users-ks_128-Documents-godot-src-core.crypto.aes_context.AESContext.start)  crypto/aes_context.cpp\n- update  (Users-ks_128-Documents-godot-src-core.crypto.aes_context.AESContext.update)  crypto/aes_context.cpp\n- finish  (Users-ks_128-Documents-godot-src-core.crypto.aes_context.AESContext.finish)  crypto/aes_context.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 26.11,
+  "cost_$": 0.012837,
+  "cache_read_tokens": 1984,
+  "query": "加密解密用哪个类？",
+  "type": "code_retrieval",
+  "gold": [
+    "Crypto"
+  ],
+  "arm": "kb+openspec",
+  "run": 0,
+  "qid": "q24",
+  "correct": 1
+}

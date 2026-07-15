@@ -1,0 +1,28 @@
+{
+  "answer": "操作系统抽象层用的是 **`OS`** 类（`core/os/os.h` / `os.cpp`），提供文件、时间、线程、打印等平台无关接口。",
+  "input_tokens": 1223,
+  "output_tokens": 97,
+  "total_tokens": 1320,
+  "steps": 2,
+  "llm_calls": 2,
+  "tool_calls": [
+    "cmm_search"
+  ],
+  "tool_steps": 1,
+  "tool_texts": [
+    "- OS  (Users-ks_128-Documents-godot-src-core.os.os.OS.OS)  os/os.cpp\n- ~OS  (Users-ks_128-Documents-godot-src-core.os.os.OS.~OS)  os/os.cpp\n- print  (Users-ks_128-Documents-godot-src-core.os.os.OS.print)  os/os.cpp\n- printerr  (Users-ks_128-Documents-godot-src-core.os.os.OS.printerr)  os/os.cpp\n- alert  (Users-ks_128-Documents-godot-src-core.os.os.OS.alert)  os/os.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 12.27,
+  "cost_$": 0.00902,
+  "cache_read_tokens": 960,
+  "query": "操作系统抽象层用哪个类？",
+  "type": "code_retrieval",
+  "gold": [
+    "OS"
+  ],
+  "arm": "kb+openspec",
+  "run": 0,
+  "qid": "q05",
+  "correct": 1
+}

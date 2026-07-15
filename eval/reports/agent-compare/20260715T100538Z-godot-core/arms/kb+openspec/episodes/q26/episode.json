@@ -1,0 +1,28 @@
+{
+  "answer": "`HTTPClient`（定义在 `io/http_client.h` / `io/http_client.cpp`）。",
+  "input_tokens": 1242,
+  "output_tokens": 59,
+  "total_tokens": 1301,
+  "steps": 2,
+  "llm_calls": 2,
+  "tool_calls": [
+    "cmm_search"
+  ],
+  "tool_steps": 1,
+  "tool_texts": [
+    "- ~HTTPClient  (Users-ks_128-Documents-godot-src-core.io.http_client.HTTPClient.~HTTPClient)  io/http_client.h\n- create  (Users-ks_128-Documents-godot-src-core.io.http_client.HTTPClient.create)  io/http_client.cpp\n- _request  (Users-ks_128-Documents-godot-src-core.io.http_client.HTTPClient._request)  io/http_client.cpp\n- _request_raw  (Users-ks_128-Documents-godot-src-core.io.http_client.HTTPClient._request_raw)  io/http_client.cpp\n- verify_headers  (Users-ks_128-Documents-godot-src-core.io.http_client.HTTPClient.verify_headers)  io/http_client.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 18.78,
+  "cost_$": 0.008165,
+  "cache_read_tokens": 960,
+  "query": "HTTP 客户端用哪个类？",
+  "type": "code_retrieval",
+  "gold": [
+    "HTTPClient"
+  ],
+  "arm": "kb+openspec",
+  "run": 0,
+  "qid": "q26",
+  "correct": 1
+}

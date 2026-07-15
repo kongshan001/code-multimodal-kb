@@ -1,0 +1,24 @@
+{
+  "answer": "`NodePath`",
+  "input_tokens": 716,
+  "output_tokens": 38,
+  "total_tokens": 754,
+  "steps": 1,
+  "llm_calls": 1,
+  "tool_calls": [],
+  "tool_steps": 0,
+  "tool_texts": [],
+  "truncated": false,
+  "wall_clock_s": 6.54,
+  "cost_$": 0.00453,
+  "cache_read_tokens": 0,
+  "query": "节点路径用哪个类？",
+  "type": "code_retrieval",
+  "gold": [
+    "NodePath"
+  ],
+  "arm": "no-kb",
+  "run": 0,
+  "qid": "q21",
+  "correct": 1
+}

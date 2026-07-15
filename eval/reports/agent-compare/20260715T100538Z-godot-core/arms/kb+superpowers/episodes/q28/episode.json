@@ -1,0 +1,41 @@
+{
+  "answer": "罪魁祸首是 **`String::sprintf`**（定义在 `core/string/ustring.cpp`）。\n\n它在格式化浮点数时调用 `String::num` → `String::pad_decimals`，这些路径在某些 locale（小数分隔符为逗号而非句点）下会产出带逗号的中间字符串，而 `sprintf` 本身的格式说明符解析硬编码了以 `.` 作为小数点，导致输出串乱掉（garbled）。\n\n**相关符号链：**\n- `String::sprintf` — 入口，格式串解析\n- `String::num` — 数字转字符串（locale 感知）\n- `String::pad_decimals` / `String::pad_zeros` — 补零/补小数位\n\n修复方向是在 `sprintf` 的数字格式化子路径里绕过 locale（用非 locale 感知版本，或显式将逗号归一化回句点）。",
+  "input_tokens": 2219,
+  "output_tokens": 880,
+  "total_tokens": 3099,
+  "steps": 8,
+  "llm_calls": 8,
+  "tool_calls": [
+    "cmm_search",
+    "cmm_search",
+    "cmm_search",
+    "cmm_search",
+    "read_file",
+    "read_file",
+    "cmm_search"
+  ],
+  "tool_steps": 7,
+  "tool_texts": [
+    "- set_locale  (Users-ks_128-Documents-godot-src-core.string.translation.Translation.set_locale)  string/translation.cpp\n- get_locale  (Users-ks_128-Documents-godot-src-core.string.translation.Translation.get_locale)  string/translation.h\n- standardize_locale  (Users-ks_128-Documents-godot-src-core.string.translation_server.TranslationServer.standardize_locale)  string/translation_server.cpp\n- set_locale  (Users-ks_128-Documents-godot-src-core.string.translation_server.TranslationServer.set_locale)  string/translation_server.cpp\n- get_locale  (Users-ks_128-Documents-godot-src-core.string.translation_server.TranslationServer.get_locale)  string/translation_server.cpp",
+    "- sprintf  (Users-ks_128-Documents-godot-src-core.string.ustring.String.sprintf)  string/ustring.cpp\n- check_formatting  (Users-ks_128-Documents-godot-src-core.extension.make_interface_header.check_formatting)  extension/make_interface_header.py\n- String  (Users-ks_128-Documents-godot-src-core.string.string_buffer.StringBuffer.String)  string/string_buffer.h\n- String  (Users-ks_128-Documents-godot-src-core.string.string_builder.StringBuilder.String)  string/string_builder.h\n- String  (Users-ks_128-Documents-godot-src-core.string.string_name.StringName.String)  string/string_name.h",
+    "- _pad_buffer  (Users-ks_128-Documents-godot-src-core.io.resource_format_binary.ResourceFormatSaverBinaryInstance._pad_buffer)  io/resource_format_binary.cpp\n- pad_decimals  (Users-ks_128-Documents-godot-src-core.string.ustring.String.pad_decimals)  string/ustring.cpp\n- pad_zeros  (Users-ks_128-Documents-godot-src-core.string.ustring.String.pad_zeros)  string/ustring.cpp\n- to_float  (Users-ks_128-Documents-godot-src-core.string.ustring.String.to_float)  string/ustring.cpp\n- is_valid_float  (Users-ks_128-Documents-godot-src-core.string.ustring.String.is_valid_float)  string/ustring.cpp",
+    "- _is_placeholder  (Users-ks_128-Documents-godot-src-core.string.translation_domain.TranslationDomain._is_placeholder)  string/translation_domain.cpp\n- placeholder_instance_to_string  (Users-ks_128-Documents-godot-src-core.object.class_db.PlaceholderExtensionInstance.placeholder_instance_to_string)  object/class_db.cpp\n- format  (Users-ks_128-Documents-godot-src-core.string.ustring.String.format)  string/ustring.cpp\n- format_number  (Users-ks_128-Documents-godot-src-core.string.translation_server.TranslationServer.format_number)  string/translation_server.cpp\n- is_placeholder  (Users-ks_128-Documents-godot-src-core.object.script_instance.ScriptInstance.is_placeholder)  object/script_instance.h",
+    "(read error: [Errno 2] No such file or directory: 'core/string/ustring.cpp')",
+    "(read error: [Errno 2] No such file or directory: 'Users-ks-128-Documents-godot-src-core.string.ustring')",
+    "- sprintf  (Users-ks_128-Documents-godot-src-core.string.ustring.String.sprintf)  string/ustring.cpp\n- pad_decimals  (Users-ks_128-Documents-godot-src-core.string.ustring.String.pad_decimals)  string/ustring.cpp\n- check_formatting  (Users-ks_128-Documents-godot-src-core.extension.make_interface_header.check_formatting)  extension/make_interface_header.py\n- lower_case  (Users-ks_128-Documents-godot-src-core.string.ustring.lower_case)  string/ustring.cpp\n- to_camel_case  (Users-ks_128-Documents-godot-src-core.string.ustring.String.to_camel_case)  string/ustring.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 52.75,
+  "cost_$": 0.037479,
+  "cache_read_tokens": 8768,
+  "query": "String formatting produces garbled output on a locale edge case. Which formatting routine is the culprit?",
+  "type": "bug_fix",
+  "gold": [
+    "core/string/print_string.cpp",
+    "vformat"
+  ],
+  "arm": "kb+superpowers",
+  "run": 0,
+  "qid": "q28",
+  "correct": 0
+}

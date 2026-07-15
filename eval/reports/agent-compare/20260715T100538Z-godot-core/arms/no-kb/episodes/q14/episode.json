@@ -1,0 +1,24 @@
+{
+  "answer": "**`ResourceSaver`**（配合 `ResourceFormatSaver` 作为底层格式保存器）。",
+  "input_tokens": 716,
+  "output_tokens": 45,
+  "total_tokens": 761,
+  "steps": 1,
+  "llm_calls": 1,
+  "tool_calls": [],
+  "tool_steps": 0,
+  "tool_texts": [],
+  "truncated": false,
+  "wall_clock_s": 8.69,
+  "cost_$": 0.004705,
+  "cache_read_tokens": 0,
+  "query": "保存资源用哪个类？",
+  "type": "code_retrieval",
+  "gold": [
+    "ResourceSaver"
+  ],
+  "arm": "no-kb",
+  "run": 0,
+  "qid": "q14",
+  "correct": 1
+}

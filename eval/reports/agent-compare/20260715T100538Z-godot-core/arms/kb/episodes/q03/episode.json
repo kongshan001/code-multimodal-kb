@@ -1,0 +1,28 @@
+{
+  "answer": "- **`memdelete`** — 删除通过 `memnew` 创建的对象（最常用）\n- **`memdelete_arr`** — 删除通过 `memnew_arr` 创建的数组\n- **`memdelete_allocator`** — 配合自定义 allocator 使用\n\n均在 `os/memory.h` 中定义。一般场景直接用 `memdelete(p_obj)` 即可。",
+  "input_tokens": 238,
+  "output_tokens": 139,
+  "total_tokens": 377,
+  "steps": 2,
+  "llm_calls": 2,
+  "tool_calls": [
+    "cmm_search"
+  ],
+  "tool_steps": 1,
+  "tool_texts": [
+    "- memdelete  (Users-ks_128-Documents-godot-src-core.os.memory.memdelete)  os/memory.h\n- memdelete_allocator  (Users-ks_128-Documents-godot-src-core.os.memory.memdelete_allocator)  os/memory.h\n- memdelete_arr  (Users-ks_128-Documents-godot-src-core.os.memory.memdelete_arr)  os/memory.h\n- operator delete  (Users-ks_128-Documents-godot-src-core.os.memory.operator delete)  os/memory.h\n- delete_allocation  (Users-ks_128-Documents-godot-src-core.os.memory.DefaultTypedAllocator.delete_allocation)  os/memory.h"
+  ],
+  "truncated": false,
+  "wall_clock_s": 12.63,
+  "cost_$": 0.0053690000000000005,
+  "cache_read_tokens": 1408,
+  "query": "删除对象、释放内存用哪个函数？",
+  "type": "code_retrieval",
+  "gold": [
+    "memdelete"
+  ],
+  "arm": "kb",
+  "run": 0,
+  "qid": "q03",
+  "correct": 1
+}

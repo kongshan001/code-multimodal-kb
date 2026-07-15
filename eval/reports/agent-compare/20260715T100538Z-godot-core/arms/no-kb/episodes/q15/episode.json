@@ -1,0 +1,28 @@
+{
+  "answer": "文件读写操作的核心类是 **`FileAccess`**（定义在 `core/io/file_access.h`）。\n\n常用静态方法包括：\n- `FileAccess::open(path, flags)` — 打开文件，返回 `Ref<FileAccess>`\n- 配合 `ModeFlags`（`READ` / `WRITE` / `READ_WRITE` 等）指定读写模式\n\n其下还有多个子类用于不同后端：`FileAccessCompressed`、`FileAccessMemory`、`FileAccessPack`、`FileAccessZip`、`FileAccessEncrypted`、`FileAccessPatched`。",
+  "input_tokens": 943,
+  "output_tokens": 174,
+  "total_tokens": 1117,
+  "steps": 2,
+  "llm_calls": 2,
+  "tool_calls": [
+    "grep_code"
+  ],
+  "tool_steps": 1,
+  "tool_texts": [
+    "matched 10 files:\n/Users/ks_128/Documents/godot-src/core/io/file_access_compressed.h\n/Users/ks_128/Documents/godot-src/core/io/file_access_patched.h\n/Users/ks_128/Documents/godot-src/core/io/file_access_pack.h\n/Users/ks_128/Documents/godot-src/core/io/file_access_zip.h\n/Users/ks_128/Documents/godot-src/core/io/file_access_memory.h\n/Users/ks_128/Documents/godot-src/core/io/file_access.h\n/Users/ks_128/Documents/godot-src/core/io/resource_uid.h\n/Users/ks_128/Documents/godot-src/core/io/pck_packer.h\n/Users/ks_128/Documents/godot-src/core/io/logger.h\n/Users/ks_128/Documents/godot-src/core/io/file_access_encrypted.h"
+  ],
+  "truncated": false,
+  "wall_clock_s": 16.14,
+  "cost_$": 0.009416999999999998,
+  "cache_read_tokens": 704,
+  "query": "文件读写操作用哪个类？",
+  "type": "code_retrieval",
+  "gold": [
+    "FileAccess"
+  ],
+  "arm": "no-kb",
+  "run": 0,
+  "qid": "q15",
+  "correct": 1
+}

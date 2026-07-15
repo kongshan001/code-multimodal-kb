@@ -1,0 +1,31 @@
+{
+  "answer": "The bug is most likely fixed by using **`Ref<T>`** (the reference-counting smart pointer in `core/object/ref_counted.h`) instead of a raw `T*` pointer.\n\nKey symbols:\n\n- **`Ref<T>`** — smart pointer template that automatically increments/decrements the `RefCounted` reference count, preventing premature free and eliminating dangling references.\n- **`RefCounted::reference()`** / **`RefCounted::unreference()`** (`object/ref_counted.cpp`) — the actual ref-count increment/decrement logic that `Ref<T>` calls.\n- **`RefCounted::get_reference_count()`** — lets you verify the count.\n\n**Root cause & fix pattern:** A `RefCounted`-derived object is held via a raw pointer (`Object *p = ...`) and manually `free()`d elsewhere → another caller still uses `p` → use-after-free. The fix is to store it as `Ref<Object>` so the object stays alive as long as any `Ref` holds it, and `unreference()` only truly frees it when the count hits zero.\n\n> Note: `Object` itself is **not** reference-counted (it's manually freed via `Object::free()` / `cancel_free()`). If the leaked object is a plain `Object` (not `RefCounted`), the fix instead lives in the caller's ownership discipline — tracking lifetime in `ObjectDB`, listening for `NOTIFICATION_PREDELETE`, or using `ObjectID` lookups via `ObjectDB::get_instance()` instead of holding a raw pointer.",
+  "input_tokens": 510,
+  "output_tokens": 492,
+  "total_tokens": 1002,
+  "steps": 3,
+  "llm_calls": 3,
+  "tool_calls": [
+    "cmm_search",
+    "cmm_search"
+  ],
+  "tool_steps": 2,
+  "tool_texts": [
+    "- get_reference_count  (Users-ks_128-Documents-godot-src-core.object.ref_counted.RefCounted.get_reference_count)  object/ref_counted.cpp\n- _prevent_sync_wraparound  (Users-ks_128-Documents-godot-src-core.templates.command_queue_mt.CommandQueueMT._prevent_sync_wraparound)  templates/command_queue_mt.h\n- _instance_binding_reference  (Users-ks_128-Documents-godot-src-core.object.object.Object._instance_binding_reference)  object/object.h\n- reference  (Users-ks_128-Documents-godot-src-core.object.ref_counted.RefCounted.reference)  object/ref_counted.cpp\n- cancel_free  (Users-ks_128-Documents-godot-src-core.object.object.Object.cancel_free)  object/object.cpp",
+    "- _notification  (Users-ks_128-Documents-godot-src-core.object.object.Object._notification)  object/object.h\n- notification  (Users-ks_128-Documents-godot-src-core.object.object.Object.notification)  object/object.h\n- _notification_forward  (Users-ks_128-Documents-godot-src-core.object.object.Object._notification_forward)  object/object.cpp\n- _notification_backward  (Users-ks_128-Documents-godot-src-core.object.object.Object._notification_backward)  object/object.cpp\n- _notification_forwardv  (Users-ks_128-Documents-godot-src-core.object.object.Object._notification_forwardv)  object/object.h"
+  ],
+  "truncated": false,
+  "wall_clock_s": 27.76,
+  "cost_$": 0.015874,
+  "cache_read_tokens": 2048,
+  "query": "Object memory leak: an object is freed but a dangling reference is still held, causing a use-after-free. Where is the bug most likely fixed?",
+  "type": "bug_fix",
+  "gold": [
+    "core/memory/memory.h",
+    "memdelete"
+  ],
+  "arm": "kb+superpowers",
+  "run": 0,
+  "qid": "q27",
+  "correct": 0
+}

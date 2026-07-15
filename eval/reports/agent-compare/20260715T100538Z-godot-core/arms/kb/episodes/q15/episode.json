@@ -1,0 +1,24 @@
+{
+  "answer": "`FileAccess`",
+  "input_tokens": 719,
+  "output_tokens": 24,
+  "total_tokens": 743,
+  "steps": 1,
+  "llm_calls": 1,
+  "tool_calls": [],
+  "tool_steps": 0,
+  "tool_texts": [],
+  "truncated": false,
+  "wall_clock_s": 7.18,
+  "cost_$": 0.004195,
+  "cache_read_tokens": 0,
+  "query": "文件读写操作用哪个类？",
+  "type": "code_retrieval",
+  "gold": [
+    "FileAccess"
+  ],
+  "arm": "kb",
+  "run": 0,
+  "qid": "q15",
+  "correct": 1
+}

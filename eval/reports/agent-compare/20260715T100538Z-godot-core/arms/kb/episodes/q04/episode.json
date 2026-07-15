@@ -1,0 +1,28 @@
+{
+  "answer": "A* 寻路算法在 Godot core 中由 `AStar3D`（3D）实现，对应 2D 的变体是 `AStar2D`。核心文件是 `math/a_star.cpp`，关键方法为 `AStar3D::_solve`。",
+  "input_tokens": 960,
+  "output_tokens": 102,
+  "total_tokens": 1062,
+  "steps": 2,
+  "llm_calls": 2,
+  "tool_calls": [
+    "cmm_search"
+  ],
+  "tool_steps": 1,
+  "tool_texts": [
+    "- ~AStar3D  (Users-ks_128-Documents-godot-src-core.math.a_star.AStar3D.~AStar3D)  math/a_star.cpp\n- AHashMap  (Users-ks_128-Documents-godot-src-core.templates.a_hash_map.AHashMap.AHashMap)  templates/a_hash_map.h\n- ~AHashMap  (Users-ks_128-Documents-godot-src-core.templates.a_hash_map.AHashMap.~AHashMap)  templates/a_hash_map.h\n- clear  (Users-ks_128-Documents-godot-src-core.math.a_star.AStar3D.clear)  math/a_star.cpp\n- _solve  (Users-ks_128-Documents-godot-src-core.math.a_star.AStar3D._solve)  math/a_star.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 13.41,
+  "cost_$": 0.007702,
+  "cache_read_tokens": 704,
+  "query": "A* 寻路算法用哪个类？",
+  "type": "code_retrieval",
+  "gold": [
+    "AStar"
+  ],
+  "arm": "kb",
+  "run": 0,
+  "qid": "q04",
+  "correct": 1
+}

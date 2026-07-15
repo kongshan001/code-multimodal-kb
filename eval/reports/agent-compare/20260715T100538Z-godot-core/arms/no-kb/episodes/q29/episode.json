@@ -1,0 +1,41 @@
+{
+  "answer": "In Godot's `core/`, path computation is handled by:\n\n- **`AStar`** / **`AStar2D`** (`core/math/a_star.h`, `core/math/a_star.cpp`) — generic A* pathfinding; path computed via `get_path()`.\n- **`AStarGrid2D`** (`core/math/a_star_grid_2d.h`, `core/math/a_star_grid_2d.cpp`) — grid-based A* pathfinding; path computed via `get_id_path()` / `get_point_path()`.\n\nIf the bug is specifically about **navigation mesh obstacles** (e.g., `NavigationObstacle2D/3D`), the actual path is computed by **`NavigationServer2D` / `NavigationServer3D`** (in `servers/navigation/`, outside `core/`), which is where obstacle-aware path computation lives.\n\nStart investigating in **`NavigationServer3D`** (method `map_get_path`) for navmesh pathfinding, or **`AStarGrid2D`** for tile/grid pathfinding.",
+  "input_tokens": 1243,
+  "output_tokens": 762,
+  "total_tokens": 2005,
+  "steps": 8,
+  "llm_calls": 8,
+  "tool_calls": [
+    "grep_code",
+    "grep_code",
+    "grep_code",
+    "grep_code",
+    "grep_code",
+    "grep_code",
+    "grep_code"
+  ],
+  "tool_steps": 7,
+  "tool_texts": [
+    "(no matches)",
+    "(no matches)",
+    "(no matches)",
+    "matched 1 files:\n/Users/ks_128/Documents/godot-src/core/extension/gdextension_special_compat_hashes.cpp",
+    "(no matches)",
+    "matched 6 files:\n/Users/ks_128/Documents/godot-src/core/extension/gdextension_special_compat_hashes.cpp\n/Users/ks_128/Documents/godot-src/core/math/a_star_grid_2d.h\n/Users/ks_128/Documents/godot-src/core/math/a_star_grid_2d.cpp\n/Users/ks_128/Documents/godot-src/core/math/a_star.h\n/Users/ks_128/Documents/godot-src/core/math/a_star.cpp\n/Users/ks_128/Documents/godot-src/core/register_core_types.cpp",
+    "matched 4 files:\n/Users/ks_128/Documents/godot-src/core/io/dir_access.cpp\n/Users/ks_128/Documents/godot-src/core/io/dir_access.h\n/Users/ks_128/Documents/godot-src/core/core_constants.cpp\n/Users/ks_128/Documents/godot-src/core/object/property_info.h"
+  ],
+  "truncated": false,
+  "wall_clock_s": 54.54,
+  "cost_$": 0.026865,
+  "cache_read_tokens": 3200,
+  "query": "Pathfinding returns a wrong path between two points, ignoring an obstacle. Which class computes the path?",
+  "type": "bug_fix",
+  "gold": [
+    "AStar",
+    "core/math/a_star.h"
+  ],
+  "arm": "no-kb",
+  "run": 0,
+  "qid": "q29",
+  "correct": 1
+}

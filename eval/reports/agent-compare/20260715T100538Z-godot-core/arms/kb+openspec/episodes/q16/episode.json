@@ -1,0 +1,30 @@
+{
+  "answer": "`DirAccess`（`core/io/dir_access.h`），提供 `make_dir`、`copy`、`remove`、`list_dir_begin`、`dir_exists`、`file_exists` 等方法。",
+  "input_tokens": 1467,
+  "output_tokens": 133,
+  "total_tokens": 1600,
+  "steps": 3,
+  "llm_calls": 3,
+  "tool_calls": [
+    "cmm_search",
+    "cmm_search"
+  ],
+  "tool_steps": 2,
+  "tool_texts": [
+    "- list_directory  (Users-ks_128-Documents-godot-src-core.core_bind.ResourceLoader.list_directory)  core_bind.cpp\n- list_directory  (Users-ks_128-Documents-godot-src-core.io.resource_loader.ResourceLoader.list_directory)  io/resource_loader.cpp\n- add_directory  (Users-ks_128-Documents-godot-src-core.io.file_access_pack.PackedSourceDirectory.add_directory)  io/file_access_pack.cpp\n- has_directory  (Users-ks_128-Documents-godot-src-core.io.file_access_pack.PackedData.has_directory)  io/file_access_pack.h\n- try_open_directory  (Users-ks_128-Documents-godot-src-core.io.file_access_pack.PackedData.try_open_directory)  io/file_access_pack.h",
+    "- make_dir_recursive  (Users-ks_128-Documents-godot-src-core.io.dir_access.DirAccess.make_dir_recursive)  io/dir_access.cpp\n- make_dir_absolute  (Users-ks_128-Documents-godot-src-core.io.dir_access.DirAccess.make_dir_absolute)  io/dir_access.cpp\n- make_dir_recursive_absolute  (Users-ks_128-Documents-godot-src-core.io.dir_access.DirAccess.make_dir_recursive_absolute)  io/dir_access.cpp\n- remove_file_or_error  (Users-ks_128-Documents-godot-src-core.io.dir_access.DirAccess.remove_file_or_error)  io/dir_access.h\n- copy  (Users-ks_128-Documents-godot-src-core.io.dir_access.DirAccess.copy)  io/dir_access.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 17.91,
+  "cost_$": 0.011748,
+  "cache_read_tokens": 2176,
+  "query": "目录操作用哪个类？",
+  "type": "code_retrieval",
+  "gold": [
+    "DirAccess"
+  ],
+  "arm": "kb+openspec",
+  "run": 0,
+  "qid": "q16",
+  "correct": 1
+}

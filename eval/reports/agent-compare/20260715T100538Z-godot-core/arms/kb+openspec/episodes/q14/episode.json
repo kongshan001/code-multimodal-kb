@@ -1,0 +1,30 @@
+{
+  "answer": "保存资源用 **`ResourceSaver`**（核心方法 `ResourceSaver.save`，定义在 `core/io/resource_saver.cpp`）。",
+  "input_tokens": 1535,
+  "output_tokens": 113,
+  "total_tokens": 1648,
+  "steps": 3,
+  "llm_calls": 3,
+  "tool_calls": [
+    "cmm_search",
+    "cmm_search"
+  ],
+  "tool_steps": 2,
+  "tool_texts": [
+    "- save_to_cache  (Users-ks_128-Documents-godot-src-core.io.resource_uid.ResourceUID.save_to_cache)  io/resource_uid.cpp\n- save_png_to_buffer  (Users-ks_128-Documents-godot-src-core.io.image.Image.save_png_to_buffer)  io/image.cpp\n- save_jpg_to_buffer  (Users-ks_128-Documents-godot-src-core.io.image.Image.save_jpg_to_buffer)  io/image.cpp\n- save_exr_to_buffer  (Users-ks_128-Documents-godot-src-core.io.image.Image.save_exr_to_buffer)  io/image.cpp\n- save_dds_to_buffer  (Users-ks_128-Documents-godot-src-core.io.image.Image.save_dds_to_buffer)  io/image.cpp",
+    "- save  (Users-ks_128-Documents-godot-src-core.io.resource_saver.ResourceSaver.save)  io/resource_saver.cpp\n- save_to_cache  (Users-ks_128-Documents-godot-src-core.io.resource_uid.ResourceUID.save_to_cache)  io/resource_uid.cpp\n- set_save_callback  (Users-ks_128-Documents-godot-src-core.io.resource_saver.ResourceSaver.set_save_callback)  io/resource_saver.cpp\n- set_timestamp_on_save  (Users-ks_128-Documents-godot-src-core.io.resource_saver.ResourceSaver.set_timestamp_on_save)  io/resource_saver.h\n- get_timestamp_on_save  (Users-ks_128-Documents-godot-src-core.io.resource_saver.ResourceSaver.get_timestamp_on_save)  io/resource_saver.h"
+  ],
+  "truncated": false,
+  "wall_clock_s": 20.89,
+  "cost_$": 0.011556,
+  "cache_read_tokens": 2112,
+  "query": "保存资源用哪个类？",
+  "type": "code_retrieval",
+  "gold": [
+    "ResourceSaver"
+  ],
+  "arm": "kb+openspec",
+  "run": 0,
+  "qid": "q14",
+  "correct": 1
+}

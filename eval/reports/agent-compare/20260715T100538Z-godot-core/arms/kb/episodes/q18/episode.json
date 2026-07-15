@@ -1,0 +1,24 @@
+{
+  "answer": "`Main`",
+  "input_tokens": 718,
+  "output_tokens": 18,
+  "total_tokens": 736,
+  "steps": 1,
+  "llm_calls": 1,
+  "tool_calls": [],
+  "tool_steps": 0,
+  "tool_texts": [],
+  "truncated": false,
+  "wall_clock_s": 7.76,
+  "cost_$": 0.00404,
+  "cache_read_tokens": 0,
+  "query": "引擎主类叫什么？",
+  "type": "code_retrieval",
+  "gold": [
+    "Engine"
+  ],
+  "arm": "kb",
+  "run": 0,
+  "qid": "q18",
+  "correct": 0
+}

@@ -1,0 +1,30 @@
+{
+  "answer": "`itos()`（integer to string），定义在 `ustring.h` / `ustring.cpp` 中。\n\n例如：\n```cpp\nString s = itos(42);  // s == \"42\"\n```\n\n补充：如果是浮点数转字符串，对应的是 `rtos()`；如果是任意类型转字符串，可以用 `String(Variant(...))` 或 `vformat`。",
+  "input_tokens": 836,
+  "output_tokens": 156,
+  "total_tokens": 992,
+  "steps": 3,
+  "llm_calls": 3,
+  "tool_calls": [
+    "grep_code",
+    "grep_code"
+  ],
+  "tool_steps": 2,
+  "tool_texts": [
+    "(no matches)",
+    "matched 2 files:\n/Users/ks_128/Documents/godot-src/core/string/ustring.h\n/Users/ks_128/Documents/godot-src/core/string/ustring.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 12.86,
+  "cost_$": 0.008432,
+  "cache_read_tokens": 704,
+  "query": "整数转成字符串用哪个函数？",
+  "type": "code_retrieval",
+  "gold": [
+    "itos"
+  ],
+  "arm": "no-kb",
+  "run": 0,
+  "qid": "q02",
+  "correct": 1
+}
