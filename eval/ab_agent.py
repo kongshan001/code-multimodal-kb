@@ -1,17 +1,21 @@
-"""Stage 1 agent A/B harness（task 6.3 实施）：可控 ReAct loop 测 agent 答对率 + token。
+"""Stage 1 agent A/B harness：claude_agent_sdk 驱动 agent loop 测 agent 答对率 + token。
 
 **工具与臂在 `eval/ab_tools.py` 注册表**（接新 KB 工具只改注册表，本文件不动）。
-本文件只管：agent loop / token 累计 / 429 退避 / 凭据 / 收敛纪律。
+本文件只管：组装 SDK options / 消费消息流抽 trace / force-answer 兜底 / 凭据 / 收敛纪律。
+loop / 重试 / tool_use 往返 / 序列化全交 claude_agent_sdk（claude CLI 封装）。
 
 两臂差异 = 发现工具（baseline=词面 grep / kb=语义 cmm / doc=文档 graphify），都给 read_file 保公平。
-LLM：BigModel anthropic 兼容端点（glm-5.x），tool_use + usage 计 token。
-判分（gold ∈ 终答）在 run_ab_agent.py。凭据从 env 或 ~/.cc-connect/config.toml 读，不入库。
+LLM：经 ClaudeAgentOptions.env 透传 base_url+key 打 BigModel anthropic 兼容端点（glm-5.x）。
+判分（gold ∈ 终答）在 run_ab_agent.py。凭据从 env / bench.local.yaml / config.toml 读，不入库。
+
+迁移自手写 ReAct loop（openspec change migrate-ab-agent-to-claude-sdk）；trace 字段逐字段不变。
 """
 from __future__ import annotations
 
 import os
 import time
-from typing import Any
+
+import anyio
 
 from eval import ab_tools, config
 
@@ -47,32 +51,29 @@ def _cost(model: str, in_tok: int, out_tok: int):
     return round((in_tok * p["in"] + out_tok * p["out"]) / 1e6, 4)
 
 
-def _serialize_turn(resp) -> tuple[list, str, str]:
-    """把一轮 resp.content 序列化成 JSON-friendly blocks + 抽 text + thinking（模型无关）。
-
-    返 (blocks, turn_text, turn_thinking)。thinking：有 thinking block 用之，无则 fallback 该轮 text。
-    """
-    blocks, texts, thinks = [], [], []
-    for b in resp.content:
-        t = getattr(b, "type", "")
-        if t == "text":
+def _extract_assistant(msg) -> tuple[list, str, str, list[str]]:
+    """把 AssistantMessage.content 序列化成 JSON-friendly blocks + 抽 text + thinking + tool_use 名。
+    返 (blocks, text, thinking, tool_names)。thinking：有 thinking block 用之，无则 fallback 该轮 text。
+    注：SDK 的 block 是 TextBlock/ToolUseBlock/ThinkingBlock 类对象，**无 .type 属性**——按类名判型。"""
+    blocks, texts, thinks, tnames = [], [], [], []
+    for b in getattr(msg, "content", []) or []:
+        cn = type(b).__name__
+        if cn == "TextBlock":
             tx = getattr(b, "text", "")
             blocks.append({"type": "text", "text": tx})
             texts.append(tx)
-        elif t == "tool_use":
-            blocks.append({"type": "tool_use", "name": b.name, "input": dict(b.input)})
-        elif t == "thinking":
-            th = getattr(b, "thinking", "") or getattr(b, "text", "")
+        elif cn == "ToolUseBlock":
+            name = getattr(b, "name", "")
+            bare = name[len("mcp__bench__"):] if name.startswith("mcp__bench__") else name
+            blocks.append({"type": "tool_use", "name": bare, "input": dict(getattr(b, "input", {}) or {})})
+            tnames.append(bare)
+        elif cn == "ThinkingBlock":
+            th = getattr(b, "thinking", "")
             blocks.append({"type": "thinking", "text": th})
             thinks.append(th)
-    turn_text = "".join(texts)
-    turn_thinking = "".join(thinks) if thinks else turn_text  # 模型无关 fallback
-    return blocks, turn_text, turn_thinking
-
-
-def _exec_tool(name: str, inputs: dict) -> str:
-    """薄封装→注册表（保留为模块级，便于测试 monkeypatch）。"""
-    return ab_tools.exec_tool(name, inputs)
+    text = "".join(texts)
+    think = "".join(thinks) if thinks else text   # 模型无关 fallback
+    return blocks, text, think, tnames
 
 
 # ── 凭据 ──────────────────────────────────────────────────────────────────
@@ -80,7 +81,8 @@ def _exec_tool(name: str, inputs: dict) -> str:
 def load_creds() -> tuple[str, str, str]:
     """返 (api_key, base_url, model)。
     api_key 优先级：env AB_API_KEY > bench.local.yaml > config.toml。
-    base_url + model **永远从 config（bench.yaml）读**——env 只提供 key，不覆盖 URL/model。"""
+    base_url + model **永远从 config（bench.yaml）读**——env 只提供 key，不覆盖 URL/model。
+    （与迁移前同语义；现用于透传给 ClaudeAgentOptions.env。）"""
     _cfg = config.llm()
     if os.environ.get("AB_API_KEY"):
         return (os.environ["AB_API_KEY"], _cfg["base_url"], _cfg["model"])
@@ -97,115 +99,132 @@ def load_creds() -> tuple[str, str, str]:
 
 
 def make_client():
-    import anthropic  # 延迟导入（smoke/mock 不需要）
+    """直连 anthropic 客户端（供 run_memory_quality / run_doc_quality_ragas / cli 等自管 LLM 调用用）。
+    注：ab_agent 的 run_episode 已改走 claude_agent_sdk，不再用本客户端；保留给其它直连消费者。"""
+    import anthropic  # 延迟导入
     key, base_url, _ = load_creds()
     return anthropic.Anthropic(api_key=key, base_url=base_url)
 
 
-# ── agent loop ────────────────────────────────────────────────────────────
+# ── agent loop（claude_agent_sdk）─────────────────────────────────────────
 
-def _create_with_retry(client, model, system, messages, tools, retries=4) -> Any:
-    """带 429/529/503 退避重试。"""
-    import anthropic  # 延迟导入：smoke/mock 模式无需装 anthropic（spec 无凭据降级）
-    last = None
-    for i in range(retries + 1):
-        try:
-            return client.messages.create(
-                model=model, max_tokens=1024, system=system,
-                messages=messages, tools=tools, temperature=0.0,
-            )
-        except anthropic.RateLimitError as e:
-            last = e
-        except anthropic.APIStatusError as e:
-            last = e
-            if e.status_code not in (429, 500, 502, 503, 529):
-                raise
-        if i < retries:
-            time.sleep(2 ** i)  # 1,2,4,8s
-    raise RuntimeError(f"LLM 调用重试 {retries} 次仍失败: {last}")
+async def _consume(query_fn, prompt, options, session, thinking, sink=None):
+    """消费 query() 消息流，只认 AssistantMessage/ResultMessage（滤 SystemMessage/HookEventMessage 噪声）。
+    累计 tokens / llm_calls / tool_calls；返 (answer, last_text, in_tok, out_tok, cache_read, cost, llm_calls, tool_calls)。
+    max_turns 耗尽时 SDK 抛 'Reached maximum number of turns'——catch 之，返已累计的（answer 留空 → 触发 force-answer）。
+    注：此情形下 ResultMessage 未到，该 query 的 token 计为 0（force-query 的 token 仍计入）。"""
+    in_tok = out_tok = cache_read = llm_calls = 0
+    last_text = answer = ""
+    cost = None
+    tool_calls: list[str] = []
+    try:
+        async for msg in query_fn(prompt=prompt, options=options):
+            t = type(msg).__name__
+            if t == "AssistantMessage":
+                blocks, text, think, tnames = _extract_assistant(msg)
+                if text.strip() or tnames:   # 有 text/tool_use 才算一轮（不数纯 ThinkingBlock 消息）
+                    llm_calls += 1
+                if blocks:
+                    session.append({"role": "assistant", "content": blocks})
+                if think:
+                    thinking.append(think)
+                if text.strip():
+                    last_text = text
+                tool_calls.extend(tnames)
+            elif t == "ResultMessage":
+                u = getattr(msg, "usage", None) or {}
+                in_tok += int(u.get("input_tokens") or 0)
+                out_tok += int(u.get("output_tokens") or 0)
+                cache_read += int(u.get("cache_read_input_tokens") or 0)
+                c = getattr(msg, "total_cost_usd", None)
+                if c:
+                    cost = c
+                r = getattr(msg, "result", "") or ""
+                if r.strip():
+                    answer = r
+    except Exception:
+        pass   # max_turns 耗尽等 → answer 留空，run_episode 走 force-answer
+    return answer, last_text, in_tok, out_tok, cache_read, cost, llm_calls, tool_calls
 
 
-def run_episode(client, question: str, arm: str, target: dict | None = None,
-                model: str = "", max_steps: int | None = None) -> dict:
-    """跑一次 agent episode。arm 决定工具集 + skills 注入（见 ab_tools.ARMS）。
+async def _run_episode_async(question: str, arm: str, target: dict | None,
+                             mdl: str, max_steps: int | None) -> dict:
+    from claude_agent_sdk import query, ClaudeAgentOptions
 
-    返回 trace：{answer, input/output/total_tokens, steps(=llm_calls 别名), llm_calls,
-    tool_calls[], tool_steps, tool_texts[], truncated, wall_clock_s, cost_$, session[], thinking[]}。
-    session = 逐轮序列化消息流（thinking = 模型无关：有 thinking block 用之，无则 fallback text）。
-    """
-    _, _, mdl = load_creds() if not model else (None, None, model)
     sys_prompt = _system_prompt(arm, target)
-    ab_tools.set_active(target)   # 臂 executor 读当前 target 的 cmm/codegraph/doc 路径（不再硬编码 godot-core）
+    ab_tools.set_active(target)   # 臂 executor 读当前 target 的 cmm/codegraph/doc 路径
     if max_steps is None:
         max_steps = config.agent()["skill_max_steps"] if ab_tools.arm_skills(arm) else config.agent()["max_steps"]
-    tools = ab_tools.arm_schemas(arm)
-    messages: list[dict] = [{"role": "user", "content": question}]
-    in_tok = out_tok = llm_calls = 0
-    tool_calls: list[str] = []
-    tool_texts: list[str] = []
+
+    key, base_url, _ = load_creds()
+    env = {"ANTHROPIC_BASE_URL": base_url, "ANTHROPIC_API_KEY": key}
+    tool_sink: list = []   # 捕 (name, result)——run_episode 用来填 tool_texts
+
+    # D7 硬约束：tools=[] + setting_sources=[] 剥掉 CLI 默认工具定义（否则 token 税 22-40k）
+    options = ClaudeAgentOptions(
+        model=mdl, env=env, system_prompt=sys_prompt,
+        tools=[], setting_sources=[],
+        mcp_servers={"bench": ab_tools.arm_mcp_server(arm, tool_sink)},
+        allowed_tools=ab_tools.arm_allowed_tools(arm),
+        max_turns=max_steps, include_hook_events=False,
+    )
+
     session: list[dict] = [{"role": "user", "content": question}]
     thinking: list[str] = []
-    last_text = ""
-    answer = ""
+    answer, last_text, in_tok, out_tok, cache_read, cost, llm_calls, tool_calls = await _consume(
+        query, question, options, session, thinking)
+
     truncated = False
-    t0 = time.time()
-
-    for _ in range(max_steps):
-        resp = _create_with_retry(client, mdl, sys_prompt, messages, tools)
-        in_tok += getattr(resp.usage, "input_tokens", 0)
-        out_tok += getattr(resp.usage, "output_tokens", 0)
-        llm_calls += 1
-
-        turn_blocks, turn_text, turn_thinking = _serialize_turn(resp)
-        session.append({"role": "assistant", "content": turn_blocks})
-        thinking.append(turn_thinking)
-        if turn_text.strip():
-            last_text = turn_text
-        messages.append({"role": "assistant", "content": resp.content})
-
-        if resp.stop_reason == "tool_use":
-            results, serialized_results = [], []
-            for block in resp.content:
-                if getattr(block, "type", "") == "tool_use":
-                    result = _exec_tool(block.name, dict(block.input))
-                    result_s = str(result)
-                    tool_calls.append(block.name)
-                    tool_texts.append(result_s)
-                    results.append({"type": "tool_result", "tool_use_id": block.id, "content": result})
-                    serialized_results.append({"type": "tool_result", "tool_use_id": block.id,
-                                               "content": result_s[:config.agent()["tool_result_cap"]]})
-            messages.append({"role": "user", "content": results})
-            session.append({"role": "user", "content": serialized_results})
-        else:  # end_turn → 取本轮 text 作答
-            answer = turn_text
-            break
-    else:
-        # 跑满步数还没自然收敛 → 强制要一个最佳答案（不留空截断；tools=[] 使模型无法再 tool_use）
+    if not answer.strip():
+        # max_turns 耗尽未自然作答 → D4 force-answer（无工具，强制作答；带已获信息）
         truncated = True
+        gathered = "\n".join(f"- [{n}] {str(r)[:500]}" for n, r in tool_sink[-8:]) or "(无工具结果)"
+        force_prompt = ("你已用完工具调用次数。必须基于已获取的信息直接给出最终答案（用符号名），不要再调工具。\n"
+                        f"已获取信息：\n{gathered}\n原问题：{question}")
+        force_opts = ClaudeAgentOptions(
+            model=mdl, env=env, max_turns=1,
+            system_prompt=sys_prompt + "\n\n现在必须直接给最终答案（符号名），不要再调工具。",
+            tools=[], setting_sources=[], include_hook_events=False,
+        )
         try:
-            force_msgs = messages + [{"role": "user",
-                "content": "你已用完工具调用次数。现在必须基于已获取的信息直接给出最终答案（用符号名），不要再调用工具。"}]
-            forced = _create_with_retry(client, mdl,
-                sys_prompt + "\n\n现在必须直接给出最终答案（符号名），不要再调工具。",
-                force_msgs, [])
-            in_tok += getattr(forced.usage, "input_tokens", 0)
-            out_tok += getattr(forced.usage, "output_tokens", 0)
-            llm_calls += 1
-            f_blocks, f_text, f_thinking = _serialize_turn(forced)
-            session.append({"role": "user", "content": "（用完工具次数，强制作答）"})
-            session.append({"role": "assistant", "content": f_blocks})
-            thinking.append(f_thinking)
-            answer = f_text.strip() or last_text or "(max_steps: 未能给出答案)"
+            f_answer, f_last, f_in, f_out, f_cr, f_cost, f_calls, _ = await _consume(
+                query, force_prompt, force_opts, session, thinking)
+            in_tok += f_in; out_tok += f_out; cache_read += f_cr; llm_calls += f_calls
+            if f_cost:
+                cost = f_cost
+            answer = f_answer
         except Exception:
-            answer = last_text or "(max_steps: 未能给出答案)"
+            pass
+        answer = (answer or last_text or "(max_steps: 未能给出答案)").strip()
+        session.append({"role": "user", "content": "（用完工具次数，强制作答）"})
+        session.append({"role": "assistant", "content": [{"type": "text", "text": answer}]})
 
-    wall = round(time.time() - t0, 2)
+    # tool_results 进 session（从 sink，截断；review 用）
+    cap = config.agent()["tool_result_cap"]
+    for name, result in tool_sink:
+        session.append({"role": "user", "content": [{"type": "tool_result",
+                          "tool_use_id": None, "content": str(result)[:cap]}]})
+
+    total = in_tok + out_tok
     return {
         "answer": answer.strip(), "input_tokens": in_tok, "output_tokens": out_tok,
-        "total_tokens": in_tok + out_tok,
+        "total_tokens": total,
         "steps": llm_calls, "llm_calls": llm_calls,   # steps = 别名（向后兼容）
-        "tool_calls": tool_calls, "tool_steps": len(tool_calls), "tool_texts": tool_texts,
-        "truncated": truncated, "wall_clock_s": wall,
-        "cost_$": _cost(mdl, in_tok, out_tok),
+        "tool_calls": tool_calls, "tool_steps": len(tool_calls),
+        "tool_texts": [t for _, t in tool_sink],
+        "truncated": truncated, "wall_clock_s": 0,    # run_episode 同步包裹填
+        "cost_$": cost if cost is not None else _cost(mdl, in_tok, out_tok),
         "session": session, "thinking": thinking,
+        "cache_read_tokens": cache_read,
     }
+
+
+def run_episode(question: str, arm: str, target: dict | None = None,
+                model: str = "", max_steps: int | None = None) -> dict:
+    """跑一次 agent episode（同步；内部 anyio.run 包 async query）。arm 决定工具集 + skills 注入。
+    返回 trace（字段与迁移前逐一对齐，见 openspec specs delta）。"""
+    _, _, mdl = load_creds() if not model else (None, None, model)
+    t0 = time.time()
+    trace = anyio.run(_run_episode_async, question, arm, target, mdl, max_steps)
+    trace["wall_clock_s"] = round(time.time() - t0, 2)
+    return trace

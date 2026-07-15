@@ -43,6 +43,13 @@ def test_smoke_pipeline_produces_complete_directory(tmp_path):
         # episodes：每题 episode.json
         eps = list((ad / "episodes").glob("q*/episode.json"))
         assert len(eps) == 3, f"{arm} 应有 3 个 episode"
+        # episode.json 须是非空 JSON、含 trace 契约字段（regression：曾因 _clean_episode 空 body 落 null）
+        for ef in eps:
+            ed = json.loads(ef.read_text(encoding="utf-8"))
+            assert ed is not None, f"{ef} 落了 null"
+            assert {"answer", "llm_calls", "tool_calls", "input_tokens", "truncated"} <= set(ed), \
+                f"{ef} trace 字段不全"
+            assert "session" not in ed and "thinking" not in ed, f"{ef} 应剥掉 session/thinking"
 
 
 def test_conclusion_has_honest_boundaries(tmp_path):

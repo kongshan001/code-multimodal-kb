@@ -202,3 +202,41 @@ def exec_tool(name: str, inputs: dict) -> str:
 
 def arm_names() -> list[str]:
     return list(ARMS)
+
+
+# ── SDK MCP 层（openspec migrate-ab-agent-to-claude-sdk）─────────────────
+# 注册表（TOOL_REGISTRY）仍是唯一真相；本层把它的 (exec_fn, schema) 包成
+# claude_agent_sdk 的 in-process MCP tool，供 query() 用。executor 与 set_active 零改
+#（工具在进程内执行，_active 仍生效）。bare 工具名经 mcp__bench__ 前缀暴露给模型。
+
+
+def mcp_tool(name: str, sink: list | None = None):
+    """从注册表项造一个 claude_agent_sdk @tool 对象（async，返 MCP content 形状）。
+    sink 非空时，每次调用把 (name, result) append 进 sink——run_episode 用来捕 tool_texts
+    （tool_calls 另从消息流的 tool_use block 取，二者在真跑时等长）。"""
+    from claude_agent_sdk import tool as _tool
+    spec = TOOL_REGISTRY[name]
+    exec_fn, schema = spec.exec_fn, spec.schema
+
+    async def _wrapper(args):
+        result = str(exec_fn(**args))
+        if sink is not None:
+            sink.append((name, result))
+        return {"content": [{"type": "text", "text": result}]}
+
+    _wrapper.__name__ = f"{name}_tool"
+    # @tool 接受完整 JSON schema dict（已验），直接复用 _X_DEF["input_schema"]
+    return _tool(name, schema["description"], schema["input_schema"])(_wrapper)
+
+
+def arm_mcp_server(arm: str, sink: list | None = None):
+    """臂 → in-process MCP server 配置（dict，喂 ClaudeAgentOptions.mcp_servers）。
+    只含该臂声明工具（保臂隔离）。sink 透传给每个 tool 捕结果。"""
+    from claude_agent_sdk import create_sdk_mcp_server
+    tools = [mcp_tool(n, sink) for n in ARMS[arm]["tools"]]
+    return create_sdk_mcp_server("bench", tools=tools)
+
+
+def arm_allowed_tools(arm: str) -> list[str]:
+    """臂 → allowed_tools 名（mcp__bench__<bare>）。ARMS 仍存 bare 名，前缀在此派生。"""
+    return [f"mcp__bench__{n}" for n in ARMS[arm]["tools"]]

@@ -52,3 +52,29 @@ def test_register_new_tool_and_arm():
     finally:  # 清理：不污染其它测试
         ab_tools.ARMS.pop("newarm", None)
         ab_tools.TOOL_REGISTRY.pop("newkb_search", None)
+
+
+def test_mcp_layer_builds_per_arm():
+    """SDK MCP 层（migrate-ab-agent）：每臂建 mcp server 配置（dict）+ allowed_tools 名派生正确。"""
+    assert ab_tools.arm_allowed_tools("no-kb") == ["mcp__bench__grep_code", "mcp__bench__read_file"]
+    assert ab_tools.arm_allowed_tools("kb") == ["mcp__bench__cmm_search", "mcp__bench__read_file"]
+    for arm in ("no-kb", "kb", "kb+superpowers", "kb+openspec", "baseline", "doc", "codegraph"):
+        assert isinstance(ab_tools.arm_mcp_server(arm), dict)
+
+
+def test_mcp_tool_sink_captures():
+    """mcp_tool 的 async handler 调 executor + sink 捕 (name, result)。read_file 不依赖 target。"""
+    import anyio
+    import tempfile
+    import os
+    sink = []
+    t = ab_tools.mcp_tool("read_file", sink)
+    with tempfile.NamedTemporaryFile("w", suffix=".txt", delete=False) as f:
+        f.write("hello-bench-content")
+        path = f.name
+    try:
+        out = anyio.run(t.handler, {"path": path})
+        assert "hello-bench-content" in out["content"][0]["text"]
+        assert sink and sink[0][0] == "read_file"   # 捕到 (name, result)
+    finally:
+        os.unlink(path)

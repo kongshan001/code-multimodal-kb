@@ -218,6 +218,7 @@ def _config_md(arm: str, cfg: dict) -> str:
 
 def _clean_episode(ep: dict) -> dict:
     """episode.json：去掉 session/thinking（单独落 jsonl/md/episode.md），留指标 + 逐步 tool。"""
+    return {k: v for k, v in ep.items() if k not in ("session", "thinking")}
 
 
 def _episode_md(ep: dict) -> str:
@@ -266,7 +267,6 @@ def _episode_md(ep: dict) -> str:
                         lines.append(f"**🤖 Agent**：{txt[:300]}")
             lines.append("")
     return "\n".join(lines) + "\n"
-    return {k: v for k, v in ep.items() if k not in ("session", "thinking")}
 
 
 def write_compare_report(result: dict, report_root: str) -> str:

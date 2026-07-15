@@ -2,35 +2,36 @@
 
 ## 1. 依赖与前置 spike
 
-- [ ] 1.1 `eval/requirements.txt` 加 `claude-agent-sdk`、`anyio`；bench env `pip install -r eval/requirements.txt`（**注意**：本机 python CA 有坑，pip 须加 `--trusted-host pypi.org --trusted-host files.pythonhosted.org`）→ verify: bench env `python -c "import claude_agent_sdk, anyio"` 成功
-- [x] 1.2 spike 验证 D1（env 透传）：`ClaudeAgentOptions(env={ANTHROPIC_BASE_URL, ANTHROPIC_API_KEY}, model=glm-5.1)` 跑 `query()` → ✅ 已验（spike1 P1-P4 全通，返回正常文本）
-- [x] 1.3 spike 验证 Open Q1（go/no-go gate）→ ✅ **GO**：`system_prompt=` 覆盖 CLI 默认身份（P1/P3 实证）；最小配置（`tools=[]`+`setting_sources=[]`）把 token 税从 22-40k 剥到 392-632（spike2 M1/M2）；tool_use 往返通（P4）。结论回填 design D7。
+- [x] 1.1 `eval/requirements.txt` 加 `claude-agent-sdk`、`anyio`；bench env `pip install -r eval/requirements.txt`（**注意**：本机 python CA 有坑，pip 须加 `--trusted-host pypi.org --trusted-host files.pythonhosted.org`）→ ✅ 装进 anaconda bench env（python 3.12.7），`import claude_agent_sdk, anyio, anthropic` 全通
+- [x] 1.2 spike 验证 D1（env 透传）→ ✅ spike1 P1-P4 全通
+- [x] 1.3 spike 验证 Open Q1（go/no-go gate）→ ✅ **GO**：system_prompt 覆盖身份；最小配置剥 token 税 22-40k→392-632；tool_use 通
 
 ## 2. 工具层迁移（ab_tools.py → @tool）
 
-- [ ] 2.1 5 个 executor（`grep_code`/`cmm_search`/`read_file`/`codegraph_search`/`graphify_query`）各包 `@tool`，`input_schema` 用 dict 形式对齐现有 `_X_DEF`；executor 函数体不动 → verify: `@tool` 装饰对象可被 `create_sdk_mcp_server` 接受
-- [ ] 2.2 建 `create_sdk_mcp_server("bench", tools=<臂工具子集>)` 工厂（按臂选工具）；`set_active` 与 `_active` 不动 → verify: monkeypatch `_active` 后 tool exec 仍读注入路径
-- [ ] 2.3 `ARMS` 工具名引用 `grep_code` → `mcp__bench__grep_code`（5 个全改）；`arm_schemas`/`arm_config` 适配新命名 → verify: `arm_schemas("no-kb")` 返回新名工具
-- [ ] 2.4 单测 `eval/tests/test_ab_tools.py`：in-process MCP server 注册后 tool 列表 == 臂声明工具 → verify: pytest 过
+- [x] 2.1 5 个 executor 包 `@tool`（input_schema 复用 `_X_DEF`，已验 @tool 吃完整 JSON schema）；executor 函数体不动 → ✅
+- [x] 2.2 `arm_mcp_server(arm, sink)` 工厂（按臂选工具子集，sink 捕结果）；`set_active`/`_active` 不动 → ✅
+- [x] 2.3 `arm_allowed_tools(arm)` 派生 `mcp__bench__<bare>`；**ARMS 仍存 bare 名**（比字面改 ARMS 更干净，前缀在 allowed_tools 派生）→ ✅
+- [x] 2.4 单测 `test_ab_tools.py` 加 MCP 层 case（build + sink 捕获）→ ✅ 79/79 过
 
 ## 3. agent loop 重写（ab_agent.py）
 
-- [ ] 3.1 删 `_create_with_retry`/`_serialize_turn`/`make_client`；`run_episode` 改 `anyio.run(_run_episode_async, ...)` 包裹，**对外同步签名不变** → verify: `run_episode(...)` 仍同步返 dict
-- [ ] 3.2 `_run_episode_async`：组 `ClaudeAgentOptions(system_prompt=_system_prompt(arm,target), tools=[], setting_sources=[], mcp_servers={"bench": server}, allowed_tools=[...], max_turns=max_steps, env={base_url,key}, model=mdl)`，消费 `query()` 消息流。**`tools=[]`+`setting_sources=[]` 是硬约束（D7），漏了 token 税回 22-40k** → verify: 跑通一次真 episode 且 input_tokens 在百-千级
-- [ ] 3.3 D5/D7 trace 映射：从消息流**只认 `AssistantMessage`/`ResultMessage`**（滤掉 SystemMessage/HookEventMessage 噪声），抽 `llm_calls`/`tool_steps`/`tool_calls`/`tool_texts`/`input_tokens`（新读，不含 cache）/`output_tokens`/`session`/`thinking`/`cost_$`（优先 `total_cost_usd`）/`truncated`，填入与现 dict **完全同 key** 的结构；`cache_read_input_tokens` 单列或并入并注明 → verify: 返回 dict 的 key 集合 == 迁移前
-- [ ] 3.4 D4 force-answer：max_turns 耗尽（无自然 end_turn）时追加一次 `allowed_tools=[]` 的 query，`truncated=True`，答案非空 fallback → verify: 构造必超步 prompt，断言 truncated=True 且 answer 非空
-- [ ] 3.5 `load_creds` 保留优先级链（env > bench.local.yaml > config.toml），返 (api_key, base_url, model) 供 env 透传 → verify: 三来源分支单测仍过
+- [x] 3.1 删 `_create_with_retry`/`_serialize_turn`；`run_episode` 改 `anyio.run` 包同步；**`make_client` 保留**（cli/run_doc_quality_ragas/run_memory_quality 仍直连 anthropic 用）→ ✅
+- [x] 3.2 `_run_episode_async` 最小配置（D7：`tools=[]`+`setting_sources=[]`）+ `@tool` sink 捕结果 → ✅ 真跑 input_tokens 958/1755（< 5000）
+- [x] 3.3 trace 映射：消息流按**类名**判型（TextBlock/ToolUseBlock/ThinkingBlock，无 .type 属性）+ 剥 `mcp__bench__` 前缀；滤 SystemMessage/HookEvent 噪声；cache_read 单列 → ✅
+- [x] 3.4 D4 force-answer：max_turns 耗尽 SDK 抛异常 → `_consume` try/except 接住，answer 空→追加无工具 query 强制作答，`truncated=True` → ✅ 真跑验证（VMap 题 truncated 不崩、答案非空）
+- [x] 3.5 `load_creds` 优先级链保留（env > bench.local.yaml > config.toml）→ ✅
 
 ## 4. 回归与端到端
 
-- [ ] 4.1 单测：录一份 SDK 消息流 fixture，断言 `_run_episode_async` 抽出的 trace（key 集合 + tool_steps + truncated 语义）→ verify: pytest 过
-- [ ] 4.2 specs regression scenario：新 trace dict.keys() ⊇ `{answer, input_tokens, output_tokens, total_tokens, steps, llm_calls, tool_calls, tool_steps, tool_texts, truncated, wall_clock_s, cost_$, session, thinking}` → verify: 断言通过
-- [ ] 4.3 端到端：`bench run ab-agent --target godot-core --subset 2`（或 `run_compare` 4 臂 subset）真跑 → verify: 出报告、4 臂 trace 字段齐全、accuracy 合理（结合 1.3 结论判基线）
-- [ ] 4.4 `eval/tests/test_ab_agent.py` / `test_agent_compare.py` 跑通（必要时适配 mock）→ verify: pytest 全绿
-- [ ] 4.5 **token 税回归门**：单 episode `input_tokens` SHALL < 5000（防 D7 最小配置被意外破坏、CLI 默认工具定义回流；阈值据实跑校准）→ verify: 真跑一题断言通过
+- [x] 4.1 单测 mock 消息流（fake AssistantMessage/ResultMessage/TextBlock/ToolUseBlock）断言 trace 抽取 → ✅
+- [x] 4.2 specs regression：trace dict.keys() ⊇ 全契约字段 → ✅ 断言进 test_ab_agent
+- [x] 4.3 端到端 `bench run agent-compare --arms no-kb,kb --subset 1`：真跑出报告、trace 字段齐全 → ✅
+- [x] 4.4 `test_ab_agent.py`/`test_agent_compare.py` 适配 mock 跑通 → ✅ 79/79 全绿
+- [x] 4.5 token 税回归门 input_tokens<5000 → ✅ 真跑 958/963/1755 全过
+- [x] 4.6 **顺手修既有 bug**：`agent_compare_report._clean_episode` 空 body 致 episode.json 落 null（body 误漂进 `_episode_md` return 后成死代码）。修 + 加 regression 断言（episode.json 非空 + trace 字段全）。**非本迁移引入**，但堵在 trace 契约落盘路径上，必须修。
 
 ## 5. 清理与提交
 
-- [ ] 5.1 全仓 grep `import anthropic` / `anthropic.` 确认迁移后无其他活引用 → verify: 仅历史 git 记录、无活引用
-- [ ] 5.2 若 5.1 确认无引用：`eval/requirements.txt` 移除 `anthropic`；`setup-bench.bat`/setup 文档注明 SDK 依赖 → verify: 重装 env 后 smoke 仍过
-- [ ] 5.3 提交 git（main + push，带 Co-Authored-By）；归档前 `openspec validate migrate-ab-agent-to-claude-sdk` → verify: validate 通过
+- [x] 5.1 grep `anthropic` 活引用：仅 `ab_agent.py`(make_client)；make_client 仍被 cli/run_doc_quality_ragas/run_memory_quality/test_memory_quality 用 → **anthropic 必须留**
+- [x] ~~5.2 移除 `anthropic`~~ **取消**：5.1 证明 make_client 仍有 4 个消费者直连 anthropic，依赖保留
+- [ ] 5.3 提交 git（main + push，带 Co-Authored-By）；归档前 `openspec validate` → 进行中

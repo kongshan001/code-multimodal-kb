@@ -7,6 +7,13 @@ pytest>=8
 anthropic>=0.90
 pyyaml>=6.0
 
+# agent 层（ab-agent / agent-compare）经 claude_agent_sdk 驱动 agent loop（见 openspec change
+# migrate-ab-agent-to-claude-sdk）。SDK 是 claude CLI 的官方封装；loop/retry/tool_use 全交它。
+# 安装：本机若遇 CA 坑（anaconda），pip 须加
+#   --trusted-host pypi.org --trusted-host files.pythonhosted.org
+claude-agent-sdk>=0.1
+anyio>=4
+
 # ── 不要装这些（本会话踩坑实证）──
 # ragas：0.4.3 与 langchain_community 版本冲突（vertexai 路径变），本项目用 Ragas 协议直接实现，不装库
 # numpy>=2 / torch / sentence-transformers：torch 2.2 编译 against numpy<2，升 numpy2 会 ABI 崩；

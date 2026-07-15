@@ -13,7 +13,7 @@ import argparse
 import json
 import statistics
 
-from eval.ab_agent import load_creds, make_client, run_episode
+from eval.ab_agent import load_creds, run_episode
 from eval.repro import detect_lockfile, stamp
 from eval.targets import load_problems, load_target
 
@@ -86,7 +86,6 @@ def run_compare(target_id: str = "godot-core",
     client = None
     model = "mock"
     if not smoke:
-        client = make_client()
         _, _, model = load_creds()
 
     episodes_by_arm: dict[str, list[dict]] = {a: [] for a in arms}
@@ -97,7 +96,7 @@ def run_compare(target_id: str = "godot-core",
                 if smoke:
                     ep = _mock_episode(p["query"], arm, goldset, qi)
                 else:
-                    ep = run_episode(client, p["query"], arm, target=target, model=model)
+                    ep = run_episode(p["query"], arm, target=target, model=model)
                 ep.update({"query": p["query"], "type": p["type"], "gold": sorted(goldset),
                            "arm": arm, "run": r, "qid": f"q{qi + 1:02d}",
                            "correct": _judge(ep["answer"], goldset)})
@@ -116,7 +115,6 @@ def run(target_id: str = "godot-core", runs: int = 1, subset: int | None = None,
     target = load_target(target_id)
     problems = [p for p in load_problems(target_id) if p["type"] == "code_retrieval"]
     questions = problems[:subset] if subset else problems
-    client = make_client()
     _, _, model = load_creds()
 
     rows = []
@@ -125,7 +123,7 @@ def run(target_id: str = "godot-core", runs: int = 1, subset: int | None = None,
         results_this_q = {}
         for arm in arms:
             for r in range(runs):
-                ep = run_episode(client, query, arm, target=target)
+                ep = run_episode(query, arm, target=target)
                 ep.update({"query": query, "gold": sorted(goldset), "arm": arm, "run": r,
                            "correct": _judge(ep["answer"], goldset),
                            "correct_retrieval": _judge_retrieval(ep["answer"], ep.get("tool_texts", []), goldset)})
