@@ -1,0 +1,36 @@
+{
+  "answer": "底层格式化函数是 **`String::sprintf`**（位于 `core/string/ustring.h` / `ustring.cpp`），对应的 GDScript 层 `String.format()` 最终也调用它来处理占位符替换。",
+  "input_tokens": 1299,
+  "output_tokens": 201,
+  "total_tokens": 1500,
+  "steps": 6,
+  "llm_calls": 6,
+  "tool_calls": [
+    "grep_code",
+    "grep_code",
+    "grep_code",
+    "grep_code",
+    "grep_code"
+  ],
+  "tool_steps": 5,
+  "tool_texts": [
+    "matched 7 files:\n/Users/ks_128/Documents/godot-src/core/extension/gdextension_interface_header_generator.h\n/Users/ks_128/Documents/godot-src/core/object/script_backtrace.h\n/Users/ks_128/Documents/godot-src/core/variant/variant_op.h\n/Users/ks_128/Documents/godot-src/core/os/time.cpp\n/Users/ks_128/Documents/godot-src/core/string/ustring.h\n/Users/ks_128/Documents/godot-src/core/string/translation_server.h\n/Users/ks_128/Documents/godot-src/core/string/ustring.cpp",
+    "matched 7 files:\n/Users/ks_128/Documents/godot-src/core/extension/gdextension_interface_header_generator.cpp\n/Users/ks_128/Documents/godot-src/core/io/image.cpp\n/Users/ks_128/Documents/godot-src/core/io/resource_format_binary.cpp\n/Users/ks_128/Documents/godot-src/core/io/image.h\n/Users/ks_128/Documents/godot-src/core/object/script_backtrace.cpp\n/Users/ks_128/Documents/godot-src/core/string/translation_server.cpp\n/Users/ks_128/Documents/godot-src/core/string/ustring.cpp",
+    "(no matches)",
+    "(no matches)",
+    "matched 5 files:\n/Users/ks_128/Documents/godot-src/core/io/logger.cpp\n/Users/ks_128/Documents/godot-src/core/variant/variant_op.h\n/Users/ks_128/Documents/godot-src/core/variant/variant.h\n/Users/ks_128/Documents/godot-src/core/string/ustring.h\n/Users/ks_128/Documents/godot-src/core/string/ustring.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 50.55,
+  "cost_$": 0.013439999999999999,
+  "cache_read_tokens": 3840,
+  "query": "Godot 里字符串格式化的底层函数叫什么？",
+  "type": "code_retrieval",
+  "gold": [
+    "vformat"
+  ],
+  "arm": "no-kb",
+  "run": 0,
+  "qid": "q01",
+  "correct": 0
+}

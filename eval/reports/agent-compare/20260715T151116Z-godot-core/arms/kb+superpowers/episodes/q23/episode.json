@@ -1,0 +1,24 @@
+{
+  "answer": "`RandomNumberGenerator`",
+  "input_tokens": 27,
+  "output_tokens": 17,
+  "total_tokens": 44,
+  "steps": 1,
+  "llm_calls": 1,
+  "tool_calls": [],
+  "tool_steps": 0,
+  "tool_texts": [],
+  "truncated": false,
+  "wall_clock_s": 6.66,
+  "cost_$": 0.001072,
+  "cache_read_tokens": 1024,
+  "query": "随机数生成器用哪个类？",
+  "type": "code_retrieval",
+  "gold": [
+    "RandomNumberGenerator"
+  ],
+  "arm": "kb+superpowers",
+  "run": 0,
+  "qid": "q23",
+  "correct": 1
+}

@@ -1,0 +1,28 @@
+{
+  "answer": "**`FileAccess`**\n\nGodot 核心的文件读写操作统一通过 `FileAccess` 类（`io/file_access.cpp`）完成。主要方法：\n\n- `FileAccess::open(path, flags)` — 打开文件（静态方法，返回 `Ref<FileAccess>`）\n- `FileAccess::open_compressed()` — 打开压缩文件\n- `FileAccess::open_encrypted()` — 打开加密文件\n- 内部虚函数 `_open()` — 子类实现具体打开逻辑\n\n`FileAccess` 本身是抽象基类，不同平台/后端（如 `FileAccessZip`、`FileAccessPack` 等）继承它实现实际的读写。",
+  "input_tokens": 947,
+  "output_tokens": 198,
+  "total_tokens": 1145,
+  "steps": 2,
+  "llm_calls": 2,
+  "tool_calls": [
+    "cmm_search"
+  ],
+  "tool_steps": 1,
+  "tool_texts": [
+    "- open  (Users-ks_128-Documents-godot-src-core.io.file_access.FileAccess.open)  io/file_access.cpp\n- _open  (Users-ks_128-Documents-godot-src-core.io.file_access.FileAccess._open)  io/file_access.cpp\n- godot_write  (Users-ks_128-Documents-godot-src-core.io.file_access_zip.godot_write)  io/file_access_zip.cpp\n- open_encrypted  (Users-ks_128-Documents-godot-src-core.io.file_access.FileAccess.open_encrypted)  io/file_access.cpp\n- open_compressed  (Users-ks_128-Documents-godot-src-core.io.file_access.FileAccess.open_compressed)  io/file_access.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 14.79,
+  "cost_$": 0.010037,
+  "cache_read_tokens": 704,
+  "query": "文件读写操作用哪个类？",
+  "type": "code_retrieval",
+  "gold": [
+    "FileAccess"
+  ],
+  "arm": "kb",
+  "run": 0,
+  "qid": "q15",
+  "correct": 1
+}

@@ -1,0 +1,24 @@
+{
+  "answer": "**`AStar`**（2D/3D 通用 A* 寻路）和 **`AStarGrid2D`**（专为 2D 网格优化的版本）。",
+  "input_tokens": 722,
+  "output_tokens": 63,
+  "total_tokens": 785,
+  "steps": 1,
+  "llm_calls": 1,
+  "tool_calls": [],
+  "tool_steps": 0,
+  "tool_texts": [],
+  "truncated": false,
+  "wall_clock_s": 9.55,
+  "cost_$": 0.005185,
+  "cache_read_tokens": 0,
+  "query": "A* 寻路算法用哪个类？",
+  "type": "code_retrieval",
+  "gold": [
+    "AStar"
+  ],
+  "arm": "kb",
+  "run": 0,
+  "qid": "q04",
+  "correct": 1
+}

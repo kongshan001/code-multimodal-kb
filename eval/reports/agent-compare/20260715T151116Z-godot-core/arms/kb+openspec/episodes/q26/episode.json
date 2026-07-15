@@ -1,0 +1,28 @@
+{
+  "answer": "用 **`HTTPClient`**（`io/http_client.h`）。\n\n其底层 TCP 实现类是 **`HTTPClientTCP`**（`io/http_client_tcp.cpp`）。",
+  "input_tokens": 306,
+  "output_tokens": 86,
+  "total_tokens": 392,
+  "steps": 2,
+  "llm_calls": 2,
+  "tool_calls": [
+    "cmm_search"
+  ],
+  "tool_steps": 1,
+  "tool_texts": [
+    "- ~HTTPClient  (Users-ks_128-Documents-godot-src-core.io.http_client.HTTPClient.~HTTPClient)  io/http_client.h\n- HTTPClientTCP  (Users-ks_128-Documents-godot-src-core.io.http_client_tcp.HTTPClientTCP.HTTPClientTCP)  io/http_client_tcp.cpp\n- set_http_proxy  (Users-ks_128-Documents-godot-src-core.io.http_client.HTTPClient.set_http_proxy)  io/http_client.cpp\n- _get_http_data  (Users-ks_128-Documents-godot-src-core.io.http_client_tcp.HTTPClientTCP._get_http_data)  io/http_client_tcp.cpp\n- set_http_proxy  (Users-ks_128-Documents-godot-src-core.io.http_client_tcp.HTTPClientTCP.set_http_proxy)  io/http_client_tcp.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 7.61,
+  "cost_$": 0.00464,
+  "cache_read_tokens": 1920,
+  "query": "HTTP 客户端用哪个类？",
+  "type": "code_retrieval",
+  "gold": [
+    "HTTPClient"
+  ],
+  "arm": "kb+openspec",
+  "run": 0,
+  "qid": "q26",
+  "correct": 1
+}

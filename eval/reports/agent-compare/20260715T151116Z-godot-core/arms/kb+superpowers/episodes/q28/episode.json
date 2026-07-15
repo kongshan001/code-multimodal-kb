@@ -1,0 +1,29 @@
+{
+  "answer": "Godot 字符串格式化的底层例程主要有两个：\n\n- **`String::sprintf`** — `core/string/ustring.cpp`，核心的 sprintf 实现，处理 `%s`/`%d`/`%f` 等占位符与 locale 相关的数值格式化。\n- **`String::format`** — 同文件，基于字典/数组的 `{}` 占位符格式化，内部不依赖 sprintf。\n\n上层的便捷封装是 **`vformat`**（`core/variant/variant.h`），最终调用 `String::sprintf`。\n\nlocale 相关的数值格式化路径还应关注 **`TranslationServer::format_number`**（`core/string/translation_server.cpp`）。\n\n你描述的\"locale 边界情况下输出乱码\"，最可疑的根因在 **`String::sprintf`**。",
+  "input_tokens": 1335,
+  "output_tokens": 353,
+  "total_tokens": 1688,
+  "steps": 2,
+  "llm_calls": 2,
+  "tool_calls": [
+    "cmm_search"
+  ],
+  "tool_steps": 1,
+  "tool_texts": [
+    "- sprintf  (Users-ks_128-Documents-godot-src-core.string.ustring.String.sprintf)  string/ustring.cpp\n- vformat  (Users-ks_128-Documents-godot-src-core.variant.variant.vformat)  variant/variant.h\n- format  (Users-ks_128-Documents-godot-src-core.string.ustring.String.format)  string/ustring.cpp\n- format_number  (Users-ks_128-Documents-godot-src-core.string.translation_server.TranslationServer.format_number)  string/translation_server.cpp\n- _get_string  (Users-ks_128-Documents-godot-src-core.io.resource_format_binary.ResourceLoaderBinary._get_string)  io/resource_format_binary.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 20.36,
+  "cost_$": 0.016012,
+  "cache_read_tokens": 1024,
+  "query": "字符串格式化在某些 locale 边界情况下输出乱码，疑是底层格式化例程的 bug。Godot 里字符串格式化的底层函数叫什么？",
+  "type": "bug_fix",
+  "gold": [
+    "core/string/print_string.cpp",
+    "vformat"
+  ],
+  "arm": "kb+superpowers",
+  "run": 0,
+  "qid": "q28",
+  "correct": 1
+}

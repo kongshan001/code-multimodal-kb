@@ -1,0 +1,28 @@
+{
+  "answer": "用 `Vector3`（定义于 `math/vector3.h`）。",
+  "input_tokens": 932,
+  "output_tokens": 65,
+  "total_tokens": 997,
+  "steps": 2,
+  "llm_calls": 2,
+  "tool_calls": [
+    "cmm_search"
+  ],
+  "tool_steps": 1,
+  "tool_texts": [
+    "- Vector3  (Users-ks_128-Documents-godot-src-core.math.vector3.Vector3)  math/vector3.h\n- rotate  (Users-ks_128-Documents-godot-src-core.math.vector3.Vector3.rotate)  math/vector3.cpp\n- rotated  (Users-ks_128-Documents-godot-src-core.math.vector3.Vector3.rotated)  math/vector3.cpp\n- snap  (Users-ks_128-Documents-godot-src-core.math.vector3.Vector3.snap)  math/vector3.cpp\n- snapped  (Users-ks_128-Documents-godot-src-core.math.vector3.Vector3.snapped)  math/vector3.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 8.7,
+  "cost_$": 0.0066370000000000005,
+  "cache_read_tokens": 704,
+  "query": "三维向量用哪个类？",
+  "type": "code_retrieval",
+  "gold": [
+    "Vector3"
+  ],
+  "arm": "kb",
+  "run": 0,
+  "qid": "q08",
+  "correct": 1
+}

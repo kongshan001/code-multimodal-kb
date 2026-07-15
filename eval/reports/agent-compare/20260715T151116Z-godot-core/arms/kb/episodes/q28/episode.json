@@ -1,0 +1,31 @@
+{
+  "answer": "Godot 字符串格式化的底层例程是 **`String::sprintf`**（定义于 `core/string/ustring.cpp`）。\n\n相关上层封装：\n- `String::format` — 基于字典/数组的占位替换\n- `vformat`（`Variant`）— 脚本层可调用的变参格式化，内部最终调用 `sprintf`\n\n如果你怀疑 locale 边界 bug，重点排查 `String::sprintf` 中数字/浮点转字符串的分支即可。",
+  "input_tokens": 1225,
+  "output_tokens": 190,
+  "total_tokens": 1415,
+  "steps": 3,
+  "llm_calls": 3,
+  "tool_calls": [
+    "cmm_search",
+    "cmm_search"
+  ],
+  "tool_steps": 2,
+  "tool_texts": [
+    "- check_formatting  (Users-ks_128-Documents-godot-src-core.extension.make_interface_header.check_formatting)  extension/make_interface_header.py\n- as_string  (Users-ks_128-Documents-godot-src-core.string.string_buffer.as_string)  string/string_buffer.h\n- append  (Users-ks_128-Documents-godot-src-core.string.string_buffer.append)  string/string_buffer.h\n- reserve  (Users-ks_128-Documents-godot-src-core.string.string_buffer.reserve)  string/string_buffer.h\n- length  (Users-ks_128-Documents-godot-src-core.string.string_buffer.length)  string/string_buffer.h",
+    "- sprintf  (Users-ks_128-Documents-godot-src-core.string.ustring.String.sprintf)  string/ustring.cpp\n- vformat  (Users-ks_128-Documents-godot-src-core.variant.variant.vformat)  variant/variant.h\n- format  (Users-ks_128-Documents-godot-src-core.string.ustring.String.format)  string/ustring.cpp\n- format_number  (Users-ks_128-Documents-godot-src-core.string.translation_server.TranslationServer.format_number)  string/translation_server.cpp\n- _get_string  (Users-ks_128-Documents-godot-src-core.io.resource_format_binary.ResourceLoaderBinary._get_string)  io/resource_format_binary.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 17.96,
+  "cost_$": 0.011675000000000001,
+  "cache_read_tokens": 1600,
+  "query": "字符串格式化在某些 locale 边界情况下输出乱码，疑是底层格式化例程的 bug。Godot 里字符串格式化的底层函数叫什么？",
+  "type": "bug_fix",
+  "gold": [
+    "core/string/print_string.cpp",
+    "vformat"
+  ],
+  "arm": "kb",
+  "run": 0,
+  "qid": "q28",
+  "correct": 1
+}

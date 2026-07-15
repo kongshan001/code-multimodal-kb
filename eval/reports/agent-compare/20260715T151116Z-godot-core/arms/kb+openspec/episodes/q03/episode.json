@@ -1,0 +1,28 @@
+{
+  "answer": "用 **`memdelete`**（定义在 `core/os/memory.h`）。\n\n补充：\n- **`memdelete`** — 删除单个对象（`Object` 指针），配套 `memnew`。\n- **`memdelete_arr`** — 删除数组，配套 `memnew_arr`。\n- **`memdelete_allocator`** — 通过自定义 allocator 删除对象。\n\nGodot core 统一使用 `memnew` / `memdelete` 宏对，而非直接 `new` / `delete`，以便走引擎的内存统计与自定义 allocator。",
+  "input_tokens": 1238,
+  "output_tokens": 196,
+  "total_tokens": 1434,
+  "steps": 2,
+  "llm_calls": 2,
+  "tool_calls": [
+    "cmm_search"
+  ],
+  "tool_steps": 1,
+  "tool_texts": [
+    "- memdelete  (Users-ks_128-Documents-godot-src-core.os.memory.memdelete)  os/memory.h\n- memdelete_allocator  (Users-ks_128-Documents-godot-src-core.os.memory.memdelete_allocator)  os/memory.h\n- memdelete_arr  (Users-ks_128-Documents-godot-src-core.os.memory.memdelete_arr)  os/memory.h\n- operator delete  (Users-ks_128-Documents-godot-src-core.os.memory.operator delete)  os/memory.h\n- delete_allocation  (Users-ks_128-Documents-godot-src-core.os.memory.DefaultTypedAllocator.delete_allocation)  os/memory.h"
+  ],
+  "truncated": false,
+  "wall_clock_s": 15.23,
+  "cost_$": 0.01157,
+  "cache_read_tokens": 960,
+  "query": "删除对象、释放内存用哪个函数？",
+  "type": "code_retrieval",
+  "gold": [
+    "memdelete"
+  ],
+  "arm": "kb+openspec",
+  "run": 0,
+  "qid": "q03",
+  "correct": 1
+}

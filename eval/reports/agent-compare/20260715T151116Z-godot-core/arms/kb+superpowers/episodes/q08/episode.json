@@ -1,0 +1,30 @@
+{
+  "answer": "用 **`Vector3`**（`math/vector3.h`）。",
+  "input_tokens": 474,
+  "output_tokens": 106,
+  "total_tokens": 580,
+  "steps": 3,
+  "llm_calls": 3,
+  "tool_calls": [
+    "cmm_search",
+    "cmm_search"
+  ],
+  "tool_steps": 2,
+  "tool_texts": [
+    "- Vector  (Users-ks_128-Documents-godot-src-core.templates.vector.Vector.Vector)  templates/vector.h\n- operator Vector<T>() const  (Users-ks_128-Documents-godot-src-core.templates.local_vector.LocalVector.operator Vector<T>() const)  templates/local_vector.h\n- append  (Users-ks_128-Documents-godot-src-core.templates.vector.Vector.append)  templates/vector.h\n- erase  (Users-ks_128-Documents-godot-src-core.templates.vector.Vector.erase)  templates/vector.h\n- ptrw  (Users-ks_128-Documents-godot-src-core.templates.vector.Vector.ptrw)  templates/vector.h",
+    "- Vector3  (Users-ks_128-Documents-godot-src-core.math.vector3.Vector3)  math/vector3.h\n- Vector  (Users-ks_128-Documents-godot-src-core.templates.vector.Vector.Vector)  templates/vector.h\n- wrap_geometry  (Users-ks_128-Documents-godot-src-core.math.geometry_3d.Geometry3D.wrap_geometry)  math/geometry_3d.cpp\n- rotate  (Users-ks_128-Documents-godot-src-core.math.vector3.Vector3.rotate)  math/vector3.cpp\n- rotated  (Users-ks_128-Documents-godot-src-core.math.vector3.Vector3.rotated)  math/vector3.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 16.04,
+  "cost_$": 0.006652,
+  "cache_read_tokens": 3264,
+  "query": "三维向量用哪个类？",
+  "type": "code_retrieval",
+  "gold": [
+    "Vector3"
+  ],
+  "arm": "kb+superpowers",
+  "run": 0,
+  "qid": "q08",
+  "correct": 1
+}

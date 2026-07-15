@@ -1,0 +1,28 @@
+{
+  "answer": "操作系统抽象层用 **`OS`** 类（定义在 `core/os/os.cpp` / `os.h`）。",
+  "input_tokens": 919,
+  "output_tokens": 69,
+  "total_tokens": 988,
+  "steps": 2,
+  "llm_calls": 2,
+  "tool_calls": [
+    "cmm_search"
+  ],
+  "tool_steps": 1,
+  "tool_texts": [
+    "- OS  (Users-ks_128-Documents-godot-src-core.os.os.OS.OS)  os/os.cpp\n- ~OS  (Users-ks_128-Documents-godot-src-core.os.os.OS.~OS)  os/os.cpp\n- print  (Users-ks_128-Documents-godot-src-core.os.os.OS.print)  os/os.cpp\n- printerr  (Users-ks_128-Documents-godot-src-core.os.os.OS.printerr)  os/os.cpp\n- alert  (Users-ks_128-Documents-godot-src-core.os.os.OS.alert)  os/os.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 12.66,
+  "cost_$": 0.006671999999999999,
+  "cache_read_tokens": 704,
+  "query": "操作系统抽象层用哪个类？",
+  "type": "code_retrieval",
+  "gold": [
+    "OS"
+  ],
+  "arm": "kb",
+  "run": 0,
+  "qid": "q05",
+  "correct": 1
+}

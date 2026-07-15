@@ -1,0 +1,28 @@
+{
+  "answer": "`MessageQueue`（定义在 `core/object/message_queue.h`）。",
+  "input_tokens": 790,
+  "output_tokens": 58,
+  "total_tokens": 848,
+  "steps": 2,
+  "llm_calls": 2,
+  "tool_calls": [
+    "grep_code"
+  ],
+  "tool_steps": 1,
+  "tool_texts": [
+    "matched 1 files:\n/Users/ks_128/Documents/godot-src/core/object/message_queue.h"
+  ],
+  "truncated": false,
+  "wall_clock_s": 8.59,
+  "cost_$": 0.005752,
+  "cache_read_tokens": 704,
+  "query": "消息队列用哪个类？",
+  "type": "code_retrieval",
+  "gold": [
+    "MessageQueue"
+  ],
+  "arm": "no-kb",
+  "run": 0,
+  "qid": "q17",
+  "correct": 1
+}

@@ -1,0 +1,28 @@
+{
+  "answer": "`TranslationServer`（位于 `core/string/translation_server.cpp`）。",
+  "input_tokens": 268,
+  "output_tokens": 53,
+  "total_tokens": 321,
+  "steps": 2,
+  "llm_calls": 2,
+  "tool_calls": [
+    "cmm_search"
+  ],
+  "tool_steps": 1,
+  "tool_texts": [
+    "- TranslationServer  (Users-ks_128-Documents-godot-src-core.string.translation_server.TranslationServer.TranslationServer)  string/translation_server.cpp\n- add_translation  (Users-ks_128-Documents-godot-src-core.string.translation_server.TranslationServer.add_translation)  string/translation_server.cpp\n- remove_translation  (Users-ks_128-Documents-godot-src-core.string.translation_server.TranslationServer.remove_translation)  string/translation_server.cpp\n- has_translation  (Users-ks_128-Documents-godot-src-core.string.translation_server.TranslationServer.has_translation)  string/translation_server.cpp\n- get_translation_object  (Users-ks_128-Documents-godot-src-core.string.translation_server.TranslationServer.get_translation_object)  string/translation_server.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 9.64,
+  "cost_$": 0.003689,
+  "cache_read_tokens": 2048,
+  "query": "翻译/本地化服务器用哪个类？",
+  "type": "code_retrieval",
+  "gold": [
+    "TranslationServer"
+  ],
+  "arm": "kb+superpowers",
+  "run": 0,
+  "qid": "q25",
+  "correct": 1
+}

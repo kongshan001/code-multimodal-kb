@@ -1,0 +1,30 @@
+{
+  "answer": "目录操作用 **`DirAccess`** 类（定义于 `core/io/dir_access.h` / `.cpp`）。\n\n常用方法：\n- `DirAccess::create()` — 创建实例（`open()` / `create_for_path()`）\n- `copy()`, `copy_absolute()`, `copy_dir()` — 复制\n- `list_dir_begin()` / `list_dir_end()` — 遍历目录\n- `make_dir()`, `remove()`, `rename()` — 创建/删除/重命名",
+  "input_tokens": 1531,
+  "output_tokens": 214,
+  "total_tokens": 1745,
+  "steps": 3,
+  "llm_calls": 3,
+  "tool_calls": [
+    "cmm_search",
+    "cmm_search"
+  ],
+  "tool_steps": 2,
+  "tool_texts": [
+    "- list_directory  (Users-ks_128-Documents-godot-src-core.core_bind.ResourceLoader.list_directory)  core_bind.cpp\n- list_directory  (Users-ks_128-Documents-godot-src-core.io.resource_loader.ResourceLoader.list_directory)  io/resource_loader.cpp\n- remove_from_list  (Users-ks_128-Documents-godot-src-core.templates.self_list.SelfList.remove_from_list)  templates/self_list.h\n- remove  (Users-ks_128-Documents-godot-src-core.templates.self_list.SelfList.List.remove)  templates/self_list.h\n- add_directory  (Users-ks_128-Documents-godot-src-core.io.file_access_pack.PackedSourceDirectory.add_directory)  io/file_access_pack.cpp",
+    "- copy  (Users-ks_128-Documents-godot-src-core.io.dir_access.DirAccess.copy)  io/dir_access.cpp\n- copy_absolute  (Users-ks_128-Documents-godot-src-core.io.dir_access.DirAccess.copy_absolute)  io/dir_access.cpp\n- _copy_dir  (Users-ks_128-Documents-godot-src-core.io.dir_access.DirAccess._copy_dir)  io/dir_access.cpp\n- copy_dir  (Users-ks_128-Documents-godot-src-core.io.dir_access.DirAccess.copy_dir)  io/dir_access.cpp\n- create  (Users-ks_128-Documents-godot-src-core.io.dir_access.DirAccess.create)  io/dir_access.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 12.46,
+  "cost_$": 0.014061,
+  "cache_read_tokens": 2112,
+  "query": "目录操作用哪个类？",
+  "type": "code_retrieval",
+  "gold": [
+    "DirAccess"
+  ],
+  "arm": "kb+openspec",
+  "run": 0,
+  "qid": "q16",
+  "correct": 1
+}

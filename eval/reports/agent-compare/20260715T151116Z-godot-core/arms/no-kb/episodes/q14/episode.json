@@ -1,0 +1,30 @@
+{
+  "answer": "`ResourceSaver`",
+  "input_tokens": 967,
+  "output_tokens": 64,
+  "total_tokens": 1031,
+  "steps": 3,
+  "llm_calls": 3,
+  "tool_calls": [
+    "grep_code",
+    "grep_code"
+  ],
+  "tool_steps": 2,
+  "tool_texts": [
+    "(no matches)",
+    "matched 7 files:\n/Users/ks_128/Documents/godot-src/core/extension/gdextension_special_compat_hashes.cpp\n/Users/ks_128/Documents/godot-src/core/io/resource_saver.h\n/Users/ks_128/Documents/godot-src/core/io/resource_saver.cpp\n/Users/ks_128/Documents/godot-src/core/io/resource_format_binary.cpp\n/Users/ks_128/Documents/godot-src/core/core_bind.cpp\n/Users/ks_128/Documents/godot-src/core/core_bind.h\n/Users/ks_128/Documents/godot-src/core/register_core_types.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 19.61,
+  "cost_$": 0.0071389999999999995,
+  "cache_read_tokens": 1408,
+  "query": "保存资源用哪个类？",
+  "type": "code_retrieval",
+  "gold": [
+    "ResourceSaver"
+  ],
+  "arm": "no-kb",
+  "run": 0,
+  "qid": "q14",
+  "correct": 1
+}

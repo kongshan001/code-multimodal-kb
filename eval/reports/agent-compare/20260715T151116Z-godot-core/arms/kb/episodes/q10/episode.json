@@ -1,0 +1,34 @@
+{
+  "answer": "`Rect2`（定义在 `core/math/rect2.h`），轴对齐二维矩形，由 `position` 和 `size` 描述。",
+  "input_tokens": 1500,
+  "output_tokens": 164,
+  "total_tokens": 1664,
+  "steps": 5,
+  "llm_calls": 5,
+  "tool_calls": [
+    "cmm_search",
+    "cmm_search",
+    "read_file",
+    "cmm_search"
+  ],
+  "tool_steps": 4,
+  "tool_texts": [
+    "- interpolate_transform_2d  (Users-ks_128-Documents-godot-src-core.math.transform_interpolator.TransformInterpolator.interpolate_transform_2d)  math/transform_interpolator.cpp\n- triangulate  (Users-ks_128-Documents-godot-src-core.math.delaunay_2d.Delaunay2D.triangulate)  math/delaunay_2d.h\n- operator<  (Users-ks_128-Documents-godot-src-core.math.geometry_2d._AtlasWorkRect.operator<)  math/geometry_2d.cpp\n- Transform2D  (Users-ks_128-Documents-godot-src-core.math.transform_2d.Transform2D.Transform2D)  math/transform_2d.cpp\n- operator*=  (Users-ks_128-Documents-godot-src-core.math.transform_2d.Transform2D.operator*=)  math/transform_2d.cpp",
+    "- get_aligned_address  (Users-ks_128-Documents-godot-src-core.os.memory.get_aligned_address)  os/memory.h\n- build_box_planes  (Users-ks_128-Documents-godot-src-core.core_bind.Geometry3D.build_box_planes)  core_bind.cpp\n- alloc_aligned_static  (Users-ks_128-Documents-godot-src-core.os.memory.Memory.alloc_aligned_static)  os/memory.cpp\n- realloc_aligned_static  (Users-ks_128-Documents-godot-src-core.os.memory.Memory.realloc_aligned_static)  os/memory.cpp\n- free_aligned_static  (Users-ks_128-Documents-godot-src-core.os.memory.Memory.free_aligned_static)  os/memory.cpp",
+    "(read error: [Errno 2] No such file or directory: 'core/math/rect2.h')",
+    "- get_position  (Users-ks_128-Documents-godot-src-core.math.rect2.Rect2.get_position)  math/rect2.h\n- set_position  (Users-ks_128-Documents-godot-src-core.math.rect2.Rect2.set_position)  math/rect2.h\n- get_size  (Users-ks_128-Documents-godot-src-core.math.rect2.Rect2.get_size)  math/rect2.h\n- set_size  (Users-ks_128-Documents-godot-src-core.math.rect2.Rect2.set_size)  math/rect2.h\n- _ignore_definition  (Users-ks_128-Documents-godot-src-core.io.xml_parser.XMLParser._ignore_definition)  io/xml_parser.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 30.2,
+  "cost_$": 0.013584,
+  "cache_read_tokens": 3968,
+  "query": "二维矩形用哪个类？",
+  "type": "code_retrieval",
+  "gold": [
+    "Rect2"
+  ],
+  "arm": "kb",
+  "run": 0,
+  "qid": "q10",
+  "correct": 1
+}

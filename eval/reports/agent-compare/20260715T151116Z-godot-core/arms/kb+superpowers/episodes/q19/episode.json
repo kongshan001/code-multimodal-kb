@@ -1,0 +1,24 @@
+{
+  "answer": "`MainLoop`\n\nGodot 的主循环抽象基类是 `MainLoop`（继承自 `Object`），`SceneTree` 是其最常用的具体实现。",
+  "input_tokens": 1050,
+  "output_tokens": 74,
+  "total_tokens": 1124,
+  "steps": 1,
+  "llm_calls": 1,
+  "tool_calls": [],
+  "tool_steps": 0,
+  "tool_texts": [],
+  "truncated": false,
+  "wall_clock_s": 5.19,
+  "cost_$": 0.0070999999999999995,
+  "cache_read_tokens": 0,
+  "query": "主循环基类叫什么？",
+  "type": "code_retrieval",
+  "gold": [
+    "MainLoop"
+  ],
+  "arm": "kb+superpowers",
+  "run": 0,
+  "qid": "q19",
+  "correct": 1
+}

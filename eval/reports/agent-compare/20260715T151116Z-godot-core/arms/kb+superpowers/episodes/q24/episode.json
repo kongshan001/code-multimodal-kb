@@ -1,0 +1,32 @@
+{
+  "answer": "Godot 的加密解密涉及以下核心类（`core/crypto/` 下）：\n\n| 用途 | 类/方法 |\n|------|---------|\n| **高层加密门面** | `Crypto` — 统一入口，提供 `encrypt()`、`decrypt()`、`generate_random_bytes()`、`hmac_digest()` 等 |\n| **AES 加解密** | `AESContext` — 低层 AES 块加密，通过 `start()`/`update()`/`finish()` 分步操作 |\n| **RSA 非对称加密** | `CryptoKey` — 加载/管理 RSA 公私钥，配合 `Crypto` 使用 |\n| **哈希** | `HashingContext` — SHA-1/SHA-256 等哈希计算 |\n| **HMAC** | `HMACContext` — HMAC 消息认证码 |\n\n**日常加解密直接用 `Crypto`**（对应 GDScript 的 `Crypto` 单元），它封装了 AES + RSA 的常用流程。",
+  "input_tokens": 606,
+  "output_tokens": 337,
+  "total_tokens": 943,
+  "steps": 4,
+  "llm_calls": 4,
+  "tool_calls": [
+    "cmm_search",
+    "cmm_search",
+    "cmm_search"
+  ],
+  "tool_steps": 3,
+  "tool_texts": [
+    "- encryption_key_builder  (Users-ks_128-Documents-godot-src-core.core_builders.encryption_key_builder)  core_builders.py",
+    "- start  (Users-ks_128-Documents-godot-src-core.crypto.aes_context.AESContext.start)  crypto/aes_context.cpp\n- update  (Users-ks_128-Documents-godot-src-core.crypto.aes_context.AESContext.update)  crypto/aes_context.cpp\n- finish  (Users-ks_128-Documents-godot-src-core.crypto.aes_context.AESContext.finish)  crypto/aes_context.cpp\n- _bind_methods  (Users-ks_128-Documents-godot-src-core.crypto.aes_context.AESContext._bind_methods)  crypto/aes_context.cpp\n- get_iv_state  (Users-ks_128-Documents-godot-src-core.crypto.aes_context.AESContext.get_iv_state)  crypto/aes_context.cpp",
+    "- hmac_digest  (Users-ks_128-Documents-godot-src-core.crypto.crypto.Crypto.hmac_digest)  crypto/crypto.cpp\n- ~HashingContext  (Users-ks_128-Documents-godot-src-core.crypto.hashing_context.HashingContext.~HashingContext)  crypto/hashing_context.cpp\n- ~HMACContext  (Users-ks_128-Documents-godot-src-core.crypto.crypto.HMACContext.~HMACContext)  crypto/crypto.h\n- start  (Users-ks_128-Documents-godot-src-core.crypto.hashing_context.HashingContext.start)  crypto/hashing_context.cpp\n- update  (Users-ks_128-Documents-godot-src-core.crypto.hashing_context.HashingContext.update)  crypto/hashing_context.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 29.12,
+  "cost_$": 0.013694999999999999,
+  "cache_read_tokens": 4480,
+  "query": "加密解密用哪个类？",
+  "type": "code_retrieval",
+  "gold": [
+    "Crypto"
+  ],
+  "arm": "kb+superpowers",
+  "run": 0,
+  "qid": "q24",
+  "correct": 1
+}

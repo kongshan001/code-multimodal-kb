@@ -1,0 +1,24 @@
+{
+  "answer": "`DirAccess`",
+  "input_tokens": 718,
+  "output_tokens": 22,
+  "total_tokens": 740,
+  "steps": 1,
+  "llm_calls": 1,
+  "tool_calls": [],
+  "tool_steps": 0,
+  "tool_texts": [],
+  "truncated": false,
+  "wall_clock_s": 8.08,
+  "cost_$": 0.00414,
+  "cache_read_tokens": 0,
+  "query": "目录操作用哪个类？",
+  "type": "code_retrieval",
+  "gold": [
+    "DirAccess"
+  ],
+  "arm": "kb",
+  "run": 0,
+  "qid": "q16",
+  "correct": 1
+}

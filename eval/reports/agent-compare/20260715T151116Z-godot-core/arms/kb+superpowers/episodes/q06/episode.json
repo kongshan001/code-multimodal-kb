@@ -1,0 +1,24 @@
+{
+  "answer": "**`Color`**",
+  "input_tokens": 25,
+  "output_tokens": 7,
+  "total_tokens": 32,
+  "steps": 1,
+  "llm_calls": 1,
+  "tool_calls": [],
+  "tool_steps": 0,
+  "tool_texts": [],
+  "truncated": false,
+  "wall_clock_s": 9.53,
+  "cost_$": 0.000812,
+  "cache_read_tokens": 1024,
+  "query": "表示颜色的类叫什么？",
+  "type": "code_retrieval",
+  "gold": [
+    "Color"
+  ],
+  "arm": "kb+superpowers",
+  "run": 0,
+  "qid": "q06",
+  "correct": 1
+}

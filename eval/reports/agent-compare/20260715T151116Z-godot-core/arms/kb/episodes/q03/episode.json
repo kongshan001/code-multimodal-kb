@@ -1,0 +1,30 @@
+{
+  "answer": "在 Godot C++ 代码库中，删除对象/释放内存主要用以下函数（均在 `os/memory.h` 中）：\n\n| 用途 | 函数 |\n|------|------|\n| 删除 `memnew()` 创建的对象 | **`memdelete()`** |\n| 删除通过自定义 Allocator 创建的对象 | **`memdelete_allocator()`** |\n| 删除 `memnew_arr()` 创建的数组 | **`memdelete_arr()`** |\n| 释放 `memalloc()` 分配的裸内存 | **`memfree()`** |\n| 释放静态分配内存 | **`Memory::free_static()`** |\n\n**最常用的是 `memdelete()`**——它对应 `memnew()`，调用析构函数并释放内存，是 Godot 中删除对象的标准方式。",
+  "input_tokens": 1237,
+  "output_tokens": 333,
+  "total_tokens": 1570,
+  "steps": 3,
+  "llm_calls": 3,
+  "tool_calls": [
+    "cmm_search",
+    "cmm_search"
+  ],
+  "tool_steps": 2,
+  "tool_texts": [
+    "- operator delete  (Users-ks_128-Documents-godot-src-core.os.memory.operator delete)  os/memory.h\n- delete_allocation  (Users-ks_128-Documents-godot-src-core.os.memory.DefaultTypedAllocator.delete_allocation)  os/memory.h\n- free_static  (Users-ks_128-Documents-godot-src-core.os.memory.Memory.free_static)  os/memory.cpp\n- free  (Users-ks_128-Documents-godot-src-core.os.memory.DefaultAllocator.free)  os/memory.h\n- free_aligned_static  (Users-ks_128-Documents-godot-src-core.os.memory.Memory.free_aligned_static)  os/memory.cpp",
+    "- memdelete  (Users-ks_128-Documents-godot-src-core.os.memory.memdelete)  os/memory.h\n- memdelete_allocator  (Users-ks_128-Documents-godot-src-core.os.memory.memdelete_allocator)  os/memory.h\n- memdelete_arr  (Users-ks_128-Documents-godot-src-core.os.memory.memdelete_arr)  os/memory.h\n- memnew_arr_template  (Users-ks_128-Documents-godot-src-core.os.memory.memnew_arr_template)  os/memory.h\n- memnew_arr_placement  (Users-ks_128-Documents-godot-src-core.os.memory.memnew_arr_placement)  os/memory.h"
+  ],
+  "truncated": false,
+  "wall_clock_s": 18.44,
+  "cost_$": 0.01531,
+  "cache_read_tokens": 1600,
+  "query": "删除对象、释放内存用哪个函数？",
+  "type": "code_retrieval",
+  "gold": [
+    "memdelete"
+  ],
+  "arm": "kb",
+  "run": 0,
+  "qid": "q03",
+  "correct": 1
+}

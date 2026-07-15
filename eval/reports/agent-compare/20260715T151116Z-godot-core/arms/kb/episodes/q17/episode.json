@@ -1,0 +1,28 @@
+{
+  "answer": "消息队列用的是 **`MessageQueue`**（定义于 `core/object/message_queue.cpp`），其底层依赖基类 **`CallQueue`**。",
+  "input_tokens": 938,
+  "output_tokens": 81,
+  "total_tokens": 1019,
+  "steps": 2,
+  "llm_calls": 2,
+  "tool_calls": [
+    "cmm_search"
+  ],
+  "tool_steps": 1,
+  "tool_texts": [
+    "- MessageQueue  (Users-ks_128-Documents-godot-src-core.object.message_queue.MessageQueue.MessageQueue)  object/message_queue.cpp\n- ~MessageQueue  (Users-ks_128-Documents-godot-src-core.object.message_queue.MessageQueue.~MessageQueue)  object/message_queue.cpp\n- CallQueue  (Users-ks_128-Documents-godot-src-core.object.message_queue.CallQueue.CallQueue)  object/message_queue.cpp\n- ~CallQueue  (Users-ks_128-Documents-godot-src-core.object.message_queue.CallQueue.~CallQueue)  object/message_queue.cpp\n- flush  (Users-ks_128-Documents-godot-src-core.object.message_queue.CallQueue.flush)  object/message_queue.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 12.86,
+  "cost_$": 0.0070669999999999995,
+  "cache_read_tokens": 704,
+  "query": "消息队列用哪个类？",
+  "type": "code_retrieval",
+  "gold": [
+    "MessageQueue"
+  ],
+  "arm": "kb",
+  "run": 0,
+  "qid": "q17",
+  "correct": 1
+}

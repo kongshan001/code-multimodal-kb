@@ -1,0 +1,28 @@
+{
+  "answer": "`NodePath`\n\n定义在 `core/string/node_path.h` / `node_path.cpp`。",
+  "input_tokens": 914,
+  "output_tokens": 56,
+  "total_tokens": 970,
+  "steps": 2,
+  "llm_calls": 2,
+  "tool_calls": [
+    "cmm_search"
+  ],
+  "tool_steps": 1,
+  "tool_texts": [
+    "- NodePath  (Users-ks_128-Documents-godot-src-core.string.node_path.NodePath.NodePath)  string/node_path.cpp\n- ~NodePath  (Users-ks_128-Documents-godot-src-core.string.node_path.NodePath.~NodePath)  string/node_path.cpp\n- NodePath  (Users-ks_128-Documents-godot-src-core.string.node_path.NodePath)  string/node_path.h\n- rel_path_to  (Users-ks_128-Documents-godot-src-core.string.node_path.NodePath.rel_path_to)  string/node_path.cpp\n- unref  (Users-ks_128-Documents-godot-src-core.string.node_path.NodePath.unref)  string/node_path.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 8.36,
+  "cost_$": 0.00661,
+  "cache_read_tokens": 1280,
+  "query": "节点路径用哪个类？",
+  "type": "code_retrieval",
+  "gold": [
+    "NodePath"
+  ],
+  "arm": "kb+openspec",
+  "run": 0,
+  "qid": "q21",
+  "correct": 1
+}

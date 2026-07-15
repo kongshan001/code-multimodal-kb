@@ -1,0 +1,30 @@
+{
+  "answer": "用 **`itos`**（定义在 `core/string/ustring.h` / `ustring.cpp`），将整数转成 `String`。例如：\n\n```cpp\nString s = itos(42);\n```",
+  "input_tokens": 1166,
+  "output_tokens": 126,
+  "total_tokens": 1292,
+  "steps": 3,
+  "llm_calls": 3,
+  "tool_calls": [
+    "grep_code",
+    "grep_code"
+  ],
+  "tool_steps": 2,
+  "tool_texts": [
+    "matched 20 files:\n/Users/ks_128/Documents/godot-src/core/extension/extension_api_dump.cpp\n/Users/ks_128/Documents/godot-src/core/config/project_settings.cpp\n/Users/ks_128/Documents/godot-src/core/input/input_event.cpp\n/Users/ks_128/Documents/godot-src/core/doc_data.cpp\n/Users/ks_128/Documents/godot-src/core/io/dir_access.cpp\n/Users/ks_128/Documents/godot-src/core/io/resource_loader.cpp\n/Users/ks_128/Documents/godot-src/core/io/ip.cpp\n/Users/ks_128/Documents/godot-src/core/io/ip_address.cpp\n/Users/ks_128/Documents/godot-src/core/io/plist.cpp\n/Users/ks_128/Documents/godot-src/core/io/resource_format_binary.cpp\n/Users/ks_128/Documents/godot-src/core/io/http_client_tcp.cpp\n/Users/ks_128/Documents/godot-src/core/io/file_access.cpp\n/Users/ks_128/Documents/godot-src/core/io/json.cpp\n/Users/ks_128/Documents/godot-src/core/io/json_resource_format.cpp\n/Users/ks_128/Documents/godot-src/core/io/remote_filesystem_client.cpp\n/Users/ks_128/Documents/godot-src/core/math/vector4i.cpp\n/Users/ks_128/Documents/godot-src/core/math/vector2i.cpp\n/Users/ks_128/Documents/godot-src/core/math/vector3i.cpp\n/Users/ks_128/Documents/godot-src/core/math/bvh.h\n/Users/ks_128/Documents/godot-src/core/math/expression.cpp",
+    "matched 2 files:\n/Users/ks_128/Documents/godot-src/core/string/ustring.h\n/Users/ks_128/Documents/godot-src/core/string/ustring.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 14.69,
+  "cost_$": 0.009332,
+  "cache_read_tokens": 704,
+  "query": "整数转成字符串用哪个函数？",
+  "type": "code_retrieval",
+  "gold": [
+    "itos"
+  ],
+  "arm": "no-kb",
+  "run": 0,
+  "qid": "q02",
+  "correct": 1
+}

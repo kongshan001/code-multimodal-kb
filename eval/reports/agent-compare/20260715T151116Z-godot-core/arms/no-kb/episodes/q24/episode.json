@@ -1,0 +1,28 @@
+{
+  "answer": "主要用 **`Crypto`**（`core/crypto/crypto.h`）。\n\n相关辅助类还有：\n- **`AESContext`** — AES 对称加解密\n- **`HashingContext`** — 哈希计算（SHA-1/SHA-256）\n- **`CryptoKey`** — 密钥（`crypto_core.h` 中）\n- **`FileAccessEncrypted`** — 加密文件读写",
+  "input_tokens": 1118,
+  "output_tokens": 152,
+  "total_tokens": 1270,
+  "steps": 2,
+  "llm_calls": 2,
+  "tool_calls": [
+    "grep_code"
+  ],
+  "tool_steps": 1,
+  "tool_texts": [
+    "matched 20 files:\n/Users/ks_128/Documents/godot-src/core/crypto/hashing_context.cpp\n/Users/ks_128/Documents/godot-src/core/crypto/crypto_resource_format.cpp\n/Users/ks_128/Documents/godot-src/core/crypto/crypto_core.cpp\n/Users/ks_128/Documents/godot-src/core/crypto/crypto.h\n/Users/ks_128/Documents/godot-src/core/crypto/aes_context.h\n/Users/ks_128/Documents/godot-src/core/crypto/crypto_resource_format.h\n/Users/ks_128/Documents/godot-src/core/crypto/crypto_core.h\n/Users/ks_128/Documents/godot-src/core/crypto/crypto.cpp\n/Users/ks_128/Documents/godot-src/core/extension/gdextension_special_compat_hashes.cpp\n/Users/ks_128/Documents/godot-src/core/io/http_client_tcp.h\n/Users/ks_128/Documents/godot-src/core/io/http_client.h\n/Users/ks_128/Documents/godot-src/core/io/stream_peer_tls.h\n/Users/ks_128/Documents/godot-src/core/io/packet_peer_dtls.h\n/Users/ks_128/Documents/godot-src/core/io/file_access_encrypted.cpp\n/Users/ks_128/Documents/godot-src/core/io/resource_uid.h\n/Users/ks_128/Documents/godot-src/core/io/plist.cpp\n/Users/ks_128/Documents/godot-src/core/io/pck_packer.cpp\n/Users/ks_128/Documents/godot-src/core/io/resource_uid.cpp\n/Users/ks_128/Documents/godot-src/core/io/file_access.cpp\n/Users/ks_128/Documents/godot-src/core/io/file_access_encrypted.h"
+  ],
+  "truncated": false,
+  "wall_clock_s": 13.51,
+  "cost_$": 0.009742,
+  "cache_read_tokens": 704,
+  "query": "加密解密用哪个类？",
+  "type": "code_retrieval",
+  "gold": [
+    "Crypto"
+  ],
+  "arm": "no-kb",
+  "run": 0,
+  "qid": "q24",
+  "correct": 1
+}

@@ -1,0 +1,32 @@
+{
+  "answer": "三维向量用 **`Vector3`**（`core/math/vector3.h`）。\n\n注：还有一个模板容器也叫 `Vector`（`core/templates/vector.h`），那是动态数组不是三维向量，别混淆。",
+  "input_tokens": 755,
+  "output_tokens": 141,
+  "total_tokens": 896,
+  "steps": 4,
+  "llm_calls": 4,
+  "tool_calls": [
+    "cmm_search",
+    "cmm_search",
+    "cmm_search"
+  ],
+  "tool_steps": 3,
+  "tool_texts": [
+    "- Vector  (Users-ks_128-Documents-godot-src-core.templates.vector.Vector.Vector)  templates/vector.h\n- operator Vector<T>() const  (Users-ks_128-Documents-godot-src-core.templates.local_vector.LocalVector.operator Vector<T>() const)  templates/local_vector.h\n- append  (Users-ks_128-Documents-godot-src-core.templates.vector.Vector.append)  templates/vector.h\n- erase  (Users-ks_128-Documents-godot-src-core.templates.vector.Vector.erase)  templates/vector.h\n- ptrw  (Users-ks_128-Documents-godot-src-core.templates.vector.Vector.ptrw)  templates/vector.h",
+    "- intersect_3  (Users-ks_128-Documents-godot-src-core.math.plane.Plane.intersect_3)  math/plane.cpp\n- intersect_3_bind  (Users-ks_128-Documents-godot-src-core.math.plane.Plane.intersect_3_bind)  math/plane.cpp\n- median_of_3_index  (Users-ks_128-Documents-godot-src-core.templates.sort_array.SortArray.median_of_3_index)  templates/sort_array.h\n- get_z_far  (Users-ks_128-Documents-godot-src-core.math.projection.Projection.get_z_far)  math/projection.cpp\n- get_z_near  (Users-ks_128-Documents-godot-src-core.math.projection.Projection.get_z_near)  math/projection.cpp",
+    "- Vector3  (Users-ks_128-Documents-godot-src-core.math.vector3.Vector3)  math/vector3.h\n- rotate  (Users-ks_128-Documents-godot-src-core.math.vector3.Vector3.rotate)  math/vector3.cpp\n- rotated  (Users-ks_128-Documents-godot-src-core.math.vector3.Vector3.rotated)  math/vector3.cpp\n- snap  (Users-ks_128-Documents-godot-src-core.math.vector3.Vector3.snap)  math/vector3.cpp\n- snapped  (Users-ks_128-Documents-godot-src-core.math.vector3.Vector3.snapped)  math/vector3.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 20.91,
+  "cost_$": 0.009507999999999999,
+  "cache_read_tokens": 4416,
+  "query": "三维向量用哪个类？",
+  "type": "code_retrieval",
+  "gold": [
+    "Vector3"
+  ],
+  "arm": "kb+openspec",
+  "run": 0,
+  "qid": "q08",
+  "correct": 1
+}

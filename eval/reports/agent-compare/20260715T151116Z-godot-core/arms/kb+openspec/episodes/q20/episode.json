@@ -1,0 +1,28 @@
+{
+  "answer": "`UndoRedo`（`core/object/undo_redo.cpp`）",
+  "input_tokens": 1266,
+  "output_tokens": 53,
+  "total_tokens": 1319,
+  "steps": 2,
+  "llm_calls": 2,
+  "tool_calls": [
+    "cmm_search"
+  ],
+  "tool_steps": 1,
+  "tool_texts": [
+    "- _redo  (Users-ks_128-Documents-godot-src-core.object.undo_redo.UndoRedo._redo)  object/undo_redo.cpp\n- redo  (Users-ks_128-Documents-godot-src-core.object.undo_redo.UndoRedo.redo)  object/undo_redo.cpp\n- undo  (Users-ks_128-Documents-godot-src-core.object.undo_redo.UndoRedo.undo)  object/undo_redo.cpp\n- ~UndoRedo  (Users-ks_128-Documents-godot-src-core.object.undo_redo.UndoRedo.~UndoRedo)  object/undo_redo.cpp\n- discard_redo  (Users-ks_128-Documents-godot-src-core.object.undo_redo.UndoRedo.discard_redo)  object/undo_redo.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 7.44,
+  "cost_$": 0.008135,
+  "cache_read_tokens": 960,
+  "query": "撤销重做系统用哪个类？",
+  "type": "code_retrieval",
+  "gold": [
+    "UndoRedo"
+  ],
+  "arm": "kb+openspec",
+  "run": 0,
+  "qid": "q20",
+  "correct": 1
+}

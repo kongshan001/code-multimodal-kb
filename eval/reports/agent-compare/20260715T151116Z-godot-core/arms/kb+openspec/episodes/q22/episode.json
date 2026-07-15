@@ -1,0 +1,28 @@
+{
+  "answer": "`StringName`（定义在 `core/string/string_name.h`）。它是 Godot 的驻留/优化版字符串类，所有相同内容的字符串共享一个唯一指针，适合做高频比较和查找的键值（如节点名、属性名、信号名等）。",
+  "input_tokens": 1272,
+  "output_tokens": 118,
+  "total_tokens": 1390,
+  "steps": 2,
+  "llm_calls": 2,
+  "tool_calls": [
+    "cmm_search"
+  ],
+  "tool_steps": 1,
+  "tool_texts": [
+    "- StringName  (Users-ks_128-Documents-godot-src-core.string.string_name.StringName.StringName)  string/string_name.h\n- ~StringName  (Users-ks_128-Documents-godot-src-core.string.string_name.StringName.~StringName)  string/string_name.h\n- generate  (Users-ks_128-Documents-godot-src-core.string.optimized_translation.OptimizedTranslation.generate)  string/optimized_translation.cpp\n- _set  (Users-ks_128-Documents-godot-src-core.string.optimized_translation.OptimizedTranslation._set)  string/optimized_translation.cpp\n- _get  (Users-ks_128-Documents-godot-src-core.string.optimized_translation.OptimizedTranslation._get)  string/optimized_translation.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 17.09,
+  "cost_$": 0.00979,
+  "cache_read_tokens": 960,
+  "query": "字符串名（优化版字符串）用哪个类？",
+  "type": "code_retrieval",
+  "gold": [
+    "StringName"
+  ],
+  "arm": "kb+openspec",
+  "run": 0,
+  "qid": "q22",
+  "correct": 1
+}

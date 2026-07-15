@@ -1,0 +1,24 @@
+{
+  "answer": "`Vector2`",
+  "input_tokens": 997,
+  "output_tokens": 41,
+  "total_tokens": 1038,
+  "steps": 1,
+  "llm_calls": 1,
+  "tool_calls": [],
+  "tool_steps": 0,
+  "tool_texts": [],
+  "truncated": false,
+  "wall_clock_s": 6.19,
+  "cost_$": 0.00601,
+  "cache_read_tokens": 0,
+  "query": "二维向量用哪个类？",
+  "type": "code_retrieval",
+  "gold": [
+    "Vector2"
+  ],
+  "arm": "kb+openspec",
+  "run": 0,
+  "qid": "q07",
+  "correct": 1
+}

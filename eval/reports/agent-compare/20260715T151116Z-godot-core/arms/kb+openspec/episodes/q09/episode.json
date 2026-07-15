@@ -1,0 +1,24 @@
+{
+  "answer": "`Quaternion`",
+  "input_tokens": 998,
+  "output_tokens": 14,
+  "total_tokens": 1012,
+  "steps": 1,
+  "llm_calls": 1,
+  "tool_calls": [],
+  "tool_steps": 0,
+  "tool_texts": [],
+  "truncated": false,
+  "wall_clock_s": 5.41,
+  "cost_$": 0.005339999999999999,
+  "cache_read_tokens": 0,
+  "query": "四元数用哪个类？",
+  "type": "code_retrieval",
+  "gold": [
+    "Quaternion"
+  ],
+  "arm": "kb+openspec",
+  "run": 0,
+  "qid": "q09",
+  "correct": 1
+}

@@ -1,0 +1,30 @@
+{
+  "answer": "`DirAccess`（定义在 `io/dir_access.h` / `io/dir_access.cpp`）。\n\n通过静态方法 `DirAccess::create()` 获取实例，提供目录的创建、删除、列举、拷贝等操作。",
+  "input_tokens": 488,
+  "output_tokens": 136,
+  "total_tokens": 624,
+  "steps": 3,
+  "llm_calls": 3,
+  "tool_calls": [
+    "cmm_search",
+    "cmm_search"
+  ],
+  "tool_steps": 2,
+  "tool_texts": [
+    "- list_directory  (Users-ks_128-Documents-godot-src-core.core_bind.ResourceLoader.list_directory)  core_bind.cpp\n- list_directory  (Users-ks_128-Documents-godot-src-core.io.resource_loader.ResourceLoader.list_directory)  io/resource_loader.cpp\n- add_directory  (Users-ks_128-Documents-godot-src-core.io.file_access_pack.PackedSourceDirectory.add_directory)  io/file_access_pack.cpp\n- has_directory  (Users-ks_128-Documents-godot-src-core.io.file_access_pack.PackedData.has_directory)  io/file_access_pack.h\n- try_open_directory  (Users-ks_128-Documents-godot-src-core.io.file_access_pack.PackedData.try_open_directory)  io/file_access_pack.h",
+    "- list_directory  (Users-ks_128-Documents-godot-src-core.core_bind.ResourceLoader.list_directory)  core_bind.cpp\n- list_directory  (Users-ks_128-Documents-godot-src-core.io.resource_loader.ResourceLoader.list_directory)  io/resource_loader.cpp\n- remove_from_list  (Users-ks_128-Documents-godot-src-core.templates.self_list.SelfList.remove_from_list)  templates/self_list.h\n- remove  (Users-ks_128-Documents-godot-src-core.templates.self_list.SelfList.List.remove)  templates/self_list.h\n- create  (Users-ks_128-Documents-godot-src-core.io.dir_access.DirAccess.create)  io/dir_access.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 12.67,
+  "cost_$": 0.0074719999999999995,
+  "cache_read_tokens": 3264,
+  "query": "目录操作用哪个类？",
+  "type": "code_retrieval",
+  "gold": [
+    "DirAccess"
+  ],
+  "arm": "kb+superpowers",
+  "run": 0,
+  "qid": "q16",
+  "correct": 1
+}

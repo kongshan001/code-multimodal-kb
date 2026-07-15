@@ -1,0 +1,28 @@
+{
+  "answer": "底层有两个核心函数（定义在 `core/string/ustring.cpp`）：\n\n- **`String::sprintf`** — C 风格格式化（`%s`/`%d`/`%x` 等占位符）\n- **`String::format`** — Godot 风格占位符替换（`{0}`/`{name}` 字典/数组方式）\n\nGDScript 里的 `\"text %d\" % 42` 走的是 `sprintf`，`\"text {0}\".format([\"val\"])` 走的是 `format`。",
+  "input_tokens": 2215,
+  "output_tokens": 186,
+  "total_tokens": 2401,
+  "steps": 2,
+  "llm_calls": 2,
+  "tool_calls": [
+    "cmm_search"
+  ],
+  "tool_steps": 1,
+  "tool_texts": [
+    "- sprintf  (Users-ks_128-Documents-godot-src-core.string.ustring.String.sprintf)  string/ustring.cpp\n- format  (Users-ks_128-Documents-godot-src-core.string.ustring.String.format)  string/ustring.cpp\n- format_number  (Users-ks_128-Documents-godot-src-core.string.translation_server.TranslationServer.format_number)  string/translation_server.cpp\n- _get_string  (Users-ks_128-Documents-godot-src-core.io.resource_format_binary.ResourceLoaderBinary._get_string)  io/resource_format_binary.cpp\n- get_unicode_string  (Users-ks_128-Documents-godot-src-core.io.resource_format_binary.ResourceLoaderBinary.get_unicode_string)  io/resource_format_binary.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 10.8,
+  "cost_$": 0.015725000000000003,
+  "cache_read_tokens": 0,
+  "query": "Godot 里字符串格式化的底层函数叫什么？",
+  "type": "code_retrieval",
+  "gold": [
+    "vformat"
+  ],
+  "arm": "kb+openspec",
+  "run": 0,
+  "qid": "q01",
+  "correct": 0
+}

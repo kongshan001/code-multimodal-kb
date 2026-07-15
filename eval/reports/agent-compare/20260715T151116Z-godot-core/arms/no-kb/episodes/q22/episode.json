@@ -1,0 +1,24 @@
+{
+  "answer": "`StringName`",
+  "input_tokens": 721,
+  "output_tokens": 35,
+  "total_tokens": 756,
+  "steps": 1,
+  "llm_calls": 1,
+  "tool_calls": [],
+  "tool_steps": 0,
+  "tool_texts": [],
+  "truncated": false,
+  "wall_clock_s": 8.09,
+  "cost_$": 0.00448,
+  "cache_read_tokens": 0,
+  "query": "字符串名（优化版字符串）用哪个类？",
+  "type": "code_retrieval",
+  "gold": [
+    "StringName"
+  ],
+  "arm": "no-kb",
+  "run": 0,
+  "qid": "q22",
+  "correct": 1
+}

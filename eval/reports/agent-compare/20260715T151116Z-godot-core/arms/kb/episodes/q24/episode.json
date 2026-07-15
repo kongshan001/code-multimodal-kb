@@ -1,0 +1,28 @@
+{
+  "answer": "`Crypto`（位于 `core/crypto/crypto.cpp`）。\n\n主要方法：\n- `Crypto::generate_random_bytes()` — 生成随机字节\n- `Crypto::encrypt()` / `Crypto::decrypt()` — 加密/解密\n- `Crypto::hmac_digest()` — HMAC 摘要\n- `Crypto::generate_self_signed_certificate()` — 生成自签名证书\n\n辅助类还有 `CryptoKey`（密钥管理）和 `HashingContext`（哈希计算）。",
+  "input_tokens": 930,
+  "output_tokens": 146,
+  "total_tokens": 1076,
+  "steps": 2,
+  "llm_calls": 2,
+  "tool_calls": [
+    "cmm_search"
+  ],
+  "tool_steps": 1,
+  "tool_texts": [
+    "- encryption_key_builder  (Users-ks_128-Documents-godot-src-core.core_builders.encryption_key_builder)  core_builders.py\n- create  (Users-ks_128-Documents-godot-src-core.crypto.crypto.Crypto.create)  crypto/crypto.cpp\n- hmac_digest  (Users-ks_128-Documents-godot-src-core.crypto.crypto.Crypto.hmac_digest)  crypto/crypto.cpp\n- _bind_methods  (Users-ks_128-Documents-godot-src-core.crypto.crypto.Crypto._bind_methods)  crypto/crypto.cpp\n- load_default_certificates  (Users-ks_128-Documents-godot-src-core.crypto.crypto.Crypto.load_default_certificates)  crypto/crypto.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 12.39,
+  "cost_$": 0.008652,
+  "cache_read_tokens": 704,
+  "query": "加密解密用哪个类？",
+  "type": "code_retrieval",
+  "gold": [
+    "Crypto"
+  ],
+  "arm": "kb",
+  "run": 0,
+  "qid": "q24",
+  "correct": 1
+}

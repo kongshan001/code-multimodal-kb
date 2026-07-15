@@ -1,0 +1,24 @@
+{
+  "answer": "`MainLoop`",
+  "input_tokens": 717,
+  "output_tokens": 31,
+  "total_tokens": 748,
+  "steps": 1,
+  "llm_calls": 1,
+  "tool_calls": [],
+  "tool_steps": 0,
+  "tool_texts": [],
+  "truncated": false,
+  "wall_clock_s": 7.39,
+  "cost_$": 0.004359999999999999,
+  "cache_read_tokens": 0,
+  "query": "主循环基类叫什么？",
+  "type": "code_retrieval",
+  "gold": [
+    "MainLoop"
+  ],
+  "arm": "no-kb",
+  "run": 0,
+  "qid": "q19",
+  "correct": 1
+}

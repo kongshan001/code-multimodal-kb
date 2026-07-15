@@ -1,0 +1,29 @@
+{
+  "answer": "Godot 中负责 A* 寻路路径计算的类是 **`AStar3D`**（位于 `core/math/a_star.h` / `a_star.cpp`），对应 2D 场景的是 **`AStar2D`**。\n\n核心方法包括：\n- `get_path(from_id, to_id)` — 计算两点间路径\n- `get_id_path(from_id, to_id)` — 返回点 ID 路径\n- `connect_points` / `disconnect_points` — 管理点之间的连通性\n- `add_point` / `remove_point` — 管理导航点\n\n障碍物的表现取决于你通过 `connect_points` 建立的边——如果两个点之间没有连接（或被标记不可通行），A* 就不会走那条路。排查时重点检查**图的连通边是否正确**。",
+  "input_tokens": 1338,
+  "output_tokens": 257,
+  "total_tokens": 1595,
+  "steps": 2,
+  "llm_calls": 2,
+  "tool_calls": [
+    "cmm_search"
+  ],
+  "tool_steps": 1,
+  "tool_texts": [
+    "- get_closest_points_between_segments  (Users-ks_128-Documents-godot-src-core.core_bind.Geometry2D.get_closest_points_between_segments)  core_bind.cpp\n- get_closest_points_between_segments  (Users-ks_128-Documents-godot-src-core.core_bind.Geometry3D.get_closest_points_between_segments)  core_bind.cpp\n- get_closest_points_between_segments  (Users-ks_128-Documents-godot-src-core.math.geometry_2d.Geometry2D.get_closest_points_between_segments)  math/geometry_2d.h\n- get_closest_points_between_segments  (Users-ks_128-Documents-godot-src-core.math.geometry_3d.Geometry3D.get_closest_points_between_segments)  math/geometry_3d.cpp\n- connect_points  (Users-ks_128-Documents-godot-src-core.math.a_star.AStar3D.connect_points)  math/a_star.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 17.02,
+  "cost_$": 0.013595,
+  "cache_read_tokens": 960,
+  "query": "A* 寻路在两点间返回了错误路径，忽略了一个障碍物。Godot 里负责计算寻路路径的是哪个类？",
+  "type": "bug_fix",
+  "gold": [
+    "AStar",
+    "core/math/a_star.h"
+  ],
+  "arm": "kb+openspec",
+  "run": 0,
+  "qid": "q29",
+  "correct": 1
+}

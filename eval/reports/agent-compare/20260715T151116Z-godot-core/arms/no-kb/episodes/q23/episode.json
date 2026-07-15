@@ -1,0 +1,28 @@
+{
+  "answer": "`RandomNumberGenerator`，定义在 `core/math/random_number_generator.h`。",
+  "input_tokens": 96,
+  "output_tokens": 65,
+  "total_tokens": 161,
+  "steps": 2,
+  "llm_calls": 2,
+  "tool_calls": [
+    "grep_code"
+  ],
+  "tool_steps": 1,
+  "tool_texts": [
+    "matched 1 files:\n/Users/ks_128/Documents/godot-src/core/math/random_number_generator.h"
+  ],
+  "truncated": false,
+  "wall_clock_s": 13.79,
+  "cost_$": 0.002809,
+  "cache_read_tokens": 1408,
+  "query": "随机数生成器用哪个类？",
+  "type": "code_retrieval",
+  "gold": [
+    "RandomNumberGenerator"
+  ],
+  "arm": "no-kb",
+  "run": 0,
+  "qid": "q23",
+  "correct": 1
+}

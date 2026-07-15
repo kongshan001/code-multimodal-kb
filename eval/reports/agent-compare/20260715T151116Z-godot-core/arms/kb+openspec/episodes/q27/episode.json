@@ -1,0 +1,33 @@
+{
+  "answer": "Godot 中删除/释放对象的底层核心函数和机制：\n\n**面向对象层（Script/GDScript 调用）**\n- `Object::free()` — 脚本侧释放对象的入口（`object/object.cpp`）\n- `Object::cancel_free()` — 取消 free 流程\n\n**底层释放（C++ 内核）**\n- `memdelete()` — 内存释放宏/模板（`os/memory.h`），所有堆对象最终经此释放\n- `memdelete_allocator()` / `memdelete_arr()` — 对应自定义分配器/数组版本\n- `Object::_predelete()` — 析构前回调钩子，派生类可重写做清理\n- `predelete_handler()` — 预删除处理器，在 `_predelete` 与实际 `memdelete` 之间执行 script 析构、信号断开等\n\n**use-after-free 调试相关**\n- `ObjectDB` / 对象 ID 表（`instance_binding`、`ObjectID`）— 可在 Object 被释放后检测悬垂引用（引擎 DEBUG 下常见 \"Invalid Object\" / \"pointer being freed was not allocated\" 报错即来自此）\n\n排查 use-after-free 时，`free()`/`memdelete` 是释放端，`_predelete` 是最常重写清理逻辑的位置。",
+  "input_tokens": 1741,
+  "output_tokens": 421,
+  "total_tokens": 2162,
+  "steps": 4,
+  "llm_calls": 4,
+  "tool_calls": [
+    "cmm_search",
+    "cmm_search",
+    "cmm_search"
+  ],
+  "tool_steps": 3,
+  "tool_texts": [
+    "- action_release  (Users-ks_128-Documents-godot-src-core.input.input.Input.action_release)  input/input.cpp\n- cancel_free  (Users-ks_128-Documents-godot-src-core.object.object.Object.cancel_free)  object/object.cpp\n- release_pressed_events  (Users-ks_128-Documents-godot-src-core.input.input.Input.release_pressed_events)  input/input.cpp\n- release_main_thread  (Users-ks_128-Documents-godot-src-core.os.thread.Thread.release_main_thread)  os/thread.h\n- free_instance_binding  (Users-ks_128-Documents-godot-src-core.object.object.Object.free_instance_binding)  object/object.cpp",
+    "- free_instance_binding  (Users-ks_128-Documents-godot-src-core.object.object.Object.free_instance_binding)  object/object.cpp\n- gdextension_object_free_instance_binding  (Users-ks_128-Documents-godot-src-core.extension.gdextension_interface.gdextension_object_free_instance_binding)  extension/gdextension_interface.cpp\n- placeholder_class_free_instance  (Users-ks_128-Documents-godot-src-core.object.class_db.PlaceholderExtensionInstance.placeholder_class_free_instance)  object/class_db.cpp\n- placeholder_instance_free_property_list  (Users-ks_128-Documents-godot-src-core.object.class_db.PlaceholderExtensionInstance.placeholder_instance_free_property_list)  object/class_db.cpp\n- cancel_free  (Users-ks_128-Documents-godot-src-core.object.object.Object.cancel_free)  object/object.cpp",
+    "- _predelete  (Users-ks_128-Documents-godot-src-core.object.object.Object._predelete)  object/object.cpp\n- predelete_handler  (Users-ks_128-Documents-godot-src-core.object.object.predelete_handler)  object/object.cpp\n- memdelete  (Users-ks_128-Documents-godot-src-core.os.memory.memdelete)  os/memory.h\n- memdelete_allocator  (Users-ks_128-Documents-godot-src-core.os.memory.memdelete_allocator)  os/memory.h\n- memdelete_arr  (Users-ks_128-Documents-godot-src-core.os.memory.memdelete_arr)  os/memory.h"
+  ],
+  "truncated": false,
+  "wall_clock_s": 29.82,
+  "cost_$": 0.021022,
+  "cache_read_tokens": 3584,
+  "query": "对象内存泄漏：某对象被释放后仍被引用（use-after-free）。Godot 里删除/释放对象的底层函数叫什么？",
+  "type": "bug_fix",
+  "gold": [
+    "core/memory/memory.h",
+    "memdelete"
+  ],
+  "arm": "kb+openspec",
+  "run": 0,
+  "qid": "q27",
+  "correct": 1
+}

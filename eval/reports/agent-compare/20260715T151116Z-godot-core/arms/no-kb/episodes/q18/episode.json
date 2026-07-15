@@ -1,0 +1,28 @@
+{
+  "answer": "引擎主类是 **`Engine`**，定义在 `core/config/engine.h`。",
+  "input_tokens": 846,
+  "output_tokens": 83,
+  "total_tokens": 929,
+  "steps": 2,
+  "llm_calls": 2,
+  "tool_calls": [
+    "grep_code"
+  ],
+  "tool_steps": 1,
+  "tool_texts": [
+    "matched 4 files:\n/Users/ks_128/Documents/godot-src/core/config/engine.h\n/Users/ks_128/Documents/godot-src/core/debugger/engine_debugger.h\n/Users/ks_128/Documents/godot-src/core/debugger/engine_profiler.h\n/Users/ks_128/Documents/godot-src/core/core_bind.h"
+  ],
+  "truncated": false,
+  "wall_clock_s": 8.64,
+  "cost_$": 0.006657,
+  "cache_read_tokens": 704,
+  "query": "引擎主类叫什么？",
+  "type": "code_retrieval",
+  "gold": [
+    "Engine"
+  ],
+  "arm": "no-kb",
+  "run": 0,
+  "qid": "q18",
+  "correct": 1
+}

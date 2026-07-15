@@ -1,0 +1,29 @@
+{
+  "answer": "Godot 中负责 A* 寻路路径计算的类有：\n\n- **`AStar3D`** — 3D 空间的 A* 寻路（`math/a_star.cpp`）\n- **`AStar2D`** — 2D 空间的 A* 寻路（`math/a_star.cpp`）\n- **`AStarGrid2D`** — 2D 网格专用 A* 寻路（`math/a_star_grid_2d.cpp`）\n\n如果需要导航系统（NavigationServer 端）的路径计算，则是 **`NavigationServer3D`** / **`NavigationServer2D`**，它们底层调用 `navmesh` 做路径查找，与上述 A* 实现不同。\n\n你的场景是哪种？2D、3D 还是网格？以及用的是 `AStarGrid2D` / `AStar3D` 还是导航服务器？告诉我可以进一步定位到具体算法或方法。",
+  "input_tokens": 365,
+  "output_tokens": 347,
+  "total_tokens": 712,
+  "steps": 2,
+  "llm_calls": 2,
+  "tool_calls": [
+    "cmm_search"
+  ],
+  "tool_steps": 1,
+  "tool_texts": [
+    "- _compute_cost  (Users-ks_128-Documents-godot-src-core.math.a_star.AStar3D._compute_cost)  math/a_star.cpp\n- _compute_cost  (Users-ks_128-Documents-godot-src-core.math.a_star.AStar2D._compute_cost)  math/a_star.cpp\n- _compute_cost  (Users-ks_128-Documents-godot-src-core.math.a_star_grid_2d.AStarGrid2D._compute_cost)  math/a_star_grid_2d.cpp\n- set_default_compute_heuristic  (Users-ks_128-Documents-godot-src-core.math.a_star_grid_2d.AStarGrid2D.set_default_compute_heuristic)  math/a_star_grid_2d.cpp\n- get_default_compute_heuristic  (Users-ks_128-Documents-godot-src-core.math.a_star_grid_2d.AStarGrid2D.get_default_compute_heuristic)  math/a_star_grid_2d.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 22.98,
+  "cost_$": 0.011524,
+  "cache_read_tokens": 2048,
+  "query": "A* 寻路在两点间返回了错误路径，忽略了一个障碍物。Godot 里负责计算寻路路径的是哪个类？",
+  "type": "bug_fix",
+  "gold": [
+    "AStar",
+    "core/math/a_star.h"
+  ],
+  "arm": "kb+superpowers",
+  "run": 0,
+  "qid": "q29",
+  "correct": 1
+}

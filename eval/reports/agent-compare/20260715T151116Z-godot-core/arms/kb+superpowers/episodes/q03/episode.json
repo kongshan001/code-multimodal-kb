@@ -1,0 +1,30 @@
+{
+  "answer": "在 Godot core 中，按层次：\n\n| 函数 | 用途 |\n|---|---|\n| **`memdelete(ptr)`** | 删除 `memnew` 创建的对象，最常用（os/memory.h） |\n| `memfree(ptr)` | 释放 `memalloc` 分配的原始内存 |\n| `Memory::free_static()` | 静态释放（自定义 allocator 场景） |\n| `Object::free()` | Object 层释放（Node 走 `queue_free()` 延迟到帧末） |\n\n**核心答案**：C++ 层删对象用 **`memdelete`**。",
+  "input_tokens": 1576,
+  "output_tokens": 374,
+  "total_tokens": 1950,
+  "steps": 3,
+  "llm_calls": 3,
+  "tool_calls": [
+    "cmm_search",
+    "cmm_search"
+  ],
+  "tool_steps": 2,
+  "tool_texts": [
+    "- operator delete  (Users-ks_128-Documents-godot-src-core.os.memory.operator delete)  os/memory.h\n- delete_allocation  (Users-ks_128-Documents-godot-src-core.os.memory.DefaultTypedAllocator.delete_allocation)  os/memory.h\n- free_static  (Users-ks_128-Documents-godot-src-core.os.memory.Memory.free_static)  os/memory.cpp\n- free  (Users-ks_128-Documents-godot-src-core.os.memory.DefaultAllocator.free)  os/memory.h\n- free_aligned_static  (Users-ks_128-Documents-godot-src-core.os.memory.Memory.free_aligned_static)  os/memory.cpp",
+    "- free_instance_binding  (Users-ks_128-Documents-godot-src-core.object.object.Object.free_instance_binding)  object/object.cpp\n- gdextension_object_free_instance_binding  (Users-ks_128-Documents-godot-src-core.extension.gdextension_interface.gdextension_object_free_instance_binding)  extension/gdextension_interface.cpp\n- placeholder_class_free_instance  (Users-ks_128-Documents-godot-src-core.object.class_db.PlaceholderExtensionInstance.placeholder_class_free_instance)  object/class_db.cpp\n- placeholder_instance_free_property_list  (Users-ks_128-Documents-godot-src-core.object.class_db.PlaceholderExtensionInstance.placeholder_instance_free_property_list)  object/class_db.cpp\n- memdelete  (Users-ks_128-Documents-godot-src-core.os.memory.memdelete)  os/memory.h"
+  ],
+  "truncated": false,
+  "wall_clock_s": 27.95,
+  "cost_$": 0.018349999999999998,
+  "cache_read_tokens": 2240,
+  "query": "删除对象、释放内存用哪个函数？",
+  "type": "code_retrieval",
+  "gold": [
+    "memdelete"
+  ],
+  "arm": "kb+superpowers",
+  "run": 0,
+  "qid": "q03",
+  "correct": 1
+}

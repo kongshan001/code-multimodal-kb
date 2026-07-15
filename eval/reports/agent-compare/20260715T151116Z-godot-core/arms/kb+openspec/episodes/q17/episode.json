@@ -1,0 +1,28 @@
+{
+  "answer": "`MessageQueue`（`core/object/message_queue.cpp`）。内部还用了 `CallQueue`。",
+  "input_tokens": 916,
+  "output_tokens": 61,
+  "total_tokens": 977,
+  "steps": 2,
+  "llm_calls": 2,
+  "tool_calls": [
+    "cmm_search"
+  ],
+  "tool_steps": 1,
+  "tool_texts": [
+    "- MessageQueue  (Users-ks_128-Documents-godot-src-core.object.message_queue.MessageQueue.MessageQueue)  object/message_queue.cpp\n- ~MessageQueue  (Users-ks_128-Documents-godot-src-core.object.message_queue.MessageQueue.~MessageQueue)  object/message_queue.cpp\n- CallQueue  (Users-ks_128-Documents-godot-src-core.object.message_queue.CallQueue.CallQueue)  object/message_queue.cpp\n- ~CallQueue  (Users-ks_128-Documents-godot-src-core.object.message_queue.CallQueue.~CallQueue)  object/message_queue.cpp\n- flush  (Users-ks_128-Documents-godot-src-core.object.message_queue.CallQueue.flush)  object/message_queue.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 21.02,
+  "cost_$": 0.006745000000000001,
+  "cache_read_tokens": 1280,
+  "query": "消息队列用哪个类？",
+  "type": "code_retrieval",
+  "gold": [
+    "MessageQueue"
+  ],
+  "arm": "kb+openspec",
+  "run": 0,
+  "qid": "q17",
+  "correct": 1
+}
