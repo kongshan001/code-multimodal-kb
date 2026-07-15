@@ -1,0 +1,552 @@
+{
+  "subject": "ab-value-stage0",
+  "variant": "godot-stage0",
+  "target": "godot",
+  "n": 26,
+  "aggregate": {
+    "n": 26,
+    "mean_kb_tokens": 195.4,
+    "mean_naive_read_tokens": 1749.7,
+    "mean_compression_read": 12.71,
+    "mean_kb_hit@5": 0.846,
+    "grep_miss_count": 7,
+    "naive_max_files": 3,
+    "naive_per_file_cap_chars": 4000
+  },
+  "per_query": [
+    {
+      "query": "string format",
+      "gold": [
+        "vformat"
+      ],
+      "kb_top5": [
+        "format",
+        "format_number",
+        "_get_string",
+        "get_unicode_string",
+        "save_unicode_string"
+      ],
+      "kb_tokens": 229,
+      "kb_hit@5": 0.0,
+      "naive_file_count": 7,
+      "naive_list_tokens": 111,
+      "naive_read_tokens": 2822,
+      "compression_read": 12.32,
+      "grep_miss": false
+    },
+    {
+      "query": "int to string",
+      "gold": [
+        "itos"
+      ],
+      "kb_top5": [
+        "to_int",
+        "_to_int",
+        "hex_to_int",
+        "bin_to_int",
+        "as_int"
+      ],
+      "kb_tokens": 176,
+      "kb_hit@5": 0.0,
+      "naive_file_count": 0,
+      "naive_list_tokens": 1,
+      "naive_read_tokens": 1,
+      "compression_read": 0.01,
+      "grep_miss": true
+    },
+    {
+      "query": "delete object free memory",
+      "gold": [
+        "memdelete"
+      ],
+      "kb_top5": [
+        "operator delete",
+        "delete_allocation",
+        "free_static",
+        "free",
+        "free_aligned_static"
+      ],
+      "kb_tokens": 181,
+      "kb_hit@5": 0.0,
+      "naive_file_count": 0,
+      "naive_list_tokens": 1,
+      "naive_read_tokens": 1,
+      "compression_read": 0.01,
+      "grep_miss": true
+    },
+    {
+      "query": "a star pathfinding",
+      "gold": [
+        "AStar"
+      ],
+      "kb_top5": [
+        "~AStar3D",
+        "clear",
+        "_solve",
+        "clear",
+        "_solve"
+      ],
+      "kb_tokens": 166,
+      "kb_hit@5": 1.0,
+      "naive_file_count": 0,
+      "naive_list_tokens": 1,
+      "naive_read_tokens": 1,
+      "compression_read": 0.01,
+      "grep_miss": true
+    },
+    {
+      "query": "operating system abstraction",
+      "gold": [
+        "OS"
+      ],
+      "kb_top5": [
+        "get_system_fonts",
+        "get_system_dir",
+        "get_system_dir",
+        "get_system_fonts",
+        "get_system_ca_certificates"
+      ],
+      "kb_tokens": 178,
+      "kb_hit@5": 1.0,
+      "naive_file_count": 0,
+      "naive_list_tokens": 1,
+      "naive_read_tokens": 1,
+      "compression_read": 0.01,
+      "grep_miss": true
+    },
+    {
+      "query": "color",
+      "gold": [
+        "Color"
+      ],
+      "kb_top5": [
+        "Color",
+        "find_named_color",
+        "get_named_color",
+        "get_named_color_count",
+        "get_named_color_name"
+      ],
+      "kb_tokens": 184,
+      "kb_hit@5": 1.0,
+      "naive_file_count": 46,
+      "naive_list_tokens": 710,
+      "naive_read_tokens": 3000,
+      "compression_read": 16.3,
+      "grep_miss": false
+    },
+    {
+      "query": "vector2",
+      "gold": [
+        "Vector2"
+      ],
+      "kb_top5": [
+        "Vector2",
+        "angle",
+        "length",
+        "normalize",
+        "normalized"
+      ],
+      "kb_tokens": 169,
+      "kb_hit@5": 1.0,
+      "naive_file_count": 64,
+      "naive_list_tokens": 971,
+      "naive_read_tokens": 3000,
+      "compression_read": 17.75,
+      "grep_miss": false
+    },
+    {
+      "query": "vector3",
+      "gold": [
+        "Vector3"
+      ],
+      "kb_top5": [
+        "Vector3",
+        "rotate",
+        "rotated",
+        "snap",
+        "snapped"
+      ],
+      "kb_tokens": 166,
+      "kb_hit@5": 1.0,
+      "naive_file_count": 73,
+      "naive_list_tokens": 1082,
+      "naive_read_tokens": 3000,
+      "compression_read": 18.07,
+      "grep_miss": false
+    },
+    {
+      "query": "quaternion",
+      "gold": [
+        "Quaternion"
+      ],
+      "kb_top5": [
+        "Quaternion",
+        "length",
+        "normalize",
+        "normalized",
+        "inverse"
+      ],
+      "kb_tokens": 185,
+      "kb_hit@5": 1.0,
+      "naive_file_count": 30,
+      "naive_list_tokens": 473,
+      "naive_read_tokens": 3000,
+      "compression_read": 16.22,
+      "grep_miss": false
+    },
+    {
+      "query": "rect2",
+      "gold": [
+        "Rect2"
+      ],
+      "kb_top5": [
+        "Rect2",
+        "intersects",
+        "encloses",
+        "intersection",
+        "merge"
+      ],
+      "kb_tokens": 163,
+      "kb_hit@5": 1.0,
+      "naive_file_count": 39,
+      "naive_list_tokens": 585,
+      "naive_read_tokens": 3000,
+      "compression_read": 18.4,
+      "grep_miss": false
+    },
+    {
+      "query": "json",
+      "gold": [
+        "JSON"
+      ],
+      "kb_top5": [
+        "_stringify",
+        "parse",
+        "stringify",
+        "_add_indent",
+        "_get_token"
+      ],
+      "kb_tokens": 160,
+      "kb_hit@5": 1.0,
+      "naive_file_count": 15,
+      "naive_list_tokens": 239,
+      "naive_read_tokens": 2664,
+      "compression_read": 16.65,
+      "grep_miss": false
+    },
+    {
+      "query": "image",
+      "gold": [
+        "Image"
+      ],
+      "kb_top5": [
+        "Image",
+        "validate_3d_image",
+        "compute_image_metrics",
+        "_get_dst_image_size",
+        "get_image_data_size"
+      ],
+      "kb_tokens": 181,
+      "kb_hit@5": 1.0,
+      "naive_file_count": 15,
+      "naive_list_tokens": 232,
+      "naive_read_tokens": 3000,
+      "compression_read": 16.57,
+      "grep_miss": false
+    },
+    {
+      "query": "resource loader",
+      "gold": [
+        "ResourceLoader"
+      ],
+      "kb_top5": [
+        "add_resource_format_loader",
+        "remove_resource_format_loader",
+        "_find_custom_resource_format_loader",
+        "add_custom_resource_format_loader",
+        "~ResourceFormatLoader"
+      ],
+      "kb_tokens": 250,
+      "kb_hit@5": 1.0,
+      "naive_file_count": 1,
+      "naive_list_tokens": 15,
+      "naive_read_tokens": 1000,
+      "compression_read": 4.0,
+      "grep_miss": false
+    },
+    {
+      "query": "resource saver",
+      "gold": [
+        "ResourceSaver"
+      ],
+      "kb_top5": [
+        "add_resource_format_saver",
+        "remove_resource_format_saver",
+        "_find_custom_resource_format_saver",
+        "add_custom_resource_format_saver",
+        "~ResourceFormatSaver"
+      ],
+      "kb_tokens": 244,
+      "kb_hit@5": 1.0,
+      "naive_file_count": 1,
+      "naive_list_tokens": 15,
+      "naive_read_tokens": 1000,
+      "compression_read": 4.1,
+      "grep_miss": false
+    },
+    {
+      "query": "file access",
+      "gold": [
+        "FileAccess"
+      ],
+      "kb_top5": [
+        "~FileAccess",
+        "~FileAccessCompressed",
+        "~FileAccessEncrypted",
+        "FileAccessPack",
+        "FileAccessZip"
+      ],
+      "kb_tokens": 223,
+      "kb_hit@5": 1.0,
+      "naive_file_count": 2,
+      "naive_list_tokens": 28,
+      "naive_read_tokens": 2000,
+      "compression_read": 8.97,
+      "grep_miss": false
+    },
+    {
+      "query": "directory access",
+      "gold": [
+        "DirAccess"
+      ],
+      "kb_top5": [
+        "add_directory",
+        "has_directory",
+        "try_open_directory",
+        "list_directory",
+        "list_directory"
+      ],
+      "kb_tokens": 209,
+      "kb_hit@5": 0.0,
+      "naive_file_count": 1,
+      "naive_list_tokens": 16,
+      "naive_read_tokens": 1000,
+      "compression_read": 4.78,
+      "grep_miss": false
+    },
+    {
+      "query": "message queue",
+      "gold": [
+        "MessageQueue"
+      ],
+      "kb_top5": [
+        "MessageQueue",
+        "~MessageQueue",
+        "CallQueue",
+        "~CallQueue",
+        "flush"
+      ],
+      "kb_tokens": 202,
+      "kb_hit@5": 1.0,
+      "naive_file_count": 1,
+      "naive_list_tokens": 15,
+      "naive_read_tokens": 1000,
+      "compression_read": 4.95,
+      "grep_miss": false
+    },
+    {
+      "query": "engine",
+      "gold": [
+        "Engine"
+      ],
+      "kb_top5": [
+        "Engine",
+        "~Engine",
+        "Engine",
+        "print_header",
+        "add_singleton"
+      ],
+      "kb_tokens": 174,
+      "kb_hit@5": 1.0,
+      "naive_file_count": 417,
+      "naive_list_tokens": 6347,
+      "naive_read_tokens": 3000,
+      "compression_read": 17.24,
+      "grep_miss": false
+    },
+    {
+      "query": "main loop",
+      "gold": [
+        "MainLoop"
+      ],
+      "kb_top5": [
+        "~MainLoop",
+        "get_main_loop",
+        "_register_main_loop_callbacks",
+        "initialize",
+        "process"
+      ],
+      "kb_tokens": 191,
+      "kb_hit@5": 1.0,
+      "naive_file_count": 3,
+      "naive_list_tokens": 46,
+      "naive_read_tokens": 3000,
+      "compression_read": 15.71,
+      "grep_miss": false
+    },
+    {
+      "query": "undo redo",
+      "gold": [
+        "UndoRedo"
+      ],
+      "kb_top5": [
+        "_redo",
+        "redo",
+        "undo",
+        "~UndoRedo",
+        "discard_redo"
+      ],
+      "kb_tokens": 182,
+      "kb_hit@5": 1.0,
+      "naive_file_count": 0,
+      "naive_list_tokens": 1,
+      "naive_read_tokens": 1,
+      "compression_read": 0.01,
+      "grep_miss": true
+    },
+    {
+      "query": "node path",
+      "gold": [
+        "NodePath"
+      ],
+      "kb_top5": [
+        "NodePath",
+        "~NodePath",
+        "get_node_path",
+        "init_node_path",
+        "rel_path_to"
+      ],
+      "kb_tokens": 203,
+      "kb_hit@5": 1.0,
+      "naive_file_count": 2,
+      "naive_list_tokens": 31,
+      "naive_read_tokens": 2000,
+      "compression_read": 9.85,
+      "grep_miss": false
+    },
+    {
+      "query": "string name",
+      "gold": [
+        "StringName"
+      ],
+      "kb_top5": [
+        "StringName",
+        "~StringName",
+        "is_node_unique_name",
+        "String",
+        "operator=="
+      ],
+      "kb_tokens": 195,
+      "kb_hit@5": 1.0,
+      "naive_file_count": 33,
+      "naive_list_tokens": 509,
+      "naive_read_tokens": 3000,
+      "compression_read": 15.38,
+      "grep_miss": false
+    },
+    {
+      "query": "random number generator",
+      "gold": [
+        "RandomNumberGenerator"
+      ],
+      "kb_top5": [
+        "RandomNumberGenerator",
+        "randomize",
+        "randi",
+        "randf",
+        "randfn"
+      ],
+      "kb_tokens": 231,
+      "kb_hit@5": 1.0,
+      "naive_file_count": 2,
+      "naive_list_tokens": 31,
+      "naive_read_tokens": 2000,
+      "compression_read": 8.66,
+      "grep_miss": false
+    },
+    {
+      "query": "crypto",
+      "gold": [
+        "Crypto"
+      ],
+      "kb_top5": [
+        "create",
+        "hmac_digest",
+        "_bind_methods",
+        "load_default_certificates",
+        "constant_time_compare"
+      ],
+      "kb_tokens": 193,
+      "kb_hit@5": 1.0,
+      "naive_file_count": 25,
+      "naive_list_tokens": 382,
+      "naive_read_tokens": 3000,
+      "compression_read": 15.54,
+      "grep_miss": false
+    },
+    {
+      "query": "translation server",
+      "gold": [
+        "TranslationServer"
+      ],
+      "kb_top5": [
+        "TranslationServer",
+        "add_translation",
+        "remove_translation",
+        "has_translation",
+        "get_translation_object"
+      ],
+      "kb_tokens": 242,
+      "kb_hit@5": 1.0,
+      "naive_file_count": 0,
+      "naive_list_tokens": 1,
+      "naive_read_tokens": 1,
+      "compression_read": 0.0,
+      "grep_miss": true
+    },
+    {
+      "query": "http client",
+      "gold": [
+        "HTTPClient"
+      ],
+      "kb_top5": [
+        "~HTTPClient",
+        "HTTPClientTCP",
+        "set_http_proxy",
+        "_get_http_data",
+        "set_http_proxy"
+      ],
+      "kb_tokens": 203,
+      "kb_hit@5": 1.0,
+      "naive_file_count": 0,
+      "naive_list_tokens": 1,
+      "naive_read_tokens": 1,
+      "compression_read": 0.0,
+      "grep_miss": true
+    }
+  ],
+  "lockfile": {
+    "temperature": 0.0,
+    "llm_model": "",
+    "cmm_version": "0.9.0",
+    "graphify_version": "0.9.13",
+    "mem0_version": "",
+    "mempalace_version": "3.5.0"
+  },
+  "archive_meta": {
+    "id": "20260713T013950Z-ab-value-stage0-godot-stage0",
+    "ts": "20260713T013950Z",
+    "readable_ts": "2026-07-13 09:39:50 +0800",
+    "path": "eval/reports/archive/20260713T013950Z-ab-value-stage0-godot-stage0.json"
+  }
+}

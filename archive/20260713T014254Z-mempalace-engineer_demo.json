@@ -1,0 +1,399 @@
+{
+  "subject": "mempalace",
+  "variant": "engineer_demo",
+  "target": "engineer_demo",
+  "n": 15,
+  "aggregate": {
+    "mean_recall@1": 0.6,
+    "mean_hit@1": 0.667,
+    "mean_recall@3": 0.8,
+    "mean_hit@3": 0.867,
+    "mean_recall@5": 0.867,
+    "mean_hit@5": 0.933,
+    "mean_recall@10": 0.867,
+    "mean_hit@10": 0.933,
+    "mean_unique_source_ratio@5": 0.64,
+    "routing_overall_accuracy": 1.0,
+    "routing_per_class": {
+      "objective": 1.0,
+      "procedural": 1.0,
+      "episodic": 1.0,
+      "subjective": 1.0
+    },
+    "routing_errors": [],
+    "routing_n": 13,
+    "injection_cap_search": 10,
+    "injection_cap_memory_md": 20
+  },
+  "per_query": [
+    {
+      "query": "记忆层选型 MemPalace 还是 Mem0",
+      "gold": [
+        "agent-memory-approach.md"
+      ],
+      "retrieved_top5": [
+        "de6c53eb-9070-4c8d-8ea1-70ff16c41f83.jsonl",
+        "cc561683-c6b6-4a5e-b0ff-286a5131d405.jsonl",
+        "agent-memory-approach.md",
+        "f4c1e4e6-d496-4489-a33b-a9c43b6bdac8.jsonl"
+      ],
+      "n_raw": 10,
+      "n_unique_source": 4,
+      "hit@1": 0.0,
+      "recall@1": 0.0,
+      "hit@3": 1.0,
+      "recall@3": 1.0,
+      "hit@5": 1.0,
+      "recall@5": 1.0,
+      "hit@10": 1.0,
+      "recall@10": 1.0,
+      "unique_source_ratio@5": 0.6
+    },
+    {
+      "query": "为什么不用 Mem0 改用 MemPalace",
+      "gold": [
+        "agent-memory-approach.md"
+      ],
+      "retrieved_top5": [
+        "agent-memory-approach.md",
+        "cc561683-c6b6-4a5e-b0ff-286a5131d405.jsonl",
+        "f4c1e4e6-d496-4489-a33b-a9c43b6bdac8.jsonl",
+        "dea83951-a28f-4977-a820-0fe6c1feae7a.jsonl",
+        "4cc582e9-94b7-4559-a0b6-c9f668c50c08.jsonl"
+      ],
+      "n_raw": 10,
+      "n_unique_source": 7,
+      "hit@1": 1.0,
+      "recall@1": 1.0,
+      "hit@3": 1.0,
+      "recall@3": 1.0,
+      "hit@5": 1.0,
+      "recall@5": 1.0,
+      "hit@10": 1.0,
+      "recall@10": 1.0,
+      "unique_source_ratio@5": 0.8
+    },
+    {
+      "query": "Mem0 三容器凭据墙阻塞",
+      "gold": [
+        "agent-memory-approach.md"
+      ],
+      "retrieved_top5": [
+        "agent-memory-approach.md",
+        "f4c1e4e6-d496-4489-a33b-a9c43b6bdac8.jsonl",
+        "4cc582e9-94b7-4559-a0b6-c9f668c50c08.jsonl",
+        "cc561683-c6b6-4a5e-b0ff-286a5131d405.jsonl",
+        "dea83951-a28f-4977-a820-0fe6c1feae7a.jsonl"
+      ],
+      "n_raw": 10,
+      "n_unique_source": 7,
+      "hit@1": 1.0,
+      "recall@1": 1.0,
+      "hit@3": 1.0,
+      "recall@3": 1.0,
+      "hit@5": 1.0,
+      "recall@5": 1.0,
+      "hit@10": 1.0,
+      "recall@10": 1.0,
+      "unique_source_ratio@5": 0.8
+    },
+    {
+      "query": "工具 skills commands 全局共享 ~/.claude",
+      "gold": [
+        "prefer-global-tool-sharing.md"
+      ],
+      "retrieved_top5": [
+        "2dad00e8-c5e1-42e2-b439-4dc148f7dacc.jsonl",
+        "prefer-global-tool-sharing.md",
+        "cc561683-c6b6-4a5e-b0ff-286a5131d405.jsonl",
+        "f4c1e4e6-d496-4489-a33b-a9c43b6bdac8.jsonl"
+      ],
+      "n_raw": 10,
+      "n_unique_source": 4,
+      "hit@1": 0.0,
+      "recall@1": 0.0,
+      "hit@3": 1.0,
+      "recall@3": 1.0,
+      "hit@5": 1.0,
+      "recall@5": 1.0,
+      "hit@10": 1.0,
+      "recall@10": 1.0,
+      "unique_source_ratio@5": 0.6
+    },
+    {
+      "query": "openspec skills 提取到全局 ~/.claude",
+      "gold": [
+        "prefer-global-tool-sharing.md"
+      ],
+      "retrieved_top5": [
+        "prefer-global-tool-sharing.md",
+        "2dad00e8-c5e1-42e2-b439-4dc148f7dacc.jsonl",
+        "cc561683-c6b6-4a5e-b0ff-286a5131d405.jsonl",
+        "de6c53eb-9070-4c8d-8ea1-70ff16c41f83.jsonl",
+        "f4c1e4e6-d496-4489-a33b-a9c43b6bdac8.jsonl"
+      ],
+      "n_raw": 10,
+      "n_unique_source": 6,
+      "hit@1": 1.0,
+      "recall@1": 1.0,
+      "hit@3": 1.0,
+      "recall@3": 1.0,
+      "hit@5": 1.0,
+      "recall@5": 1.0,
+      "hit@10": 1.0,
+      "recall@10": 1.0,
+      "unique_source_ratio@5": 0.6
+    },
+    {
+      "query": "每次改动提交 git main 并 push",
+      "gold": [
+        "MEMORY.md",
+        "commit-every-change-to-git.md"
+      ],
+      "retrieved_top5": [
+        "f4c1e4e6-d496-4489-a33b-a9c43b6bdac8.jsonl",
+        "cc561683-c6b6-4a5e-b0ff-286a5131d405.jsonl",
+        "commit-every-change-to-git.md",
+        "4cc582e9-94b7-4559-a0b6-c9f668c50c08.jsonl"
+      ],
+      "n_raw": 10,
+      "n_unique_source": 4,
+      "hit@1": 0.0,
+      "recall@1": 0.0,
+      "hit@3": 1.0,
+      "recall@3": 0.5,
+      "hit@5": 1.0,
+      "recall@5": 0.5,
+      "hit@10": 1.0,
+      "recall@10": 0.5,
+      "unique_source_ratio@5": 0.4
+    },
+    {
+      "query": "commit message 结尾 Co-Authored-By",
+      "gold": [
+        "MEMORY.md",
+        "commit-every-change-to-git.md"
+      ],
+      "retrieved_top5": [
+        "commit-every-change-to-git.md",
+        "cc561683-c6b6-4a5e-b0ff-286a5131d405.jsonl",
+        "MEMORY.md",
+        "agent-aaab0b7b62994f180.jsonl",
+        "agent-af1fd348c7bad4c83.jsonl"
+      ],
+      "n_raw": 10,
+      "n_unique_source": 6,
+      "hit@1": 1.0,
+      "recall@1": 0.5,
+      "hit@3": 1.0,
+      "recall@3": 1.0,
+      "hit@5": 1.0,
+      "recall@5": 1.0,
+      "hit@10": 1.0,
+      "recall@10": 1.0,
+      "unique_source_ratio@5": 0.6
+    },
+    {
+      "query": "MEMORY.md 索引现在有几条记忆",
+      "gold": [
+        "MEMORY.md"
+      ],
+      "retrieved_top5": [
+        "dea83951-a28f-4977-a820-0fe6c1feae7a.jsonl",
+        "f4c1e4e6-d496-4489-a33b-a9c43b6bdac8.jsonl",
+        "agent-memory-approach.md",
+        "agent-aaab0b7b62994f180.jsonl",
+        "cc561683-c6b6-4a5e-b0ff-286a5131d405.jsonl"
+      ],
+      "n_raw": 10,
+      "n_unique_source": 5,
+      "hit@1": 0.0,
+      "recall@1": 0.0,
+      "hit@3": 0.0,
+      "recall@3": 0.0,
+      "hit@5": 0.0,
+      "recall@5": 0.0,
+      "hit@10": 0.0,
+      "recall@10": 0.0,
+      "unique_source_ratio@5": 1.0
+    },
+    {
+      "query": "新需求一律走 openspec 先 spec 后码",
+      "gold": [
+        "f4c1e4e6-d496-4489-a33b-a9c43b6bdac8.jsonl"
+      ],
+      "retrieved_top5": [
+        "f4c1e4e6-d496-4489-a33b-a9c43b6bdac8.jsonl",
+        "agent-aa9720fdd5724c092.jsonl",
+        "dea83951-a28f-4977-a820-0fe6c1feae7a.jsonl",
+        "cc561683-c6b6-4a5e-b0ff-286a5131d405.jsonl",
+        "2dad00e8-c5e1-42e2-b439-4dc148f7dacc.jsonl"
+      ],
+      "n_raw": 10,
+      "n_unique_source": 8,
+      "hit@1": 1.0,
+      "recall@1": 1.0,
+      "hit@3": 1.0,
+      "recall@3": 1.0,
+      "hit@5": 1.0,
+      "recall@5": 1.0,
+      "hit@10": 1.0,
+      "recall@10": 1.0,
+      "unique_source_ratio@5": 0.8
+    },
+    {
+      "query": "Intel Mac onnxruntime 必须 python 3.11 装 mempalace",
+      "gold": [
+        "de6c53eb-9070-4c8d-8ea1-70ff16c41f83.jsonl"
+      ],
+      "retrieved_top5": [
+        "de6c53eb-9070-4c8d-8ea1-70ff16c41f83.jsonl",
+        "f4c1e4e6-d496-4489-a33b-a9c43b6bdac8.jsonl"
+      ],
+      "n_raw": 10,
+      "n_unique_source": 2,
+      "hit@1": 1.0,
+      "recall@1": 1.0,
+      "hit@3": 1.0,
+      "recall@3": 1.0,
+      "hit@5": 1.0,
+      "recall@5": 1.0,
+      "hit@10": 1.0,
+      "recall@10": 1.0,
+      "unique_source_ratio@5": 0.2
+    },
+    {
+      "query": "代码检索 BM25 broad@5 0.846 grep 0.692",
+      "gold": [
+        "de6c53eb-9070-4c8d-8ea1-70ff16c41f83.jsonl"
+      ],
+      "retrieved_top5": [
+        "de6c53eb-9070-4c8d-8ea1-70ff16c41f83.jsonl",
+        "f4c1e4e6-d496-4489-a33b-a9c43b6bdac8.jsonl",
+        "cc561683-c6b6-4a5e-b0ff-286a5131d405.jsonl"
+      ],
+      "n_raw": 10,
+      "n_unique_source": 3,
+      "hit@1": 1.0,
+      "recall@1": 1.0,
+      "hit@3": 1.0,
+      "recall@3": 1.0,
+      "hit@5": 1.0,
+      "recall@5": 1.0,
+      "hit@10": 1.0,
+      "recall@10": 1.0,
+      "unique_source_ratio@5": 0.6
+    },
+    {
+      "query": "跨工具 anchoring 文档到代码 成功率",
+      "gold": [
+        "agent-af1fd348c7bad4c83.jsonl",
+        "de6c53eb-9070-4c8d-8ea1-70ff16c41f83.jsonl"
+      ],
+      "retrieved_top5": [
+        "agent-af1fd348c7bad4c83.jsonl",
+        "agent-aa9720fdd5724c092.jsonl",
+        "f4c1e4e6-d496-4489-a33b-a9c43b6bdac8.jsonl",
+        "agent-aaab0b7b62994f180.jsonl",
+        "cc561683-c6b6-4a5e-b0ff-286a5131d405.jsonl"
+      ],
+      "n_raw": 10,
+      "n_unique_source": 5,
+      "hit@1": 1.0,
+      "recall@1": 0.5,
+      "hit@3": 1.0,
+      "recall@3": 0.5,
+      "hit@5": 1.0,
+      "recall@5": 0.5,
+      "hit@10": 1.0,
+      "recall@10": 0.5,
+      "unique_source_ratio@5": 0.6
+    },
+    {
+      "query": "图检索对精确片段召回弱于向量",
+      "gold": [
+        "4cc582e9-94b7-4559-a0b6-c9f668c50c08.jsonl"
+      ],
+      "retrieved_top5": [
+        "4cc582e9-94b7-4559-a0b6-c9f668c50c08.jsonl",
+        "f4c1e4e6-d496-4489-a33b-a9c43b6bdac8.jsonl",
+        "agent-aaab0b7b62994f180.jsonl",
+        "prefer-global-tool-sharing.md",
+        "agent-aa9720fdd5724c092.jsonl"
+      ],
+      "n_raw": 10,
+      "n_unique_source": 6,
+      "hit@1": 1.0,
+      "recall@1": 1.0,
+      "hit@3": 1.0,
+      "recall@3": 1.0,
+      "hit@5": 1.0,
+      "recall@5": 1.0,
+      "hit@10": 1.0,
+      "recall@10": 1.0,
+      "unique_source_ratio@5": 0.6
+    },
+    {
+      "query": "记忆四层归属判定测试金句",
+      "gold": [
+        "f4c1e4e6-d496-4489-a33b-a9c43b6bdac8.jsonl"
+      ],
+      "retrieved_top5": [
+        "f4c1e4e6-d496-4489-a33b-a9c43b6bdac8.jsonl",
+        "4cc582e9-94b7-4559-a0b6-c9f668c50c08.jsonl",
+        "cc561683-c6b6-4a5e-b0ff-286a5131d405.jsonl",
+        "agent-aefb2cc8eda86e670.jsonl",
+        "agent-aaab0b7b62994f180.jsonl"
+      ],
+      "n_raw": 10,
+      "n_unique_source": 6,
+      "hit@1": 1.0,
+      "recall@1": 1.0,
+      "hit@3": 1.0,
+      "recall@3": 1.0,
+      "hit@5": 1.0,
+      "recall@5": 1.0,
+      "hit@10": 1.0,
+      "recall@10": 1.0,
+      "unique_source_ratio@5": 0.8
+    },
+    {
+      "query": "文档答案质量 faithfulness 卡 429 限流",
+      "gold": [
+        "f4c1e4e6-d496-4489-a33b-a9c43b6bdac8.jsonl"
+      ],
+      "retrieved_top5": [
+        "agent-aaab0b7b62994f180.jsonl",
+        "cc561683-c6b6-4a5e-b0ff-286a5131d405.jsonl",
+        "de6c53eb-9070-4c8d-8ea1-70ff16c41f83.jsonl",
+        "f4c1e4e6-d496-4489-a33b-a9c43b6bdac8.jsonl",
+        "agent-aa9720fdd5724c092.jsonl"
+      ],
+      "n_raw": 10,
+      "n_unique_source": 6,
+      "hit@1": 0.0,
+      "recall@1": 0.0,
+      "hit@3": 0.0,
+      "recall@3": 0.0,
+      "hit@5": 1.0,
+      "recall@5": 1.0,
+      "hit@10": 1.0,
+      "recall@10": 1.0,
+      "unique_source_ratio@5": 0.6
+    }
+  ],
+  "lockfile": {
+    "temperature": 0.0,
+    "llm_model": "",
+    "cmm_version": "0.9.0",
+    "graphify_version": "0.9.13",
+    "mem0_version": "",
+    "mempalace_version": "3.5.0"
+  },
+  "archive_meta": {
+    "id": "20260713T014254Z-mempalace-engineer_demo",
+    "ts": "20260713T014254Z",
+    "readable_ts": "2026-07-13 09:42:54 +0800",
+    "path": "eval/reports/archive/20260713T014254Z-mempalace-engineer_demo.json"
+  }
+}
