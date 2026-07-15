@@ -1,0 +1,28 @@
+{
+  "answer": "`TranslationServer`（定义在 `core/string/translation_server.cpp`）。\n\n主要方法包括：\n- `add_translation` / `remove_translation` / `has_translation` — 管理翻译资源\n- `get_translation_object` — 获取翻译对象\n- 此外还有 `translate`、`set_locale`、`get_locale` 等常用方法。",
+  "input_tokens": 1441,
+  "output_tokens": 93,
+  "total_tokens": 1534,
+  "steps": 2,
+  "llm_calls": 2,
+  "tool_calls": [
+    "cmm_search"
+  ],
+  "tool_steps": 1,
+  "tool_texts": [
+    "- TranslationServer  (Users-ks_128-Documents-godot-src-core.string.translation_server.TranslationServer.TranslationServer)  string/translation_server.cpp\n- add_translation  (Users-ks_128-Documents-godot-src-core.string.translation_server.TranslationServer.add_translation)  string/translation_server.cpp\n- remove_translation  (Users-ks_128-Documents-godot-src-core.string.translation_server.TranslationServer.remove_translation)  string/translation_server.cpp\n- has_translation  (Users-ks_128-Documents-godot-src-core.string.translation_server.TranslationServer.has_translation)  string/translation_server.cpp\n- get_translation_object  (Users-ks_128-Documents-godot-src-core.string.translation_server.TranslationServer.get_translation_object)  string/translation_server.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 8.48,
+  "cost_$": 0.0011,
+  "cache_read_tokens": 0,
+  "query": "翻译/本地化服务器用哪个类？",
+  "type": "code_retrieval",
+  "gold": [
+    "TranslationServer"
+  ],
+  "arm": "kb+openspec",
+  "run": 0,
+  "qid": "q25",
+  "correct": 1
+}

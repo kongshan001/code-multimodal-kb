@@ -1,0 +1,41 @@
+{
+  "answer": "Godot 中删除/释放对象的底层函数主要有：\n\n1. **`memdelete()`** — 定义在 `core/os/memory.h`，是最底层的内存释放宏/模板，负责调用析构函数并释放 `memnew` 分配的内存。\n\n2. **`Object::predelete()`** — 定义在 `core/object/object.cpp`，是 Object 级别的释放入口。它会：\n   - 设置内部标志（`_block_signals`、标记正在销毁）；\n   - 调用虚函数 **`Object::_predelete()`**（子类可重写，如 `Node::_predelete()` 做场景树脱离）；\n   - 调用 **`Object::notification(NOTIFICATION_PREDELETE)`**，让对象在析构前收到通知。\n\n3. **`Object::~Object()`** — 析构函数，发送 **`NOTIFICATION_PREDELETE`** 之后的最终清理，断开信号连接等。\n\n**典型调用链：**\n\n```\nmemdelete(obj)\n  → obj->predelete()        // Object::predelete()\n      → obj->_predelete()   // 虚函数，Node 等子类重写\n      → obj->notification(NOTIFICATION_PREDELETE)\n  → ~Object()               // 析构\n```\n\n对于 **`RefCounted`**（引用计数对象），当引用计数归零时由 **`RefCounted::unreference()`** 触发 `memdelete`。\n\n对于 **`Node`**，上层还有 **`Object::free()`**（通过 `call(\"free\")` 或 GDScript 的 `queue_free()` / `Object.free()`），最终也走到 `memdelete`。\n\n**与 use-after-free 相关的关键点：** 释放后可通过 **`ObjectDB`**（实例 ID → 对象的映射）或 `Object::get_instance_id()` / `ObjectDB::get_instance()` 来检测对象是否仍然有效，Godot 内部用 `instance_binding` 和 instance ID 机制来帮助诊断悬空引用。",
+  "input_tokens": 4509,
+  "output_tokens": 549,
+  "total_tokens": 5058,
+  "steps": 6,
+  "llm_calls": 6,
+  "tool_calls": [
+    "grep_code",
+    "grep_code",
+    "grep_code",
+    "grep_code",
+    "grep_code",
+    "grep_code",
+    "grep_code"
+  ],
+  "tool_steps": 7,
+  "tool_texts": [
+    "matched 20 files:\n/Users/ks_128/Documents/godot-src/core/crypto/hashing_context.cpp\n/Users/ks_128/Documents/godot-src/core/extension/gdextension_interface.cpp\n/Users/ks_128/Documents/godot-src/core/extension/gdextension.cpp\n/Users/ks_128/Documents/godot-src/core/io/udp_server.cpp\n/Users/ks_128/Documents/godot-src/core/io/xml_parser.cpp\n/Users/ks_128/Documents/godot-src/core/io/image.cpp\n/Users/ks_128/Documents/godot-src/core/io/resource.cpp\n/Users/ks_128/Documents/godot-src/core/io/file_access_memory.cpp\n/Users/ks_128/Documents/godot-src/core/io/resource_loader.cpp\n/Users/ks_128/Documents/godot-src/core/io/ip.cpp\n/Users/ks_128/Documents/godot-src/core/io/file_access_encrypted.cpp\n/Users/ks_128/Documents/godot-src/core/io/file_access_zip.cpp\n/Users/ks_128/Documents/godot-src/core/io/resource_format_binary.cpp\n/Users/ks_128/Documents/godot-src/core/io/file_access_pack.cpp\n/Users/ks_128/Documents/godot-src/core/io/resource_uid.cpp\n/Users/ks_128/Documents/godot-src/core/io/logger.cpp\n/Users/ks_128/Documents/godot-src/core/math/geometry_3d.cpp\n/Users/ks_128/Documents/godot-src/core/math/expression.h\n/Users/ks_128/Documents/godot-src/core/math/disjoint_set.h\n/Users/ks_128/Documents/godot-src/core/math/expression.cpp",
+    "(no matches)",
+    "matched 1 files:\n/Users/ks_128/Documents/godot-src/core/object/object.cpp",
+    "(no matches)",
+    "(no matches)",
+    "(no matches)",
+    "matched 3 files:\n/Users/ks_128/Documents/godot-src/core/object/object.cpp\n/Users/ks_128/Documents/godot-src/core/object/object.h\n/Users/ks_128/Documents/godot-src/core/os/memory.h"
+  ],
+  "truncated": false,
+  "wall_clock_s": 33.06,
+  "cost_$": 0.0035,
+  "cache_read_tokens": 0,
+  "query": "对象内存泄漏：某对象被释放后仍被引用（use-after-free）。Godot 里删除/释放对象的底层函数叫什么？",
+  "type": "bug_fix",
+  "gold": [
+    "core/memory/memory.h",
+    "memdelete"
+  ],
+  "arm": "no-kb",
+  "run": 0,
+  "qid": "q27",
+  "correct": 1
+}

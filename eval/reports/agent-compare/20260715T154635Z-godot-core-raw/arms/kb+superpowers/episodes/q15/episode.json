@@ -1,0 +1,28 @@
+{
+  "answer": "文件读写操作使用 **`FileAccess`** 类（`core/io/file_access.h`）。\n\n常用方法：\n- **打开/关闭**：`FileAccess::open()`、`close()`\n- **读取**：`get_8()`、`get_16()`、`get_32()`、`get_buffer()`、`get_line()`、`get_string()` 等\n- **写入**：`store_8()`、`store_32()`、`store_buffer()`、`store_string()` 等\n\n此外，目录操作用 **`DirAccess`** 类。",
+  "input_tokens": 1546,
+  "output_tokens": 138,
+  "total_tokens": 1684,
+  "steps": 2,
+  "llm_calls": 2,
+  "tool_calls": [
+    "cmm_search"
+  ],
+  "tool_steps": 1,
+  "tool_texts": [
+    "- godot_write  (Users-ks_128-Documents-godot-src-core.io.file_access_zip.godot_write)  io/file_access_zip.cpp\n- godot_read  (Users-ks_128-Documents-godot-src-core.io.file_access_zip.godot_read)  io/file_access_zip.cpp\n- read_link  (Users-ks_128-Documents-godot-src-core.io.file_access_pack.DirAccessPack.read_link)  io/file_access_pack.h\n- get_read_only_attribute  (Users-ks_128-Documents-godot-src-core.io.file_access.FileAccess.get_read_only_attribute)  io/file_access.cpp\n- set_read_only_attribute  (Users-ks_128-Documents-godot-src-core.io.file_access.FileAccess.set_read_only_attribute)  io/file_access.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 15.76,
+  "cost_$": 0.0012,
+  "cache_read_tokens": 0,
+  "query": "文件读写操作用哪个类？",
+  "type": "code_retrieval",
+  "gold": [
+    "FileAccess"
+  ],
+  "arm": "kb+superpowers",
+  "run": 0,
+  "qid": "q15",
+  "correct": 1
+}

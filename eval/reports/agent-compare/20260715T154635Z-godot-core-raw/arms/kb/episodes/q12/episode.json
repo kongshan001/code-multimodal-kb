@@ -1,0 +1,28 @@
+{
+  "answer": "图像数据使用 `Image` 类（定义在 `core/io/image.cpp` / `image.h`）。",
+  "input_tokens": 866,
+  "output_tokens": 38,
+  "total_tokens": 904,
+  "steps": 2,
+  "llm_calls": 2,
+  "tool_calls": [
+    "cmm_search"
+  ],
+  "tool_steps": 1,
+  "tool_texts": [
+    "- get_pixel  (Users-ks_128-Documents-godot-src-core.io.image.Image.get_pixel)  io/image.cpp\n- set_pixel  (Users-ks_128-Documents-godot-src-core.io.image.Image.set_pixel)  io/image.cpp\n- get_format_pixel_size  (Users-ks_128-Documents-godot-src-core.io.image.Image.get_format_pixel_size)  io/image.cpp\n- get_format_pixel_rshift  (Users-ks_128-Documents-godot-src-core.io.image.Image.get_format_pixel_rshift)  io/image.cpp\n- get_format_min_pixel_size  (Users-ks_128-Documents-godot-src-core.io.image.Image.get_format_min_pixel_size)  io/image.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 6.85,
+  "cost_$": 0.0006,
+  "cache_read_tokens": 0,
+  "query": "图像数据用哪个类？",
+  "type": "code_retrieval",
+  "gold": [
+    "Image"
+  ],
+  "arm": "kb",
+  "run": 0,
+  "qid": "q12",
+  "correct": 1
+}

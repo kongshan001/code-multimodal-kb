@@ -1,0 +1,28 @@
+{
+  "answer": "表示颜色的类叫 `Color`，定义在 `math/color.h` 中。",
+  "input_tokens": 859,
+  "output_tokens": 32,
+  "total_tokens": 891,
+  "steps": 2,
+  "llm_calls": 2,
+  "tool_calls": [
+    "cmm_search"
+  ],
+  "tool_steps": 1,
+  "tool_texts": [
+    "- Color  (Users-ks_128-Documents-godot-src-core.math.color.Color.Color)  math/color.h\n- find_named_color  (Users-ks_128-Documents-godot-src-core.math.color.Color.find_named_color)  math/color.cpp\n- get_named_color  (Users-ks_128-Documents-godot-src-core.math.color.Color.get_named_color)  math/color.cpp\n- get_named_color_count  (Users-ks_128-Documents-godot-src-core.math.color.Color.get_named_color_count)  math/color.cpp\n- get_named_color_name  (Users-ks_128-Documents-godot-src-core.math.color.Color.get_named_color_name)  math/color.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 8.8,
+  "cost_$": 0.0006,
+  "cache_read_tokens": 0,
+  "query": "表示颜色的类叫什么？",
+  "type": "code_retrieval",
+  "gold": [
+    "Color"
+  ],
+  "arm": "kb",
+  "run": 0,
+  "qid": "q06",
+  "correct": 1
+}

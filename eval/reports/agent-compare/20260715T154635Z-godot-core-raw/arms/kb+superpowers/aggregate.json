@@ -1,0 +1,13 @@
+{
+  "accuracy": 0.931,
+  "mean_input_tokens": 1346.6,
+  "mean_output_tokens": 86.4,
+  "mean_total_tokens": 1433,
+  "mean_llm_calls": 2,
+  "mean_tool_steps": 1.03,
+  "mean_wall_clock_s": 9.86,
+  "mean_cost_$": 0.001,
+  "tool_diversity": 0.76,
+  "truncated_rate": 0.0,
+  "n_episodes": 29
+}

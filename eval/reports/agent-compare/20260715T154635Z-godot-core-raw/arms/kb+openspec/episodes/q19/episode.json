@@ -1,0 +1,28 @@
+{
+  "answer": "主循环基类是 **`MainLoop`**，定义在 `os/main_loop.h` 中。",
+  "input_tokens": 1432,
+  "output_tokens": 38,
+  "total_tokens": 1470,
+  "steps": 2,
+  "llm_calls": 2,
+  "tool_calls": [
+    "cmm_search"
+  ],
+  "tool_steps": 1,
+  "tool_texts": [
+    "- ~MainLoop  (Users-ks_128-Documents-godot-src-core.os.main_loop.MainLoop.~MainLoop)  os/main_loop.h\n- get_main_loop  (Users-ks_128-Documents-godot-src-core.core_bind.Engine.get_main_loop)  core_bind.cpp\n- _register_main_loop_callbacks  (Users-ks_128-Documents-godot-src-core.extension.gdextension.GDExtension._register_main_loop_callbacks)  extension/gdextension.cpp\n- initialize  (Users-ks_128-Documents-godot-src-core.os.main_loop.MainLoop.initialize)  os/main_loop.cpp\n- process  (Users-ks_128-Documents-godot-src-core.os.main_loop.MainLoop.process)  os/main_loop.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 8.78,
+  "cost_$": 0.001,
+  "cache_read_tokens": 0,
+  "query": "主循环基类叫什么？",
+  "type": "code_retrieval",
+  "gold": [
+    "MainLoop"
+  ],
+  "arm": "kb+openspec",
+  "run": 0,
+  "qid": "q19",
+  "correct": 1
+}

@@ -1,0 +1,24 @@
+{
+  "answer": "`ResourceLoader`",
+  "input_tokens": 622,
+  "output_tokens": 5,
+  "total_tokens": 627,
+  "steps": 1,
+  "llm_calls": 1,
+  "tool_calls": [],
+  "tool_steps": 0,
+  "tool_texts": [],
+  "truncated": false,
+  "wall_clock_s": 6.03,
+  "cost_$": 0.0004,
+  "cache_read_tokens": 0,
+  "query": "加载资源用哪个类？",
+  "type": "code_retrieval",
+  "gold": [
+    "ResourceLoader"
+  ],
+  "arm": "kb+openspec",
+  "run": 0,
+  "qid": "q13",
+  "correct": 1
+}

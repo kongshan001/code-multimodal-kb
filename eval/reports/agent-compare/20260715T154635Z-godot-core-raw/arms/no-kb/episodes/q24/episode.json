@@ -1,0 +1,30 @@
+{
+  "answer": "加密解密主要用以下类：\n\n- **`Crypto`** — 高层加密接口，提供 AES-256-CBC 加解密、HMAC、随机数生成、RSA 密钥生成/签名等功能。\n- **`CryptoCore`** — 底层加密原语（MD5、SHA-1、SHA-256、AES-256 等）。\n\n相关辅助类：\n- **`CryptoKey`** — RSA 密钥的加载/保存。\n- **`X509Certificate`** — X.509 证书处理。\n\n日常使用直接用 **`Crypto`** 即可。",
+  "input_tokens": 1451,
+  "output_tokens": 166,
+  "total_tokens": 1617,
+  "steps": 3,
+  "llm_calls": 3,
+  "tool_calls": [
+    "grep_code",
+    "read_file"
+  ],
+  "tool_steps": 2,
+  "tool_texts": [
+    "matched 2 files:\n/Users/ks_128/Documents/godot-src/core/crypto/crypto.h\n/Users/ks_128/Documents/godot-src/core/crypto/crypto_core.h",
+    "/**************************************************************************/\n/*  crypto.h                                                              */\n/**************************************************************************/\n/*                         This file is part of:                          */\n/*                             GODOT ENGINE                               */\n/*                        https://godotengine.org                         */\n/**************************************************************************/\n/* Copyright (c) 2014-present Godot Engine contributors (see AUTHORS.md). */\n/* Copyright (c) 2007-2014 Juan Linietsky, Ariel Manzur.                  */\n/*                                                                        */\n/* Permission is hereby granted, free of charge, to any person obtaining  */\n/* a copy of this software and associated documentation files (the        */\n/* \"Software\"), to deal in the Software without restriction, including    */\n/* without limitation the rights to use, copy, modify, merge, publish,    */\n/* distribute, sublicense, and/or sell copies of the Software, and to     */\n/* permit persons to whom the Software is furnished to do so, subject to  */\n/* the following conditions:                                              */\n/*                                                                        */\n/* The above copyright notice and this permission notice shall be         */\n/* included in all copies or substantial portions of the Software.        */\n/*                                                                        */\n/* THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,        */\n/* EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF     */\n/* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. */\n/* IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY   */\n/* CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,   *"
+  ],
+  "truncated": false,
+  "wall_clock_s": 14.96,
+  "cost_$": 0.0011,
+  "cache_read_tokens": 0,
+  "query": "加密解密用哪个类？",
+  "type": "code_retrieval",
+  "gold": [
+    "Crypto"
+  ],
+  "arm": "no-kb",
+  "run": 0,
+  "qid": "q24",
+  "correct": 1
+}

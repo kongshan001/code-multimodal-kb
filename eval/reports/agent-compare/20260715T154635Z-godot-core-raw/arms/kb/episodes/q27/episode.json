@@ -1,0 +1,31 @@
+{
+  "answer": "Godot 中删除/释放对象的核心底层函数和机制：\n\n1. **`memdelete`**（`os/memory.h`）— 最底层的 C++ 内存释放函数，用于释放通过 `memnew` 分配的 `Object`。这是真正释放对象内存的地方。\n\n2. **`Object::_pre_delete()` / `Object::~Object()`**（`object/object.cpp`）— 析构前后的清理逻辑。\n\n3. **`Object::cancel_free()`**（`object/object.cpp`）— 取消待执行的 free。\n\n4. **`free_instance_binding`**（`object/object.cpp`）— 释放脚本/语言侧的绑定引用。\n\n5. **`Memory::free_static`** / **`DefaultAllocator::free`**（`os/memory.h`）— 静态内存释放。\n\n**关键点**：Godot 的 `Object`（非 `RefCounted`）需要手动调用 **`memdelete`** 来释放。如果释放后仍有指针引用该对象，就会产生 **use-after-free**。`RefCounted` 子类则通过引用计数自动管理，避免此问题。",
+  "input_tokens": 776,
+  "output_tokens": 274,
+  "total_tokens": 1050,
+  "steps": 2,
+  "llm_calls": 2,
+  "tool_calls": [
+    "cmm_search",
+    "cmm_search"
+  ],
+  "tool_steps": 2,
+  "tool_texts": [
+    "- free_instance_binding  (Users-ks_128-Documents-godot-src-core.object.object.Object.free_instance_binding)  object/object.cpp\n- gdextension_object_free_instance_binding  (Users-ks_128-Documents-godot-src-core.extension.gdextension_interface.gdextension_object_free_instance_binding)  extension/gdextension_interface.cpp\n- placeholder_class_free_instance  (Users-ks_128-Documents-godot-src-core.object.class_db.PlaceholderExtensionInstance.placeholder_class_free_instance)  object/class_db.cpp\n- placeholder_instance_free_property_list  (Users-ks_128-Documents-godot-src-core.object.class_db.PlaceholderExtensionInstance.placeholder_instance_free_property_list)  object/class_db.cpp\n- memdelete  (Users-ks_128-Documents-godot-src-core.os.memory.memdelete)  os/memory.h",
+    "- free_static  (Users-ks_128-Documents-godot-src-core.os.memory.Memory.free_static)  os/memory.cpp\n- free  (Users-ks_128-Documents-godot-src-core.os.memory.DefaultAllocator.free)  os/memory.h\n- free_aligned_static  (Users-ks_128-Documents-godot-src-core.os.memory.Memory.free_aligned_static)  os/memory.cpp\n- action_release  (Users-ks_128-Documents-godot-src-core.input.input.Input.action_release)  input/input.cpp\n- cancel_free  (Users-ks_128-Documents-godot-src-core.object.object.Object.cancel_free)  object/object.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 8.19,
+  "cost_$": 0.0007,
+  "cache_read_tokens": 0,
+  "query": "对象内存泄漏：某对象被释放后仍被引用（use-after-free）。Godot 里删除/释放对象的底层函数叫什么？",
+  "type": "bug_fix",
+  "gold": [
+    "core/memory/memory.h",
+    "memdelete"
+  ],
+  "arm": "kb",
+  "run": 0,
+  "qid": "q27",
+  "correct": 1
+}

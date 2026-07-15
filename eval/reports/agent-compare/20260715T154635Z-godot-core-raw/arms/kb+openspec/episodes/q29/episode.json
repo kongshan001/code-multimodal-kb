@@ -1,0 +1,33 @@
+{
+  "answer": "Godot 中负责 A* 寻路路径计算的类主要有以下几个：\n\n1. **`AStar3D`** — 3D 空间的通用 A* 寻路（`core/math/a_star.cpp`）\n2. **`AStar2D`** — 2D 空间的通用 A* 寻路（`core/math/a_star.cpp`）\n3. **`AStarGrid2D`** — 2D 网格专用 A* 寻路（`core/math/a_star_grid_2d.cpp`）\n\n核心路径计算方法都是 **`get_id_path()`**，代价估算走 **`_compute_cost()`**。\n\n---\n\n**如果你用的是导航系统（NavigationAgent / NavigationRegion）而非手动 A\\*：**\n\n那么实际路径计算由 **`NavigationServer3D`** / **`NavigationServer2D`** 负责（在 `servers/` 目录下），通过 `map_get_path()` 返回路径。障碍物由 **`NavigationObstacle`** 节点处理。\n\n---\n\n**排查建议：**\n\n- **`AStar3D`/`AStar2D`/`AStarGrid2D`**：检查障碍物对应的点是否正确设置了 `set_point_disabled()`（或 `AStarGrid2D` 的 `set_point_solid()`）。如果障碍物点没被标记为不可通行，A* 会直接穿过。\n- **NavigationServer**：检查 `NavigationObstacle` 的 `vertices` 是否正确、`affect_navigation_mesh` 是否启用，以及障碍物是否在对应 navigation map 上正确注册。",
+  "input_tokens": 2396,
+  "output_tokens": 397,
+  "total_tokens": 2793,
+  "steps": 4,
+  "llm_calls": 4,
+  "tool_calls": [
+    "cmm_search",
+    "cmm_search",
+    "cmm_search"
+  ],
+  "tool_steps": 3,
+  "tool_texts": [
+    "- _compute_cost  (Users-ks_128-Documents-godot-src-core.math.a_star.AStar3D._compute_cost)  math/a_star.cpp\n- _compute_cost  (Users-ks_128-Documents-godot-src-core.math.a_star.AStar2D._compute_cost)  math/a_star.cpp\n- _compute_cost  (Users-ks_128-Documents-godot-src-core.math.a_star_grid_2d.AStarGrid2D._compute_cost)  math/a_star_grid_2d.cpp\n- set_default_compute_heuristic  (Users-ks_128-Documents-godot-src-core.math.a_star_grid_2d.AStarGrid2D.set_default_compute_heuristic)  math/a_star_grid_2d.cpp\n- get_default_compute_heuristic  (Users-ks_128-Documents-godot-src-core.math.a_star_grid_2d.AStarGrid2D.get_default_compute_heuristic)  math/a_star_grid_2d.cpp",
+    "- get_as_property_path  (Users-ks_128-Documents-godot-src-core.string.node_path.NodePath.get_as_property_path)  string/node_path.cpp\n- get_path  (Users-ks_128-Documents-godot-src-core.io.resource.Resource.get_path)  io/resource.cpp\n- get_path  (Users-ks_128-Documents-godot-src-core.io.file_access.FileAccess.get_path)  io/file_access.h\n- get_executable_path  (Users-ks_128-Documents-godot-src-core.core_bind.OS.get_executable_path)  core_bind.cpp\n- _get_library_path  (Users-ks_128-Documents-godot-src-core.extension.gdextension.GDExtension._get_library_path)  extension/gdextension.cpp",
+    "- server  (Users-ks_128-Documents-godot-src-core.crypto.crypto.TLSOptions.server)  crypto/crypto.cpp\n- is_server  (Users-ks_128-Documents-godot-src-core.crypto.crypto.TLSOptions.is_server)  crypto/crypto.h\n- SocketServer  (Users-ks_128-Documents-godot-src-core.io.socket_server.SocketServer.SocketServer)  io/socket_server.cpp\n- ~SocketServer  (Users-ks_128-Documents-godot-src-core.io.socket_server.SocketServer.~SocketServer)  io/socket_server.cpp\n- UDPServer  (Users-ks_128-Documents-godot-src-core.io.udp_server.UDPServer.UDPServer)  io/udp_server.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 20.58,
+  "cost_$": 0.002,
+  "cache_read_tokens": 0,
+  "query": "A* 寻路在两点间返回了错误路径，忽略了一个障碍物。Godot 里负责计算寻路路径的是哪个类？",
+  "type": "bug_fix",
+  "gold": [
+    "AStar",
+    "core/math/a_star.h"
+  ],
+  "arm": "kb+openspec",
+  "run": 0,
+  "qid": "q29",
+  "correct": 1
+}

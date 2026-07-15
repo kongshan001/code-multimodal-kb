@@ -1,0 +1,28 @@
+{
+  "answer": "保存资源使用 `ResourceSaver` 类（定义在 `core/io/resource_saver.h`）。",
+  "input_tokens": 733,
+  "output_tokens": 36,
+  "total_tokens": 769,
+  "steps": 2,
+  "llm_calls": 2,
+  "tool_calls": [
+    "grep_code"
+  ],
+  "tool_steps": 1,
+  "tool_texts": [
+    "matched 2 files:\n/Users/ks_128/Documents/godot-src/core/io/resource_saver.h\n/Users/ks_128/Documents/godot-src/core/core_bind.h"
+  ],
+  "truncated": false,
+  "wall_clock_s": 15.37,
+  "cost_$": 0.0005,
+  "cache_read_tokens": 0,
+  "query": "保存资源用哪个类？",
+  "type": "code_retrieval",
+  "gold": [
+    "ResourceSaver"
+  ],
+  "arm": "no-kb",
+  "run": 0,
+  "qid": "q14",
+  "correct": 1
+}

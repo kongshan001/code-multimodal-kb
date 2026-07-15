@@ -1,0 +1,24 @@
+{
+  "answer": "`TranslationServer`",
+  "input_tokens": 342,
+  "output_tokens": 5,
+  "total_tokens": 347,
+  "steps": 1,
+  "llm_calls": 1,
+  "tool_calls": [],
+  "tool_steps": 0,
+  "tool_texts": [],
+  "truncated": false,
+  "wall_clock_s": 3.56,
+  "cost_$": 0.0002,
+  "cache_read_tokens": 0,
+  "query": "翻译/本地化服务器用哪个类？",
+  "type": "code_retrieval",
+  "gold": [
+    "TranslationServer"
+  ],
+  "arm": "no-kb",
+  "run": 0,
+  "qid": "q25",
+  "correct": 1
+}

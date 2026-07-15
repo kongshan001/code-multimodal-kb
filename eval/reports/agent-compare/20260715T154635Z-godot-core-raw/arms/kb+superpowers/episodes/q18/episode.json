@@ -1,0 +1,28 @@
+{
+  "answer": "引擎主类是 **`core_bind::Engine`**（在 `core_bind.cpp` 中），即脚本层暴露的 `Engine` 单例类。",
+  "input_tokens": 1530,
+  "output_tokens": 48,
+  "total_tokens": 1578,
+  "steps": 2,
+  "llm_calls": 2,
+  "tool_calls": [
+    "cmm_search"
+  ],
+  "tool_steps": 1,
+  "tool_texts": [
+    "- get_main_loop  (Users-ks_128-Documents-godot-src-core.core_bind.Engine.get_main_loop)  core_bind.cpp\n- ~MainLoop  (Users-ks_128-Documents-godot-src-core.os.main_loop.MainLoop.~MainLoop)  os/main_loop.h\n- is_main_thread  (Users-ks_128-Documents-godot-src-core.core_bind.Thread.is_main_thread)  core_bind.cpp\n- get_main_diagonal  (Users-ks_128-Documents-godot-src-core.math.basis.Basis.get_main_diagonal)  math/basis.h\n- make_main_thread  (Users-ks_128-Documents-godot-src-core.os.thread.Thread.make_main_thread)  os/thread.h"
+  ],
+  "truncated": false,
+  "wall_clock_s": 15.53,
+  "cost_$": 0.0011,
+  "cache_read_tokens": 0,
+  "query": "引擎主类叫什么？",
+  "type": "code_retrieval",
+  "gold": [
+    "Engine"
+  ],
+  "arm": "kb+superpowers",
+  "run": 0,
+  "qid": "q18",
+  "correct": 1
+}

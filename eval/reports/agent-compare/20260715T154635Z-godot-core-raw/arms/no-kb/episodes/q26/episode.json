@@ -1,0 +1,24 @@
+{
+  "answer": "`HTTPClient`",
+  "input_tokens": 22,
+  "output_tokens": 5,
+  "total_tokens": 27,
+  "steps": 1,
+  "llm_calls": 1,
+  "tool_calls": [],
+  "tool_steps": 0,
+  "tool_texts": [],
+  "truncated": false,
+  "wall_clock_s": 2.32,
+  "cost_$": 0.0,
+  "cache_read_tokens": 0,
+  "query": "HTTP 客户端用哪个类？",
+  "type": "code_retrieval",
+  "gold": [
+    "HTTPClient"
+  ],
+  "arm": "no-kb",
+  "run": 0,
+  "qid": "q26",
+  "correct": 1
+}

@@ -1,0 +1,28 @@
+{
+  "answer": "目录操作使用 **`DirAccess`** 类（定义在 `core/io/dir_access.h`）。",
+  "input_tokens": 733,
+  "output_tokens": 35,
+  "total_tokens": 768,
+  "steps": 2,
+  "llm_calls": 2,
+  "tool_calls": [
+    "grep_code"
+  ],
+  "tool_steps": 1,
+  "tool_texts": [
+    "matched 2 files:\n/Users/ks_128/Documents/godot-src/core/io/file_access_pack.h\n/Users/ks_128/Documents/godot-src/core/io/dir_access.h"
+  ],
+  "truncated": false,
+  "wall_clock_s": 13.61,
+  "cost_$": 0.0005,
+  "cache_read_tokens": 0,
+  "query": "目录操作用哪个类？",
+  "type": "code_retrieval",
+  "gold": [
+    "DirAccess"
+  ],
+  "arm": "no-kb",
+  "run": 0,
+  "qid": "q16",
+  "correct": 1
+}

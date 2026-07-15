@@ -1,0 +1,24 @@
+{
+  "answer": "`AStar`（2D 网格寻路）和 `AStar3D`（3D 寻路），以及 `AStarGrid2D`（2D 网格专用）。",
+  "input_tokens": 343,
+  "output_tokens": 46,
+  "total_tokens": 389,
+  "steps": 1,
+  "llm_calls": 1,
+  "tool_calls": [],
+  "tool_steps": 0,
+  "tool_texts": [],
+  "truncated": false,
+  "wall_clock_s": 5.01,
+  "cost_$": 0.0003,
+  "cache_read_tokens": 0,
+  "query": "A* 寻路算法用哪个类？",
+  "type": "code_retrieval",
+  "gold": [
+    "AStar"
+  ],
+  "arm": "no-kb",
+  "run": 0,
+  "qid": "q04",
+  "correct": 1
+}

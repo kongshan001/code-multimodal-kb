@@ -1,0 +1,28 @@
+{
+  "answer": "JSON 解析使用 **`JSON`** 类（定义在 `core/io/json.cpp`），核心方法：\n\n- **`JSON::parse`** — 解析 JSON 字符串\n- **`JSON::stringify`** — 序列化为 JSON 字符串",
+  "input_tokens": 1411,
+  "output_tokens": 71,
+  "total_tokens": 1482,
+  "steps": 2,
+  "llm_calls": 2,
+  "tool_calls": [
+    "cmm_search"
+  ],
+  "tool_steps": 1,
+  "tool_texts": [
+    "- _stringify  (Users-ks_128-Documents-godot-src-core.io.json.JSON._stringify)  io/json.cpp\n- parse  (Users-ks_128-Documents-godot-src-core.io.json.JSON.parse)  io/json.cpp\n- stringify  (Users-ks_128-Documents-godot-src-core.io.json.JSON.stringify)  io/json.cpp\n- _add_indent  (Users-ks_128-Documents-godot-src-core.io.json.JSON._add_indent)  io/json.cpp\n- _get_token  (Users-ks_128-Documents-godot-src-core.io.json.JSON._get_token)  io/json.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 7.96,
+  "cost_$": 0.001,
+  "cache_read_tokens": 0,
+  "query": "JSON 解析用哪个类？",
+  "type": "code_retrieval",
+  "gold": [
+    "JSON"
+  ],
+  "arm": "kb+openspec",
+  "run": 0,
+  "qid": "q11",
+  "correct": 1
+}

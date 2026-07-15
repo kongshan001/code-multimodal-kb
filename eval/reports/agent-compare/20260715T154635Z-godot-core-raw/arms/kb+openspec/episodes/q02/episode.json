@@ -1,0 +1,30 @@
+{
+  "answer": "用 **`itos()`**，定义在 `core/string/ustring.cpp`。它将 `int64_t` 转为 `String`。\n\n```cpp\nString s = itos(42);  // \"42\"\n```",
+  "input_tokens": 2118,
+  "output_tokens": 80,
+  "total_tokens": 2198,
+  "steps": 3,
+  "llm_calls": 3,
+  "tool_calls": [
+    "cmm_search",
+    "cmm_search"
+  ],
+  "tool_steps": 2,
+  "tool_texts": [
+    "- bind_integer_constant  (Users-ks_128-Documents-godot-src-core.object.gdtype.GDType.bind_integer_constant)  object/gdtype.cpp\n- bind_integer_constant  (Users-ks_128-Documents-godot-src-core.object.class_db.ClassDB.bind_integer_constant)  object/class_db.cpp\n- get_integer_constant  (Users-ks_128-Documents-godot-src-core.object.class_db.ClassDB.get_integer_constant)  object/class_db.cpp\n- has_integer_constant  (Users-ks_128-Documents-godot-src-core.object.class_db.ClassDB.has_integer_constant)  object/class_db.cpp\n- class_has_integer_constant  (Users-ks_128-Documents-godot-src-core.core_bind.ClassDB.class_has_integer_constant)  core_bind.cpp",
+    "- itos  (Users-ks_128-Documents-godot-src-core.string.ustring.itos)  string/ustring.cpp\n- bind_integer_constant  (Users-ks_128-Documents-godot-src-core.object.gdtype.GDType.bind_integer_constant)  object/gdtype.cpp\n- bind_integer_constant  (Users-ks_128-Documents-godot-src-core.object.class_db.ClassDB.bind_integer_constant)  object/class_db.cpp\n- get_integer_constant  (Users-ks_128-Documents-godot-src-core.object.class_db.ClassDB.get_integer_constant)  object/class_db.cpp\n- has_integer_constant  (Users-ks_128-Documents-godot-src-core.object.class_db.ClassDB.has_integer_constant)  object/class_db.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 17.46,
+  "cost_$": 0.0015,
+  "cache_read_tokens": 0,
+  "query": "整数转成字符串用哪个函数？",
+  "type": "code_retrieval",
+  "gold": [
+    "itos"
+  ],
+  "arm": "kb+openspec",
+  "run": 0,
+  "qid": "q02",
+  "correct": 1
+}

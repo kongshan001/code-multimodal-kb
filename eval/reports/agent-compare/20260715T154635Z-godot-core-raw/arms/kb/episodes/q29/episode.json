@@ -1,0 +1,29 @@
+{
+  "answer": "Godot 中负责 A* 寻路路径计算的类有三个：\n\n- **`AStar3D`** — 3D 空间的 A* 寻路（`math/a_star.cpp`）\n- **`AStar2D`** — 2D 空间的 A* 寻路（`math/a_star.cpp`）\n- **`AStarGrid2D`** — 2D 网格专用 A* 寻路（`math/a_star_grid_2d.cpp`）\n\n核心方法都是 `get_id_path()`（返回路径点序列）。如果路径忽略了障碍物，应检查：\n1. 障碍物对应的点是否通过 `set_point_disabled()` 正确标记为不可通行。\n2. 自定义代价函数 `_compute_cost` 是否对障碍点返回了 `INF`/`-1`。",
+  "input_tokens": 651,
+  "output_tokens": 200,
+  "total_tokens": 851,
+  "steps": 2,
+  "llm_calls": 2,
+  "tool_calls": [
+    "cmm_search"
+  ],
+  "tool_steps": 1,
+  "tool_texts": [
+    "- _compute_cost  (Users-ks_128-Documents-godot-src-core.math.a_star.AStar3D._compute_cost)  math/a_star.cpp\n- _compute_cost  (Users-ks_128-Documents-godot-src-core.math.a_star.AStar2D._compute_cost)  math/a_star.cpp\n- _compute_cost  (Users-ks_128-Documents-godot-src-core.math.a_star_grid_2d.AStarGrid2D._compute_cost)  math/a_star_grid_2d.cpp\n- set_default_compute_heuristic  (Users-ks_128-Documents-godot-src-core.math.a_star_grid_2d.AStarGrid2D.set_default_compute_heuristic)  math/a_star_grid_2d.cpp\n- get_default_compute_heuristic  (Users-ks_128-Documents-godot-src-core.math.a_star_grid_2d.AStarGrid2D.get_default_compute_heuristic)  math/a_star_grid_2d.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 10.64,
+  "cost_$": 0.0006,
+  "cache_read_tokens": 0,
+  "query": "A* 寻路在两点间返回了错误路径，忽略了一个障碍物。Godot 里负责计算寻路路径的是哪个类？",
+  "type": "bug_fix",
+  "gold": [
+    "AStar",
+    "core/math/a_star.h"
+  ],
+  "arm": "kb",
+  "run": 0,
+  "qid": "q29",
+  "correct": 1
+}

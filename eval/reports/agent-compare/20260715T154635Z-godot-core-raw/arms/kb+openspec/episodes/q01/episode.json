@@ -1,0 +1,28 @@
+{
+  "answer": "字符串格式化的底层函数是 `String::format`，定义在 `core/string/ustring.cpp` 中。",
+  "input_tokens": 1449,
+  "output_tokens": 38,
+  "total_tokens": 1487,
+  "steps": 2,
+  "llm_calls": 2,
+  "tool_calls": [
+    "cmm_search"
+  ],
+  "tool_steps": 1,
+  "tool_texts": [
+    "- format  (Users-ks_128-Documents-godot-src-core.string.ustring.String.format)  string/ustring.cpp\n- format_number  (Users-ks_128-Documents-godot-src-core.string.translation_server.TranslationServer.format_number)  string/translation_server.cpp\n- _get_string  (Users-ks_128-Documents-godot-src-core.io.resource_format_binary.ResourceLoaderBinary._get_string)  io/resource_format_binary.cpp\n- get_unicode_string  (Users-ks_128-Documents-godot-src-core.io.resource_format_binary.ResourceLoaderBinary.get_unicode_string)  io/resource_format_binary.cpp\n- save_unicode_string  (Users-ks_128-Documents-godot-src-core.io.resource_format_binary.ResourceFormatSaverBinaryInstance.save_unicode_string)  io/resource_format_binary.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 8.9,
+  "cost_$": 0.001,
+  "cache_read_tokens": 0,
+  "query": "Godot 里字符串格式化的底层函数叫什么？",
+  "type": "code_retrieval",
+  "gold": [
+    "vformat"
+  ],
+  "arm": "kb+openspec",
+  "run": 0,
+  "qid": "q01",
+  "correct": 0
+}

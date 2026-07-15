@@ -1,0 +1,29 @@
+{
+  "answer": "负责 A* 寻路路径计算的类是 **`AStar`**（通用 2D/3D 图寻路，定义在 `core/math/a_star.h`）和 **`AStarGrid2D`**（2D 网格专用，定义在 `core/math/a_star_grid_2d.h`）。\n\n- `AStar` — 通用 A* 寻路，手动添加点和连接。\n- `AStarGrid2D` — 基于矩形网格的 A* 寻路，支持障碍物（`set_solid`）。\n\n如果你是在 2D 网格场景中遇到障碍物被忽略的问题，重点排查 **`AStarGrid2D`**。",
+  "input_tokens": 784,
+  "output_tokens": 168,
+  "total_tokens": 952,
+  "steps": 2,
+  "llm_calls": 2,
+  "tool_calls": [
+    "grep_code"
+  ],
+  "tool_steps": 1,
+  "tool_texts": [
+    "matched 2 files:\n/Users/ks_128/Documents/godot-src/core/math/a_star_grid_2d.h\n/Users/ks_128/Documents/godot-src/core/math/a_star.h"
+  ],
+  "truncated": false,
+  "wall_clock_s": 13.81,
+  "cost_$": 0.0007,
+  "cache_read_tokens": 0,
+  "query": "A* 寻路在两点间返回了错误路径，忽略了一个障碍物。Godot 里负责计算寻路路径的是哪个类？",
+  "type": "bug_fix",
+  "gold": [
+    "AStar",
+    "core/math/a_star.h"
+  ],
+  "arm": "no-kb",
+  "run": 0,
+  "qid": "q29",
+  "correct": 1
+}

@@ -1,0 +1,28 @@
+{
+  "answer": "操作系统抽象层使用的是 **`OS`** 类（定义在 `core/os/os.h` / `core/os/os.cpp`）。\n\n它提供了对底层操作系统的统一抽象接口，包括：\n- 文件系统操作（`get_system_dir`、`get_system_font_path` 等）\n- 系统字体（`get_system_fonts`）\n- 系统证书（`get_system_ca_certificates`）\n- 命令行参数、环境变量、线程、时间等\n\n各平台（Windows、Linux、macOS、Android、iOS 等）通过继承 `OS` 来实现各自的平台特定逻辑（如 `OS_Unix`、`OS_Windows` 等）。",
+  "input_tokens": 1434,
+  "output_tokens": 162,
+  "total_tokens": 1596,
+  "steps": 2,
+  "llm_calls": 2,
+  "tool_calls": [
+    "cmm_search"
+  ],
+  "tool_steps": 1,
+  "tool_texts": [
+    "- get_system_dir  (Users-ks_128-Documents-godot-src-core.os.os.OS.get_system_dir)  os/os.cpp\n- get_system_fonts  (Users-ks_128-Documents-godot-src-core.os.os.OS.get_system_fonts)  os/os.h\n- get_system_ca_certificates  (Users-ks_128-Documents-godot-src-core.os.os.OS.get_system_ca_certificates)  os/os.h\n- get_system_font_path  (Users-ks_128-Documents-godot-src-core.os.os.OS.get_system_font_path)  os/os.h\n- get_system_font_path_for_text  (Users-ks_128-Documents-godot-src-core.os.os.OS.get_system_font_path_for_text)  os/os.h"
+  ],
+  "truncated": false,
+  "wall_clock_s": 10.24,
+  "cost_$": 0.0011,
+  "cache_read_tokens": 0,
+  "query": "操作系统抽象层用哪个类？",
+  "type": "code_retrieval",
+  "gold": [
+    "OS"
+  ],
+  "arm": "kb+openspec",
+  "run": 0,
+  "qid": "q05",
+  "correct": 1
+}

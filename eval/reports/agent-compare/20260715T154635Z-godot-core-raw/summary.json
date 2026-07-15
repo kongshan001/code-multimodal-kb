@@ -1,0 +1,72 @@
+{
+  "target": "godot-core",
+  "model": "glm-5.1",
+  "smoke": false,
+  "engine": "raw",
+  "n_questions": 29,
+  "runs": 1,
+  "arms": [
+    "no-kb",
+    "kb",
+    "kb+superpowers",
+    "kb+openspec"
+  ],
+  "matrix": {
+    "no-kb": {
+      "accuracy": 0.966,
+      "mean_total_tokens": 944.9,
+      "mean_llm_calls": 1.86,
+      "mean_tool_steps": 1.17,
+      "mean_wall_clock_s": 9.18,
+      "mean_cost_$": 0.0006,
+      "tool_diversity": 0.48,
+      "truncated_rate": 0.0,
+      "n_episodes": 29
+    },
+    "kb": {
+      "accuracy": 0.966,
+      "mean_total_tokens": 830.7,
+      "mean_llm_calls": 1.9,
+      "mean_tool_steps": 0.97,
+      "mean_wall_clock_s": 15.38,
+      "mean_cost_$": 0.0006,
+      "tool_diversity": 0.76,
+      "truncated_rate": 0.0,
+      "n_episodes": 29
+    },
+    "kb+superpowers": {
+      "accuracy": 0.931,
+      "mean_total_tokens": 1433,
+      "mean_llm_calls": 2,
+      "mean_tool_steps": 1.03,
+      "mean_wall_clock_s": 9.86,
+      "mean_cost_$": 0.001,
+      "tool_diversity": 0.76,
+      "truncated_rate": 0.0,
+      "n_episodes": 29
+    },
+    "kb+openspec": {
+      "accuracy": 0.966,
+      "mean_total_tokens": 1397.7,
+      "mean_llm_calls": 2.14,
+      "mean_tool_steps": 1.17,
+      "mean_wall_clock_s": 10.56,
+      "mean_cost_$": 0.001,
+      "tool_diversity": 0.66,
+      "truncated_rate": 0.0,
+      "n_episodes": 29
+    }
+  },
+  "context_compression_kb_vs_no_kb": 1.14,
+  "metric_keys": [
+    "accuracy",
+    "mean_total_tokens",
+    "mean_llm_calls",
+    "mean_tool_steps",
+    "mean_wall_clock_s",
+    "mean_cost_$",
+    "tool_diversity",
+    "truncated_rate",
+    "n_episodes"
+  ]
+}

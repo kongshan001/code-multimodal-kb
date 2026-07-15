@@ -1,0 +1,24 @@
+{
+  "answer": "在 Godot core 中，整数转字符串常用的函数：\n\n- **`String::num()`** — 将整数/浮点数转为字符串（最通用）\n- **`String::itos()`** — 专门将 `int` 转为字符串（int to string）\n- **`String::num_int64()`** — 将 `int64_t` 转为字符串，可指定基数（如十六进制）\n\n最直接的是 **`String::itos()`**。",
+  "input_tokens": 341,
+  "output_tokens": 101,
+  "total_tokens": 442,
+  "steps": 1,
+  "llm_calls": 1,
+  "tool_calls": [],
+  "tool_steps": 0,
+  "tool_texts": [],
+  "truncated": false,
+  "wall_clock_s": 10.75,
+  "cost_$": 0.0003,
+  "cache_read_tokens": 0,
+  "query": "整数转成字符串用哪个函数？",
+  "type": "code_retrieval",
+  "gold": [
+    "itos"
+  ],
+  "arm": "no-kb",
+  "run": 0,
+  "qid": "q02",
+  "correct": 1
+}

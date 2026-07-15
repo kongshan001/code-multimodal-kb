@@ -1,0 +1,31 @@
+{
+  "answer": "Godot 中负责 A* 寻路路径计算的类有三个，均在 `core/math/` 下：\n\n| 类 | 文件 | 用途 |\n|---|---|---|\n| **`AStar3D`** | `math/a_star.cpp` | 3D A* 寻路 |\n| **`AStar2D`** | `math/a_star.cpp` | 2D A* 寻路 |\n| **`AStarGrid2D`** | `math/a_star_grid_2d.cpp` | 2D 网格专用 A* |\n\n核心方法：\n- **`get_id_path()`** — 返回点 ID 路径\n- **`get_point_path()`** — 返回 `Vector3`/`Vector2` 坐标路径\n- **`_compute_cost()`** — 点间代价计算（可重写）\n\n---\n\n**关于\"忽略障碍物\"的排查建议：**\n\nA* 类本身**不感知障碍物**——它只看你添加的点和点之间的连接。障碍物是通过**不添加点 / 不连接边**来实现的。常见原因：\n\n1. **障碍物对应的点仍被连接**：检查 `connect_points()` 是否错误地连接了应被阻断的边，或 `set_point_disabled()` 没有对障碍物格调用。\n2. **`AStarGrid2D`**：确认对障碍物格调用了 `set_point_solid(point, true)`，否则该格仍可通行。\n\n> 如果你用的是 NavigationServer（导航代理系统），那负责路径计算的是 **`NavigationServer3D` / `NavigationServer2D`**，障碍物由 `NavigationObstacle` 处理——请确认你用的是哪套系统。",
+  "input_tokens": 1234,
+  "output_tokens": 410,
+  "total_tokens": 1644,
+  "steps": 3,
+  "llm_calls": 3,
+  "tool_calls": [
+    "cmm_search",
+    "cmm_search"
+  ],
+  "tool_steps": 2,
+  "tool_texts": [
+    "- _compute_cost  (Users-ks_128-Documents-godot-src-core.math.a_star.AStar3D._compute_cost)  math/a_star.cpp\n- _compute_cost  (Users-ks_128-Documents-godot-src-core.math.a_star.AStar2D._compute_cost)  math/a_star.cpp\n- _compute_cost  (Users-ks_128-Documents-godot-src-core.math.a_star_grid_2d.AStarGrid2D._compute_cost)  math/a_star_grid_2d.cpp\n- set_default_compute_heuristic  (Users-ks_128-Documents-godot-src-core.math.a_star_grid_2d.AStarGrid2D.set_default_compute_heuristic)  math/a_star_grid_2d.cpp\n- get_default_compute_heuristic  (Users-ks_128-Documents-godot-src-core.math.a_star_grid_2d.AStarGrid2D.get_default_compute_heuristic)  math/a_star_grid_2d.cpp",
+    "- get_point_path  (Users-ks_128-Documents-godot-src-core.math.a_star.AStar3D.get_point_path)  math/a_star.cpp\n- get_point_path  (Users-ks_128-Documents-godot-src-core.math.a_star.AStar2D.get_point_path)  math/a_star.cpp\n- get_id_path  (Users-ks_128-Documents-godot-src-core.io.resource_uid.ResourceUID.get_id_path)  io/resource_uid.cpp\n- get_id_path  (Users-ks_128-Documents-godot-src-core.math.a_star.AStar3D.get_id_path)  math/a_star.cpp\n- get_id_path  (Users-ks_128-Documents-godot-src-core.math.a_star.AStar2D.get_id_path)  math/a_star.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 16.78,
+  "cost_$": 0.0012,
+  "cache_read_tokens": 0,
+  "query": "A* 寻路在两点间返回了错误路径，忽略了一个障碍物。Godot 里负责计算寻路路径的是哪个类？",
+  "type": "bug_fix",
+  "gold": [
+    "AStar",
+    "core/math/a_star.h"
+  ],
+  "arm": "kb+superpowers",
+  "run": 0,
+  "qid": "q29",
+  "correct": 1
+}

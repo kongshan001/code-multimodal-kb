@@ -1,0 +1,49 @@
+{
+  "answer": "Godot 中删除/释放对象的核心底层函数和机制如下：\n\n## 关键符号\n\n| 符号 | 所在文件 | 作用 |\n|---|---|---|\n| **`Object::free()`** | `object/object.cpp` | **核心释放函数**，立即销毁对象（触发 `NOTIFICATION_PREDELETE`，然后 `memdelete`） |\n| **`Object::queue_free()`** | `object/object.cpp` | 延迟释放，将对象排入删除队列，在帧末尾安全销毁 |\n| **`Object::is_queued_for_deletion()`** | `object/object.cpp` | 查询对象是否已排队等待删除 |\n| **`Object::cancel_free()`** | `object/object.cpp` | 取消已排队的删除（在 `_notification` / `NOTIFICATION_PREDELETE` 中可调用） |\n| **`Object::_predelete()`** | `object/object.h` | 释放前的虚函数钩子，返回 `false` 可阻止删除 |\n| **`Object::~Object()`** | `object/object.cpp` | 析构函数，清理信号连接等 |\n| **`memdelete()`** / **`Memory::free_static()`** | `os/memory.h`, `os/memory.cpp` | 最底层的内存释放（C++ `delete` 等价物） |\n\n## use-after-free 相关要点\n\n- **`free()`** 是立即释放——调用后对象指针立即失效，任何残留引用即为 use-after-free。\n- **`queue_free()`** 是安全释放——对象在本帧结束才真正销毁，期间仍可用 `is_queued_for_deletion()` 检查。\n- GDExtension 侧对应 **`gdextension_object_destroy()`**（`extension/gdextension_interface.cpp`）。\n- 底层内存释放走 **`memdelete`** → **`Memory::free_static`**（`os/memory.cpp`）。\n\n**最直接的答案**：底层释放函数是 **`Object::free()`**（立即释放）和 **`Object::queue_free()`**（延迟安全释放），最终内存回收由 **`memdelete`** / **`Memory::free_static()`** 完成。",
+  "input_tokens": 3806,
+  "output_tokens": 667,
+  "total_tokens": 4473,
+  "steps": 11,
+  "llm_calls": 11,
+  "tool_calls": [
+    "cmm_search",
+    "cmm_search",
+    "cmm_search",
+    "cmm_search",
+    "read_file",
+    "cmm_search",
+    "cmm_search",
+    "cmm_search",
+    "read_file",
+    "cmm_search",
+    "cmm_search"
+  ],
+  "tool_steps": 11,
+  "tool_texts": [
+    "- free_static  (Users-ks_128-Documents-godot-src-core.os.memory.Memory.free_static)  os/memory.cpp\n- free  (Users-ks_128-Documents-godot-src-core.os.memory.DefaultAllocator.free)  os/memory.h\n- free_aligned_static  (Users-ks_128-Documents-godot-src-core.os.memory.Memory.free_aligned_static)  os/memory.cpp\n- cancel_free  (Users-ks_128-Documents-godot-src-core.object.object.Object.cancel_free)  object/object.cpp\n- free_instance_binding  (Users-ks_128-Documents-godot-src-core.object.object.Object.free_instance_binding)  object/object.cpp",
+    "- is_queued_for_deletion  (Users-ks_128-Documents-godot-src-core.object.object.Object.is_queued_for_deletion)  object/object.cpp\n- action_release  (Users-ks_128-Documents-godot-src-core.input.input.Input.action_release)  input/input.cpp\n- release_pressed_events  (Users-ks_128-Documents-godot-src-core.input.input.Input.release_pressed_events)  input/input.cpp\n- release_main_thread  (Users-ks_128-Documents-godot-src-core.os.thread.Thread.release_main_thread)  os/thread.h\n- add_instance  (Users-ks_128-Documents-godot-src-core.object.object.ObjectDB.add_instance)  object/object.cpp",
+    "- gdextension_object_destroy  (Users-ks_128-Documents-godot-src-core.extension.gdextension_interface.gdextension_object_destroy)  extension/gdextension_interface.cpp\n- destroy  (Users-ks_128-Documents-godot-src-core.variant.variant.Variant.PackedArrayRefBase.destroy)  variant/variant.h\n- cancel_free  (Users-ks_128-Documents-godot-src-core.object.object.Object.cancel_free)  object/object.cpp\n- free_instance_binding  (Users-ks_128-Documents-godot-src-core.object.object.Object.free_instance_binding)  object/object.cpp\n- gdextension_variant_destroy  (Users-ks_128-Documents-godot-src-core.extension.gdextension_interface.gdextension_variant_destroy)  extension/gdextension_interface.cpp",
+    "- cancel_free  (Users-ks_128-Documents-godot-src-core.object.object.Object.cancel_free)  object/object.cpp\n- free_instance_binding  (Users-ks_128-Documents-godot-src-core.object.object.Object.free_instance_binding)  object/object.cpp\n- gdextension_object_free_instance_binding  (Users-ks_128-Documents-godot-src-core.extension.gdextension_interface.gdextension_object_free_instance_binding)  extension/gdextension_interface.cpp\n- placeholder_class_free_instance  (Users-ks_128-Documents-godot-src-core.object.class_db.PlaceholderExtensionInstance.placeholder_class_free_instance)  object/class_db.cpp\n- placeholder_instance_free_property_list  (Users-ks_128-Documents-godot-src-core.object.class_db.PlaceholderExtensionInstance.placeholder_instance_free_property_list)  object/class_db.cpp",
+    "(read error: [Errno 2] No such file or directory: 'core/object/object.h')",
+    "- cancel_free  (Users-ks_128-Documents-godot-src-core.object.object.Object.cancel_free)  object/object.cpp\n- free_instance_binding  (Users-ks_128-Documents-godot-src-core.object.object.Object.free_instance_binding)  object/object.cpp\n- gdextension_object_free_instance_binding  (Users-ks_128-Documents-godot-src-core.extension.gdextension_interface.gdextension_object_free_instance_binding)  extension/gdextension_interface.cpp\n- MethodDefinition  (Users-ks_128-Documents-godot-src-core.object.class_db.MethodDefinition.MethodDefinition)  object/class_db.h\n- placeholder_class_free_instance  (Users-ks_128-Documents-godot-src-core.object.class_db.PlaceholderExtensionInstance.placeholder_class_free_instance)  object/class_db.cpp",
+    "- is_queued_for_deletion  (Users-ks_128-Documents-godot-src-core.object.object.Object.is_queued_for_deletion)  object/object.cpp\n- _is_queued_for_deletion  (Users-ks_128-Documents-godot-src-core.object.object.Object._is_queued_for_deletion)  object/object.h\n- Object  (Users-ks_128-Documents-godot-src-core.object.object.Object.Object)  object/object.cpp\n- ~Object  (Users-ks_128-Documents-godot-src-core.object.object.Object.~Object)  object/object.cpp\n- _construct_object  (Users-ks_128-Documents-godot-src-core.object.object.Object._construct_object)  object/object.cpp",
+    "- node_free_node_and_leaf  (Users-ks_128-Documents-godot-src-core.math.bvh_tree.BVH_Tree.node_free_node_and_leaf)  math/bvh_tree.h\n- action_release  (Users-ks_128-Documents-godot-src-core.input.input.Input.action_release)  input/input.cpp\n- cancel_free  (Users-ks_128-Documents-godot-src-core.object.object.Object.cancel_free)  object/object.cpp\n- release_pressed_events  (Users-ks_128-Documents-godot-src-core.input.input.Input.release_pressed_events)  input/input.cpp\n- release_main_thread  (Users-ks_128-Documents-godot-src-core.os.thread.Thread.release_main_thread)  os/thread.h",
+    "(read error: [Errno 2] No such file or directory: 'Users-ks_128-Documents-godot-src-core.object.object.object')",
+    "- cancel_free  (Users-ks_128-Documents-godot-src-core.object.object.Object.cancel_free)  object/object.cpp\n- free_instance_binding  (Users-ks_128-Documents-godot-src-core.object.object.Object.free_instance_binding)  object/object.cpp\n- gdextension_object_free_instance_binding  (Users-ks_128-Documents-godot-src-core.extension.gdextension_interface.gdextension_object_free_instance_binding)  extension/gdextension_interface.cpp\n- placeholder_class_free_instance  (Users-ks_128-Documents-godot-src-core.object.class_db.PlaceholderExtensionInstance.placeholder_class_free_instance)  object/class_db.cpp\n- placeholder_instance_free_property_list  (Users-ks_128-Documents-godot-src-core.object.class_db.PlaceholderExtensionInstance.placeholder_instance_free_property_list)  object/class_db.cpp",
+    "- gdextension_object_destroy  (Users-ks_128-Documents-godot-src-core.extension.gdextension_interface.gdextension_object_destroy)  extension/gdextension_interface.cpp\n- _notification  (Users-ks_128-Documents-godot-src-core.object.object.Object._notification)  object/object.h\n- notification  (Users-ks_128-Documents-godot-src-core.object.object.Object.notification)  object/object.h\n- _notification_forward  (Users-ks_128-Documents-godot-src-core.object.object.Object._notification_forward)  object/object.cpp\n- _notification_backward  (Users-ks_128-Documents-godot-src-core.object.object.Object._notification_backward)  object/object.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 52.49,
+  "cost_$": 0.0031,
+  "cache_read_tokens": 0,
+  "query": "对象内存泄漏：某对象被释放后仍被引用（use-after-free）。Godot 里删除/释放对象的底层函数叫什么？",
+  "type": "bug_fix",
+  "gold": [
+    "core/memory/memory.h",
+    "memdelete"
+  ],
+  "arm": "kb+openspec",
+  "run": 0,
+  "qid": "q27",
+  "correct": 1
+}

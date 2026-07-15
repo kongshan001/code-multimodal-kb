@@ -1,0 +1,24 @@
+{
+  "answer": "`UndoRedo`",
+  "input_tokens": 341,
+  "output_tokens": 6,
+  "total_tokens": 347,
+  "steps": 1,
+  "llm_calls": 1,
+  "tool_calls": [],
+  "tool_steps": 0,
+  "tool_texts": [],
+  "truncated": false,
+  "wall_clock_s": 3.38,
+  "cost_$": 0.0002,
+  "cache_read_tokens": 0,
+  "query": "撤销重做系统用哪个类？",
+  "type": "code_retrieval",
+  "gold": [
+    "UndoRedo"
+  ],
+  "arm": "no-kb",
+  "run": 0,
+  "qid": "q20",
+  "correct": 1
+}

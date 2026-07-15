@@ -1,0 +1,24 @@
+{
+  "answer": "在 Godot 中，删除对象/释放内存主要使用以下函数：\n\n- **`memdelete()`** — 释放通过 `memnew()` 创建的 C++ 对象（`Object` 及其子类等）。\n- **`Object::free()`** — 对继承自 `Object` 的对象调用，内部最终也会走到 `memdelete()`。\n- **`Reference` / `RefCounted`** — 引用计数对象，引用归零时自动释放，无需手动删除。\n\n核心用法：\n\n```cpp\nObject *obj = memnew(Object);\n// ...\nmemdelete(obj);\n```",
+  "input_tokens": 342,
+  "output_tokens": 125,
+  "total_tokens": 467,
+  "steps": 1,
+  "llm_calls": 1,
+  "tool_calls": [],
+  "tool_steps": 0,
+  "tool_texts": [],
+  "truncated": false,
+  "wall_clock_s": 4.45,
+  "cost_$": 0.0003,
+  "cache_read_tokens": 0,
+  "query": "删除对象、释放内存用哪个函数？",
+  "type": "code_retrieval",
+  "gold": [
+    "memdelete"
+  ],
+  "arm": "no-kb",
+  "run": 0,
+  "qid": "q03",
+  "correct": 1
+}
