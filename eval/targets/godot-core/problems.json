@@ -4,7 +4,7 @@
   "problems": [
     {
       "type": "code_retrieval",
-      "query": "string format",
+      "query": "Godot 里字符串格式化的底层函数叫什么？",
       "gold": {
         "symbols": [
           "vformat"
@@ -15,7 +15,7 @@
     },
     {
       "type": "code_retrieval",
-      "query": "int to string",
+      "query": "整数转成字符串用哪个函数？",
       "gold": {
         "symbols": [
           "itos"
@@ -26,7 +26,7 @@
     },
     {
       "type": "code_retrieval",
-      "query": "delete object free memory",
+      "query": "删除对象、释放内存用哪个函数？",
       "gold": {
         "symbols": [
           "memdelete"
@@ -37,7 +37,7 @@
     },
     {
       "type": "code_retrieval",
-      "query": "a star pathfinding",
+      "query": "A* 寻路算法用哪个类？",
       "gold": {
         "symbols": [
           "AStar"
@@ -48,7 +48,7 @@
     },
     {
       "type": "code_retrieval",
-      "query": "operating system abstraction",
+      "query": "操作系统抽象层用哪个类？",
       "gold": {
         "symbols": [
           "OS"
@@ -59,7 +59,7 @@
     },
     {
       "type": "code_retrieval",
-      "query": "color",
+      "query": "表示颜色的类叫什么？",
       "gold": {
         "symbols": [
           "Color"
@@ -70,7 +70,7 @@
     },
     {
       "type": "code_retrieval",
-      "query": "vector2",
+      "query": "二维向量用哪个类？",
       "gold": {
         "symbols": [
           "Vector2"
@@ -81,7 +81,7 @@
     },
     {
       "type": "code_retrieval",
-      "query": "vector3",
+      "query": "三维向量用哪个类？",
       "gold": {
         "symbols": [
           "Vector3"
@@ -92,7 +92,7 @@
     },
     {
       "type": "code_retrieval",
-      "query": "quaternion",
+      "query": "四元数用哪个类？",
       "gold": {
         "symbols": [
           "Quaternion"
@@ -103,7 +103,7 @@
     },
     {
       "type": "code_retrieval",
-      "query": "rect2",
+      "query": "二维矩形用哪个类？",
       "gold": {
         "symbols": [
           "Rect2"
@@ -114,7 +114,7 @@
     },
     {
       "type": "code_retrieval",
-      "query": "json",
+      "query": "JSON 解析用哪个类？",
       "gold": {
         "symbols": [
           "JSON"
@@ -125,7 +125,7 @@
     },
     {
       "type": "code_retrieval",
-      "query": "image",
+      "query": "图像数据用哪个类？",
       "gold": {
         "symbols": [
           "Image"
@@ -136,7 +136,7 @@
     },
     {
       "type": "code_retrieval",
-      "query": "resource loader",
+      "query": "加载资源用哪个类？",
       "gold": {
         "symbols": [
           "ResourceLoader"
@@ -147,7 +147,7 @@
     },
     {
       "type": "code_retrieval",
-      "query": "resource saver",
+      "query": "保存资源用哪个类？",
       "gold": {
         "symbols": [
           "ResourceSaver"
@@ -158,7 +158,7 @@
     },
     {
       "type": "code_retrieval",
-      "query": "file access",
+      "query": "文件读写操作用哪个类？",
       "gold": {
         "symbols": [
           "FileAccess"
@@ -169,7 +169,7 @@
     },
     {
       "type": "code_retrieval",
-      "query": "directory access",
+      "query": "目录操作用哪个类？",
       "gold": {
         "symbols": [
           "DirAccess"
@@ -180,7 +180,7 @@
     },
     {
       "type": "code_retrieval",
-      "query": "message queue",
+      "query": "消息队列用哪个类？",
       "gold": {
         "symbols": [
           "MessageQueue"
@@ -191,7 +191,7 @@
     },
     {
       "type": "code_retrieval",
-      "query": "engine",
+      "query": "引擎主类叫什么？",
       "gold": {
         "symbols": [
           "Engine"
@@ -202,7 +202,7 @@
     },
     {
       "type": "code_retrieval",
-      "query": "main loop",
+      "query": "主循环基类叫什么？",
       "gold": {
         "symbols": [
           "MainLoop"
@@ -213,7 +213,7 @@
     },
     {
       "type": "code_retrieval",
-      "query": "undo redo",
+      "query": "撤销重做系统用哪个类？",
       "gold": {
         "symbols": [
           "UndoRedo"
@@ -224,7 +224,7 @@
     },
     {
       "type": "code_retrieval",
-      "query": "node path",
+      "query": "节点路径用哪个类？",
       "gold": {
         "symbols": [
           "NodePath"
@@ -235,7 +235,7 @@
     },
     {
       "type": "code_retrieval",
-      "query": "string name",
+      "query": "字符串名（优化版字符串）用哪个类？",
       "gold": {
         "symbols": [
           "StringName"
@@ -246,7 +246,7 @@
     },
     {
       "type": "code_retrieval",
-      "query": "random number generator",
+      "query": "随机数生成器用哪个类？",
       "gold": {
         "symbols": [
           "RandomNumberGenerator"
@@ -257,7 +257,7 @@
     },
     {
       "type": "code_retrieval",
-      "query": "crypto",
+      "query": "加密解密用哪个类？",
       "gold": {
         "symbols": [
           "Crypto"
@@ -268,7 +268,7 @@
     },
     {
       "type": "code_retrieval",
-      "query": "translation server",
+      "query": "翻译/本地化服务器用哪个类？",
       "gold": {
         "symbols": [
           "TranslationServer"
@@ -279,7 +279,7 @@
     },
     {
       "type": "code_retrieval",
-      "query": "http client",
+      "query": "HTTP 客户端用哪个类？",
       "gold": {
         "symbols": [
           "HTTPClient"

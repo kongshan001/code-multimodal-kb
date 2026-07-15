@@ -4,7 +4,7 @@
   "problems": [
     {
       "type": "cross_anchor",
-      "query": "vector2 normalization length",
+      "query": "Vector2 归一化和长度",
       "gold": {
         "doc_node_label": "Vector2 Class",
         "cmm_identifier": "Vector2",
@@ -15,7 +15,7 @@
     },
     {
       "type": "cross_anchor",
-      "query": "vector3 cross product",
+      "query": "Vector3 叉积",
       "gold": {
         "doc_node_label": "Vector3 Class",
         "cmm_identifier": "Vector3",
@@ -26,7 +26,7 @@
     },
     {
       "type": "cross_anchor",
-      "query": "transform2d matrix",
+      "query": "Transform2D 矩阵",
       "gold": {
         "doc_node_label": "Transform2D Class",
         "cmm_identifier": "Transform2D",
@@ -37,7 +37,7 @@
     },
     {
       "type": "cross_anchor",
-      "query": "resource load",
+      "query": "资源加载",
       "gold": {
         "doc_node_label": "Resource Class",
         "cmm_identifier": "Resource",
@@ -48,7 +48,7 @@
     },
     {
       "type": "cross_anchor",
-      "query": "random number generator",
+      "query": "随机数生成器",
       "gold": {
         "doc_node_label": "RandomNumberGenerator Class",
         "cmm_identifier": "RandomNumberGenerator",
@@ -59,7 +59,7 @@
     },
     {
       "type": "cross_anchor",
-      "query": "expression evaluate",
+      "query": "表达式求值",
       "gold": {
         "doc_node_label": "Expression Class",
         "cmm_identifier": "Expression",
@@ -70,7 +70,7 @@
     },
     {
       "type": "cross_anchor",
-      "query": "quaternion rotation",
+      "query": "四元数旋转",
       "gold": {
         "doc_node_label": "Quaternion Struct",
         "cmm_identifier": "Quaternion",
@@ -81,7 +81,7 @@
     },
     {
       "type": "cross_anchor",
-      "query": "signal connect object",
+      "query": "信号连接对象",
       "gold": {
         "doc_node_label": "Signals Concept",
         "cmm_identifier": "connect",

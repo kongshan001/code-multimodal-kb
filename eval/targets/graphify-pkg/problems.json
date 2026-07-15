@@ -4,7 +4,7 @@
   "problems": [
     {
       "type": "code_retrieval",
-      "query": "id construction",
+      "query": "构造唯一 ID 用哪个函数？",
       "gold": {
         "symbols": [
           "_make_id"
@@ -15,7 +15,7 @@
     },
     {
       "type": "code_retrieval",
-      "query": "build graph from json",
+      "query": "从 JSON 构建 graph 用哪个函数？",
       "gold": {
         "symbols": [
           "build_from_json"
@@ -26,7 +26,7 @@
     },
     {
       "type": "code_retrieval",
-      "query": "graph file size cap",
+      "query": "检查 graph 文件大小限制用哪个函数？",
       "gold": {
         "symbols": [
           "check_graph_file_size_cap"
@@ -37,7 +37,7 @@
     },
     {
       "type": "code_retrieval",
-      "query": "security",
+      "query": "安全检查用哪个函数？",
       "gold": {
         "symbols": [
           "check_graph_file_size_cap"
@@ -48,7 +48,7 @@
     },
     {
       "type": "code_retrieval",
-      "query": "classify file",
+      "query": "文件分类用哪个函数？",
       "gold": {
         "symbols": [
           "classify_file"
@@ -59,7 +59,7 @@
     },
     {
       "type": "code_retrieval",
-      "query": "xlsx to markdown",
+      "query": "xlsx 转 markdown 用哪个函数？",
       "gold": {
         "symbols": [
           "xlsx_to_markdown"
@@ -70,7 +70,7 @@
     },
     {
       "type": "code_retrieval",
-      "query": "google workspace",
+      "query": "转换 Google Workspace 文件用哪个函数？",
       "gold": {
         "symbols": [
           "convert_google_workspace_file"
@@ -81,7 +81,7 @@
     },
     {
       "type": "code_retrieval",
-      "query": "call llm",
+      "query": "调用 LLM 用哪个函数？",
       "gold": {
         "symbols": [
           "_call_llm"
@@ -92,7 +92,7 @@
     },
     {
       "type": "code_retrieval",
-      "query": "backend api key",
+      "query": "获取后端 API key 用哪个函数？",
       "gold": {
         "symbols": [
           "_get_backend_api_key"
@@ -103,7 +103,7 @@
     },
     {
       "type": "code_retrieval",
-      "query": "fetch arxiv",
+      "query": "获取 arxiv 论文用哪个函数？",
       "gold": {
         "symbols": [
           "_fetch_arxiv"
@@ -114,7 +114,7 @@
     },
     {
       "type": "code_retrieval",
-      "query": "transcribe audio",
+      "query": "音频转写用哪个函数？",
       "gold": {
         "symbols": [
           "transcribe"
@@ -125,7 +125,7 @@
     },
     {
       "type": "code_retrieval",
-      "query": "score nodes",
+      "query": "节点打分用哪个函数？",
       "gold": {
         "symbols": [
           "_score_nodes"
@@ -136,7 +136,7 @@
     },
     {
       "type": "code_retrieval",
-      "query": "query graph text",
+      "query": "查询图文本用哪个函数？",
       "gold": {
         "symbols": [
           "_query_graph_text"
@@ -147,7 +147,7 @@
     },
     {
       "type": "code_retrieval",
-      "query": "rebuild code",
+      "query": "重建代码用哪个函数？",
       "gold": {
         "symbols": [
           "_rebuild_code"
@@ -158,7 +158,7 @@
     },
     {
       "type": "code_retrieval",
-      "query": "suggest questions",
+      "query": "建议问题用哪个函数？",
       "gold": {
         "symbols": [
           "suggest_questions"
@@ -169,7 +169,7 @@
     },
     {
       "type": "code_retrieval",
-      "query": "cross community surprises",
+      "query": "跨社区发现惊喜用哪个函数？",
       "gold": {
         "symbols": [
           "_cross_community_surprises"
@@ -180,7 +180,7 @@
     },
     {
       "type": "code_retrieval",
-      "query": "derive sections from communities",
+      "query": "从社区派生章节用哪个函数？",
       "gold": {
         "symbols": [
           "derive_sections_from_communities"
@@ -191,7 +191,7 @@
     },
     {
       "type": "code_retrieval",
-      "query": "write callflow html",
+      "query": "写调用流程 HTML 用哪个函数？",
       "gold": {
         "symbols": [
           "write_callflow_html"
@@ -202,7 +202,7 @@
     },
     {
       "type": "code_retrieval",
-      "query": "pick text",
+      "query": "提取文本用哪个函数？",
       "gold": {
         "symbols": [
           "pick_text"
@@ -213,7 +213,7 @@
     },
     {
       "type": "code_retrieval",
-      "query": "load graph",
+      "query": "加载 graph 用哪个函数？",
       "gold": {
         "symbols": [
           "load_graph"
@@ -224,7 +224,7 @@
     },
     {
       "type": "code_retrieval",
-      "query": "deduplicate entities",
+      "query": "实体去重用哪个函数？",
       "gold": {
         "symbols": [
           "deduplicate_entities"

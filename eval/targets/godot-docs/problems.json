@@ -4,7 +4,7 @@
   "problems": [
     {
       "type": "doc_retrieval",
-      "query": "how do nodes communicate with signals",
+      "query": "节点之间如何通过信号通信？",
       "gold": {
         "node_labels": [
           "Signals Concept"
@@ -15,7 +15,7 @@
     },
     {
       "type": "doc_retrieval",
-      "query": "vector normalization and dot product",
+      "query": "向量归一化和点积",
       "gold": {
         "node_labels": [
           "Dot Product",
@@ -28,7 +28,7 @@
     },
     {
       "type": "doc_retrieval",
-      "query": "node lifecycle ready callback",
+      "query": "节点生命周期和 ready 回调",
       "gold": {
         "node_labels": [
           "Node Class",
@@ -40,7 +40,7 @@
     },
     {
       "type": "doc_retrieval",
-      "query": "per-frame process physics update",
+      "query": "每帧处理和物理更新",
       "gold": {
         "node_labels": [
           "_physics_process Virtual Function",
@@ -52,7 +52,7 @@
     },
     {
       "type": "doc_retrieval",
-      "query": "attach child node get node path",
+      "query": "添加子节点和获取节点路径",
       "gold": {
         "node_labels": [
           "add_child Method",
@@ -64,7 +64,7 @@
     },
     {
       "type": "doc_retrieval",
-      "query": "load a resource",
+      "query": "如何加载资源",
       "gold": {
         "node_labels": [
           "Resource Class",
@@ -76,7 +76,7 @@
     },
     {
       "type": "doc_retrieval",
-      "query": "global singleton autoload",
+      "query": "全局单例和 autoload",
       "gold": {
         "node_labels": [
           "Singleton Pattern"
@@ -87,7 +87,7 @@
     },
     {
       "type": "doc_retrieval",
-      "query": "bezier curve path",
+      "query": "贝塞尔曲线路径",
       "gold": {
         "node_labels": [
           "Cubic Bezier Curve",
@@ -100,7 +100,7 @@
     },
     {
       "type": "doc_retrieval",
-      "query": "matrix rotation transform 2d 3d",
+      "query": "矩阵旋转和 2D/3D 变换",
       "gold": {
         "node_labels": [
           "Matrix Rotation",
@@ -113,7 +113,7 @@
     },
     {
       "type": "doc_retrieval",
-      "query": "random number generation noise",
+      "query": "随机数生成和噪声",
       "gold": {
         "node_labels": [
           "RandomNumberGenerator Class"
