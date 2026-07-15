@@ -1238,6 +1238,34 @@
         "naive_per_file_cap_chars": 4000
       },
       "path": "eval\\reports\\archive\\20260713T154524Z-ab-value-stage0-claude-gui-stage0.json"
+    },
+    {
+      "id": "20260714T154329Z-cmm.bm25-godot-core-bm25",
+      "ts": "20260714T154329Z",
+      "readable_ts": "2026-07-14 23:43:29 +0800",
+      "subject": "cmm.bm25",
+      "variant": "godot-core-bm25",
+      "target": "godot-core",
+      "n": 26,
+      "lockfile": {
+        "temperature": 0.0,
+        "llm_model": "",
+        "cmm_version": "0.9.0",
+        "graphify_version": "0.9.13",
+        "mem0_version": "",
+        "mempalace_version": "3.5.0"
+      },
+      "aggregate": {
+        "mean_recall@1": 0.462,
+        "mean_broad_recall@1": 0.846,
+        "mean_recall@3": 0.5,
+        "mean_broad_recall@3": 0.846,
+        "mean_recall@5": 0.5,
+        "mean_broad_recall@5": 0.846,
+        "mean_recall@10": 0.5,
+        "mean_broad_recall@10": 0.885
+      },
+      "path": "eval/reports/archive/20260714T154329Z-cmm.bm25-godot-core-bm25.json"
     }
   ]
 }

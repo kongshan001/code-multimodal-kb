@@ -60,12 +60,13 @@ def _summary_matrix(arms: list[str], aggregates: dict, result: dict) -> dict:
 
 
 def _winner(arms, aggregates, key, lower_better=False):
-    """哪臂在该指标上最优（accuracy 等越高越好；tokens/cost/time 越低越好）。"""
+    """哪臂在该指标上最优（含并列）。返 (list_of_winners, value)。"""
     vals = [(a, aggregates[a].get(key)) for a in arms if aggregates[a].get(key) is not None]
     if not vals:
-        return None, None
-    best_a, best_v = min(vals, key=lambda x: x[1]) if lower_better else max(vals, key=lambda x: x[1])
-    return best_a, best_v
+        return [], None
+    best_v = min(v for _, v in vals) if lower_better else max(v for _, v in vals)
+    winners = [a for a, v in vals if v == best_v]
+    return winners, best_v
 
 
 def _result_md(result: dict, aggregates: dict) -> str:
@@ -92,7 +93,20 @@ def _result_md(result: dict, aggregates: dict) -> str:
     lines = [
         f"# agent-compare 结果 · target={result['target_id']} · model={result['model']}{mode}",
         f"> {result['n_questions']} 题 × {result['runs']} runs × {len(arms)} 臂。",
-        "",
+        ""]
+
+    def _fmt_winners(ws, v, label, unit):
+        if not ws:
+            return f"- **{label}**：无数据"
+        s = " / ".join(f"`{w}`" for w in ws)
+        if len(ws) == len(arms):
+            return f"- **{label}**：{len(ws)} 臂持平（{unit}={v}）"
+        elif len(ws) > 1:
+            return f"- **{label}**（{len(ws)} 臂并列）：{s}（{unit}={v}）"
+        else:
+            return f"- **{label}**：{s}（{unit}={v}）"
+
+    lines += [
         "## 怎么读懂这份报告（规则，先看）",
         "",
         "**4 个臂是什么**：",
@@ -114,12 +128,12 @@ def _result_md(result: dict, aggregates: dict) -> str:
         "**`tool_diversity` 高**：可能 agent 在乱试不同工具（没方向），未必好事。",
         "",
         "## 谁赢",
-        f"- **准确率最高**：`{acc_win}`（accuracy={acc_v}）" if acc_win else "- 准确率：无数据",
+        _fmt_winners(acc_win, acc_v, "准确率最高", "accuracy"),
     ]
     if tok_win:
-        lines.append(f"- **最省 token**：`{tok_win}`（mean_total_tokens={tok_v}）")
+        lines.append(_fmt_winners(tok_win, tok_v, "最省 token", "mean_total_tokens"))
     if cost_win and cost_v:
-        lines.append(f"- **最省钱**：`{cost_win}`（mean_cost_$={cost_v}）")
+        lines.append(_fmt_winners(cost_win, cost_v, "最省钱", "mean_cost_$"))
     if comp:
         lines.append(f"- **KB vs 无 KB token 压缩**：{comp}×（>1 = KB 省）")
 

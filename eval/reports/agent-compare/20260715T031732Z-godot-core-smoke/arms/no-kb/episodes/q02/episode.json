@@ -1,0 +1,27 @@
+{
+  "answer": "I could not locate it.",
+  "input_tokens": 108,
+  "output_tokens": 23,
+  "total_tokens": 131,
+  "steps": 2,
+  "llm_calls": 2,
+  "tool_calls": [
+    "grep_code"
+  ],
+  "tool_steps": 1,
+  "tool_texts": [
+    "(mock result)"
+  ],
+  "truncated": false,
+  "wall_clock_s": 0.57,
+  "cost_$": 0.0001,
+  "query": "int to string",
+  "type": "code_retrieval",
+  "gold": [
+    "itos"
+  ],
+  "arm": "no-kb",
+  "run": 0,
+  "qid": "q02",
+  "correct": 0
+}
