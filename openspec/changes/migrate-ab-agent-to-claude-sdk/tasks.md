@@ -34,4 +34,4 @@
 
 - [x] 5.1 grep `anthropic` 活引用：仅 `ab_agent.py`(make_client)；make_client 仍被 cli/run_doc_quality_ragas/run_memory_quality/test_memory_quality 用 → **anthropic 必须留**
 - [x] ~~5.2 移除 `anthropic`~~ **取消**：5.1 证明 make_client 仍有 4 个消费者直连 anthropic，依赖保留
-- [ ] 5.3 提交 git（main + push，带 Co-Authored-By）；归档前 `openspec validate` → 进行中
+- [x] 5.3 提交 git（main + push，带 Co-Authored-By）= commit `106a5c0`；`openspec validate` 通过
