@@ -1,11 +1,14 @@
-# bench.yaml —— benchmark 全引擎可调项（用户配置）
+# bench.yaml.example —— benchmark 全引擎可调项（模板，入库）
 #
-# 改这个文件调模型/价格/上限/端口，不用改代码。
-# 缺失的键或整个文件不存在时用 eval/config.py 内置默认值。
-# 凭据（api_key）不在这里——走 env (AB_API_KEY) 或 ~/.cc-connect/config.toml。
+# 用法：复制为 bench.yaml 再改（bench.yaml 已 gitignore，不入库，各自本地改不冲突）：
+#   cp bench.yaml.example bench.yaml
+#
+# 缺失 bench.yaml 时用 eval/config.py 内置 _DEFAULTS（与本模板一致）兜底，bench 照跑。
+# 凭据（api_key）不在这里——走 env (AB_API_KEY) / ~/.cc-connect/config.toml / bench.local.yaml。
+# 配置加载顺序：_DEFAULTS → bench.yaml（本文件覆盖）→ bench.local.yaml（再覆盖，放 api_key）。
 
 llm:
-  # api_key 不在这里（bench.yaml 会入库→泄密）→ 放 bench.local.yaml（gitignored）或 env AB_API_KEY
+  # api_key 不在这里（会泄密）→ bench.local.yaml 或 env AB_API_KEY
   base_url: https://open.bigmodel.cn/api/anthropic    # agent + judge 共用（anthropic 兼容端点，一把 key/一个端点）
   model: glm-5.1                                       # 统一模型（agent + judge 都用这个）
   prices:                                              # $/Mtoken（占位，勿当真实成本；未知模型 → cost null）

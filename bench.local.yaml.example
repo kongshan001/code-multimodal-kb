@@ -1,7 +1,7 @@
 # bench.local.yaml —— 本地配置（gitignored，不提交）
 #
-# 复制为 bench.local.yaml，填你的 api_key。config 先读 bench.yaml（入库默认），
-# 再读 bench.local.yaml（本文件覆盖），深合并。
+# 复制为 bench.local.yaml，填你的 api_key。config 先读 bench.yaml（本地，由
+# bench.yaml.example 复制而来、gitignored），再读 bench.local.yaml（本文件覆盖），深合并。
 #
 # cp bench.local.yaml.example bench.local.yaml
 
