@@ -1,0 +1,6 @@
+{
+  "id": "godot-cross",
+  "subjects": ["cross_anchor"],
+  "deps": {"doc_graph": "godot-docs", "cmm": "godot-core"},
+  "notes": "graphify 文档概念 → cmm 代码定位（原 gold_crosstool）。deps 引 godot-docs/godot-core，需先 cp 它俩的 target.json.example。cp 为 target.json。"
+}

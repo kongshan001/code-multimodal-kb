@@ -1,0 +1,6 @@
+{
+  "id": "engineer-demo-memory",
+  "subjects": ["memory_recall", "memory_routing"],
+  "memory": {"palace": "engineer_demo"},
+  "notes": "自指 demo target：engineer_demo 自己的 memory 层（原 gold_memory）。不可移植——fork 后建议删/换。recall 锚 memory 文件 + 会话 jsonl。cp 为 target.json。"
+}

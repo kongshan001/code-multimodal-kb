@@ -1,0 +1,9 @@
+{
+  "id": "graphify-pkg",
+  "language": "Python",
+  "subjects": ["code_retrieval"],
+  "code": {
+    "cmm_project": "absolute-path-slug-to-graphify-cmm-index"
+  },
+  "notes": "graphify 包源码，775 函数 / 4979 边（原 gold_code）。cp 为 target.json 后填本机 cmm 索引 slug（路径 / → -、去冒号）。"
+}

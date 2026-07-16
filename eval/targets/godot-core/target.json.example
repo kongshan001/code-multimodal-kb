@@ -1,0 +1,10 @@
+{
+  "id": "godot-core",
+  "language": "C++",
+  "subjects": ["code_retrieval"],
+  "code": {
+    "codegraph_root": "/absolute/path/to/godot-src/core",
+    "cmm_project": "absolute-path-to-godot-src-core"
+  },
+  "notes": "Godot 4.7 core/。cp 本文件为 target.json 后填本机路径：codegraph_root=godot 源码 core 目录；cmm_project=该路径的 cmm 索引 slug（把 / 换成 -、去冒号，如 /Users/x/godot-src/core → Users-x-godot-src-core）"
+}

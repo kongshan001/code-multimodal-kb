@@ -1,12 +1,12 @@
-"""Per-target loader：target.json + problems.json + target.local.json overlay。
+"""Per-target loader：target.json（本地配置）+ problems.json（gold 题库）。
 
-照搬 scaffold.catalog 的「config + overlay」范式（catalog.json + catalog.local.json）。
 零依赖（stdlib json）。题库与目标工程绑定从 Python 源码（gold_*.py）迁到声明式 JSON。
 
 目录布局（eval/targets/<id>/）：
-  target.json          工程描述（id/language/subjects/工具路径/依赖），提交
-  target.local.json    机器路径 overlay，gitignored
-  problems.json        题库（type 判别 + 稳定 id + 元数据），提交
+  target.json          工程描述（id/language/subjects/工具路径/依赖），gitignored 本地配置
+                       （含机器路径；由 target.json.example 复制而来，各自本地改不冲突）
+  target.json.example  模板（入库），cp 为 target.json 后填本机路径
+  problems.json        题库（gold，type 判别 + 稳定 id + 元数据），提交
 
 5 种 problem type，gold 形状由 type 决定（discriminated union，见 _GOLD_FIELDS）。
 """
@@ -43,17 +43,6 @@ class TargetError(Exception):
     """target/problems 加载或校验失败。"""
 
 
-# ── 深合并（local 覆盖 base）──────────────────────────────────────────────
-def _deep_merge(base: dict, overlay: dict) -> dict:
-    out = dict(base)
-    for k, v in overlay.items():
-        if k in out and isinstance(out[k], dict) and isinstance(v, dict):
-            out[k] = _deep_merge(out[k], v)
-        else:
-            out[k] = v
-    return out
-
-
 # ── target 加载 ───────────────────────────────────────────────────────────
 def _target_dir(target_id: str) -> Path:
     d = TARGETS_DIR / target_id
@@ -71,15 +60,12 @@ def load_target_raw(target_id: str) -> dict:
 
 
 def load_target(target_id: str) -> dict:
-    """读 target.json + target.local.json overlay（深合并）。
+    """读 target.json（本地配置）。
 
     cross target（含 deps）额外校验依赖 target 存在，并在返回里附 `deps_resolved`：
     {dep_role: 该依赖 target 的 merged 配置}，使 runner 无感取 doc_graph/cmm 路径。
     """
     base = load_target_raw(target_id)
-    local_f = _target_dir(target_id) / "target.local.json"
-    if local_f.is_file():
-        base = _deep_merge(base, json.loads(local_f.read_text(encoding="utf-8")))
     # deps 解析（cross_anchor）
     deps = base.get("deps")
     if deps:

@@ -2,7 +2,7 @@
 
 两类：
   - 真实迁移产物集成测试：加载 eval/targets/ 下 5 个 target，校验 schema + 题数守恒
-  - hermetic 校验测试：tmp_path 造合成 target，覆盖 overlay/deps/各类非法 schema
+  - hermetic 校验测试：tmp_path 造合成 target，覆盖 deps/各类非法 schema
 """
 from __future__ import annotations
 
@@ -80,20 +80,8 @@ def test_load_real_uses_all_five_types():
                     "memory_recall", "memory_routing", "bug_fix"}
 
 
-# ── hermetic：overlay 深合并 ───────────────────────────────────────────────
-def test_local_overlay_overrides_base(tmp_path, monkeypatch):
-    monkeypatch.setattr(T, "TARGETS_DIR", tmp_path)
-    _make_target(tmp_path, "t1",
-                 {"id": "t1", "subjects": ["code_retrieval"],
-                  "code": {"codegraph_root": "/base", "cmm_project": "proj"}},
-                 [_problem("t1-foo")],
-                 local={"code": {"codegraph_root": "/local-override"}})
-    t = T.load_target("t1")
-    assert t["code"]["codegraph_root"] == "/local-override"   # 覆盖
-    assert t["code"]["cmm_project"] == "proj"                  # 保留
-
-
-def test_local_absent_falls_back_to_base(tmp_path, monkeypatch):
+# ── hermetic：target 加载 ─────────────────────────────────────────────────
+def test_load_target_returns_config(tmp_path, monkeypatch):
     monkeypatch.setattr(T, "TARGETS_DIR", tmp_path)
     _make_target(tmp_path, "t1",
                  {"id": "t1", "code": {"cmm_project": "proj"}}, [_problem("t1-foo")])

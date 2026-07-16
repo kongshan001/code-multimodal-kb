@@ -28,8 +28,9 @@ __pycache__/
 .pytest_cache/
 .playwright
 
-# bench targets 机器路径 overlay（design D4，照搬 catalog.local.json 范式）
-eval/targets/*/target.local.json
+# bench target 本地配置（含机器路径；由 target.json.example 复制而来，各自本地改不冲突）
+# problems.json（gold 题库）仍入库——它是 benchmark 的"试卷+答案"，不是机器配置
+eval/targets/*/target.json
 
 # bench 本地配置（各自本地改，不入库，避免冲突；由 bench.yaml.example 复制而来，含 api_key）
 bench.yaml
@@ -47,3 +48,6 @@ VERIFICATION-REPORT.md
 vendor/*.tar.gz
 vendor/*.zip
 vendor/codebase-memory-mcp
+
+# benchmark 报告（生成产物，默认不入库；正经 benchmark 跑完手动 git add 归档）
+eval/reports/

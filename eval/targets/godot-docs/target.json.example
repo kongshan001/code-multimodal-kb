@@ -1,0 +1,9 @@
+{
+  "id": "godot-docs",
+  "language": "rst",
+  "subjects": ["doc_retrieval"],
+  "doc": {
+    "graph": "/absolute/path/to/godot-docs-subset/graphify-out/graph.json"
+  },
+  "notes": "Godot 文档子集图。cp 本文件为 target.json 后填本机路径：doc.graph=本地 graphify 导出的 graph.json"
+}
