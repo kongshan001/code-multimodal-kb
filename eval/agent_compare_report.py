@@ -17,7 +17,7 @@ from eval import ab_tools
 
 # summary 里展示的指标（顺序即矩阵列序）
 _METRIC_KEYS = [
-    "accuracy", "mean_total_tokens", "mean_llm_calls", "mean_tool_steps",
+    "accuracy", "mean_total_tokens", "mean_cache_read_tokens", "mean_llm_calls", "mean_tool_steps",
     "mean_wall_clock_s", "mean_cost_$", "tool_diversity", "truncated_rate", "n_episodes",
 ]
 
@@ -31,6 +31,7 @@ def _aggregate(eps: list[dict]) -> dict:
         "mean_input_tokens": round(statistics.mean(e["input_tokens"] for e in eps), 1),
         "mean_output_tokens": round(statistics.mean(e["output_tokens"] for e in eps), 1),
         "mean_total_tokens": round(statistics.mean(tot), 1),
+        "mean_cache_read_tokens": round(statistics.mean(e.get("cache_read_tokens", 0) for e in eps), 1),
         "mean_llm_calls": round(statistics.mean(e["llm_calls"] for e in eps), 2),
         "mean_tool_steps": round(statistics.mean(e["tool_steps"] for e in eps), 2),
         "mean_wall_clock_s": round(statistics.mean(e["wall_clock_s"] for e in eps), 2),
@@ -81,7 +82,8 @@ def _result_md(result: dict, aggregates: dict) -> str:
 
     glossary = [  # 指标大白话
         ("accuracy", "答对率 = 答对的题 ÷ 总题数。0~1，越高越好"),
-        ("mean_total_tokens", "平均每题烧多少 token（≈字数）。越少越省"),
+        ("mean_total_tokens", "平均每题处理多少 token（= 新读 input + 缓存重读 cache_read + output，真实处理量）。越少越省"),
+        ("mean_cache_read_tokens", "其中命中 prompt 缓存重读的 token（缓存多的臂 prompt 大，如 skills 臂带 SOP）"),
         ("mean_llm_calls", "平均每题调几次大模型。越少越快越省"),
         ("mean_tool_steps", "平均每题用几次工具（cmm/grep/read）"),
         ("mean_wall_clock_s", "平均每题跑多久（秒）"),

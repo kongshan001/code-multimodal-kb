@@ -185,7 +185,7 @@ async def _run_episode_async(question: str, arm: str, target: dict | None,
         session.append({"role": "user", "content": [{"type": "tool_result",
                           "tool_use_id": None, "content": str(result)[:cap]}]})
 
-    total = in_tok + out_tok
+    total = in_tok + out_tok + cache_read   # 真实处理量：含 cache_read（旧版漏算→缓存多的臂虚省）
     return {
         "answer": answer.strip(), "input_tokens": in_tok, "output_tokens": out_tok,
         "total_tokens": total,

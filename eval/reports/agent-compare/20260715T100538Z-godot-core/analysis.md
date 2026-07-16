@@ -1,5 +1,11 @@
 # 结果分析 · godot-core 29题×4臂（claude_agent_sdk 首跑）
 
+> ⚠️ **指标修正（2026-07-16）**：本文 §3/§7 中"kb+superpowers 最省 token"等 token 结论基于**旧 `total_tokens`
+> 指标（= input+output，漏算 `cache_read_input_tokens`）**——是 bug。注入 SOP 的 skills 臂 prompt 更大、
+> 更易触发缓存、cache_read 更高，旧指标把它们漏掉 → skills 臂**虚省**。矫正后（total = input+output+cache_read）：
+> **kb 才最省（sdk 1885 / raw 831），skills 臂最费（sdk 2655/2607、raw 1433/1398）**——符合"加 SOP 多花 token"的直觉。
+> 代码已修（`ab_agent.total_tokens` 含 cache_read、报告新增 `mean_cache_read_tokens` 列）。下文 token 数字保留原貌作历史记录。
+
 > 配套 `result.md`（指标矩阵+逐题）/ `summary.json`（原始数据）。本文记录**围绕这次跑的调研与结论**，
 > 多数结论有对照实验/逐题实锤支撑，标注了证据等级。写于 2026-07-15。
 
