@@ -103,7 +103,7 @@ def run_compare(target_id: str = "godot-core",
                            "correct": _judge(ep["answer"], goldset)})
                 episodes_by_arm[arm].append(ep)
         print(f"  [{qi + 1}/{len(questions)}] {p['type']:14} {p['query'][:30]:30} "
-              + " ".join(f"{a}={'✓' if episodes_by_arm[a][-1]['correct'] else '✗'}" for a in arms),
+              + " ".join(f"{a}={'OK' if episodes_by_arm[a][-1]['correct'] else 'X'}" for a in arms),
               flush=True)
 
     return {"target_id": target_id, "target": target, "arms": list(arms),
@@ -130,7 +130,7 @@ def run(target_id: str = "godot-core", runs: int = 1, subset: int | None = None,
                            "correct_retrieval": _judge_retrieval(ep["answer"], ep.get("tool_texts", []), goldset)})
                 rows.append(ep)
                 results_this_q[arm] = ep
-        status = " ".join(f"{a}={'✓' if results_this_q[a]['correct'] else '✗'}" for a in arms)
+        status = " ".join(f"{a}={'OK' if results_this_q[a]['correct'] else 'X'}" for a in arms)
         print(f"  [{qi + 1}/{len(questions)}] {query[:36]:36} {status}", flush=True)
 
     # 聚合各臂

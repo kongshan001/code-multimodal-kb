@@ -277,8 +277,8 @@ def main(argv=None):
     a = ap.parse_args(argv)
     srv = ThreadingHTTPServer((a.host, a.port), Handler)
     h = health()
-    print(f"measurement lab → http://{a.host}:{a.port}")
-    print(f"  环境 {'就绪 ✓' if h['ready'] else '⚠ 有缺项（/api/health 查）'}")
+    print(f"measurement lab -> http://{a.host}:{a.port}")
+    print(f"  环境 {'就绪 OK' if h['ready'] else '! 有缺项（/api/health 查）'}")
     print(f"  报告 {len(json.loads((ARCHIVE/'index.json').read_text(encoding='utf-8'))['reports']) if (ARCHIVE/'index.json').exists() else 0} 份归档")
     print("  Ctrl-C 停")
     try:

@@ -150,8 +150,8 @@ def _cmd_goldgen(args) -> int:
     client = make_client()
     _, _, model = load_creds()
     res = generate(seeds, args.target, client, model, args.n)
-    print(f"枚举 {res['symbols']} 符号 → LLM 拟 {res['candidates']} 新候选（status: pending）")
-    print(f"→ targets/{args.target}/problems.json")
+    print(f"枚举 {res['symbols']} 符号 -> LLM 拟 {res['candidates']} 新候选（status: pending）")
+    print(f"-> targets/{args.target}/problems.json")
     print(f"人审（前端 approve/删）或先跑: bench goldgen-verify --target {args.target}")
     return 0
 
@@ -161,7 +161,7 @@ def _cmd_goldgen_verify(args) -> int:
     from eval.goldgen import verify
     res = verify(args.target)
     print(f"验收 {res['n']} pending 候选：pass {res['pass']} / 需人审 {res['review']}")
-    print(f"已标 verdict/reason → targets/{args.target}/problems.json")
+    print(f"已标 verdict/reason -> targets/{args.target}/problems.json")
     return 0
 
 
@@ -217,7 +217,7 @@ def _cmd_status(args) -> int:
               "next": f"未对接（{args.target} 不是已知 target）：建 target.json + 索引（见 bench-dock-target）"}
         print(f"target: {s['target']}")
         if s.get("docked"):
-            print(f"  对接:✓  codegraph:{'✓' if s['codegraph'] else '✗'}  cmm:{'✓' if s['cmm'] else '✗'}")
+            print(f"  对接:OK  codegraph:{'OK' if s['codegraph'] else 'X'}  cmm:{'OK' if s['cmm'] else 'X'}")
             print(f"  题数: {s['n_problems']} ({s['types']})    报告: {s['n_reports']} 份")
         print(f"  下一步: {s['next']}")
     else:
@@ -230,10 +230,10 @@ def _cmd_status(args) -> int:
         for tid in tids:
             s = _probe_target(tid)
             if s["docked"]:
-                print(f"{tid:22} ✓    {'✓' if s['codegraph'] else '✗':6} {'✓' if s['cmm'] else '✗':4} "
+                print(f"{tid:22} OK   {'OK' if s['codegraph'] else 'X':6} {'OK' if s['cmm'] else 'X':4} "
                       f"{str(s['n_problems'])+'('+s['types']+')':16} {s['n_reports']:4} {s['next'][:48]}")
             else:
-                print(f"{tid:22} ✗    {s['next'][:60]}")
+                print(f"{tid:22} X    {s['next'][:60]}")
     return 0
 
 
