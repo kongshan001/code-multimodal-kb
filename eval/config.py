@@ -1,18 +1,17 @@
-"""全引擎可调项单一来源：bench.yaml（用户配置）+ 内置默认值。
+"""全引擎可调项单一来源：bench.yaml（本地配置，gitignored）+ 内置默认值。
 
-PyYAML 必装（见 requirements.txt）。用户改 bench.yaml 调模型/价格/上限/端口，
-不改代码。凭据（api_key）不入 yaml——仍走 env / ~/.cc-connect/config.toml（见 ab_agent.load_creds）。
+PyYAML 必装（见 requirements.txt）。`cp bench.yaml.example bench.yaml` 后改模型/价格/上限/端口/
+api_key，不改代码。bench.yaml 不入库（各自本地改不冲突）；缺失时用 _DEFAULTS 兜底。
 
-覆盖优先级：bench.yaml > 内置默认（本文件 _DEFAULTS）。
-凭据优先级（在 load_creds）：env > config.toml > bench.yaml(base_url/model) > _DEFAULTS。
+覆盖优先级：bench.yaml > 内置默认（本文件 _DEFAULTS），深合并。
+凭据（api_key）优先级（在 ab_agent.load_creds）：env AB_API_KEY > bench.yaml(llm.api_key) > config.toml。
 """
 from __future__ import annotations
 
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
-_CONFIG_PATH = REPO / "bench.yaml"
-_LOCAL_PATH = REPO / "bench.local.yaml"   # gitignored；放 api_key 等敏感/机器特定项
+_CONFIG_PATH = REPO / "bench.yaml"   # gitignored 本地配置（由 bench.yaml.example 复制；含 api_key）
 
 # 内置默认（bench.yaml 缺失或某键未填时用）
 _DEFAULTS = {
@@ -53,17 +52,14 @@ def load() -> dict:
         return _cached
     cfg = dict(_DEFAULTS)
     try:
-        import yaml  # 惰性：只在 bench.yaml/local 存在时 import
+        import yaml  # 惰性：只在 bench.yaml 存在时 import
         if _CONFIG_PATH.is_file():
             user = yaml.safe_load(_CONFIG_PATH.read_text(encoding="utf-8")) or {}
             cfg = _deep_merge(cfg, user)
-        if _LOCAL_PATH.is_file():   # bench.local.yaml 覆盖（api_key 等放这）
-            local = yaml.safe_load(_LOCAL_PATH.read_text(encoding="utf-8")) or {}
-            cfg = _deep_merge(cfg, local)
     except ImportError:
         pass  # 无 pyyaml → 用默认值（不阻断）
     except yaml.YAMLError as e:
-        raise RuntimeError(f"bench.yaml / bench.local.yaml 解析失败: {e}")
+        raise RuntimeError(f"bench.yaml 解析失败: {e}")
     _cached = cfg
     return cfg
 

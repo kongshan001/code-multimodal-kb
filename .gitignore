@@ -31,10 +31,8 @@ __pycache__/
 # bench targets 机器路径 overlay（design D4，照搬 catalog.local.json 范式）
 eval/targets/*/target.local.json
 
-# bench 全局配置的本地覆盖（各自本地改，不入库，避免冲突）
-# bench.yaml 由 bench.yaml.example 复制而来（主配置）；bench.local.yaml 放 api_key 等敏感项
+# bench 本地配置（各自本地改，不入库，避免冲突；由 bench.yaml.example 复制而来，含 api_key）
 bench.yaml
-bench.local.yaml
 
 # agent-compare 报告：会话/思考本地不入库（防膨胀；conclusion/summary/config/aggregate/episode.json 入库）
 eval/reports/agent-compare/*/arms/*/episodes/*/session.jsonl

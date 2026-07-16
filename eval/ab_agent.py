@@ -6,7 +6,7 @@ loop / 重试 / tool_use 往返 / 序列化全交 claude_agent_sdk（claude CLI 
 
 两臂差异 = 发现工具（baseline=词面 grep / kb=语义 cmm / doc=文档 graphify），都给 read_file 保公平。
 LLM：经 ClaudeAgentOptions.env 透传 base_url+key 打 BigModel anthropic 兼容端点（glm-5.x）。
-判分（gold ∈ 终答）在 run_ab_agent.py。凭据从 env / bench.local.yaml / config.toml 读，不入库。
+判分（gold ∈ 终答）在 run_ab_agent.py。凭据从 env / bench.yaml(llm.api_key) / config.toml 读，不入库。
 
 迁移自手写 ReAct loop（openspec change migrate-ab-agent-to-claude-sdk）；trace 字段逐字段不变。
 """
@@ -80,13 +80,13 @@ def _extract_assistant(msg) -> tuple[list, str, str, list[str]]:
 
 def load_creds() -> tuple[str, str, str]:
     """返 (api_key, base_url, model)。
-    api_key 优先级：env AB_API_KEY > bench.local.yaml > config.toml。
+    api_key 优先级：env AB_API_KEY > bench.yaml(llm.api_key) > config.toml。
     base_url + model **永远从 config（bench.yaml）读**——env 只提供 key，不覆盖 URL/model。
     （与迁移前同语义；现用于透传给 ClaudeAgentOptions.env。）"""
     _cfg = config.llm()
     if os.environ.get("AB_API_KEY"):
         return (os.environ["AB_API_KEY"], _cfg["base_url"], _cfg["model"])
-    if _cfg.get("api_key"):   # bench.local.yaml → llm.api_key
+    if _cfg.get("api_key"):   # bench.yaml → llm.api_key
         return (_cfg["api_key"], _cfg["base_url"], _cfg["model"])
     try:
         import tomllib
