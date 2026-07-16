@@ -1,6 +1,0 @@
-{
-  "code": {
-    "codegraph_root": "/your/path/to/godot-src/core",
-    "cmm_project": "your-cmm-project-name"
-  }
-}

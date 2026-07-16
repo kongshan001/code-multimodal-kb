@@ -24,7 +24,7 @@ Pick a kebab-case `<id>` for the target (e.g. `my-app`, `acme-docs`). Then:
 
 ### 1. Create the target directory
 
-Create `eval/targets/<id>/target.json`. Copy the closest existing target as a template (`eval/targets/godot-core/`, `godot-docs/`, or `engineer-demo-memory/`) and edit. Shape depends on what you're measuring:
+Create `eval/targets/<id>/target.json` by copying the tracked template: `cp eval/targets/<similar-id>/target.json.example eval/targets/<id>/target.json`, then edit. (`target.json` is **gitignored local config** like `bench.yaml` — each machine has its own, no conflict; `target.json.example` is the committed template.) Shape depends on what you're measuring:
 
 ```jsonc
 // code_retrieval
@@ -57,9 +57,7 @@ Create `eval/targets/<id>/target.json`. Copy the closest existing target as a te
 }
 ```
 
-**Machine-specific paths go in `target.json` as working values** (so it runs out-of-box on your machine), but other machines will differ. For those, create `eval/targets/<id>/target.local.json` (gitignored — same pattern as `scaffold/catalog.local.json`) overriding `codegraph_root` / `cmm_project` / `graph` with that machine's paths. The loader deep-merges base + local. There's a `target.local.example.json` in each existing target showing the shape.
-
-Why this split: the repo should clone-and-run for you, but stay portable. Commit your real paths in `target.json`; everyone else overrides in their own `.local`.
+**`target.json` is gitignored local config (same pattern as `bench.yaml`)** — it holds YOUR machine's paths (`codegraph_root` / `cmm_project` / `graph`) and is NOT committed, so each machine has its own with no merge conflict. The tracked template is `target.json.example` (copy it → `target.json`, fill your paths). **There is no separate `.local` overlay** — `target.json` itself is the single local file. (The gold test cases in `problems.json` ARE committed — they're shared test data, not machine config.)
 
 ### 2. Build the indexes
 
@@ -142,7 +140,7 @@ If results are all-zero: 90% of the time `cmm_project` in `target.json` doesn't 
 ## Common pitfalls
 
 - **Wrong `cmm_project`** → bench runs, returns empty/zero. Always copy the exact name from `cmm_list_projects()`.
-- **Machine-specific paths committed** → breaks for other devs. Put your real path in `target.json` (it's fine — that's your machine's working value), and document the override in `target.local.example.json`. Others create their own `target.local.json`.
+- **Machine-specific paths** → `target.json` is gitignored (local, like `bench.yaml`), so your real paths never get committed — just edit your local `target.json`. There is no separate `.local` override file.
 - **graphify cost** → `graphify build` calls LLM per node. Estimate before running on a huge doc set; commit the resulting `graph.json` so the team doesn't re-pay.
 - **mempalace auto-save hook** → non-idempotent hooks bloat the palace and crash recall (0.933→0.6 observed). Mine once manually, don't leave an auto-save hook running.
 - **Chinese Windows** → subprocess encoding is already handled repo-wide (`eval/_subproc.run_text` forces UTF-8). You don't need to do anything; if you hit a decode error, it's a missed call site — route it through `run_text`.
@@ -150,7 +148,7 @@ If results are all-zero: 90% of the time `cmm_project` in `target.json` doesn't 
 
 ## Commit the work
 
-Per repo discipline: commit `targets/<id>/` (target.json + problems.json + README.md) to main + push, with `Co-Authored-By: Claude <noreply@anthropic.com>`. Never commit `target.local.json` (it's gitignored — machine-specific).
+Per repo discipline: commit `targets/<id>/` (**target.json.example** + problems.json + README.md) to main + push, with `Co-Authored-By: Claude <noreply@anthropic.com>`. Never commit `target.json` (gitignored — machine-specific local config, like `bench.yaml`).
 
 ## Quick command reference
 

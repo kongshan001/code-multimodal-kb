@@ -35,7 +35,7 @@ Windows：双击 `setup-bench.bat`（装 Python 依赖）→ `deploy.bat <代码
 
 本仓库是 fork 模板——clone 后把 benchmark 指向你自己的代码/文档/记忆：
 
-1. 建 `eval/targets/<myproj>/target.json`（参考现有 5 个 target 之一）+ `target.local.json`（你机器路径覆盖，gitignored）
+1. 建 `eval/targets/<myproj>/target.json`：`cp eval/targets/<similar>/target.json.example target.json` 再填你机器路径（target.json 已 gitignored——本地配置不入库，各机不冲突；模板 target.json.example 入库）
 2. 建索引（`codegraph init` / `cmm index` / `graphify build` / `mempalace mine`，按 subject）
 3. 造题：`bench goldgen <seeds> --target <myproj>` → `bench web` Gold lab 逐条 approve；或前端编辑器手增
 4. 跑：`bench run code --target <myproj> --method bm25`
