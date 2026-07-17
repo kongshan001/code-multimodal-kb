@@ -161,9 +161,11 @@ async def _run_episode_async(question: str, arm: str, target: dict | None,
     tool_sink: list = []   # 捕 (name, result)——run_episode 用来填 tool_texts
 
     # D7 硬约束：tools=[] + setting_sources=[] 剥掉 CLI 默认工具定义（否则 token 税 22-40k）
+    # permission_mode=bypassPermissions：headless 跑批无交互，自动批准工具调用（否则 CLI 默认要授权→挡住工具）
     options = ClaudeAgentOptions(
         model=mdl, env=env, system_prompt=sys_prompt,
         tools=[], setting_sources=[],
+        permission_mode="bypassPermissions",
         mcp_servers={"bench": ab_tools.arm_mcp_server(arm, tool_sink)},
         allowed_tools=ab_tools.arm_allowed_tools(arm),
         max_turns=max_steps, include_hook_events=False,
