@@ -230,9 +230,11 @@ def _episode_md(ep: dict) -> str:
     lines = [
         f"# {ep['qid']} · {ep['type']} · arm: `{ep['arm']}`",
         "",
-        f"**题**：{ep['query']}  ·  **gold**：{', '.join(ep['gold'])}",
-        f"**答对**：{'✓' if ep['correct'] else '✗'}  ·  **答案**：{(ep.get('answer') or '')[:120]}",
-        f"**指标**：tokens={ep['total_tokens']} · llm_calls={ep['llm_calls']} · "
+        f"- **题**：{ep['query']}",
+        f"- **gold**：{', '.join(ep['gold'])}",
+        f"- **答对**：{'✓' if ep['correct'] else '✗'}",
+        f"- **答案**：{(ep.get('answer') or '')[:120]}",
+        f"- **指标**：tokens={ep['total_tokens']} · llm_calls={ep['llm_calls']} · "
         f"tool_steps={ep['tool_steps']} · 耗时={ep['wall_clock_s']}s · "
         f"截断={'⚠是' if ep.get('truncated') else '否'}",
         "",
