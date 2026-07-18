@@ -12,10 +12,24 @@ from __future__ import annotations
 import argparse
 import json
 import statistics
+from concurrent.futures import ThreadPoolExecutor
 
+from eval import config
 from eval.ab_agent import load_creds, run_episode
 from eval.repro import detect_lockfile, stamp
 from eval.targets import load_problems, load_target
+
+
+def _run_one_episode(p, arm, r, qi, goldset, target, model, smoke, engine):
+    """跑单个 (arm, run) episode 并打 metadata。独立无共享态，可并发。"""
+    if smoke:
+        ep = _mock_episode(p["query"], arm, goldset, qi)
+    else:
+        ep = run_episode(p["query"], arm, target=target, model=model, engine=engine)
+    ep.update({"query": p["query"], "type": p["type"], "gold": sorted(goldset),
+               "arm": arm, "run": r, "qid": f"q{qi + 1:02d}",
+               "correct": _judge(ep["answer"], goldset)})
+    return arm, ep
 
 
 def _norm(s: str) -> str:
@@ -90,18 +104,16 @@ def run_compare(target_id: str = "godot-core",
         _, _, model = load_creds()
 
     episodes_by_arm: dict[str, list[dict]] = {a: [] for a in arms}
+    workers = config.agent().get("parallel", 4)      # 并发臂数（同 target 下 _active 全局同值，并发安全）
     for qi, p in enumerate(questions):
         goldset = _problem_goldset(p)
-        for arm in arms:
-            for r in range(runs):
-                if smoke:
-                    ep = _mock_episode(p["query"], arm, goldset, qi)
-                else:
-                    ep = run_episode(p["query"], arm, target=target, model=model, engine=engine)
-                ep.update({"query": p["query"], "type": p["type"], "gold": sorted(goldset),
-                           "arm": arm, "run": r, "qid": f"q{qi + 1:02d}",
-                           "correct": _judge(ep["answer"], goldset)})
-                episodes_by_arm[arm].append(ep)
+        # 同一题的 (arm × run) 并发跑——各 episode 独立子进程、独立 tool_sink，互不共享
+        with ThreadPoolExecutor(max_workers=workers) as ex:
+            futs = [ex.submit(_run_one_episode, p, arm, r, qi, goldset, target, model, smoke, engine)
+                    for arm in arms for r in range(runs)]
+            results = [f.result() for f in futs]      # submission order 收集，顺序确定
+        for arm, ep in results:
+            episodes_by_arm[arm].append(ep)
         print(f"  [{qi + 1}/{len(questions)}] {p['type']:14} {p['query'][:30]:30} "
               + " ".join(f"{a}={'OK' if episodes_by_arm[a][-1]['correct'] else 'X'}" for a in arms),
               flush=True)
