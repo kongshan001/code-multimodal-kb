@@ -22,7 +22,7 @@
 ```
 
 `llm_calls`（轮次）数的就是**这道题内部模型被调了多少次**，不是"问了几道题"。正常 1-5 次；卡死的题
-可能滚到上限（30）还没答出。`max_turns=30` 是**防死循环的安全阀**。
+可能滚到上限（默认 30，no-kb 臂 12）还没答出。`max_turns` 是**防死循环的安全阀**（`bench.yaml` 分臂可配）。
 
 ---
 
@@ -37,7 +37,7 @@
 | prompt caching | 有（`cache_read_input_tokens` 累计） | 无（`cache_read` 恒 0） |
 | temperature / max_tokens | SDK 默认 | 显式 `temperature=0.0, max_tokens=1024` |
 | 凭据 | 经 `env={ANTHROPIC_BASE_URL, ANTHROPIC_API_KEY}` 透传给 CLI 子进程 | `anthropic.Anthropic(api_key, base_url)` 直连 |
-| 收敛策略 | **完全相同**：backstop=30、无 force-answer、run-until-answer | 同左 |
+| 收敛策略 | **相同**：backstop（默认 30，**no-kb 臂 12** 控空转成本，分臂可配）、无 force-answer、run-until-answer | 同左 |
 | trace 契约 | 逐字段对齐（raw 的 `cache_read_tokens` 恒 0） | 同 |
 
 入口 `run_episode(question, arm, target, model, max_steps, engine="sdk")`（:311）按 `engine` 分发。
@@ -156,7 +156,7 @@ async for msg in query(...):
 
 - 一个 `AssistantMessage` 可含**多个 `tool_use` block**（模型并行调多工具）→ 算 **1 个 llm_call**，
   但 `tool_calls` 收多个 → `tool_steps = len(tool_calls)` 可 > `llm_calls`。
-- 上限：`max_turns=30` 是 **SDK 的循环硬上限**（不是我数的）。到顶 SDK 停——某些版本抛
+- 上限：`max_turns`（默认 30，**no-kb 臂 12**）是 **SDK 的循环硬上限**（不是我数的）。到顶 SDK 停——某些版本抛
   `Reached maximum number of turns`（被 :145 `except` 接住），某些版本发带 usage 的空 ResultMessage。
 
 ### raw engine（`run_episode_raw`，:266-292）
@@ -255,8 +255,8 @@ messages 重发，input 随历史增长。）
 - **SDK engine 不可控项**：thinking 默认开、caching 默认开、temperature/max_tokens 走 SDK 默认——这些
   我不直接控，是 `claude` CLI 行为。raw engine 显式控（temp=0、无 thinking、无 caching），可作为对照。
 - **`llm_calls` 两 engine 口径微差**（纯 thinking 消息 / 并行工具），差 ≤1，不影响结论但非字字相等。
-- **stuck 题成本爆炸**：backstop 30 兜住上限，但单题可烧 ~15 万 token（雪球）。如需控成本可降 backstop
-  或截断喂模型的 tool_result（目前只截本地日志）。
+- **stuck 题成本爆炸**：backstop（默认 30；**no-kb 臂已降到 12 控成本**）兜住上限，但单题仍可烧几万 token
+  （雪球）。进一步控成本可继续调小分臂 backstop（注意 read_file 深位 gold 是独立议题，别用截断结果的方式）。
 - **skill 注入是文本近似**：skills 臂注入的是精简 SOP 文本，**不是真 superpowers/openspec 运行时**
   （无触发/hook）。
 - **n=1 方差大**：API 非完全确定（即便 temp=0），同题两次跑准确率会洗牌；要稳结论需多 run 取均值。

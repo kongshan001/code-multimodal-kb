@@ -51,6 +51,19 @@ def _cost(model: str, in_tok: int, out_tok: int):
     return round((in_tok * p["in"] + out_tok * p["out"]) / 1e6, 4)
 
 
+def _resolve_max_steps(arm: str, max_steps: int | None) -> int:
+    """解析某臂的 backstop（run-until-answer 上限）。
+    优先级：显式传入 > config.agent().max_steps_by_arm[arm] > skill 臂用 skill_max_steps / 否则 max_steps。
+    分臂可调：易空转的臂（如 no-kb=grep）在 bench.yaml 调小，卡死时早停省 token。"""
+    if max_steps is not None:
+        return max_steps
+    a = config.agent()
+    by_arm = a.get("max_steps_by_arm") or {}
+    if arm in by_arm:
+        return by_arm[arm]
+    return a["skill_max_steps"] if ab_tools.arm_skills(arm) else a["max_steps"]
+
+
 def _extract_assistant(msg) -> tuple[list, str, str, list[str]]:
     """把 AssistantMessage.content 序列化成 JSON-friendly blocks + 抽 text + thinking + tool_use 名。
     返 (blocks, text, thinking, tool_names)。thinking：有 thinking block 用之，无则 fallback 该轮 text。
@@ -153,8 +166,7 @@ async def _run_episode_async(question: str, arm: str, target: dict | None,
 
     sys_prompt = _system_prompt(arm, target)
     ab_tools.set_active(target)   # 臂 executor 读当前 target 的 cmm/codegraph/doc 路径
-    if max_steps is None:
-        max_steps = config.agent()["skill_max_steps"] if ab_tools.arm_skills(arm) else config.agent()["max_steps"]
+    max_steps = _resolve_max_steps(arm, max_steps)
 
     key, base_url, _ = load_creds()
     env = {"ANTHROPIC_BASE_URL": base_url, "ANTHROPIC_API_KEY": key}
@@ -249,8 +261,7 @@ def run_episode_raw(question: str, arm: str, target: dict | None,
     client = make_client()
     sys_prompt = _system_prompt(arm, target)
     ab_tools.set_active(target)
-    if max_steps is None:
-        max_steps = config.agent()["skill_max_steps"] if ab_tools.arm_skills(arm) else config.agent()["max_steps"]
+    max_steps = _resolve_max_steps(arm, max_steps)
     tools = ab_tools.arm_schemas(arm)
     messages: list[dict] = [{"role": "user", "content": question}]
     in_tok = out_tok = llm_calls = 0
