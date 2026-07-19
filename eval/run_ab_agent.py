@@ -12,7 +12,7 @@ from __future__ import annotations
 import argparse
 import json
 import statistics
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 from eval import config
 from eval.ab_agent import load_creds, run_episode
@@ -104,19 +104,20 @@ def run_compare(target_id: str = "godot-core",
         _, _, model = load_creds()
 
     episodes_by_arm: dict[str, list[dict]] = {a: [] for a in arms}
-    workers = config.agent().get("parallel", 4)      # 并发臂数（同 target 下 _active 全局同值，并发安全）
-    for qi, p in enumerate(questions):
-        goldset = _problem_goldset(p)
-        # 同一题的 (arm × run) 并发跑——各 episode 独立子进程、独立 tool_sink，互不共享
-        with ThreadPoolExecutor(max_workers=workers) as ex:
-            futs = [ex.submit(_run_one_episode, p, arm, r, qi, goldset, target, model, smoke, engine)
-                    for arm in arms for r in range(runs)]
-            results = [f.result() for f in futs]      # submission order 收集，顺序确定
-        for arm, ep in results:
-            episodes_by_arm[arm].append(ep)
-        print(f"  [{qi + 1}/{len(questions)}] {p['type']:14} {p['query'][:30]:30} "
-              + " ".join(f"{a}={'OK' if episodes_by_arm[a][-1]['correct'] else 'X'}" for a in arms),
-              flush=True)
+    workers = config.agent().get("parallel", 4)      # 全局并发度（同 target 下 _active 全局同值，并发安全）
+    qgold = [(p, _problem_goldset(p)) for p in questions]
+    total = len(qgold) * len(arms) * runs
+    done = 0
+    # 全局并发：所有 (题 × 臂 × run) 任务丢进同一个池，谁先完成谁先出——无每题 barrier，池利用率更高。
+    # 进度按完成计数打（完成序，非题序）。
+    with ThreadPoolExecutor(max_workers=workers) as ex:
+        futs = [ex.submit(_run_one_episode, p, arm, r, qi, gs, target, model, smoke, engine)
+                for qi, (p, gs) in enumerate(qgold) for arm in arms for r in range(runs)]
+        for f in as_completed(futs):
+            arm, ep = f.result()
+            episodes_by_arm[arm].append(ep)          # 仅主线程 append（as_completed 单线程迭代），无竞态
+            done += 1
+            print(f"  [{done}/{total}] {ep['qid']} {arm}={'OK' if ep['correct'] else 'X'}", flush=True)
 
     return {"target_id": target_id, "target": target, "arms": list(arms),
             "episodes_by_arm": episodes_by_arm, "n_questions": len(questions),
