@@ -8,7 +8,7 @@ from eval.targets import load_problems, load_target
 
 def test_godot_core_snapshot():
     problems = load_problems("godot-core")
-    assert len(problems) == 29  # 26 code_retrieval + 3 bug_fix
+    assert len(problems) == 37  # 34 code_retrieval（含 8 冷门难题）+ 3 bug_fix
     assert problems[0]["id"] == "godot-core-string-format"
     t = load_target("godot-core")
     assert t["subjects"] == ["code_retrieval"]
