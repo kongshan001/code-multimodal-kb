@@ -332,6 +332,102 @@
       },
       "status": "accepted",
       "notes": "bug_fix 示例：定位寻路类"
+    },
+    {
+      "type": "code_retrieval",
+      "query": "Godot core 里 Vector、PackedArray 等容器底层共享同一份数据、写时才复制（copy-on-write）的数据封装类叫什么？",
+      "gold": {
+        "symbols": [
+          "CowData"
+        ]
+      },
+      "status": "accepted",
+      "id": "godot-core-cowdata",
+      "notes": "冷门内部类（容器 COW 封装）—逼用工具"
+    },
+    {
+      "type": "code_retrieval",
+      "query": "Godot core 里用来替代 std::vector、默认不在堆上分配、专供内部用的小型动态数组类叫什么？",
+      "gold": {
+        "symbols": [
+          "LocalVector"
+        ]
+      },
+      "status": "accepted",
+      "id": "godot-core-local-vector",
+      "notes": "冷门内部容器—逼用工具"
+    },
+    {
+      "type": "code_retrieval",
+      "query": "Godot core 里把链表指针内嵌进节点自身（侵入式，不额外分配节点）的链表类叫什么？",
+      "gold": {
+        "symbols": [
+          "SelfList"
+        ]
+      },
+      "status": "accepted",
+      "id": "godot-core-self-list",
+      "notes": "冷门侵入式容器—逼用工具"
+    },
+    {
+      "type": "code_retrieval",
+      "query": "Godot core 里按页批量分配固定大小对象、避免频繁 new/delete 的内存池类叫什么？",
+      "gold": {
+        "symbols": [
+          "PagedAllocator"
+        ]
+      },
+      "status": "accepted",
+      "id": "godot-core-paged-allocator",
+      "notes": "冷门内存池—逼用工具"
+    },
+    {
+      "type": "code_retrieval",
+      "query": "Godot core 里用原子操作实现线程安全引用计数的类叫什么？",
+      "gold": {
+        "symbols": [
+          "SafeRefCount"
+        ]
+      },
+      "status": "accepted",
+      "id": "godot-core-safe-refcount",
+      "notes": "冷门原子计数—逼用工具"
+    },
+    {
+      "type": "code_retrieval",
+      "query": "Godot core 里实现并查集（union-find / disjoint-set）的类叫什么？",
+      "gold": {
+        "symbols": [
+          "DisjointSet"
+        ]
+      },
+      "status": "accepted",
+      "id": "godot-core-disjoint-set",
+      "notes": "冷门算法容器—逼用工具"
+    },
+    {
+      "type": "code_retrieval",
+      "query": "Godot core 里用于动态场景的层次包围盒（bounding volume hierarchy，broadphase 加速结构）的类叫什么？",
+      "gold": {
+        "symbols": [
+          "DynamicBVH"
+        ]
+      },
+      "status": "accepted",
+      "id": "godot-core-dynamic-bvh",
+      "notes": "冷门空间加速结构—逼用工具"
+    },
+    {
+      "type": "code_retrieval",
+      "query": "Godot core 里定长环形缓冲区（先进先出、写满覆盖最旧）的容器类叫什么？",
+      "gold": {
+        "symbols": [
+          "RingBuffer"
+        ]
+      },
+      "status": "accepted",
+      "id": "godot-core-ring-buffer",
+      "notes": "冷门容器—逼用工具"
     }
   ]
 }
