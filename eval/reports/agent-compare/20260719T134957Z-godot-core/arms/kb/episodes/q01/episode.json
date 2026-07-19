@@ -1,0 +1,30 @@
+{
+  "answer": "`String.sprintf`",
+  "input_tokens": 1067,
+  "output_tokens": 162,
+  "total_tokens": 3085,
+  "steps": 3,
+  "llm_calls": 3,
+  "tool_calls": [
+    "cmm_search",
+    "cmm_search"
+  ],
+  "tool_steps": 2,
+  "tool_texts": [
+    "- format  (Users-ks_128-Documents-godot-src-core.string.ustring.String.format)  string/ustring.cpp\n- format_number  (Users-ks_128-Documents-godot-src-core.string.translation_server.TranslationServer.format_number)  string/translation_server.cpp\n- _get_string  (Users-ks_128-Documents-godot-src-core.io.resource_format_binary.ResourceLoaderBinary._get_string)  io/resource_format_binary.cpp\n- get_unicode_string  (Users-ks_128-Documents-godot-src-core.io.resource_format_binary.ResourceLoaderBinary.get_unicode_string)  io/resource_format_binary.cpp\n- save_unicode_string  (Users-ks_128-Documents-godot-src-core.io.resource_format_binary.ResourceFormatSaverBinaryInstance.save_unicode_string)  io/resource_format_binary.cpp",
+    "- sprintf  (Users-ks_128-Documents-godot-src-core.string.ustring.String.sprintf)  string/ustring.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 17.81,
+  "cost_$": 0.010313000000000001,
+  "cache_read_tokens": 1856,
+  "query": "Godot 里字符串格式化的底层函数叫什么？",
+  "type": "code_retrieval",
+  "gold": [
+    "vformat"
+  ],
+  "arm": "kb",
+  "run": 0,
+  "qid": "q01",
+  "correct": 0
+}

@@ -1,0 +1,40 @@
+{
+  "answer": "`SelfList`",
+  "input_tokens": 900,
+  "output_tokens": 577,
+  "total_tokens": 13829,
+  "steps": 8,
+  "llm_calls": 8,
+  "tool_calls": [
+    "cmm_search",
+    "read_file",
+    "read_file",
+    "cmm_search",
+    "read_file",
+    "read_file",
+    "cmm_search"
+  ],
+  "tool_steps": 7,
+  "tool_texts": [
+    "- List  (Users-ks_128-Documents-godot-src-core.templates.list.List.List)  templates/list.h\n- ~List  (Users-ks_128-Documents-godot-src-core.templates.list.List.~List)  templates/list.h\n- List  (Users-ks_128-Documents-godot-src-core.templates.self_list.SelfList.List.List)  templates/self_list.h\n- in_list  (Users-ks_128-Documents-godot-src-core.templates.self_list.SelfList.in_list)  templates/self_list.h\n- add_linked_property  (Users-ks_128-Documents-godot-src-core.object.class_db.ClassDB.add_linked_property)  object/class_db.cpp",
+    "(read error: [Errno 2] No such file or directory: 'core/templates/self_list.h')",
+    "(read error: [Errno 2] No such file or directory: 'templates/self_list.h')",
+    "- SelfList  (Users-ks_128-Documents-godot-src-core.templates.self_list.SelfList.SelfList)  templates/self_list.h\n- next  (Users-ks_128-Documents-godot-src-core.templates.self_list.SelfList.next)  templates/self_list.h\n- prev  (Users-ks_128-Documents-godot-src-core.templates.self_list.SelfList.prev)  templates/self_list.h\n- self  (Users-ks_128-Documents-godot-src-core.templates.self_list.SelfList.self)  templates/self_list.h\n- operator=  (Users-ks_128-Documents-godot-src-core.templates.self_list.SelfList.operator=)  templates/self_list.h",
+    "(read error: [Errno 2] No such file or directory: 'core/templates/list.h')",
+    "(read error: [Errno 2] No such file or directory: 'Users-ks-128-Documents-godot-src-core.templates.self_list.SelfList')",
+    "- add_linked_property  (Users-ks_128-Documents-godot-src-core.object.class_db.ClassDB.add_linked_property)  object/class_db.cpp\n- get_linked_properties_info  (Users-ks_128-Documents-godot-src-core.object.class_db.ClassDB.get_linked_properties_info)  object/class_db.cpp\n- set_embedded_in_editor  (Users-ks_128-Documents-godot-src-core.config.engine.Engine.set_embedded_in_editor)  config/engine.cpp\n- is_embedded_in_editor  (Users-ks_128-Documents-godot-src-core.config.engine.Engine.is_embedded_in_editor)  config/engine.cpp\n- is_embedded_in_editor  (Users-ks_128-Documents-godot-src-core.core_bind.Engine.is_embedded_in_editor)  core_bind.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 13.79,
+  "cost_$": 0.025101,
+  "cache_read_tokens": 12352,
+  "query": "Godot core 里把链表指针内嵌进节点自身（侵入式，不额外分配节点）的链表类叫什么？",
+  "type": "code_retrieval",
+  "gold": [
+    "SelfList"
+  ],
+  "arm": "kb+superpowers",
+  "run": 0,
+  "qid": "q32",
+  "correct": 1
+}

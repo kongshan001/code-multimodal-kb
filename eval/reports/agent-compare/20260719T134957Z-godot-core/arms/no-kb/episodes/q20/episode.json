@@ -1,0 +1,36 @@
+{
+  "answer": "`UndoRedo`",
+  "input_tokens": 978,
+  "output_tokens": 333,
+  "total_tokens": 7839,
+  "steps": 6,
+  "llm_calls": 6,
+  "tool_calls": [
+    "grep_code",
+    "grep_code",
+    "read_file",
+    "read_file",
+    "grep_code"
+  ],
+  "tool_steps": 5,
+  "tool_texts": [
+    "(no matches)",
+    "matched 4 files:\n/Users/ks_128/Documents/godot-src/core/extension/gdextension_special_compat_hashes.cpp\n/Users/ks_128/Documents/godot-src/core/object/undo_redo.cpp\n/Users/ks_128/Documents/godot-src/core/object/undo_redo.h\n/Users/ks_128/Documents/godot-src/core/register_core_types.cpp",
+    "/**************************************************************************/\n/*  undo_redo.h                                                           */\n/**************************************************************************/\n/*                         This file is part of:                          */\n/*                             GODOT ENGINE                               */\n/*                        https://godotengine.org                         */\n/**************************************************************************/\n/* Copyright (c) 2014-present Godot Engine contributors (see AUTHORS.md). */\n/* Copyright (c) 2007-2014 Juan Linietsky, Ariel Manzur.                  */\n/*                                                                        */\n/* Permission is hereby granted, free of charge, to any person obtaining  */\n/* a copy of this software and associated documentation files (the        */\n/* \"Software\"), to deal in the Software without restriction, including    */\n/* without limitation the rights to use, copy, modify, merge, publish,    */\n/* distribute, sublicense, and/or sell copies of the Software, and to     */\n/* permit persons to whom the Software is furnished to do so, subject to  */\n/* the following conditions:                                              */\n/*                                                                        */\n/* The above copyright notice and this permission notice shall be         */\n/* included in all copies or substantial portions of the Software.        */\n/*                                                                        */\n/* THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,        */\n/* EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF     */\n/* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. */\n/* IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY   */\n/* CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,   *",
+    "/**************************************************************************/\n/*  undo_redo.cpp                                                         */\n/**************************************************************************/\n/*                         This file is part of:                          */\n/*                             GODOT ENGINE                               */\n/*                        https://godotengine.org                         */\n/**************************************************************************/\n/* Copyright (c) 2014-present Godot Engine contributors (see AUTHORS.md). */\n/* Copyright (c) 2007-2014 Juan Linietsky, Ariel Manzur.                  */\n/*                                                                        */\n/* Permission is hereby granted, free of charge, to any person obtaining  */\n/* a copy of this software and associated documentation files (the        */\n/* \"Software\"), to deal in the Software without restriction, including    */\n/* without limitation the rights to use, copy, modify, merge, publish,    */\n/* distribute, sublicense, and/or sell copies of the Software, and to     */\n/* permit persons to whom the Software is furnished to do so, subject to  */\n/* the following conditions:                                              */\n/*                                                                        */\n/* The above copyright notice and this permission notice shall be         */\n/* included in all copies or substantial portions of the Software.        */\n/*                                                                        */\n/* THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,        */\n/* EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF     */\n/* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. */\n/* IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY   */\n/* CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,   *",
+    "matched 3 files:\n/Users/ks_128/Documents/godot-src/core/object/undo_redo.cpp\n/Users/ks_128/Documents/godot-src/core/object/undo_redo.h\n/Users/ks_128/Documents/godot-src/core/register_core_types.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 14.69,
+  "cost_$": 0.016479,
+  "cache_read_tokens": 6528,
+  "query": "撤销重做系统用哪个类？",
+  "type": "code_retrieval",
+  "gold": [
+    "UndoRedo"
+  ],
+  "arm": "no-kb",
+  "run": 0,
+  "qid": "q20",
+  "correct": 1
+}

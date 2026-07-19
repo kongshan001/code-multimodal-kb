@@ -1,0 +1,30 @@
+{
+  "answer": "`MessageQueue`",
+  "input_tokens": 464,
+  "output_tokens": 171,
+  "total_tokens": 3195,
+  "steps": 3,
+  "llm_calls": 3,
+  "tool_calls": [
+    "cmm_search",
+    "cmm_search"
+  ],
+  "tool_steps": 2,
+  "tool_texts": [
+    "- $id  (Users-ks_128-Documents-godot-src-core.extension.gdextension_interface.schema.$id)  extension/gdextension_interface.schema.json\n- $schema  (Users-ks_128-Documents-godot-src-core.extension.gdextension_interface.$schema)  extension/gdextension_interface.json\n- $schema  (Users-ks_128-Documents-godot-src-core.extension.gdextension_interface.schema.$schema)  extension/gdextension_interface.schema.json\n- &_cowdata  (Users-ks_128-Documents-godot-src-core.string.ustring.CharProxy.&_cowdata)  string/ustring.h\n- &func  (Users-ks_128-Documents-godot-src-core.variant.callable.CallableComparator.&func)  variant/callable.h",
+    "- MessageQueue  (Users-ks_128-Documents-godot-src-core.object.message_queue.MessageQueue.MessageQueue)  object/message_queue.cpp\n- ~MessageQueue  (Users-ks_128-Documents-godot-src-core.object.message_queue.MessageQueue.~MessageQueue)  object/message_queue.cpp\n- get_singleton  (Users-ks_128-Documents-godot-src-core.object.message_queue.MessageQueue.get_singleton)  object/message_queue.h\n- get_main_singleton  (Users-ks_128-Documents-godot-src-core.object.message_queue.MessageQueue.get_main_singleton)  object/message_queue.h\n- set_thread_singleton_override  (Users-ks_128-Documents-godot-src-core.object.message_queue.MessageQueue.set_thread_singleton_override)  object/message_queue.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 11.26,
+  "cost_$": 0.007875,
+  "cache_read_tokens": 2560,
+  "query": "消息队列用哪个类？",
+  "type": "code_retrieval",
+  "gold": [
+    "MessageQueue"
+  ],
+  "arm": "kb",
+  "run": 0,
+  "qid": "q17",
+  "correct": 1
+}

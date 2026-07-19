@@ -1,0 +1,34 @@
+{
+  "answer": "`PagedAllocator`",
+  "input_tokens": 759,
+  "output_tokens": 269,
+  "total_tokens": 6340,
+  "steps": 5,
+  "llm_calls": 5,
+  "tool_calls": [
+    "cmm_search",
+    "cmm_search",
+    "read_file",
+    "cmm_search"
+  ],
+  "tool_steps": 4,
+  "tool_texts": [
+    "- memdelete_allocator  (Users-ks_128-Documents-godot-src-core.os.memory.memdelete_allocator)  os/memory.h\n- size  (Users-ks_128-Documents-godot-src-core.templates.fixed_vector.FixedVector.size)  templates/fixed_vector.h\n- set_page_pool  (Users-ks_128-Documents-godot-src-core.templates.paged_array.PagedArray.set_page_pool)  templates/paged_array.h\n- set_page_pool  (Users-ks_128-Documents-godot-src-core.templates.bin_sorted_array.BinSortedArray.set_page_pool)  templates/bin_sorted_array.h\n- get_page_size_shift  (Users-ks_128-Documents-godot-src-core.templates.paged_array.PagedArrayPool.get_page_size_shift)  templates/paged_array.h",
+    "- ~BaseTemplateUserdata  (Users-ks_128-Documents-godot-src-core.object.worker_thread_pool.WorkerThreadPool.BaseTemplateUserdata.~BaseTemplateUserdata)  object/worker_thread_pool.h\n- make_template  (Users-ks_128-Documents-godot-src-core.object.script_language.ScriptLanguage.make_template)  object/script_language.h\n- memnew_arr_template  (Users-ks_128-Documents-godot-src-core.os.memory.memnew_arr_template)  os/memory.h\n- memdelete_allocator  (Users-ks_128-Documents-godot-src-core.os.memory.memdelete_allocator)  os/memory.h\n- PagedAllocator  (Users-ks_128-Documents-godot-src-core.templates.paged_allocator.PagedAllocator.PagedAllocator)  templates/paged_allocator.h",
+    "(read error: [Errno 2] No such file or directory: 'templates/paged_allocator.h')",
+    "- PagedAllocator  (Users-ks_128-Documents-godot-src-core.templates.paged_allocator.PagedAllocator.PagedAllocator)  templates/paged_allocator.h\n- ~PagedAllocator  (Users-ks_128-Documents-godot-src-core.templates.paged_allocator.PagedAllocator.~PagedAllocator)  templates/paged_allocator.h\n- free  (Users-ks_128-Documents-godot-src-core.templates.paged_allocator.PagedAllocator.free)  templates/paged_allocator.h\n- _reset  (Users-ks_128-Documents-godot-src-core.templates.paged_allocator.PagedAllocator._reset)  templates/paged_allocator.h\n- reset  (Users-ks_128-Documents-godot-src-core.templates.paged_allocator.PagedAllocator.reset)  templates/paged_allocator.h"
+  ],
+  "truncated": false,
+  "wall_clock_s": 10.55,
+  "cost_$": 0.013176,
+  "cache_read_tokens": 5312,
+  "query": "Godot core 里按页批量分配固定大小对象、避免频繁 new/delete 的内存池类叫什么？",
+  "type": "code_retrieval",
+  "gold": [
+    "PagedAllocator"
+  ],
+  "arm": "kb",
+  "run": 0,
+  "qid": "q33",
+  "correct": 1
+}

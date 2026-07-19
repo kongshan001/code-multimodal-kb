@@ -1,0 +1,28 @@
+{
+  "answer": "`ResourceLoader`",
+  "input_tokens": 237,
+  "output_tokens": 107,
+  "total_tokens": 2456,
+  "steps": 2,
+  "llm_calls": 2,
+  "tool_calls": [
+    "cmm_search"
+  ],
+  "tool_steps": 1,
+  "tool_texts": [
+    "- load_gdextension_resource  (Users-ks_128-Documents-godot-src-core.extension.gdextension_resource_format.GDExtensionResourceLoader.load_gdextension_resource)  extension/gdextension_resource_format.cpp\n- load  (Users-ks_128-Documents-godot-src-core.io.resource_importer.ResourceFormatImporter.load)  io/resource_importer.cpp\n- load  (Users-ks_128-Documents-godot-src-core.io.resource_loader.ResourceFormatLoader.load)  io/resource_loader.cpp\n- _load  (Users-ks_128-Documents-godot-src-core.io.resource_loader.ResourceLoader._load)  io/resource_loader.cpp\n- load  (Users-ks_128-Documents-godot-src-core.io.resource_loader.ResourceLoader.load)  io/resource_loader.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 8.43,
+  "cost_$": 0.004916,
+  "cache_read_tokens": 2112,
+  "query": "加载资源用哪个类？",
+  "type": "code_retrieval",
+  "gold": [
+    "ResourceLoader"
+  ],
+  "arm": "kb+openspec",
+  "run": 0,
+  "qid": "q13",
+  "correct": 1
+}

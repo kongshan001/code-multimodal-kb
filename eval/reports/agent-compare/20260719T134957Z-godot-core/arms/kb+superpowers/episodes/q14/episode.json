@@ -1,0 +1,28 @@
+{
+  "answer": "`ResourceSaver`",
+  "input_tokens": 252,
+  "output_tokens": 157,
+  "total_tokens": 2649,
+  "steps": 2,
+  "llm_calls": 2,
+  "tool_calls": [
+    "cmm_search"
+  ],
+  "tool_steps": 1,
+  "tool_texts": [
+    "- save  (Users-ks_128-Documents-godot-src-core.io.resource_saver.ResourceSaver.save)  io/resource_saver.cpp\n- set_save_callback  (Users-ks_128-Documents-godot-src-core.io.resource_saver.ResourceSaver.set_save_callback)  io/resource_saver.cpp\n- set_timestamp_on_save  (Users-ks_128-Documents-godot-src-core.io.resource_saver.ResourceSaver.set_timestamp_on_save)  io/resource_saver.h\n- get_timestamp_on_save  (Users-ks_128-Documents-godot-src-core.io.resource_saver.ResourceSaver.get_timestamp_on_save)  io/resource_saver.h\n- save  (Users-ks_128-Documents-godot-src-core.core_bind.ResourceSaver.save)  core_bind.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 8.32,
+  "cost_$": 0.006305000000000001,
+  "cache_read_tokens": 2240,
+  "query": "保存资源用哪个类？",
+  "type": "code_retrieval",
+  "gold": [
+    "ResourceSaver"
+  ],
+  "arm": "kb+superpowers",
+  "run": 0,
+  "qid": "q14",
+  "correct": 1
+}

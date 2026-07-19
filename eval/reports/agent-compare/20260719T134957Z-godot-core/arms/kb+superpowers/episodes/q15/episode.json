@@ -1,0 +1,32 @@
+{
+  "answer": "`FileAccess`",
+  "input_tokens": 618,
+  "output_tokens": 261,
+  "total_tokens": 6127,
+  "steps": 4,
+  "llm_calls": 4,
+  "tool_calls": [
+    "cmm_search",
+    "cmm_search",
+    "cmm_search"
+  ],
+  "tool_steps": 3,
+  "tool_texts": [
+    "- godot_write  (Users-ks_128-Documents-godot-src-core.io.file_access_zip.godot_write)  io/file_access_zip.cpp\n- godot_read  (Users-ks_128-Documents-godot-src-core.io.file_access_zip.godot_read)  io/file_access_zip.cpp\n- read_link  (Users-ks_128-Documents-godot-src-core.io.file_access_pack.DirAccessPack.read_link)  io/file_access_pack.h\n- get_read_only_attribute  (Users-ks_128-Documents-godot-src-core.io.file_access.FileAccess.get_read_only_attribute)  io/file_access.cpp\n- set_read_only_attribute  (Users-ks_128-Documents-godot-src-core.io.file_access.FileAccess.set_read_only_attribute)  io/file_access.cpp",
+    "- ~FileAccess  (Users-ks_128-Documents-godot-src-core.io.file_access.FileAccess.~FileAccess)  io/file_access.cpp\n- create  (Users-ks_128-Documents-godot-src-core.io.file_access.FileAccess.create)  io/file_access.cpp\n- exists  (Users-ks_128-Documents-godot-src-core.io.file_access.FileAccess.exists)  io/file_access.cpp\n- reopen  (Users-ks_128-Documents-godot-src-core.io.file_access.FileAccess.reopen)  io/file_access.cpp\n- open  (Users-ks_128-Documents-godot-src-core.io.file_access.FileAccess.open)  io/file_access.cpp",
+    "- remove_file_or_error  (Users-ks_128-Documents-godot-src-core.io.dir_access.DirAccess.remove_file_or_error)  io/dir_access.h\n- ~DirAccess  (Users-ks_128-Documents-godot-src-core.io.dir_access.DirAccess.~DirAccess)  io/dir_access.cpp\n- open  (Users-ks_128-Documents-godot-src-core.io.dir_access.DirAccess.open)  io/dir_access.cpp\n- _open  (Users-ks_128-Documents-godot-src-core.io.dir_access.DirAccess._open)  io/dir_access.cpp\n- create  (Users-ks_128-Documents-godot-src-core.io.dir_access.DirAccess.create)  io/dir_access.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 12.66,
+  "cost_$": 0.012239,
+  "cache_read_tokens": 5248,
+  "query": "文件读写操作用哪个类？",
+  "type": "code_retrieval",
+  "gold": [
+    "FileAccess"
+  ],
+  "arm": "kb+superpowers",
+  "run": 0,
+  "qid": "q15",
+  "correct": 1
+}

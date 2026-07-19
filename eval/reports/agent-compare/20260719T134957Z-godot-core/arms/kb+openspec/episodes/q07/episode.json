@@ -1,0 +1,30 @@
+{
+  "answer": "`Vector2`",
+  "input_tokens": 448,
+  "output_tokens": 201,
+  "total_tokens": 4041,
+  "steps": 3,
+  "llm_calls": 3,
+  "tool_calls": [
+    "cmm_search",
+    "cmm_search"
+  ],
+  "tool_steps": 2,
+  "tool_texts": [
+    "- Vector  (Users-ks_128-Documents-godot-src-core.templates.vector.Vector.Vector)  templates/vector.h\n- operator Vector<T>() const  (Users-ks_128-Documents-godot-src-core.templates.local_vector.LocalVector.operator Vector<T>() const)  templates/local_vector.h\n- append  (Users-ks_128-Documents-godot-src-core.templates.vector.Vector.append)  templates/vector.h\n- erase  (Users-ks_128-Documents-godot-src-core.templates.vector.Vector.erase)  templates/vector.h\n- ptrw  (Users-ks_128-Documents-godot-src-core.templates.vector.Vector.ptrw)  templates/vector.h",
+    "- Vector2  (Users-ks_128-Documents-godot-src-core.math.vector2.Vector2)  math/vector2.h\n- angle  (Users-ks_128-Documents-godot-src-core.math.vector2.Vector2.angle)  math/vector2.cpp\n- length  (Users-ks_128-Documents-godot-src-core.math.vector2.Vector2.length)  math/vector2.cpp\n- normalize  (Users-ks_128-Documents-godot-src-core.math.vector2.Vector2.normalize)  math/vector2.cpp\n- normalized  (Users-ks_128-Documents-godot-src-core.math.vector2.Vector2.normalized)  math/vector2.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 11.04,
+  "cost_$": 0.008961,
+  "cache_read_tokens": 3392,
+  "query": "二维向量用哪个类？",
+  "type": "code_retrieval",
+  "gold": [
+    "Vector2"
+  ],
+  "arm": "kb+openspec",
+  "run": 0,
+  "qid": "q07",
+  "correct": 1
+}

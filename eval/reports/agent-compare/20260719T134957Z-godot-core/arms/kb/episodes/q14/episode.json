@@ -1,0 +1,30 @@
+{
+  "answer": "`ResourceSaver`",
+  "input_tokens": 445,
+  "output_tokens": 199,
+  "total_tokens": 3268,
+  "steps": 3,
+  "llm_calls": 3,
+  "tool_calls": [
+    "cmm_search",
+    "cmm_search"
+  ],
+  "tool_steps": 2,
+  "tool_texts": [
+    "- save  (Users-ks_128-Documents-godot-src-core.io.resource_saver.ResourceFormatSaver.save)  io/resource_saver.cpp\n- save  (Users-ks_128-Documents-godot-src-core.io.resource_saver.ResourceSaver.save)  io/resource_saver.cpp\n- save  (Users-ks_128-Documents-godot-src-core.crypto.crypto_resource_format.ResourceFormatSaverCrypto.save)  crypto/crypto_resource_format.cpp\n- save  (Users-ks_128-Documents-godot-src-core.io.json_resource_format.ResourceFormatSaverJSON.save)  io/json_resource_format.cpp\n- save  (Users-ks_128-Documents-godot-src-core.io.resource_format_binary.ResourceFormatSaverBinaryInstance.save)  io/resource_format_binary.cpp",
+    "- ResourceSaver  (Users-ks_128-Documents-godot-src-core.core_bind.ResourceSaver.ResourceSaver)  core_bind.h\n- save  (Users-ks_128-Documents-godot-src-core.core_bind.ResourceSaver.save)  core_bind.cpp\n- save  (Users-ks_128-Documents-godot-src-core.io.resource_saver.ResourceSaver.save)  io/resource_saver.cpp\n- set_uid  (Users-ks_128-Documents-godot-src-core.core_bind.ResourceSaver.set_uid)  core_bind.cpp\n- _bind_methods  (Users-ks_128-Documents-godot-src-core.core_bind.ResourceSaver._bind_methods)  core_bind.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 10.27,
+  "cost_$": 0.008511999999999999,
+  "cache_read_tokens": 2624,
+  "query": "保存资源用哪个类？",
+  "type": "code_retrieval",
+  "gold": [
+    "ResourceSaver"
+  ],
+  "arm": "kb",
+  "run": 0,
+  "qid": "q14",
+  "correct": 1
+}

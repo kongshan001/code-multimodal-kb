@@ -1,0 +1,31 @@
+{
+  "answer": "`AStar2D` / `AStar3D`",
+  "input_tokens": 393,
+  "output_tokens": 188,
+  "total_tokens": 2885,
+  "steps": 3,
+  "llm_calls": 3,
+  "tool_calls": [
+    "cmm_search",
+    "cmm_search"
+  ],
+  "tool_steps": 2,
+  "tool_texts": [
+    "- find  (Users-ks_128-Documents-godot-src-core.templates.a_hash_map.AHashMap.find)  templates/a_hash_map.h\n- get_point_path  (Users-ks_128-Documents-godot-src-core.math.a_star.AStar3D.get_point_path)  math/a_star.cpp\n- get_id_path  (Users-ks_128-Documents-godot-src-core.math.a_star.AStar3D.get_id_path)  math/a_star.cpp\n- get_point_path  (Users-ks_128-Documents-godot-src-core.math.a_star.AStar2D.get_point_path)  math/a_star.cpp\n- get_id_path  (Users-ks_128-Documents-godot-src-core.math.a_star.AStar2D.get_id_path)  math/a_star.cpp",
+    "- astar  (Users-ks_128-Documents-godot-src-core.math.a_star.AStar2D.astar)  math/a_star.h\n- class_exists  (Users-ks_128-Documents-godot-src-core.object.class_db.ClassDB.class_exists)  object/class_db.cpp\n- _add_class  (Users-ks_128-Documents-godot-src-core.object.class_db.ClassDB._add_class)  object/class_db.cpp\n- _is_parent_class  (Users-ks_128-Documents-godot-src-core.object.class_db.ClassDB._is_parent_class)  object/class_db.cpp\n- is_parent_class  (Users-ks_128-Documents-godot-src-core.object.class_db.ClassDB.is_parent_class)  object/class_db.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 7.96,
+  "cost_$": 0.007817000000000001,
+  "cache_read_tokens": 2304,
+  "query": "A* 寻路在两点间返回了错误路径，忽略了一个障碍物。Godot 里负责计算寻路路径的是哪个类？",
+  "type": "bug_fix",
+  "gold": [
+    "AStar",
+    "core/math/a_star.h"
+  ],
+  "arm": "kb+superpowers",
+  "run": 0,
+  "qid": "q29",
+  "correct": 1
+}

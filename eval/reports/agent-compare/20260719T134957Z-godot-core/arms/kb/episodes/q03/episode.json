@@ -1,0 +1,28 @@
+{
+  "answer": "`memdelete`",
+  "input_tokens": 277,
+  "output_tokens": 211,
+  "total_tokens": 2024,
+  "steps": 2,
+  "llm_calls": 2,
+  "tool_calls": [
+    "cmm_search"
+  ],
+  "tool_steps": 1,
+  "tool_texts": [
+    "- memdelete  (Users-ks_128-Documents-godot-src-core.os.memory.memdelete)  os/memory.h\n- memdelete_allocator  (Users-ks_128-Documents-godot-src-core.os.memory.memdelete_allocator)  os/memory.h\n- memdelete_arr  (Users-ks_128-Documents-godot-src-core.os.memory.memdelete_arr)  os/memory.h\n- operator delete  (Users-ks_128-Documents-godot-src-core.os.memory.operator delete)  os/memory.h\n- delete_allocation  (Users-ks_128-Documents-godot-src-core.os.memory.DefaultTypedAllocator.delete_allocation)  os/memory.h"
+  ],
+  "truncated": false,
+  "wall_clock_s": 8.41,
+  "cost_$": 0.007428000000000001,
+  "cache_read_tokens": 1536,
+  "query": "删除对象、释放内存用哪个函数？",
+  "type": "code_retrieval",
+  "gold": [
+    "memdelete"
+  ],
+  "arm": "kb",
+  "run": 0,
+  "qid": "q03",
+  "correct": 1
+}

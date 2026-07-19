@@ -1,0 +1,28 @@
+{
+  "answer": "`Vector2`",
+  "input_tokens": 203,
+  "output_tokens": 118,
+  "total_tokens": 2561,
+  "steps": 2,
+  "llm_calls": 2,
+  "tool_calls": [
+    "cmm_search"
+  ],
+  "tool_steps": 1,
+  "tool_texts": [
+    "- Vector2  (Users-ks_128-Documents-godot-src-core.math.vector2.Vector2)  math/vector2.h\n- angle  (Users-ks_128-Documents-godot-src-core.math.vector2.Vector2.angle)  math/vector2.cpp\n- length  (Users-ks_128-Documents-godot-src-core.math.vector2.Vector2.length)  math/vector2.cpp\n- normalize  (Users-ks_128-Documents-godot-src-core.math.vector2.Vector2.normalize)  math/vector2.cpp\n- normalized  (Users-ks_128-Documents-godot-src-core.math.vector2.Vector2.normalized)  math/vector2.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 7.24,
+  "cost_$": 0.005085,
+  "cache_read_tokens": 2240,
+  "query": "二维向量用哪个类？",
+  "type": "code_retrieval",
+  "gold": [
+    "Vector2"
+  ],
+  "arm": "kb+superpowers",
+  "run": 0,
+  "qid": "q07",
+  "correct": 1
+}

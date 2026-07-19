@@ -1,0 +1,28 @@
+{
+  "answer": "`RingBuffer`",
+  "input_tokens": 252,
+  "output_tokens": 181,
+  "total_tokens": 2033,
+  "steps": 2,
+  "llm_calls": 2,
+  "tool_calls": [
+    "cmm_search"
+  ],
+  "tool_steps": 1,
+  "tool_texts": [
+    "- RingBuffer  (Users-ks_128-Documents-godot-src-core.templates.ring_buffer.RingBuffer.RingBuffer)  templates/ring_buffer.h\n- inc  (Users-ks_128-Documents-godot-src-core.templates.ring_buffer.RingBuffer.inc)  templates/ring_buffer.h\n- read  (Users-ks_128-Documents-godot-src-core.templates.ring_buffer.RingBuffer.read)  templates/ring_buffer.h\n- copy  (Users-ks_128-Documents-godot-src-core.templates.ring_buffer.RingBuffer.copy)  templates/ring_buffer.h\n- find  (Users-ks_128-Documents-godot-src-core.templates.ring_buffer.RingBuffer.find)  templates/ring_buffer.h"
+  ],
+  "truncated": false,
+  "wall_clock_s": 8.04,
+  "cost_$": 0.006585000000000001,
+  "cache_read_tokens": 1600,
+  "query": "Godot core 里定长环形缓冲区（先进先出、写满覆盖最旧）的容器类叫什么？",
+  "type": "code_retrieval",
+  "gold": [
+    "RingBuffer"
+  ],
+  "arm": "kb",
+  "run": 0,
+  "qid": "q37",
+  "correct": 1
+}

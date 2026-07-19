@@ -1,0 +1,36 @@
+{
+  "answer": "`SafeRefCount`",
+  "input_tokens": 547,
+  "output_tokens": 295,
+  "total_tokens": 7050,
+  "steps": 6,
+  "llm_calls": 6,
+  "tool_calls": [
+    "cmm_search",
+    "cmm_search",
+    "cmm_search",
+    "cmm_search",
+    "read_file"
+  ],
+  "tool_steps": 5,
+  "tool_texts": [
+    "- get_reference_count  (Users-ks_128-Documents-godot-src-core.object.ref_counted.RefCounted.get_reference_count)  object/ref_counted.cpp\n- is_current_thread_safe_for_nodes  (Users-ks_128-Documents-godot-src-core.os.thread_safe.is_current_thread_safe_for_nodes)  os/thread_safe.cpp\n- set_current_thread_safe_for_nodes  (Users-ks_128-Documents-godot-src-core.os.thread_safe.set_current_thread_safe_for_nodes)  os/thread_safe.cpp\n- get_thread_count  (Users-ks_128-Documents-godot-src-core.object.worker_thread_pool.WorkerThreadPool.get_thread_count)  object/worker_thread_pool.h\n- get_group_processed_element_count  (Users-ks_128-Documents-godot-src-core.object.worker_thread_pool.WorkerThreadPool.get_group_processed_element_count)  object/worker_thread_pool.cpp",
+    "(no results)",
+    "(no results)",
+    "- SafeRefCount  (Users-ks_128-Documents-godot-src-core.templates.safe_refcount.SafeRefCount)  templates/safe_refcount.h\n- ref_count  (Users-ks_128-Documents-godot-src-core.variant.callable.CallableCustom.ref_count)  variant/callable.h\n- REF_COUNT_OFFSET  (Users-ks_128-Documents-godot-src-core.templates.cowdata.CowData.REF_COUNT_OFFSET)  templates/cowdata.h",
+    "(read error: [Errno 2] No such file or directory: 'templates/safe_refcount.h')"
+  ],
+  "truncated": false,
+  "wall_clock_s": 12.41,
+  "cost_$": 0.013214,
+  "cache_read_tokens": 6208,
+  "query": "Godot core 里用原子操作实现线程安全引用计数的类叫什么？",
+  "type": "code_retrieval",
+  "gold": [
+    "SafeRefCount"
+  ],
+  "arm": "kb",
+  "run": 0,
+  "qid": "q34",
+  "correct": 1
+}

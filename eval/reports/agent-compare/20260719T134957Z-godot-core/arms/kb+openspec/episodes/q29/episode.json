@@ -1,0 +1,39 @@
+{
+  "answer": "`AStar2D`, `AStar3D`",
+  "input_tokens": 1059,
+  "output_tokens": 440,
+  "total_tokens": 11995,
+  "steps": 7,
+  "llm_calls": 7,
+  "tool_calls": [
+    "cmm_search",
+    "cmm_search",
+    "cmm_search",
+    "cmm_search",
+    "cmm_search",
+    "read_file"
+  ],
+  "tool_steps": 6,
+  "tool_texts": [
+    "- ~AStar3D  (Users-ks_128-Documents-godot-src-core.math.a_star.AStar3D.~AStar3D)  math/a_star.cpp\n- AHashMap  (Users-ks_128-Documents-godot-src-core.templates.a_hash_map.AHashMap.AHashMap)  templates/a_hash_map.h\n- ~AHashMap  (Users-ks_128-Documents-godot-src-core.templates.a_hash_map.AHashMap.~AHashMap)  templates/a_hash_map.h\n- clear  (Users-ks_128-Documents-godot-src-core.math.a_star.AStar3D.clear)  math/a_star.cpp\n- _solve  (Users-ks_128-Documents-godot-src-core.math.a_star.AStar3D._solve)  math/a_star.cpp",
+    "- astar  (Users-ks_128-Documents-godot-src-core.math.a_star.AStar2D.astar)  math/a_star.h",
+    "- astar  (Users-ks_128-Documents-godot-src-core.math.a_star.AStar2D.astar)  math/a_star.h\n- class_exists  (Users-ks_128-Documents-godot-src-core.object.class_db.ClassDB.class_exists)  object/class_db.cpp\n- _add_class  (Users-ks_128-Documents-godot-src-core.object.class_db.ClassDB._add_class)  object/class_db.cpp\n- _is_parent_class  (Users-ks_128-Documents-godot-src-core.object.class_db.ClassDB._is_parent_class)  object/class_db.cpp\n- is_parent_class  (Users-ks_128-Documents-godot-src-core.object.class_db.ClassDB.is_parent_class)  object/class_db.cpp",
+    "- astar  (Users-ks_128-Documents-godot-src-core.math.a_star.AStar2D.astar)  math/a_star.h\n- ~AStar3D  (Users-ks_128-Documents-godot-src-core.math.a_star.AStar3D.~AStar3D)  math/a_star.cpp\n- clear  (Users-ks_128-Documents-godot-src-core.math.a_star.AStar2D.clear)  math/a_star.cpp\n- _solve  (Users-ks_128-Documents-godot-src-core.math.a_star.AStar2D._solve)  math/a_star.cpp\n- add_point  (Users-ks_128-Documents-godot-src-core.math.a_star.AStar2D.add_point)  math/a_star.cpp",
+    "- ~AStar3D  (Users-ks_128-Documents-godot-src-core.math.a_star.AStar3D.~AStar3D)  math/a_star.cpp\n- clear  (Users-ks_128-Documents-godot-src-core.math.a_star.AStar2D.clear)  math/a_star.cpp\n- _solve  (Users-ks_128-Documents-godot-src-core.math.a_star.AStar2D._solve)  math/a_star.cpp\n- add_point  (Users-ks_128-Documents-godot-src-core.math.a_star.AStar2D.add_point)  math/a_star.cpp\n- remove_point  (Users-ks_128-Documents-godot-src-core.math.a_star.AStar2D.remove_point)  math/a_star.cpp",
+    "(read error: [Errno 2] No such file or directory: 'math/a_star.h')"
+  ],
+  "truncated": false,
+  "wall_clock_s": 13.57,
+  "cost_$": 0.021543,
+  "cache_read_tokens": 10496,
+  "query": "A* 寻路在两点间返回了错误路径，忽略了一个障碍物。Godot 里负责计算寻路路径的是哪个类？",
+  "type": "bug_fix",
+  "gold": [
+    "AStar",
+    "core/math/a_star.h"
+  ],
+  "arm": "kb+openspec",
+  "run": 0,
+  "qid": "q29",
+  "correct": 1
+}

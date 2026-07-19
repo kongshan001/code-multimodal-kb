@@ -1,0 +1,38 @@
+{
+  "answer": "`vformat`",
+  "input_tokens": 2002,
+  "output_tokens": 520,
+  "total_tokens": 12698,
+  "steps": 7,
+  "llm_calls": 7,
+  "tool_calls": [
+    "cmm_search",
+    "cmm_search",
+    "cmm_search",
+    "read_file",
+    "cmm_search",
+    "cmm_search"
+  ],
+  "tool_steps": 6,
+  "tool_texts": [
+    "- sprintf  (Users-ks_128-Documents-godot-src-core.string.ustring.String.sprintf)  string/ustring.cpp\n- format  (Users-ks_128-Documents-godot-src-core.string.ustring.String.format)  string/ustring.cpp\n- format  (Users-ks_128-Documents-godot-src-core.object.script_backtrace.ScriptBacktrace.format)  object/script_backtrace.cpp\n- get_format  (Users-ks_128-Documents-godot-src-core.io.image.Image.get_format)  io/image.cpp\n- format_number  (Users-ks_128-Documents-godot-src-core.string.translation_server.TranslationServer.format_number)  string/translation_server.cpp",
+    "- vformat  (Users-ks_128-Documents-godot-src-core.variant.variant.vformat)  variant/variant.h\n- format  (Users-ks_128-Documents-godot-src-core.string.ustring.String.format)  string/ustring.cpp\n- format_number  (Users-ks_128-Documents-godot-src-core.string.translation_server.TranslationServer.format_number)  string/translation_server.cpp\n- _get_string  (Users-ks_128-Documents-godot-src-core.io.resource_format_binary.ResourceLoaderBinary._get_string)  io/resource_format_binary.cpp\n- get_unicode_string  (Users-ks_128-Documents-godot-src-core.io.resource_format_binary.ResourceLoaderBinary.get_unicode_string)  io/resource_format_binary.cpp",
+    "- vformat  (Users-ks_128-Documents-godot-src-core.variant.variant.vformat)  variant/variant.h\n- Variant  (Users-ks_128-Documents-godot-src-core.variant.variant.Variant.Variant)  variant/variant.cpp\n- _variant_call_error  (Users-ks_128-Documents-godot-src-core.variant.variant.Variant._variant_call_error)  variant/variant.cpp\n- _register_variant_methods  (Users-ks_128-Documents-godot-src-core.variant.variant_call.Variant._register_variant_methods)  variant/variant_call.cpp\n- _unregister_variant_methods  (Users-ks_128-Documents-godot-src-core.variant.variant_call.Variant._unregister_variant_methods)  variant/variant_call.cpp",
+    "(read error: [Errno 2] No such file or directory: 'variant/variant.h')",
+    "- vformat  (Users-ks_128-Documents-godot-src-core.variant.variant.vformat)  variant/variant.h",
+    "- sprintf  (Users-ks_128-Documents-godot-src-core.string.ustring.String.sprintf)  string/ustring.cpp\n- String  (Users-ks_128-Documents-godot-src-core.string.string_buffer.StringBuffer.String)  string/string_buffer.h\n- String  (Users-ks_128-Documents-godot-src-core.string.string_builder.StringBuilder.String)  string/string_builder.h\n- String  (Users-ks_128-Documents-godot-src-core.string.string_name.StringName.String)  string/string_name.h\n- as_string  (Users-ks_128-Documents-godot-src-core.string.string_buffer.as_string)  string/string_buffer.h"
+  ],
+  "truncated": false,
+  "wall_clock_s": 23.59,
+  "cost_$": 0.028097999999999998,
+  "cache_read_tokens": 10176,
+  "query": "Godot 里字符串格式化的底层函数叫什么？",
+  "type": "code_retrieval",
+  "gold": [
+    "vformat"
+  ],
+  "arm": "kb+superpowers",
+  "run": 0,
+  "qid": "q01",
+  "correct": 1
+}

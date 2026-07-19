@@ -1,0 +1,32 @@
+{
+  "answer": "`MainLoop`",
+  "input_tokens": 453,
+  "output_tokens": 247,
+  "total_tokens": 5564,
+  "steps": 4,
+  "llm_calls": 4,
+  "tool_calls": [
+    "cmm_search",
+    "read_file",
+    "cmm_search"
+  ],
+  "tool_steps": 3,
+  "tool_texts": [
+    "- ~MainLoop  (Users-ks_128-Documents-godot-src-core.os.main_loop.MainLoop.~MainLoop)  os/main_loop.h\n- get_global_class_base  (Users-ks_128-Documents-godot-src-core.object.script_language.ScriptServer.get_global_class_base)  object/script_language.cpp\n- get_global_class_native_base  (Users-ks_128-Documents-godot-src-core.object.script_language.ScriptServer.get_global_class_native_base)  object/script_language.cpp\n- add_resource_base_extension  (Users-ks_128-Documents-godot-src-core.object.class_db.ClassDB.add_resource_base_extension)  object/class_db.cpp\n- get_resource_base_extensions  (Users-ks_128-Documents-godot-src-core.object.class_db.ClassDB.get_resource_base_extensions)  object/class_db.cpp",
+    "(read error: [Errno 2] No such file or directory: 'os/main_loop.h')",
+    "- ~MainLoop  (Users-ks_128-Documents-godot-src-core.os.main_loop.MainLoop.~MainLoop)  os/main_loop.h\n- MainLoop  (Users-ks_128-Documents-godot-src-core.core_bind.MainLoop)  core_bind.h\n- MainLoop  (Users-ks_128-Documents-godot-src-core.os.os.MainLoop)  os/os.h\n- initialize  (Users-ks_128-Documents-godot-src-core.os.main_loop.MainLoop.initialize)  os/main_loop.cpp\n- process  (Users-ks_128-Documents-godot-src-core.os.main_loop.MainLoop.process)  os/main_loop.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 9.25,
+  "cost_$": 0.010872,
+  "cache_read_tokens": 4864,
+  "query": "主循环基类叫什么？",
+  "type": "code_retrieval",
+  "gold": [
+    "MainLoop"
+  ],
+  "arm": "kb+openspec",
+  "run": 0,
+  "qid": "q19",
+  "correct": 1
+}

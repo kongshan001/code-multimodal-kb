@@ -1,0 +1,34 @@
+{
+  "answer": "`Vector2`",
+  "input_tokens": 871,
+  "output_tokens": 246,
+  "total_tokens": 6045,
+  "steps": 5,
+  "llm_calls": 5,
+  "tool_calls": [
+    "grep_code",
+    "grep_code",
+    "read_file",
+    "read_file"
+  ],
+  "tool_steps": 4,
+  "tool_texts": [
+    "(no matches)",
+    "matched 20 files:\n/Users/ks_128/Documents/godot-src/core/extension/gdextension_interface.cpp\n/Users/ks_128/Documents/godot-src/core/extension/extension_api_dump.cpp\n/Users/ks_128/Documents/godot-src/core/config/project_settings.cpp\n/Users/ks_128/Documents/godot-src/core/input/input_event.h\n/Users/ks_128/Documents/godot-src/core/input/input.h\n/Users/ks_128/Documents/godot-src/core/input/input.cpp\n/Users/ks_128/Documents/godot-src/core/input/input_event_codec.cpp\n/Users/ks_128/Documents/godot-src/core/input/input_event.cpp\n/Users/ks_128/Documents/godot-src/core/io/packed_data_container.cpp\n/Users/ks_128/Documents/godot-src/core/io/resource.cpp\n/Users/ks_128/Documents/godot-src/core/io/resource_format_binary.cpp\n/Users/ks_128/Documents/godot-src/core/io/marshalls.cpp\n/Users/ks_128/Documents/godot-src/core/io/json.cpp\n/Users/ks_128/Documents/godot-src/core/math/geometry_2d.h\n/Users/ks_128/Documents/godot-src/core/math/geometry_2d.cpp\n/Users/ks_128/Documents/godot-src/core/math/a_star_grid_2d.h\n/Users/ks_128/Documents/godot-src/core/math/projection.h\n/Users/ks_128/Documents/godot-src/core/math/geometry_3d.h\n/Users/ks_128/Documents/godot-src/core/math/vector3.cpp\n/Users/ks_128/Documents/godot-src/core/math/vector2.h",
+    "(read error: [Errno 2] No such file or directory: 'core/math/vector2.h')",
+    "/**************************************************************************/\n/*  vector2.h                                                             */\n/**************************************************************************/\n/*                         This file is part of:                          */\n/*                             GODOT ENGINE                               */\n/*                        https://godotengine.org                         */\n/**************************************************************************/\n/* Copyright (c) 2014-present Godot Engine contributors (see AUTHORS.md). */\n/* Copyright (c) 2007-2014 Juan Linietsky, Ariel Manzur.                  */\n/*                                                                        */\n/* Permission is hereby granted, free of charge, to any person obtaining  */\n/* a copy of this software and associated documentation files (the        */\n/* \"Software\"), to deal in the Software without restriction, including    */\n/* without limitation the rights to use, copy, modify, merge, publish,    */\n/* distribute, sublicense, and/or sell copies of the Software, and to     */\n/* permit persons to whom the Software is furnished to do so, subject to  */\n/* the following conditions:                                              */\n/*                                                                        */\n/* The above copyright notice and this permission notice shall be         */\n/* included in all copies or substantial portions of the Software.        */\n/*                                                                        */\n/* THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,        */\n/* EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF     */\n/* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. */\n/* IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY   */\n/* CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,   *"
+  ],
+  "truncated": false,
+  "wall_clock_s": 11.0,
+  "cost_$": 0.012969000000000001,
+  "cache_read_tokens": 4928,
+  "query": "二维向量用哪个类？",
+  "type": "code_retrieval",
+  "gold": [
+    "Vector2"
+  ],
+  "arm": "no-kb",
+  "run": 0,
+  "qid": "q07",
+  "correct": 1
+}

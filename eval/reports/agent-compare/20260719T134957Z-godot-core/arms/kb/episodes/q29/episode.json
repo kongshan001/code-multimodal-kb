@@ -1,0 +1,39 @@
+{
+  "answer": "`AStar2D`、`AStar3D`",
+  "input_tokens": 1182,
+  "output_tokens": 396,
+  "total_tokens": 10666,
+  "steps": 7,
+  "llm_calls": 7,
+  "tool_calls": [
+    "cmm_search",
+    "cmm_search",
+    "cmm_search",
+    "cmm_search",
+    "cmm_search",
+    "cmm_search"
+  ],
+  "tool_steps": 6,
+  "tool_texts": [
+    "- _calculate_depth  (Users-ks_128-Documents-godot-src-core.templates.rb_map.RBMap._calculate_depth)  templates/rb_map.h\n- calculate_depth  (Users-ks_128-Documents-godot-src-core.templates.rb_map.RBMap.calculate_depth)  templates/rb_map.h\n- _calculate_depth  (Users-ks_128-Documents-godot-src-core.templates.rb_set.RBSet._calculate_depth)  templates/rb_set.h\n- calculate_depth  (Users-ks_128-Documents-godot-src-core.templates.rb_set.RBSet.calculate_depth)  templates/rb_set.h\n- calculate_size  (Users-ks_128-Documents-godot-src-core.math.bvh_abb.BVH_ABB.calculate_size)  math/bvh_abb.h",
+    "- rel_path_to  (Users-ks_128-Documents-godot-src-core.string.node_path.NodePath.rel_path_to)  string/node_path.cpp\n- get_as_property_path  (Users-ks_128-Documents-godot-src-core.string.node_path.NodePath.get_as_property_path)  string/node_path.cpp\n- set_path  (Users-ks_128-Documents-godot-src-core.io.resource.Resource.set_path)  io/resource.cpp\n- get_path  (Users-ks_128-Documents-godot-src-core.io.resource.Resource.get_path)  io/resource.cpp\n- _set_path  (Users-ks_128-Documents-godot-src-core.io.resource.Resource._set_path)  io/resource.cpp",
+    "- TriangleMesh  (Users-ks_128-Documents-godot-src-core.math.triangle_mesh.TriangleMesh.TriangleMesh)  math/triangle_mesh.cpp\n- build_convex_mesh  (Users-ks_128-Documents-godot-src-core.math.geometry_3d.Geometry3D.build_convex_mesh)  math/geometry_3d.cpp\n- compute_convex_mesh_points  (Users-ks_128-Documents-godot-src-core.core_bind.Geometry3D.compute_convex_mesh_points)  core_bind.cpp\n- compute_convex_mesh_points  (Users-ks_128-Documents-godot-src-core.math.geometry_3d.Geometry3D.compute_convex_mesh_points)  math/geometry_3d.cpp\n- create  (Users-ks_128-Documents-godot-src-core.math.triangle_mesh.TriangleMesh.create)  math/triangle_mesh.cpp",
+    "- astar  (Users-ks_128-Documents-godot-src-core.math.a_star.AStar2D.astar)  math/a_star.h\n- class_exists  (Users-ks_128-Documents-godot-src-core.object.class_db.ClassDB.class_exists)  object/class_db.cpp\n- _add_class  (Users-ks_128-Documents-godot-src-core.object.class_db.ClassDB._add_class)  object/class_db.cpp\n- _is_parent_class  (Users-ks_128-Documents-godot-src-core.object.class_db.ClassDB._is_parent_class)  object/class_db.cpp\n- is_parent_class  (Users-ks_128-Documents-godot-src-core.object.class_db.ClassDB.is_parent_class)  object/class_db.cpp",
+    "- astar  (Users-ks_128-Documents-godot-src-core.math.a_star.AStar2D.astar)  math/a_star.h",
+    "- ~AStar3D  (Users-ks_128-Documents-godot-src-core.math.a_star.AStar3D.~AStar3D)  math/a_star.cpp\n- clear  (Users-ks_128-Documents-godot-src-core.math.a_star.AStar3D.clear)  math/a_star.cpp\n- _solve  (Users-ks_128-Documents-godot-src-core.math.a_star.AStar3D._solve)  math/a_star.cpp\n- hash  (Users-ks_128-Documents-godot-src-core.math.a_star.AStar3D.Segment.hash)  math/a_star.h\n- operator==  (Users-ks_128-Documents-godot-src-core.math.a_star.AStar3D.Segment.operator==)  math/a_star.h"
+  ],
+  "truncated": false,
+  "wall_clock_s": 13.98,
+  "cost_$": 0.020354,
+  "cache_read_tokens": 9088,
+  "query": "A* 寻路在两点间返回了错误路径，忽略了一个障碍物。Godot 里负责计算寻路路径的是哪个类？",
+  "type": "bug_fix",
+  "gold": [
+    "AStar",
+    "core/math/a_star.h"
+  ],
+  "arm": "kb",
+  "run": 0,
+  "qid": "q29",
+  "correct": 1
+}

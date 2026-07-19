@@ -1,0 +1,82 @@
+{
+  "target": "godot-core",
+  "model": "glm-4.7",
+  "smoke": false,
+  "engine": "sdk",
+  "n_questions": 37,
+  "runs": 1,
+  "arms": [
+    "no-kb",
+    "kb",
+    "kb+superpowers",
+    "kb+openspec"
+  ],
+  "matrix": {
+    "no-kb": {
+      "accuracy": 0.784,
+      "mean_total_tokens": 12460.8,
+      "mean_cache_read_tokens": 10667.2,
+      "mean_llm_calls": 8.22,
+      "mean_tool_steps": 7.38,
+      "mean_wall_clock_s": 17.72,
+      "mean_cost_$": 0.0223,
+      "tool_diversity": 1.92,
+      "truncated_rate": 0.216,
+      "no_tool_rate": 0.0,
+      "n_episodes": 37
+    },
+    "kb": {
+      "accuracy": 0.919,
+      "mean_total_tokens": 3864.1,
+      "mean_cache_read_tokens": 3182.7,
+      "mean_llm_calls": 3.3,
+      "mean_tool_steps": 2.3,
+      "mean_wall_clock_s": 10.06,
+      "mean_cost_$": 0.0094,
+      "tool_diversity": 1.24,
+      "truncated_rate": 0.0,
+      "no_tool_rate": 0.0,
+      "n_episodes": 37
+    },
+    "kb+superpowers": {
+      "accuracy": 0.973,
+      "mean_total_tokens": 5583.2,
+      "mean_cache_read_tokens": 4851.9,
+      "mean_llm_calls": 3.68,
+      "mean_tool_steps": 2.65,
+      "mean_wall_clock_s": 10.82,
+      "mean_cost_$": 0.011,
+      "tool_diversity": 1.38,
+      "truncated_rate": 0.0,
+      "no_tool_rate": 0.0,
+      "n_episodes": 37
+    },
+    "kb+openspec": {
+      "accuracy": 0.919,
+      "mean_total_tokens": 5069.5,
+      "mean_cache_read_tokens": 4339.9,
+      "mean_llm_calls": 3.43,
+      "mean_tool_steps": 2.43,
+      "mean_wall_clock_s": 9.55,
+      "mean_cost_$": 0.0107,
+      "tool_diversity": 1.27,
+      "truncated_rate": 0.0,
+      "no_tool_rate": 0.0,
+      "n_episodes": 37
+    }
+  },
+  "context_compression_kb_vs_no_kb": 3.22,
+  "metric_keys": [
+    "accuracy",
+    "mean_total_tokens",
+    "mean_cache_read_tokens",
+    "mean_llm_calls",
+    "mean_tool_steps",
+    "mean_wall_clock_s",
+    "mean_cost_$",
+    "tool_diversity",
+    "truncated_rate",
+    "no_tool_rate",
+    "n_episodes"
+  ]
+}

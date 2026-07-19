@@ -1,0 +1,32 @@
+{
+  "answer": "`HTTPClient`",
+  "input_tokens": 632,
+  "output_tokens": 292,
+  "total_tokens": 6236,
+  "steps": 4,
+  "llm_calls": 4,
+  "tool_calls": [
+    "cmm_search",
+    "cmm_search",
+    "cmm_search"
+  ],
+  "tool_steps": 3,
+  "tool_texts": [
+    "- _request  (Users-ks_128-Documents-godot-src-core.io.http_client.HTTPClient._request)  io/http_client.cpp\n- request  (Users-ks_128-Documents-godot-src-core.io.http_client_tcp.HTTPClientTCP.request)  io/http_client_tcp.cpp\n- _request_raw  (Users-ks_128-Documents-godot-src-core.io.http_client.HTTPClient._request_raw)  io/http_client.cpp\n- _check_request_url  (Users-ks_128-Documents-godot-src-core.io.http_client_tcp._check_request_url)  io/http_client_tcp.cpp\n- ~HTTPClient  (Users-ks_128-Documents-godot-src-core.io.http_client.HTTPClient.~HTTPClient)  io/http_client.h",
+    "- node_free_node_and_leaf  (Users-ks_128-Documents-godot-src-core.math.bvh_tree.BVH_Tree.node_free_node_and_leaf)  math/bvh_tree.h\n- Node  (Users-ks_128-Documents-godot-src-core.math.dynamic_bvh.DynamicBVH.Node.Node)  math/dynamic_bvh.h\n- new_node  (Users-ks_128-Documents-godot-src-core.io.plist.PListNode.new_node)  io/plist.cpp\n- NodePath  (Users-ks_128-Documents-godot-src-core.string.node_path.NodePath.NodePath)  string/node_path.cpp\n- ~NodePath  (Users-ks_128-Documents-godot-src-core.string.node_path.NodePath.~NodePath)  string/node_path.cpp",
+    "- class_exists  (Users-ks_128-Documents-godot-src-core.object.class_db.ClassDB.class_exists)  object/class_db.cpp\n- _add_class  (Users-ks_128-Documents-godot-src-core.object.class_db.ClassDB._add_class)  object/class_db.cpp\n- _is_parent_class  (Users-ks_128-Documents-godot-src-core.object.class_db.ClassDB._is_parent_class)  object/class_db.cpp\n- is_parent_class  (Users-ks_128-Documents-godot-src-core.object.class_db.ClassDB.is_parent_class)  object/class_db.cpp\n- get_class_list  (Users-ks_128-Documents-godot-src-core.object.class_db.ClassDB.get_class_list)  object/class_db.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 19.44,
+  "cost_$": 0.013116000000000001,
+  "cache_read_tokens": 5312,
+  "query": "HTTP 客户端用哪个类？",
+  "type": "code_retrieval",
+  "gold": [
+    "HTTPClient"
+  ],
+  "arm": "kb+superpowers",
+  "run": 0,
+  "qid": "q26",
+  "correct": 1
+}

@@ -1,0 +1,6 @@
+{"role": "user", "content": "图像数据用哪个类？"}
+{"role": "assistant", "content": [{"type": "thinking", "text": "用户问\"图像数据用哪个类？\"，这是在询问Godot代码库中用于表示图像数据的类。我需要使用工具来查找相关的符号。\n\n让我使用cmm_search来查找与图像数据相关的类。"}]}
+{"role": "assistant", "content": [{"type": "tool_use", "name": "cmm_search", "input": {"query": "图像数据 image data class"}}]}
+{"role": "assistant", "content": [{"type": "thinking", "text": "好的，搜索结果显示Image类有很多与图像数据相关的方法，如get_data、set_data等。看起来Image类就是用于图像数据的类。\n\n根据系统指令，我需要简短回答，直接给出符号名，不要长解释。"}]}
+{"role": "assistant", "content": [{"type": "text", "text": "`Image`"}]}
+{"role": "user", "content": [{"type": "tool_result", "tool_use_id": null, "content": "- get_image_data_size  (Users-ks_128-Documents-godot-src-core.io.image.Image.get_image_data_size)  io/image.cpp\n- get_data  (Users-ks_128-Documents-godot-src-core.io.image.Image.get_data)  io/image.cpp\n- set_data  (Users-ks_128-Documents-godot-src-core.io.image.Image.set_data)  io/image.cpp\n- initialize_data  (Users-ks_128-Documents-godot-src-core.io.image.Image.initialize_data)  io/image.cpp\n- _set_data  (Users-ks_128-Documents-godot-src-core.io.image.Image._set_data)  io/image.cpp"}]}

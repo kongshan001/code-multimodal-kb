@@ -1,0 +1,6 @@
+{"role": "user", "content": "加载资源用哪个类？"}
+{"role": "assistant", "content": [{"type": "thinking", "text": "用户问\"加载资源用哪个类？\"，这是在问 Godot 代码库中用于资源加载的类。\n\n根据我的知识，在 Godot 中加载资源通常使用 `ResourceLoader` 类。让我先用语义搜索确认一下。"}]}
+{"role": "assistant", "content": [{"type": "tool_use", "name": "cmm_search", "input": {"query": "load resource"}}]}
+{"role": "assistant", "content": [{"type": "thinking", "text": "搜索结果显示有 `ResourceLoader` 类及其 `load` 方法。这正是用于加载资源的类。根据收敛纪律，我应该立刻用符号名作答。"}]}
+{"role": "assistant", "content": [{"type": "text", "text": "`ResourceLoader`"}]}
+{"role": "user", "content": [{"type": "tool_result", "tool_use_id": null, "content": "- load_gdextension_resource  (Users-ks_128-Documents-godot-src-core.extension.gdextension_resource_format.GDExtensionResourceLoader.load_gdextension_resource)  extension/gdextension_resource_format.cpp\n- load  (Users-ks_128-Documents-godot-src-core.io.resource_importer.ResourceFormatImporter.load)  io/resource_importer.cpp\n- load  (Users-ks_128-Documents-godot-src-core.io.resource_loader.ResourceFormatLoader.load)  io/resource_loader.cpp\n- _load  (Users-ks_128-Documents-godot-src-core.io.resource_loader.ResourceLoader._load)  io/resource_loader.cpp\n- load  (Users-ks_128-Documents-godot-src-core.io.resource_loader.ResourceLoader.load)  io/resource_loader.cpp"}]}

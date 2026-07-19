@@ -1,0 +1,32 @@
+{
+  "answer": "`FileAccess`",
+  "input_tokens": 656,
+  "output_tokens": 222,
+  "total_tokens": 5806,
+  "steps": 4,
+  "llm_calls": 4,
+  "tool_calls": [
+    "cmm_search",
+    "cmm_search",
+    "cmm_search"
+  ],
+  "tool_steps": 3,
+  "tool_texts": [
+    "- $id  (Users-ks_128-Documents-godot-src-core.extension.gdextension_interface.schema.$id)  extension/gdextension_interface.schema.json\n- $schema  (Users-ks_128-Documents-godot-src-core.extension.gdextension_interface.$schema)  extension/gdextension_interface.json\n- $schema  (Users-ks_128-Documents-godot-src-core.extension.gdextension_interface.schema.$schema)  extension/gdextension_interface.schema.json\n- &_cowdata  (Users-ks_128-Documents-godot-src-core.string.ustring.CharProxy.&_cowdata)  string/ustring.h\n- &func  (Users-ks_128-Documents-godot-src-core.variant.callable.CallableComparator.&func)  variant/callable.h",
+    "- get_read_only_attribute  (Users-ks_128-Documents-godot-src-core.io.file_access.FileAccess.get_read_only_attribute)  io/file_access.cpp\n- set_read_only_attribute  (Users-ks_128-Documents-godot-src-core.io.file_access.FileAccess.set_read_only_attribute)  io/file_access.cpp\n- godot_write  (Users-ks_128-Documents-godot-src-core.io.file_access_zip.godot_write)  io/file_access_zip.cpp\n- godot_read  (Users-ks_128-Documents-godot-src-core.io.file_access_zip.godot_read)  io/file_access_zip.cpp\n- read_link  (Users-ks_128-Documents-godot-src-core.io.file_access_pack.DirAccessPack.read_link)  io/file_access_pack.h",
+    "- ~FileAccess  (Users-ks_128-Documents-godot-src-core.io.file_access.FileAccess.~FileAccess)  io/file_access.cpp\n- create  (Users-ks_128-Documents-godot-src-core.io.file_access.FileAccess.create)  io/file_access.cpp\n- exists  (Users-ks_128-Documents-godot-src-core.io.file_access.FileAccess.exists)  io/file_access.cpp\n- reopen  (Users-ks_128-Documents-godot-src-core.io.file_access.FileAccess.reopen)  io/file_access.cpp\n- open  (Users-ks_128-Documents-godot-src-core.io.file_access.FileAccess.open)  io/file_access.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 11.89,
+  "cost_$": 0.011294,
+  "cache_read_tokens": 4928,
+  "query": "文件读写操作用哪个类？",
+  "type": "code_retrieval",
+  "gold": [
+    "FileAccess"
+  ],
+  "arm": "kb+openspec",
+  "run": 0,
+  "qid": "q15",
+  "correct": 1
+}

@@ -1,0 +1,32 @@
+{
+  "answer": "`CowData`",
+  "input_tokens": 512,
+  "output_tokens": 251,
+  "total_tokens": 6075,
+  "steps": 5,
+  "llm_calls": 5,
+  "tool_calls": [
+    "cmm_search",
+    "read_file",
+    "cmm_search"
+  ],
+  "tool_steps": 3,
+  "tool_texts": [
+    "- _copy_on_write  (Users-ks_128-Documents-godot-src-core.templates.cowdata._copy_on_write)  templates/cowdata.h\n- _set_data  (Users-ks_128-Documents-godot-src-core.io.packed_data_container.PackedDataContainer._set_data)  io/packed_data_container.cpp\n- _get_data  (Users-ks_128-Documents-godot-src-core.io.packed_data_container.PackedDataContainer._get_data)  io/packed_data_container.cpp\n- getvar  (Users-ks_128-Documents-godot-src-core.io.packed_data_container.PackedDataContainer.getvar)  io/packed_data_container.cpp\n- size  (Users-ks_128-Documents-godot-src-core.io.packed_data_container.PackedDataContainer.size)  io/packed_data_container.cpp",
+    "(read error: [Errno 2] No such file or directory: 'templates/cowdata.h')",
+    "- CowData  (Users-ks_128-Documents-godot-src-core.templates.cowdata.CowData.CowData)  templates/cowdata.h\n- CowData  (Users-ks_128-Documents-godot-src-core.templates.cowdata.CowData)  templates/cowdata.h\n- operator=  (Users-ks_128-Documents-godot-src-core.templates.cowdata.CowData.operator=)  templates/cowdata.h\n- ptrw  (Users-ks_128-Documents-godot-src-core.templates.cowdata.CowData.ptrw)  templates/cowdata.h\n- ptr  (Users-ks_128-Documents-godot-src-core.templates.cowdata.CowData.ptr)  templates/cowdata.h"
+  ],
+  "truncated": false,
+  "wall_clock_s": 9.05,
+  "cost_$": 0.011491000000000001,
+  "cache_read_tokens": 5312,
+  "query": "Godot core 里 Vector、PackedArray 等容器底层共享同一份数据、写时才复制（copy-on-write）的数据封装类叫什么？",
+  "type": "code_retrieval",
+  "gold": [
+    "CowData"
+  ],
+  "arm": "kb+superpowers",
+  "run": 0,
+  "qid": "q30",
+  "correct": 1
+}

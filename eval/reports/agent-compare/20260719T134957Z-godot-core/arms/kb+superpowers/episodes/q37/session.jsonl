@@ -1,0 +1,6 @@
+{"role": "user", "content": "Godot core 里定长环形缓冲区（先进先出、写满覆盖最旧）的容器类叫什么？"}
+{"role": "assistant", "content": [{"type": "thinking", "text": "用户在问 Godot core 里的定长环形缓冲区容器类名。这是一个特定功能的容器类，具有以下特点：\n1. 定长\n2. 环形缓冲区\n3. 先进先出\n4. 写满时覆盖最旧的数据\n\n我需要在 Godot core 代码库中搜索这个类。常见的环形缓冲区命名可能是：\n- RingBuffer\n- CircularBuffer\n- FIFO\n- Queue（但通常是动态的）\n\n让我搜索一下。"}]}
+{"role": "assistant", "content": [{"type": "tool_use", "name": "cmm_search", "input": {"query": "ring buffer circular FIFO"}}]}
+{"role": "assistant", "content": [{"type": "thinking", "text": "搜索到了！确实是 `RingBuffer` 类，位于 `templates/ring_buffer.h`。这应该就是用户要找的定长环形缓冲区容器类。"}]}
+{"role": "assistant", "content": [{"type": "text", "text": "`RingBuffer`"}]}
+{"role": "user", "content": [{"type": "tool_result", "tool_use_id": null, "content": "- RingBuffer  (Users-ks_128-Documents-godot-src-core.templates.ring_buffer.RingBuffer.RingBuffer)  templates/ring_buffer.h\n- inc  (Users-ks_128-Documents-godot-src-core.templates.ring_buffer.RingBuffer.inc)  templates/ring_buffer.h\n- read  (Users-ks_128-Documents-godot-src-core.templates.ring_buffer.RingBuffer.read)  templates/ring_buffer.h\n- copy  (Users-ks_128-Documents-godot-src-core.templates.ring_buffer.RingBuffer.copy)  templates/ring_buffer.h\n- find  (Users-ks_128-Documents-godot-src-core.templates.ring_buffer.RingBuffer.find)  templates/ring_buffer.h"}]}

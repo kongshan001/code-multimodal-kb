@@ -1,0 +1,36 @@
+{
+  "answer": "`Engine`",
+  "input_tokens": 732,
+  "output_tokens": 323,
+  "total_tokens": 9119,
+  "steps": 6,
+  "llm_calls": 6,
+  "tool_calls": [
+    "cmm_search",
+    "cmm_search",
+    "read_file",
+    "read_file",
+    "cmm_search"
+  ],
+  "tool_steps": 5,
+  "tool_texts": [
+    "- get_main_loop  (Users-ks_128-Documents-godot-src-core.core_bind.Engine.get_main_loop)  core_bind.cpp\n- ~MainLoop  (Users-ks_128-Documents-godot-src-core.os.main_loop.MainLoop.~MainLoop)  os/main_loop.h\n- is_main_thread  (Users-ks_128-Documents-godot-src-core.core_bind.Thread.is_main_thread)  core_bind.cpp\n- get_main_diagonal  (Users-ks_128-Documents-godot-src-core.math.basis.Basis.get_main_diagonal)  math/basis.h\n- make_main_thread  (Users-ks_128-Documents-godot-src-core.os.thread.Thread.make_main_thread)  os/thread.h",
+    "- Engine  (Users-ks_128-Documents-godot-src-core.config.engine.Engine.Engine)  config/engine.cpp\n- ~Engine  (Users-ks_128-Documents-godot-src-core.config.engine.Engine.~Engine)  config/engine.cpp\n- Engine  (Users-ks_128-Documents-godot-src-core.core_bind.Engine.Engine)  core_bind.h\n- print_header  (Users-ks_128-Documents-godot-src-core.config.engine.Engine.print_header)  config/engine.cpp\n- add_singleton  (Users-ks_128-Documents-godot-src-core.config.engine.Engine.add_singleton)  config/engine.cpp",
+    "(read error: [Errno 2] No such file or directory: 'core/core_bind.h')",
+    "(read error: [Errno 2] No such file or directory: 'config/engine.h')",
+    "- Engine  (Users-ks_128-Documents-godot-src-core.config.engine.Engine.Engine)  config/engine.cpp\n- ~Engine  (Users-ks_128-Documents-godot-src-core.config.engine.Engine.~Engine)  config/engine.cpp\n- Engine  (Users-ks_128-Documents-godot-src-core.core_bind.Engine.Engine)  core_bind.h\n- print_header  (Users-ks_128-Documents-godot-src-core.config.engine.Engine.print_header)  config/engine.cpp\n- add_singleton  (Users-ks_128-Documents-godot-src-core.config.engine.Engine.add_singleton)  config/engine.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 13.02,
+  "cost_$": 0.015767,
+  "cache_read_tokens": 8064,
+  "query": "引擎主类叫什么？",
+  "type": "code_retrieval",
+  "gold": [
+    "Engine"
+  ],
+  "arm": "kb+openspec",
+  "run": 0,
+  "qid": "q18",
+  "correct": 1
+}

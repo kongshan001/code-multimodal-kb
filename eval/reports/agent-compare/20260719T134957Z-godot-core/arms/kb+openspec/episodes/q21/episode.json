@@ -1,0 +1,28 @@
+{
+  "answer": "`NodePath`",
+  "input_tokens": 228,
+  "output_tokens": 110,
+  "total_tokens": 2450,
+  "steps": 2,
+  "llm_calls": 2,
+  "tool_calls": [
+    "cmm_search"
+  ],
+  "tool_steps": 1,
+  "tool_texts": [
+    "- NodePath  (Users-ks_128-Documents-godot-src-core.string.node_path.NodePath.NodePath)  string/node_path.cpp\n- ~NodePath  (Users-ks_128-Documents-godot-src-core.string.node_path.NodePath.~NodePath)  string/node_path.cpp\n- operator NodePath() const  (Users-ks_128-Documents-godot-src-core.variant.variant.Variant.operator NodePath() const)  variant/variant.cpp\n- unref  (Users-ks_128-Documents-godot-src-core.string.node_path.NodePath.unref)  string/node_path.cpp\n- operator==  (Users-ks_128-Documents-godot-src-core.string.node_path.NodePath.operator==)  string/node_path.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 8.43,
+  "cost_$": 0.004946000000000001,
+  "cache_read_tokens": 2112,
+  "query": "节点路径用哪个类？",
+  "type": "code_retrieval",
+  "gold": [
+    "NodePath"
+  ],
+  "arm": "kb+openspec",
+  "run": 0,
+  "qid": "q21",
+  "correct": 1
+}

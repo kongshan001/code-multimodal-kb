@@ -1,0 +1,6 @@
+{"role": "user", "content": "主循环基类叫什么？"}
+{"role": "assistant", "content": [{"type": "thinking", "text": "用户问\"主循环基类叫什么？\"这是在问 Godot 引擎中的主循环基类的名称。\n\n让我用代码知识库搜索来找到这个信息。我需要搜索与 main loop 相关的类。"}]}
+{"role": "assistant", "content": [{"type": "tool_use", "name": "cmm_search", "input": {"query": "main loop base class"}}]}
+{"role": "assistant", "content": [{"type": "thinking", "text": "搜索结果显示主循环基类是 `MainLoop`，位于 os/main_loop.h 文件。这正是用户问的。"}]}
+{"role": "assistant", "content": [{"type": "text", "text": "`MainLoop`"}]}
+{"role": "user", "content": [{"type": "tool_result", "tool_use_id": null, "content": "- ~MainLoop  (Users-ks_128-Documents-godot-src-core.os.main_loop.MainLoop.~MainLoop)  os/main_loop.h\n- get_main_loop  (Users-ks_128-Documents-godot-src-core.core_bind.Engine.get_main_loop)  core_bind.cpp\n- _register_main_loop_callbacks  (Users-ks_128-Documents-godot-src-core.extension.gdextension.GDExtension._register_main_loop_callbacks)  extension/gdextension.cpp\n- initialize  (Users-ks_128-Documents-godot-src-core.os.main_loop.MainLoop.initialize)  os/main_loop.cpp\n- process  (Users-ks_128-Documents-godot-src-core.os.main_loop.MainLoop.process)  os/main_loop.cpp"}]}

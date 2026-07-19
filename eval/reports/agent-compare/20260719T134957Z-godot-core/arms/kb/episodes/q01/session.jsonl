@@ -1,0 +1,9 @@
+{"role": "user", "content": "Godot 里字符串格式化的底层函数叫什么？"}
+{"role": "assistant", "content": [{"type": "thinking", "text": "用户想知道 Godot 里字符串格式化的底层函数叫什么。我需要在 Godot core/ 代码库中搜索与字符串格式化相关的函数。\n\n常见的字符串格式化函数名可能包含 \"format\"、\"sprintf\"、\"printf\" 等关键词。让我搜索一下。"}]}
+{"role": "assistant", "content": [{"type": "tool_use", "name": "cmm_search", "input": {"query": "string format"}}]}
+{"role": "assistant", "content": [{"type": "thinking", "text": "好的，找到了 `String.format` 这个函数。这是 String 类的一个方法。让我再看看是否有更底层的格式化实现。"}]}
+{"role": "assistant", "content": [{"type": "tool_use", "name": "cmm_search", "input": {"query": "sprintf vsnprintf"}}]}
+{"role": "assistant", "content": [{"type": "thinking", "text": "找到了！Godot 中字符串格式化的底层函数是 `String.sprintf`。这是 String 类的一个方法，用于类似于 C 语言 sprintf 的格式化操作。"}]}
+{"role": "assistant", "content": [{"type": "text", "text": "`String.sprintf`"}]}
+{"role": "user", "content": [{"type": "tool_result", "tool_use_id": null, "content": "- format  (Users-ks_128-Documents-godot-src-core.string.ustring.String.format)  string/ustring.cpp\n- format_number  (Users-ks_128-Documents-godot-src-core.string.translation_server.TranslationServer.format_number)  string/translation_server.cpp\n- _get_string  (Users-ks_128-Documents-godot-src-core.io.resource_format_binary.ResourceLoaderBinary._get_string)  io/resource_format_binary.cpp\n- get_unicode_string  (Users-ks_128-Documents-godot-src-core.io.resource_format_binary.ResourceLoaderBinary.get_unicode_string)  io/resource_format_binary.cpp\n- save_unicode_string  (Users-ks_128-Documents-godot-src-core.io.resource_format_binary.ResourceFormatSaverBinaryInstance.save_unicode_string)  io/resource_format_binary.cpp"}]}
+{"role": "user", "content": [{"type": "tool_result", "tool_use_id": null, "content": "- sprintf  (Users-ks_128-Documents-godot-src-core.string.ustring.String.sprintf)  string/ustring.cpp"}]}

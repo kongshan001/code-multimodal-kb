@@ -1,0 +1,36 @@
+{
+  "answer": "`vformat`",
+  "input_tokens": 1619,
+  "output_tokens": 428,
+  "total_tokens": 6399,
+  "steps": 6,
+  "llm_calls": 6,
+  "tool_calls": [
+    "cmm_search",
+    "cmm_search",
+    "read_file",
+    "read_file",
+    "cmm_search"
+  ],
+  "tool_steps": 5,
+  "tool_texts": [
+    "- format  (Users-ks_128-Documents-godot-src-core.string.ustring.String.format)  string/ustring.cpp\n- format_number  (Users-ks_128-Documents-godot-src-core.string.translation_server.TranslationServer.format_number)  string/translation_server.cpp\n- _get_string  (Users-ks_128-Documents-godot-src-core.io.resource_format_binary.ResourceLoaderBinary._get_string)  io/resource_format_binary.cpp\n- get_unicode_string  (Users-ks_128-Documents-godot-src-core.io.resource_format_binary.ResourceLoaderBinary.get_unicode_string)  io/resource_format_binary.cpp\n- save_unicode_string  (Users-ks_128-Documents-godot-src-core.io.resource_format_binary.ResourceFormatSaverBinaryInstance.save_unicode_string)  io/resource_format_binary.cpp",
+    "- vformat  (Users-ks_128-Documents-godot-src-core.variant.variant.vformat)  variant/variant.h\n- sprintf  (Users-ks_128-Documents-godot-src-core.string.ustring.String.sprintf)  string/ustring.cpp\n- format  (Users-ks_128-Documents-godot-src-core.string.ustring.String.format)  string/ustring.cpp\n- format  (Users-ks_128-Documents-godot-src-core.object.script_backtrace.ScriptBacktrace.format)  object/script_backtrace.cpp\n- get_format  (Users-ks_128-Documents-godot-src-core.io.image.Image.get_format)  io/image.cpp",
+    "(read error: [Errno 2] No such file or directory: 'variant/variant.h')",
+    "(read error: [Errno 2] No such file or directory: 'string/ustring.cpp')",
+    "- vformat  (Users-ks_128-Documents-godot-src-core.variant.variant.vformat)  variant/variant.h"
+  ],
+  "truncated": false,
+  "wall_clock_s": 19.34,
+  "cost_$": 0.020971,
+  "cache_read_tokens": 4352,
+  "query": "Godot 里字符串格式化的底层函数叫什么？",
+  "type": "code_retrieval",
+  "gold": [
+    "vformat"
+  ],
+  "arm": "kb+openspec",
+  "run": 0,
+  "qid": "q01",
+  "correct": 1
+}

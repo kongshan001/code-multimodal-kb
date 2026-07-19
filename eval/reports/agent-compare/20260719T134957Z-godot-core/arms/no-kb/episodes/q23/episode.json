@@ -1,0 +1,28 @@
+{
+  "answer": "`RandomNumberGenerator`",
+  "input_tokens": 157,
+  "output_tokens": 183,
+  "total_tokens": 1876,
+  "steps": 2,
+  "llm_calls": 2,
+  "tool_calls": [
+    "grep_code"
+  ],
+  "tool_steps": 1,
+  "tool_texts": [
+    "matched 3 files:\n/Users/ks_128/Documents/godot-src/core/math/random_number_generator.h\n/Users/ks_128/Documents/godot-src/core/math/random_number_generator.cpp\n/Users/ks_128/Documents/godot-src/core/register_core_types.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 6.87,
+  "cost_$": 0.006128,
+  "cache_read_tokens": 1536,
+  "query": "随机数生成器用哪个类？",
+  "type": "code_retrieval",
+  "gold": [
+    "RandomNumberGenerator"
+  ],
+  "arm": "no-kb",
+  "run": 0,
+  "qid": "q23",
+  "correct": 1
+}

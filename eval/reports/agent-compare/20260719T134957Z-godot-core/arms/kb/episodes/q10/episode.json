@@ -1,0 +1,30 @@
+{
+  "answer": "`Rect2`",
+  "input_tokens": 286,
+  "output_tokens": 131,
+  "total_tokens": 2977,
+  "steps": 3,
+  "llm_calls": 3,
+  "tool_calls": [
+    "cmm_search",
+    "read_file"
+  ],
+  "tool_steps": 2,
+  "tool_texts": [
+    "- Rect2  (Users-ks_128-Documents-godot-src-core.math.rect2.Rect2.Rect2)  math/rect2.h\n- intersects  (Users-ks_128-Documents-godot-src-core.math.rect2.Rect2.intersects)  math/rect2.h\n- encloses  (Users-ks_128-Documents-godot-src-core.math.rect2.Rect2.encloses)  math/rect2.h\n- intersection  (Users-ks_128-Documents-godot-src-core.math.rect2.Rect2.intersection)  math/rect2.h\n- merge  (Users-ks_128-Documents-godot-src-core.math.rect2.Rect2.merge)  math/rect2.h",
+    "(read error: [Errno 2] No such file or directory: 'math/rect2.h')"
+  ],
+  "truncated": false,
+  "wall_clock_s": 8.11,
+  "cost_$": 0.005984999999999999,
+  "cache_read_tokens": 2560,
+  "query": "二维矩形用哪个类？",
+  "type": "code_retrieval",
+  "gold": [
+    "Rect2"
+  ],
+  "arm": "kb",
+  "run": 0,
+  "qid": "q10",
+  "correct": 1
+}

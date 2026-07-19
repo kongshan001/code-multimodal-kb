@@ -1,0 +1,46 @@
+{
+  "answer": "`Crypto`、`CryptoKey`",
+  "input_tokens": 1572,
+  "output_tokens": 576,
+  "total_tokens": 21028,
+  "steps": 11,
+  "llm_calls": 11,
+  "tool_calls": [
+    "cmm_search",
+    "cmm_search",
+    "cmm_search",
+    "cmm_search",
+    "read_file",
+    "read_file",
+    "cmm_search",
+    "cmm_search",
+    "cmm_search",
+    "cmm_search"
+  ],
+  "tool_steps": 10,
+  "tool_texts": [
+    "(no results)",
+    "- create  (Users-ks_128-Documents-godot-src-core.crypto.crypto.CryptoKey.create)  crypto/crypto.cpp\n- _bind_methods  (Users-ks_128-Documents-godot-src-core.crypto.crypto.CryptoKey._bind_methods)  crypto/crypto.cpp\n- CryptoKey  (Users-ks_128-Documents-godot-src-core.crypto.crypto.CryptoKey)  crypto/crypto.h",
+    "- create  (Users-ks_128-Documents-godot-src-core.crypto.crypto.Crypto.create)  crypto/crypto.cpp\n- hmac_digest  (Users-ks_128-Documents-godot-src-core.crypto.crypto.Crypto.hmac_digest)  crypto/crypto.cpp\n- _bind_methods  (Users-ks_128-Documents-godot-src-core.crypto.crypto.Crypto._bind_methods)  crypto/crypto.cpp\n- load_default_certificates  (Users-ks_128-Documents-godot-src-core.crypto.crypto.Crypto.load_default_certificates)  crypto/crypto.cpp\n- constant_time_compare  (Users-ks_128-Documents-godot-src-core.crypto.crypto.Crypto.constant_time_compare)  crypto/crypto.cpp",
+    "- create  (Users-ks_128-Documents-godot-src-core.crypto.crypto.Crypto.create)  crypto/crypto.cpp\n- hmac_digest  (Users-ks_128-Documents-godot-src-core.crypto.crypto.Crypto.hmac_digest)  crypto/crypto.cpp\n- _bind_methods  (Users-ks_128-Documents-godot-src-core.crypto.crypto.Crypto._bind_methods)  crypto/crypto.cpp\n- load_default_certificates  (Users-ks_128-Documents-godot-src-core.crypto.crypto.Crypto.load_default_certificates)  crypto/crypto.cpp\n- constant_time_compare  (Users-ks_128-Documents-godot-src-core.crypto.crypto.Crypto.constant_time_compare)  crypto/crypto.cpp",
+    "(read error: [Errno 2] No such file or directory: 'crypto/crypto.h')",
+    "/**************************************************************************/\n/*  crypto.h                                                              */\n/**************************************************************************/\n/*                         This file is part of:                          */\n/*                             GODOT ENGINE                               */\n/*                        https://godotengine.org                         */\n/**************************************************************************/\n/* Copyright (c) 2014-present Godot Engine contributors (see AUTHORS.md). */\n/* Copyright (c) 2007-2014 Juan Linietsky, Ariel Manzur.                  */\n/*                                                                        */\n/* Permission is hereby granted, free of charge, to any person obtaining  */\n/* a copy of this software and associated documentation files (the        */\n/* \"Software\"), to deal in the Software without restriction, including    */\n/* without limitation the rights to use, copy, modify, merge, publish,    */\n/* distribute, sublicense, and/or sell copies of the Software, and to     */\n/* permit persons to whom the Software is furnished to do so, subject to  */\n/* the following conditions:                                              */\n/*                                                                        */\n/* The above copyright notice and this permission notice shall be         */\n/* included in all copies or substantial portions of the Software.        */\n/*                                                                        */\n/* THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,        */\n/* EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF     */\n/* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. */\n/* IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY   */\n/* CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,   *",
+    "- create  (Users-ks_128-Documents-godot-src-core.crypto.crypto.Crypto.create)  crypto/crypto.cpp\n- hmac_digest  (Users-ks_128-Documents-godot-src-core.crypto.crypto.Crypto.hmac_digest)  crypto/crypto.cpp\n- _bind_methods  (Users-ks_128-Documents-godot-src-core.crypto.crypto.Crypto._bind_methods)  crypto/crypto.cpp\n- load_default_certificates  (Users-ks_128-Documents-godot-src-core.crypto.crypto.Crypto.load_default_certificates)  crypto/crypto.cpp\n- constant_time_compare  (Users-ks_128-Documents-godot-src-core.crypto.crypto.Crypto.constant_time_compare)  crypto/crypto.cpp",
+    "(no results)",
+    "- get_own_certificate  (Users-ks_128-Documents-godot-src-core.crypto.crypto.TLSOptions.get_own_certificate)  crypto/crypto.h\n- own_certificate  (Users-ks_128-Documents-godot-src-core.crypto.crypto.TLSOptions.own_certificate)  crypto/crypto.h",
+    "- create  (Users-ks_128-Documents-godot-src-core.io.stream_peer_tls.StreamPeerTLS.create)  io/stream_peer_tls.cpp\n- is_available  (Users-ks_128-Documents-godot-src-core.io.stream_peer_tls.StreamPeerTLS.is_available)  io/stream_peer_tls.cpp\n- _bind_methods  (Users-ks_128-Documents-godot-src-core.io.stream_peer_tls.StreamPeerTLS._bind_methods)  io/stream_peer_tls.cpp\n- TLSData  (Users-ks_128-Documents-godot-src-core.os.safe_binary_mutex.SafeBinaryMutex.TLSData.TLSData)  os/safe_binary_mutex.h\n- StreamPeerTLS  (Users-ks_128-Documents-godot-src-core.io.stream_peer_tls.StreamPeerTLS)  io/stream_peer_tls.h"
+  ],
+  "truncated": false,
+  "wall_clock_s": 16.66,
+  "cost_$": 0.0317,
+  "cache_read_tokens": 18880,
+  "query": "加密解密用哪个类？",
+  "type": "code_retrieval",
+  "gold": [
+    "Crypto"
+  ],
+  "arm": "kb+openspec",
+  "run": 0,
+  "qid": "q24",
+  "correct": 1
+}

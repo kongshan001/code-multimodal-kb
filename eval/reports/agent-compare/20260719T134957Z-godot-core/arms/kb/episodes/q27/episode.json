@@ -1,0 +1,37 @@
+{
+  "answer": "`gdextension_object_destroy`",
+  "input_tokens": 792,
+  "output_tokens": 522,
+  "total_tokens": 8802,
+  "steps": 6,
+  "llm_calls": 6,
+  "tool_calls": [
+    "cmm_search",
+    "cmm_search",
+    "cmm_search",
+    "read_file",
+    "cmm_search"
+  ],
+  "tool_steps": 5,
+  "tool_texts": [
+    "- gdextension_object_destroy  (Users-ks_128-Documents-godot-src-core.extension.gdextension_interface.gdextension_object_destroy)  extension/gdextension_interface.cpp\n- destroy  (Users-ks_128-Documents-godot-src-core.variant.variant.Variant.PackedArrayRefBase.destroy)  variant/variant.h\n- action_release  (Users-ks_128-Documents-godot-src-core.input.input.Input.action_release)  input/input.cpp\n- cancel_free  (Users-ks_128-Documents-godot-src-core.object.object.Object.cancel_free)  object/object.cpp\n- release_pressed_events  (Users-ks_128-Documents-godot-src-core.input.input.Input.release_pressed_events)  input/input.cpp",
+    "- cancel_free  (Users-ks_128-Documents-godot-src-core.object.object.Object.cancel_free)  object/object.cpp\n- free_instance_binding  (Users-ks_128-Documents-godot-src-core.object.object.Object.free_instance_binding)  object/object.cpp\n- gdextension_object_free_instance_binding  (Users-ks_128-Documents-godot-src-core.extension.gdextension_interface.gdextension_object_free_instance_binding)  extension/gdextension_interface.cpp\n- operator delete  (Users-ks_128-Documents-godot-src-core.os.memory.operator delete)  os/memory.h\n- placeholder_class_free_instance  (Users-ks_128-Documents-godot-src-core.object.class_db.PlaceholderExtensionInstance.placeholder_class_free_instance)  object/class_db.cpp",
+    "- gdextension_object_destroy  (Users-ks_128-Documents-godot-src-core.extension.gdextension_interface.gdextension_object_destroy)  extension/gdextension_interface.cpp\n- destroy  (Users-ks_128-Documents-godot-src-core.variant.variant.Variant.PackedArrayRefBase.destroy)  variant/variant.h\n- cancel_free  (Users-ks_128-Documents-godot-src-core.object.object.Object.cancel_free)  object/object.cpp\n- free_instance_binding  (Users-ks_128-Documents-godot-src-core.object.object.Object.free_instance_binding)  object/object.cpp\n- gdextension_variant_destroy  (Users-ks_128-Documents-godot-src-core.extension.gdextension_interface.gdextension_variant_destroy)  extension/gdextension_interface.cpp",
+    "(read error: [Errno 2] No such file or directory: 'extension/gdextension_interface.cpp')",
+    "- gdextension_object_destroy  (Users-ks_128-Documents-godot-src-core.extension.gdextension_interface.gdextension_object_destroy)  extension/gdextension_interface.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 14.86,
+  "cost_$": 0.020753999999999995,
+  "cache_read_tokens": 7488,
+  "query": "对象内存泄漏：某对象被释放后仍被引用（use-after-free）。Godot 里删除/释放对象的底层函数叫什么？",
+  "type": "bug_fix",
+  "gold": [
+    "core/memory/memory.h",
+    "memdelete"
+  ],
+  "arm": "kb",
+  "run": 0,
+  "qid": "q27",
+  "correct": 0
+}

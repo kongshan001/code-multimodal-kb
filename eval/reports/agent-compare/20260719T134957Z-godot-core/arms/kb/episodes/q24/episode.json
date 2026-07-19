@@ -1,0 +1,40 @@
+{
+  "answer": "`AESContext`, `Crypto`, `CryptoCore`, `CryptoKey`",
+  "input_tokens": 981,
+  "output_tokens": 551,
+  "total_tokens": 11196,
+  "steps": 8,
+  "llm_calls": 8,
+  "tool_calls": [
+    "cmm_search",
+    "cmm_search",
+    "cmm_search",
+    "cmm_search",
+    "cmm_search",
+    "read_file",
+    "read_file"
+  ],
+  "tool_steps": 7,
+  "tool_texts": [
+    "(no results)",
+    "- start  (Users-ks_128-Documents-godot-src-core.crypto.aes_context.AESContext.start)  crypto/aes_context.cpp\n- update  (Users-ks_128-Documents-godot-src-core.crypto.aes_context.AESContext.update)  crypto/aes_context.cpp\n- finish  (Users-ks_128-Documents-godot-src-core.crypto.aes_context.AESContext.finish)  crypto/aes_context.cpp\n- _bind_methods  (Users-ks_128-Documents-godot-src-core.crypto.aes_context.AESContext._bind_methods)  crypto/aes_context.cpp\n- get_iv_state  (Users-ks_128-Documents-godot-src-core.crypto.aes_context.AESContext.get_iv_state)  crypto/aes_context.cpp",
+    "- sha256  (Users-ks_128-Documents-godot-src-core.crypto.crypto_core.CryptoCore.sha256)  crypto/crypto_core.cpp\n- md5  (Users-ks_128-Documents-godot-src-core.crypto.crypto_core.CryptoCore.md5)  crypto/crypto_core.cpp\n- sha256_text  (Users-ks_128-Documents-godot-src-core.string.ustring.String.sha256_text)  string/ustring.cpp\n- sha256_buffer  (Users-ks_128-Documents-godot-src-core.string.ustring.String.sha256_buffer)  string/ustring.cpp\n- get_sha256  (Users-ks_128-Documents-godot-src-core.io.file_access.FileAccess.get_sha256)  io/file_access.cpp",
+    "- create  (Users-ks_128-Documents-godot-src-core.crypto.crypto.CryptoKey.create)  crypto/crypto.cpp\n- _bind_methods  (Users-ks_128-Documents-godot-src-core.crypto.crypto.CryptoKey._bind_methods)  crypto/crypto.cpp\n- CryptoKey  (Users-ks_128-Documents-godot-src-core.crypto.crypto.CryptoKey)  crypto/crypto.h",
+    "- create  (Users-ks_128-Documents-godot-src-core.crypto.crypto.Crypto.create)  crypto/crypto.cpp\n- hmac_digest  (Users-ks_128-Documents-godot-src-core.crypto.crypto.Crypto.hmac_digest)  crypto/crypto.cpp\n- _bind_methods  (Users-ks_128-Documents-godot-src-core.crypto.crypto.Crypto._bind_methods)  crypto/crypto.cpp\n- load_default_certificates  (Users-ks_128-Documents-godot-src-core.crypto.crypto.Crypto.load_default_certificates)  crypto/crypto.cpp\n- constant_time_compare  (Users-ks_128-Documents-godot-src-core.crypto.crypto.Crypto.constant_time_compare)  crypto/crypto.cpp",
+    "(read error: [Errno 2] No such file or directory: 'crypto/crypto.h')",
+    "(read error: [Errno 2] No such file or directory: 'Users-ks_128-Documents-godot-src-core/crypto/crypto.h')"
+  ],
+  "truncated": false,
+  "wall_clock_s": 18.43,
+  "cost_$": 0.023511999999999998,
+  "cache_read_tokens": 9664,
+  "query": "加密解密用哪个类？",
+  "type": "code_retrieval",
+  "gold": [
+    "Crypto"
+  ],
+  "arm": "kb",
+  "run": 0,
+  "qid": "q24",
+  "correct": 1
+}

@@ -1,0 +1,37 @@
+{
+  "answer": "`RefCounted::unreference`",
+  "input_tokens": 883,
+  "output_tokens": 542,
+  "total_tokens": 10513,
+  "steps": 6,
+  "llm_calls": 6,
+  "tool_calls": [
+    "cmm_search",
+    "cmm_search",
+    "cmm_search",
+    "cmm_search",
+    "cmm_search"
+  ],
+  "tool_steps": 5,
+  "tool_texts": [
+    "- gdextension_object_destroy  (Users-ks_128-Documents-godot-src-core.extension.gdextension_interface.gdextension_object_destroy)  extension/gdextension_interface.cpp\n- destroy  (Users-ks_128-Documents-godot-src-core.variant.variant.Variant.PackedArrayRefBase.destroy)  variant/variant.h\n- action_release  (Users-ks_128-Documents-godot-src-core.input.input.Input.action_release)  input/input.cpp\n- cancel_free  (Users-ks_128-Documents-godot-src-core.object.object.Object.cancel_free)  object/object.cpp\n- release_pressed_events  (Users-ks_128-Documents-godot-src-core.input.input.Input.release_pressed_events)  input/input.cpp",
+    "- unreference  (Users-ks_128-Documents-godot-src-core.object.ref_counted.RefCounted.unreference)  object/ref_counted.cpp\n- placeholder_instance_unreference  (Users-ks_128-Documents-godot-src-core.object.class_db.PlaceholderExtensionInstance.placeholder_instance_unreference)  object/class_db.cpp\n- _instance_binding_reference  (Users-ks_128-Documents-godot-src-core.object.object.Object._instance_binding_reference)  object/object.h\n- reference  (Users-ks_128-Documents-godot-src-core.object.ref_counted.RefCounted.reference)  object/ref_counted.cpp\n- cancel_free  (Users-ks_128-Documents-godot-src-core.object.object.Object.cancel_free)  object/object.cpp",
+    "- gdextension_object_destroy  (Users-ks_128-Documents-godot-src-core.extension.gdextension_interface.gdextension_object_destroy)  extension/gdextension_interface.cpp\n- destroy  (Users-ks_128-Documents-godot-src-core.variant.variant.Variant.PackedArrayRefBase.destroy)  variant/variant.h\n- cancel_free  (Users-ks_128-Documents-godot-src-core.object.object.Object.cancel_free)  object/object.cpp\n- free_instance_binding  (Users-ks_128-Documents-godot-src-core.object.object.Object.free_instance_binding)  object/object.cpp\n- gdextension_variant_destroy  (Users-ks_128-Documents-godot-src-core.extension.gdextension_interface.gdextension_variant_destroy)  extension/gdextension_interface.cpp",
+    "(no results)",
+    "- unreference  (Users-ks_128-Documents-godot-src-core.object.ref_counted.RefCounted.unreference)  object/ref_counted.cpp\n- placeholder_instance_unreference  (Users-ks_128-Documents-godot-src-core.object.class_db.PlaceholderExtensionInstance.placeholder_instance_unreference)  object/class_db.cpp\n- RefCounted  (Users-ks_128-Documents-godot-src-core.object.ref_counted.RefCounted.RefCounted)  object/ref_counted.cpp\n- reference  (Users-ks_128-Documents-godot-src-core.object.ref_counted.RefCounted.reference)  object/ref_counted.cpp\n- init_ref  (Users-ks_128-Documents-godot-src-core.object.ref_counted.RefCounted.init_ref)  object/ref_counted.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 11.83,
+  "cost_$": 0.022509,
+  "cache_read_tokens": 9088,
+  "query": "对象内存泄漏：某对象被释放后仍被引用（use-after-free）。Godot 里删除/释放对象的底层函数叫什么？",
+  "type": "bug_fix",
+  "gold": [
+    "core/memory/memory.h",
+    "memdelete"
+  ],
+  "arm": "kb+openspec",
+  "run": 0,
+  "qid": "q27",
+  "correct": 0
+}

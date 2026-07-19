@@ -1,0 +1,28 @@
+{
+  "answer": "`DynamicBVH`",
+  "input_tokens": 250,
+  "output_tokens": 167,
+  "total_tokens": 2593,
+  "steps": 2,
+  "llm_calls": 2,
+  "tool_calls": [
+    "cmm_search"
+  ],
+  "tool_steps": 1,
+  "tool_texts": [
+    "- _create_node_with_volume  (Users-ks_128-Documents-godot-src-core.math.dynamic_bvh.DynamicBVH._create_node_with_volume)  math/dynamic_bvh.cpp\n- contains  (Users-ks_128-Documents-godot-src-core.math.dynamic_bvh.DynamicBVH.Volume.contains)  math/dynamic_bvh.h\n- merge  (Users-ks_128-Documents-godot-src-core.math.dynamic_bvh.DynamicBVH.Volume.merge)  math/dynamic_bvh.h\n- intersects  (Users-ks_128-Documents-godot-src-core.math.dynamic_bvh.DynamicBVH.Volume.intersects)  math/dynamic_bvh.h\n- get_center  (Users-ks_128-Documents-godot-src-core.math.dynamic_bvh.DynamicBVH.Volume.get_center)  math/dynamic_bvh.h"
+  ],
+  "truncated": false,
+  "wall_clock_s": 8.32,
+  "cost_$": 0.0065130000000000006,
+  "cache_read_tokens": 2176,
+  "query": "Godot core 里用于动态场景的层次包围盒（bounding volume hierarchy，broadphase 加速结构）的类叫什么？",
+  "type": "code_retrieval",
+  "gold": [
+    "DynamicBVH"
+  ],
+  "arm": "kb+openspec",
+  "run": 0,
+  "qid": "q36",
+  "correct": 1
+}

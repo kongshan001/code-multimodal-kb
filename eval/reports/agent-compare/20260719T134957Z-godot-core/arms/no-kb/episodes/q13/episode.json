@@ -1,0 +1,32 @@
+{
+  "answer": "`ResourceLoader`",
+  "input_tokens": 1122,
+  "output_tokens": 234,
+  "total_tokens": 5708,
+  "steps": 4,
+  "llm_calls": 4,
+  "tool_calls": [
+    "grep_code",
+    "read_file",
+    "read_file"
+  ],
+  "tool_steps": 3,
+  "tool_texts": [
+    "matched 20 files:\n/Users/ks_128/Documents/godot-src/core/extension/gdextension_resource_format.cpp\n/Users/ks_128/Documents/godot-src/core/extension/gdextension_special_compat_hashes.cpp\n/Users/ks_128/Documents/godot-src/core/extension/gdextension_resource_format.h\n/Users/ks_128/Documents/godot-src/core/io/resource_importer.cpp\n/Users/ks_128/Documents/godot-src/core/io/image.cpp\n/Users/ks_128/Documents/godot-src/core/io/resource.cpp\n/Users/ks_128/Documents/godot-src/core/io/resource_loader.h\n/Users/ks_128/Documents/godot-src/core/io/resource_loader.cpp\n/Users/ks_128/Documents/godot-src/core/io/resource_saver.cpp\n/Users/ks_128/Documents/godot-src/core/io/resource_loader_constants.h\n/Users/ks_128/Documents/godot-src/core/io/resource_format_binary.cpp\n/Users/ks_128/Documents/godot-src/core/io/resource_format_binary.h\n/Users/ks_128/Documents/godot-src/core/io/resource.h\n/Users/ks_128/Documents/godot-src/core/io/resource_uid.cpp\n/Users/ks_128/Documents/godot-src/core/io/marshalls.cpp\n/Users/ks_128/Documents/godot-src/core/io/json.cpp\n/Users/ks_128/Documents/godot-src/core/object/class_db.cpp\n/Users/ks_128/Documents/godot-src/core/debugger/remote_debugger.cpp\n/Users/ks_128/Documents/godot-src/core/variant/variant_parser.cpp\n/Users/ks_128/Documents/godot-src/core/core_bind.cpp",
+    "/**************************************************************************/\n/*  resource_loader.h                                                     */\n/**************************************************************************/\n/*                         This file is part of:                          */\n/*                             GODOT ENGINE                               */\n/*                        https://godotengine.org                         */\n/**************************************************************************/\n/* Copyright (c) 2014-present Godot Engine contributors (see AUTHORS.md). */\n/* Copyright (c) 2007-2014 Juan Linietsky, Ariel Manzur.                  */\n/*                                                                        */\n/* Permission is hereby granted, free of charge, to any person obtaining  */\n/* a copy of this software and associated documentation files (the        */\n/* \"Software\"), to deal in the Software without restriction, including    */\n/* without limitation the rights to use, copy, modify, merge, publish,    */\n/* distribute, sublicense, and/or sell copies of the Software, and to     */\n/* permit persons to whom the Software is furnished to do so, subject to  */\n/* the following conditions:                                              */\n/*                                                                        */\n/* The above copyright notice and this permission notice shall be         */\n/* included in all copies or substantial portions of the Software.        */\n/*                                                                        */\n/* THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,        */\n/* EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF     */\n/* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. */\n/* IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY   */\n/* CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,   *",
+    "/**************************************************************************/\n/*  resource_loader.cpp                                                   */\n/**************************************************************************/\n/*                         This file is part of:                          */\n/*                             GODOT ENGINE                               */\n/*                        https://godotengine.org                         */\n/**************************************************************************/\n/* Copyright (c) 2014-present Godot Engine contributors (see AUTHORS.md). */\n/* Copyright (c) 2007-2014 Juan Linietsky, Ariel Manzur.                  */\n/*                                                                        */\n/* Permission is hereby granted, free of charge, to any person obtaining  */\n/* a copy of this software and associated documentation files (the        */\n/* \"Software\"), to deal in the Software without restriction, including    */\n/* without limitation the rights to use, copy, modify, merge, publish,    */\n/* distribute, sublicense, and/or sell copies of the Software, and to     */\n/* permit persons to whom the Software is furnished to do so, subject to  */\n/* the following conditions:                                              */\n/*                                                                        */\n/* The above copyright notice and this permission notice shall be         */\n/* included in all copies or substantial portions of the Software.        */\n/*                                                                        */\n/* THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,        */\n/* EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF     */\n/* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. */\n/* IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY   */\n/* CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,   *"
+  ],
+  "truncated": false,
+  "wall_clock_s": 10.85,
+  "cost_$": 0.013636,
+  "cache_read_tokens": 4352,
+  "query": "加载资源用哪个类？",
+  "type": "code_retrieval",
+  "gold": [
+    "ResourceLoader"
+  ],
+  "arm": "no-kb",
+  "run": 0,
+  "qid": "q13",
+  "correct": 1
+}

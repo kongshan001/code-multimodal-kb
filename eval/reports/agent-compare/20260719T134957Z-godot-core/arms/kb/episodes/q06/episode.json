@@ -1,0 +1,28 @@
+{
+  "answer": "`Color`",
+  "input_tokens": 239,
+  "output_tokens": 114,
+  "total_tokens": 1889,
+  "steps": 2,
+  "llm_calls": 2,
+  "tool_calls": [
+    "cmm_search"
+  ],
+  "tool_steps": 1,
+  "tool_texts": [
+    "- Color  (Users-ks_128-Documents-godot-src-core.math.color.Color.Color)  math/color.h\n- find_named_color  (Users-ks_128-Documents-godot-src-core.math.color.Color.find_named_color)  math/color.cpp\n- get_named_color  (Users-ks_128-Documents-godot-src-core.math.color.Color.get_named_color)  math/color.cpp\n- get_named_color_count  (Users-ks_128-Documents-godot-src-core.math.color.Color.get_named_color_count)  math/color.cpp\n- get_named_color_name  (Users-ks_128-Documents-godot-src-core.math.color.Color.get_named_color_name)  math/color.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 6.78,
+  "cost_$": 0.004813,
+  "cache_read_tokens": 1536,
+  "query": "表示颜色的类叫什么？",
+  "type": "code_retrieval",
+  "gold": [
+    "Color"
+  ],
+  "arm": "kb",
+  "run": 0,
+  "qid": "q06",
+  "correct": 1
+}

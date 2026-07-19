@@ -1,0 +1,41 @@
+{
+  "answer": "`memdelete`",
+  "input_tokens": 1182,
+  "output_tokens": 646,
+  "total_tokens": 15588,
+  "steps": 8,
+  "llm_calls": 8,
+  "tool_calls": [
+    "cmm_search",
+    "cmm_search",
+    "cmm_search",
+    "cmm_search",
+    "cmm_search",
+    "read_file",
+    "cmm_search"
+  ],
+  "tool_steps": 7,
+  "tool_texts": [
+    "- gdextension_object_destroy  (Users-ks_128-Documents-godot-src-core.extension.gdextension_interface.gdextension_object_destroy)  extension/gdextension_interface.cpp\n- destroy  (Users-ks_128-Documents-godot-src-core.variant.variant.Variant.PackedArrayRefBase.destroy)  variant/variant.h\n- action_release  (Users-ks_128-Documents-godot-src-core.input.input.Input.action_release)  input/input.cpp\n- cancel_free  (Users-ks_128-Documents-godot-src-core.object.object.Object.cancel_free)  object/object.cpp\n- release_pressed_events  (Users-ks_128-Documents-godot-src-core.input.input.Input.release_pressed_events)  input/input.cpp",
+    "- memdelete  (Users-ks_128-Documents-godot-src-core.os.memory.memdelete)  os/memory.h\n- memdelete_allocator  (Users-ks_128-Documents-godot-src-core.os.memory.memdelete_allocator)  os/memory.h\n- memdelete_arr  (Users-ks_128-Documents-godot-src-core.os.memory.memdelete_arr)  os/memory.h\n- cleanup  (Users-ks_128-Documents-godot-src-core.io.file_access_memory.FileAccessMemory.cleanup)  io/file_access_memory.cpp\n- free_static  (Users-ks_128-Documents-godot-src-core.os.memory.Memory.free_static)  os/memory.cpp",
+    "- cancel_free  (Users-ks_128-Documents-godot-src-core.object.object.Object.cancel_free)  object/object.cpp\n- free_instance_binding  (Users-ks_128-Documents-godot-src-core.object.object.Object.free_instance_binding)  object/object.cpp\n- add_destructor  (Users-ks_128-Documents-godot-src-core.variant.variant_destruct.add_destructor)  variant/variant_destruct.cpp\n- has_destructor  (Users-ks_128-Documents-godot-src-core.variant.variant_destruct.Variant.has_destructor)  variant/variant_destruct.cpp\n- get_ptr_destructor  (Users-ks_128-Documents-godot-src-core.variant.variant_destruct.Variant.get_ptr_destructor)  variant/variant_destruct.cpp",
+    "(no results)",
+    "- cleanup  (Users-ks_128-Documents-godot-src-core.object.class_db.ClassDB.cleanup)  object/class_db.cpp\n- cleanup_defaults  (Users-ks_128-Documents-godot-src-core.object.class_db.ClassDB.cleanup_defaults)  object/class_db.cpp\n- gdextension_object_destroy  (Users-ks_128-Documents-godot-src-core.extension.gdextension_interface.gdextension_object_destroy)  extension/gdextension_interface.cpp\n- cleanup  (Users-ks_128-Documents-godot-src-core.object.object.ObjectDB.cleanup)  object/object.cpp\n- destroy  (Users-ks_128-Documents-godot-src-core.variant.variant.Variant.PackedArrayRefBase.destroy)  variant/variant.h",
+    "(read error: [Errno 2] No such file or directory: 'os/memory.h')",
+    "- memdelete  (Users-ks_128-Documents-godot-src-core.os.memory.memdelete)  os/memory.h\n- memdelete_allocator  (Users-ks_128-Documents-godot-src-core.os.memory.memdelete_allocator)  os/memory.h\n- memdelete_arr  (Users-ks_128-Documents-godot-src-core.os.memory.memdelete_arr)  os/memory.h\n- _ignore_definition  (Users-ks_128-Documents-godot-src-core.io.xml_parser.XMLParser._ignore_definition)  io/xml_parser.cpp\n- MethodDefinition  (Users-ks_128-Documents-godot-src-core.object.class_db.MethodDefinition.MethodDefinition)  object/class_db.h"
+  ],
+  "truncated": false,
+  "wall_clock_s": 26.19,
+  "cost_$": 0.028939999999999997,
+  "cache_read_tokens": 13760,
+  "query": "对象内存泄漏：某对象被释放后仍被引用（use-after-free）。Godot 里删除/释放对象的底层函数叫什么？",
+  "type": "bug_fix",
+  "gold": [
+    "core/memory/memory.h",
+    "memdelete"
+  ],
+  "arm": "kb+superpowers",
+  "run": 0,
+  "qid": "q27",
+  "correct": 1
+}

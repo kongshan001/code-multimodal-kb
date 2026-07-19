@@ -1,0 +1,44 @@
+{
+  "answer": "`RingBuffer`",
+  "input_tokens": 1648,
+  "output_tokens": 432,
+  "total_tokens": 18336,
+  "steps": 10,
+  "llm_calls": 10,
+  "tool_calls": [
+    "grep_code",
+    "grep_code",
+    "grep_code",
+    "grep_code",
+    "grep_code",
+    "grep_code",
+    "read_file",
+    "read_file",
+    "grep_code"
+  ],
+  "tool_steps": 9,
+  "tool_texts": [
+    "matched 20 files:\n/Users/ks_128/Documents/godot-src/core/crypto/hashing_context.cpp\n/Users/ks_128/Documents/godot-src/core/crypto/crypto_resource_format.cpp\n/Users/ks_128/Documents/godot-src/core/crypto/crypto_core.cpp\n/Users/ks_128/Documents/godot-src/core/crypto/crypto.h\n/Users/ks_128/Documents/godot-src/core/crypto/hashing_context.h\n/Users/ks_128/Documents/godot-src/core/crypto/aes_context.h\n/Users/ks_128/Documents/godot-src/core/crypto/crypto_resource_format.h\n/Users/ks_128/Documents/godot-src/core/crypto/crypto_core.h\n/Users/ks_128/Documents/godot-src/core/crypto/crypto.cpp\n/Users/ks_128/Documents/godot-src/core/crypto/aes_context.cpp\n/Users/ks_128/Documents/godot-src/core/core_globals.h\n/Users/ks_128/Documents/godot-src/core/version.h\n/Users/ks_128/Documents/godot-src/core/extension/gdextension_resource_format.cpp\n/Users/ks_128/Documents/godot-src/core/extension/gdextension_interface.cpp\n/Users/ks_128/Documents/godot-src/core/extension/extension_api_dump.h\n/Users/ks_128/Documents/godot-src/core/extension/gdextension_interface_header_generator.cpp\n/Users/ks_128/Documents/godot-src/core/extension/gdextension_function_loader.h\n/Users/ks_128/Documents/godot-src/core/extension/libgodot.h\n/Users/ks_128/Documents/godot-src/core/extension/gdextension_loader.h\n/Users/ks_128/Documents/godot-src/core/extension/gdextension_library_loader.cpp",
+    "matched 6 files:\n/Users/ks_128/Documents/godot-src/core/core_globals.h\n/Users/ks_128/Documents/godot-src/core/input/input.cpp\n/Users/ks_128/Documents/godot-src/core/io/resource_format_binary.cpp\n/Users/ks_128/Documents/godot-src/core/io/json.cpp\n/Users/ks_128/Documents/godot-src/core/variant/variant_deep_duplicate.h\n/Users/ks_128/Documents/godot-src/core/core_bind.cpp",
+    "matched 20 files:\n/Users/ks_128/Documents/godot-src/core/crypto/crypto_core.cpp\n/Users/ks_128/Documents/godot-src/core/crypto/crypto.h\n/Users/ks_128/Documents/godot-src/core/crypto/crypto_core.h\n/Users/ks_128/Documents/godot-src/core/extension/gdextension_interface.cpp\n/Users/ks_128/Documents/godot-src/core/extension/gdextension.cpp\n/Users/ks_128/Documents/godot-src/core/extension/gdextension_special_compat_hashes.cpp\n/Users/ks_128/Documents/godot-src/core/extension/gdextension.h\n/Users/ks_128/Documents/godot-src/core/config/project_settings.cpp\n/Users/ks_128/Documents/godot-src/core/input/input.h\n/Users/ks_128/Documents/godot-src/core/input/input.cpp\n/Users/ks_128/Documents/godot-src/core/io/http_client_tcp.h\n/Users/ks_128/Documents/godot-src/core/io/file_access_compressed.h\n/Users/ks_128/Documents/godot-src/core/io/file_access_patched.h\n/Users/ks_128/Documents/godot-src/core/io/translation_loader_po.cpp\n/Users/ks_128/Documents/godot-src/core/io/stream_peer.h\n/Users/ks_128/Documents/godot-src/core/io/file_access_pack.h\n/Users/ks_128/Documents/godot-src/core/io/udp_server.cpp\n/Users/ks_128/Documents/godot-src/core/io/stream_peer_socket.cpp\n/Users/ks_128/Documents/godot-src/core/io/xml_parser.cpp\n/Users/ks_128/Documents/godot-src/core/io/image.cpp",
+    "(no matches)",
+    "(no matches)",
+    "matched 8 files:\n/Users/ks_128/Documents/godot-src/core/io/packet_peer_udp.cpp\n/Users/ks_128/Documents/godot-src/core/io/packet_peer.h\n/Users/ks_128/Documents/godot-src/core/io/stream_peer_gzip.h\n/Users/ks_128/Documents/godot-src/core/io/packet_peer_udp.h\n/Users/ks_128/Documents/godot-src/core/io/stream_peer_gzip.cpp\n/Users/ks_128/Documents/godot-src/core/variant/variant_parser.cpp\n/Users/ks_128/Documents/godot-src/core/templates/ring_buffer.h\n/Users/ks_128/Documents/godot-src/core/string/string_buffer.h",
+    "(read error: [Errno 2] No such file or directory: 'core/templates/ring_buffer.h')",
+    "/**************************************************************************/\n/*  ring_buffer.h                                                         */\n/**************************************************************************/\n/*                         This file is part of:                          */\n/*                             GODOT ENGINE                               */\n/*                        https://godotengine.org                         */\n/**************************************************************************/\n/* Copyright (c) 2014-present Godot Engine contributors (see AUTHORS.md). */\n/* Copyright (c) 2007-2014 Juan Linietsky, Ariel Manzur.                  */\n/*                                                                        */\n/* Permission is hereby granted, free of charge, to any person obtaining  */\n/* a copy of this software and associated documentation files (the        */\n/* \"Software\"), to deal in the Software without restriction, including    */\n/* without limitation the rights to use, copy, modify, merge, publish,    */\n/* distribute, sublicense, and/or sell copies of the Software, and to     */\n/* permit persons to whom the Software is furnished to do so, subject to  */\n/* the following conditions:                                              */\n/*                                                                        */\n/* The above copyright notice and this permission notice shall be         */\n/* included in all copies or substantial portions of the Software.        */\n/*                                                                        */\n/* THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,        */\n/* EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF     */\n/* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. */\n/* IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY   */\n/* CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,   *",
+    "matched 1 files:\n/Users/ks_128/Documents/godot-src/core/templates/ring_buffer.h"
+  ],
+  "truncated": false,
+  "wall_clock_s": 18.83,
+  "cost_$": 0.027167999999999998,
+  "cache_read_tokens": 16256,
+  "query": "Godot core 里定长环形缓冲区（先进先出、写满覆盖最旧）的容器类叫什么？",
+  "type": "code_retrieval",
+  "gold": [
+    "RingBuffer"
+  ],
+  "arm": "no-kb",
+  "run": 0,
+  "qid": "q37",
+  "correct": 1
+}

@@ -1,0 +1,33 @@
+{
+  "answer": "`String.sprintf` 和 `String.format`",
+  "input_tokens": 345,
+  "output_tokens": 396,
+  "total_tokens": 5989,
+  "steps": 4,
+  "llm_calls": 4,
+  "tool_calls": [
+    "cmm_search",
+    "cmm_search",
+    "read_file"
+  ],
+  "tool_steps": 3,
+  "tool_texts": [
+    "- check_formatting  (Users-ks_128-Documents-godot-src-core.extension.make_interface_header.check_formatting)  extension/make_interface_header.py\n- format  (Users-ks_128-Documents-godot-src-core.string.ustring.String.format)  string/ustring.cpp\n- format_number  (Users-ks_128-Documents-godot-src-core.string.translation_server.TranslationServer.format_number)  string/translation_server.cpp\n- _get_string  (Users-ks_128-Documents-godot-src-core.io.resource_format_binary.ResourceLoaderBinary._get_string)  io/resource_format_binary.cpp\n- get_unicode_string  (Users-ks_128-Documents-godot-src-core.io.resource_format_binary.ResourceLoaderBinary.get_unicode_string)  io/resource_format_binary.cpp",
+    "- sprintf  (Users-ks_128-Documents-godot-src-core.string.ustring.String.sprintf)  string/ustring.cpp",
+    "(read error: [Errno 2] No such file or directory: 'string/ustring.cpp')"
+  ],
+  "truncated": false,
+  "wall_clock_s": 10.19,
+  "cost_$": 0.014249,
+  "cache_read_tokens": 5248,
+  "query": "字符串格式化在某些 locale 边界情况下输出乱码，疑是底层格式化例程的 bug。Godot 里字符串格式化的底层函数叫什么？",
+  "type": "bug_fix",
+  "gold": [
+    "core/string/print_string.cpp",
+    "vformat"
+  ],
+  "arm": "kb+superpowers",
+  "run": 0,
+  "qid": "q28",
+  "correct": 0
+}

@@ -1,0 +1,28 @@
+{
+  "answer": "`DisjointSet`",
+  "input_tokens": 228,
+  "output_tokens": 179,
+  "total_tokens": 2007,
+  "steps": 2,
+  "llm_calls": 2,
+  "tool_calls": [
+    "cmm_search"
+  ],
+  "tool_steps": 1,
+  "tool_texts": [
+    "- create_union  (Users-ks_128-Documents-godot-src-core.math.disjoint_set.create_union)  math/disjoint_set.h\n- ~DisjointSet  (Users-ks_128-Documents-godot-src-core.math.disjoint_set.~DisjointSet)  math/disjoint_set.h\n- insert  (Users-ks_128-Documents-godot-src-core.math.disjoint_set.DisjointSet.insert)  math/disjoint_set.h\n- get_parent  (Users-ks_128-Documents-godot-src-core.math.disjoint_set.get_parent)  math/disjoint_set.h\n- get_representatives  (Users-ks_128-Documents-godot-src-core.math.disjoint_set.get_representatives)  math/disjoint_set.h"
+  ],
+  "truncated": false,
+  "wall_clock_s": 6.84,
+  "cost_$": 0.006415,
+  "cache_read_tokens": 1600,
+  "query": "Godot core 里实现并查集（union-find / disjoint-set）的类叫什么？",
+  "type": "code_retrieval",
+  "gold": [
+    "DisjointSet"
+  ],
+  "arm": "kb",
+  "run": 0,
+  "qid": "q35",
+  "correct": 1
+}

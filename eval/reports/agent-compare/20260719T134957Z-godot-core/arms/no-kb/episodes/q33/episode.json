@@ -1,0 +1,52 @@
+{
+  "answer": "`PagedAllocator`",
+  "input_tokens": 1527,
+  "output_tokens": 663,
+  "total_tokens": 18638,
+  "steps": 14,
+  "llm_calls": 14,
+  "tool_calls": [
+    "grep_code",
+    "grep_code",
+    "read_file",
+    "read_file",
+    "grep_code",
+    "grep_code",
+    "grep_code",
+    "grep_code",
+    "grep_code",
+    "grep_code",
+    "read_file",
+    "grep_code",
+    "grep_code"
+  ],
+  "tool_steps": 13,
+  "tool_texts": [
+    "(no matches)",
+    "matched 7 files:\n/Users/ks_128/Documents/godot-src/core/object/class_db.cpp\n/Users/ks_128/Documents/godot-src/core/object/worker_thread_pool.cpp\n/Users/ks_128/Documents/godot-src/core/object/object.cpp\n/Users/ks_128/Documents/godot-src/core/object/worker_thread_pool.h\n/Users/ks_128/Documents/godot-src/core/templates/paged_array.h\n/Users/ks_128/Documents/godot-src/core/templates/pooled_list.h\n/Users/ks_128/Documents/godot-src/core/register_core_types.cpp",
+    "/**************************************************************************/\n/*  pooled_list.h                                                         */\n/**************************************************************************/\n/*                         This file is part of:                          */\n/*                             GODOT ENGINE                               */\n/*                        https://godotengine.org                         */\n/**************************************************************************/\n/* Copyright (c) 2014-present Godot Engine contributors (see AUTHORS.md). */\n/* Copyright (c) 2007-2014 Juan Linietsky, Ariel Manzur.                  */\n/*                                                                        */\n/* Permission is hereby granted, free of charge, to any person obtaining  */\n/* a copy of this software and associated documentation files (the        */\n/* \"Software\"), to deal in the Software without restriction, including    */\n/* without limitation the rights to use, copy, modify, merge, publish,    */\n/* distribute, sublicense, and/or sell copies of the Software, and to     */\n/* permit persons to whom the Software is furnished to do so, subject to  */\n/* the following conditions:                                              */\n/*                                                                        */\n/* The above copyright notice and this permission notice shall be         */\n/* included in all copies or substantial portions of the Software.        */\n/*                                                                        */\n/* THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,        */\n/* EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF     */\n/* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. */\n/* IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY   */\n/* CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,   *",
+    "/**************************************************************************/\n/*  pooled_list.h                                                         */\n/**************************************************************************/\n/*                         This file is part of:                          */\n/*                             GODOT ENGINE                               */\n/*                        https://godotengine.org                         */\n/**************************************************************************/\n/* Copyright (c) 2014-present Godot Engine contributors (see AUTHORS.md). */\n/* Copyright (c) 2007-2014 Juan Linietsky, Ariel Manzur.                  */\n/*                                                                        */\n/* Permission is hereby granted, free of charge, to any person obtaining  */\n/* a copy of this software and associated documentation files (the        */\n/* \"Software\"), to deal in the Software without restriction, including    */\n/* without limitation the rights to use, copy, modify, merge, publish,    */\n/* distribute, sublicense, and/or sell copies of the Software, and to     */\n/* permit persons to whom the Software is furnished to do so, subject to  */\n/* the following conditions:                                              */\n/*                                                                        */\n/* The above copyright notice and this permission notice shall be         */\n/* included in all copies or substantial portions of the Software.        */\n/*                                                                        */\n/* THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,        */\n/* EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF     */\n/* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. */\n/* IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY   */\n/* CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,   *",
+    "(no matches)",
+    "(no matches)",
+    "(no matches)",
+    "(no matches)",
+    "(no matches)",
+    "matched 3 files:\n/Users/ks_128/Documents/godot-src/core/templates/hash_map.h\n/Users/ks_128/Documents/godot-src/core/templates/paged_allocator.h\n/Users/ks_128/Documents/godot-src/core/os/memory.h",
+    "/**************************************************************************/\n/*  paged_allocator.h                                                     */\n/**************************************************************************/\n/*                         This file is part of:                          */\n/*                             GODOT ENGINE                               */\n/*                        https://godotengine.org                         */\n/**************************************************************************/\n/* Copyright (c) 2014-present Godot Engine contributors (see AUTHORS.md). */\n/* Copyright (c) 2007-2014 Juan Linietsky, Ariel Manzur.                  */\n/*                                                                        */\n/* Permission is hereby granted, free of charge, to any person obtaining  */\n/* a copy of this software and associated documentation files (the        */\n/* \"Software\"), to deal in the Software without restriction, including    */\n/* without limitation the rights to use, copy, modify, merge, publish,    */\n/* distribute, sublicense, and/or sell copies of the Software, and to     */\n/* permit persons to whom the Software is furnished to do so, subject to  */\n/* the following conditions:                                              */\n/*                                                                        */\n/* The above copyright notice and this permission notice shall be         */\n/* included in all copies or substantial portions of the Software.        */\n/*                                                                        */\n/* THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,        */\n/* EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF     */\n/* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. */\n/* IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY   */\n/* CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,   *",
+    "(no matches)",
+    "matched 1 files:\n/Users/ks_128/Documents/godot-src/core/templates/paged_allocator.h"
+  ],
+  "truncated": false,
+  "wall_clock_s": 25.25,
+  "cost_$": 0.032434,
+  "cache_read_tokens": 16448,
+  "query": "Godot core 里按页批量分配固定大小对象、避免频繁 new/delete 的内存池类叫什么？",
+  "type": "code_retrieval",
+  "gold": [
+    "PagedAllocator"
+  ],
+  "arm": "no-kb",
+  "run": 0,
+  "qid": "q33",
+  "correct": 1
+}

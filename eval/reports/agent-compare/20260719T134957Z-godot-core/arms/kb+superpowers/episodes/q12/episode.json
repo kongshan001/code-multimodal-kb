@@ -1,0 +1,30 @@
+{
+  "answer": "`Image`",
+  "input_tokens": 390,
+  "output_tokens": 214,
+  "total_tokens": 4252,
+  "steps": 3,
+  "llm_calls": 3,
+  "tool_calls": [
+    "cmm_search",
+    "cmm_search"
+  ],
+  "tool_steps": 2,
+  "tool_texts": [
+    "- get_image_data_size  (Users-ks_128-Documents-godot-src-core.io.image.Image.get_image_data_size)  io/image.cpp\n- get_data  (Users-ks_128-Documents-godot-src-core.io.image.Image.get_data)  io/image.cpp\n- set_data  (Users-ks_128-Documents-godot-src-core.io.image.Image.set_data)  io/image.cpp\n- initialize_data  (Users-ks_128-Documents-godot-src-core.io.image.Image.initialize_data)  io/image.cpp\n- _set_data  (Users-ks_128-Documents-godot-src-core.io.image.Image._set_data)  io/image.cpp",
+    "- Image  (Users-ks_128-Documents-godot-src-core.io.image.Image.Image)  io/image.cpp\n- validate_3d_image  (Users-ks_128-Documents-godot-src-core.io.image.Image.validate_3d_image)  io/image.cpp\n- compute_image_metrics  (Users-ks_128-Documents-godot-src-core.io.image.Image.compute_image_metrics)  io/image.cpp\n- _get_dst_image_size  (Users-ks_128-Documents-godot-src-core.io.image.Image._get_dst_image_size)  io/image.cpp\n- get_image_data_size  (Users-ks_128-Documents-godot-src-core.io.image.Image.get_image_data_size)  io/image.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 10.65,
+  "cost_$": 0.009124,
+  "cache_read_tokens": 3648,
+  "query": "图像数据用哪个类？",
+  "type": "code_retrieval",
+  "gold": [
+    "Image"
+  ],
+  "arm": "kb+superpowers",
+  "run": 0,
+  "qid": "q12",
+  "correct": 1
+}

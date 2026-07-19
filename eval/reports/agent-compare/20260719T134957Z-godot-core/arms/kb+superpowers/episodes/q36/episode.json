@@ -1,0 +1,28 @@
+{
+  "answer": "`DynamicBVH`",
+  "input_tokens": 257,
+  "output_tokens": 203,
+  "total_tokens": 2764,
+  "steps": 2,
+  "llm_calls": 2,
+  "tool_calls": [
+    "cmm_search"
+  ],
+  "tool_steps": 1,
+  "tool_texts": [
+    "- ~DynamicBVH  (Users-ks_128-Documents-godot-src-core.math.dynamic_bvh.DynamicBVH.~DynamicBVH)  math/dynamic_bvh.cpp\n- _split  (Users-ks_128-Documents-godot-src-core.math.dynamic_bvh.DynamicBVH._split)  math/dynamic_bvh.cpp\n- _bounds  (Users-ks_128-Documents-godot-src-core.math.dynamic_bvh.DynamicBVH._bounds)  math/dynamic_bvh.cpp\n- clear  (Users-ks_128-Documents-godot-src-core.math.dynamic_bvh.DynamicBVH.clear)  math/dynamic_bvh.cpp\n- insert  (Users-ks_128-Documents-godot-src-core.math.dynamic_bvh.DynamicBVH.insert)  math/dynamic_bvh.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 9.36,
+  "cost_$": 0.0075120000000000004,
+  "cache_read_tokens": 2304,
+  "query": "Godot core 里用于动态场景的层次包围盒（bounding volume hierarchy，broadphase 加速结构）的类叫什么？",
+  "type": "code_retrieval",
+  "gold": [
+    "DynamicBVH"
+  ],
+  "arm": "kb+superpowers",
+  "run": 0,
+  "qid": "q36",
+  "correct": 1
+}

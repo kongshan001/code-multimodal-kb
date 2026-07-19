@@ -1,0 +1,28 @@
+{
+  "answer": "`JSON`",
+  "input_tokens": 239,
+  "output_tokens": 180,
+  "total_tokens": 2531,
+  "steps": 2,
+  "llm_calls": 2,
+  "tool_calls": [
+    "cmm_search"
+  ],
+  "tool_steps": 1,
+  "tool_texts": [
+    "- parse  (Users-ks_128-Documents-godot-src-core.io.json.JSON.parse)  io/json.cpp\n- _parse_value  (Users-ks_128-Documents-godot-src-core.io.json.JSON._parse_value)  io/json.cpp\n- _parse_array  (Users-ks_128-Documents-godot-src-core.io.json.JSON._parse_array)  io/json.cpp\n- _parse_object  (Users-ks_128-Documents-godot-src-core.io.json.JSON._parse_object)  io/json.cpp\n- _parse_string  (Users-ks_128-Documents-godot-src-core.io.json.JSON._parse_string)  io/json.cpp"
+  ],
+  "truncated": false,
+  "wall_clock_s": 7.66,
+  "cost_$": 0.006751,
+  "cache_read_tokens": 2112,
+  "query": "JSON 解析用哪个类？",
+  "type": "code_retrieval",
+  "gold": [
+    "JSON"
+  ],
+  "arm": "kb+openspec",
+  "run": 0,
+  "qid": "q11",
+  "correct": 1
+}

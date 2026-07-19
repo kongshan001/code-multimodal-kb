@@ -1,0 +1,28 @@
+{
+  "answer": "`PagedAllocator`",
+  "input_tokens": 237,
+  "output_tokens": 189,
+  "total_tokens": 2602,
+  "steps": 2,
+  "llm_calls": 2,
+  "tool_calls": [
+    "cmm_search"
+  ],
+  "tool_steps": 1,
+  "tool_texts": [
+    "- memdelete_allocator  (Users-ks_128-Documents-godot-src-core.os.memory.memdelete_allocator)  os/memory.h\n- PagedAllocator  (Users-ks_128-Documents-godot-src-core.templates.paged_allocator.PagedAllocator.PagedAllocator)  templates/paged_allocator.h\n- ~PagedAllocator  (Users-ks_128-Documents-godot-src-core.templates.paged_allocator.PagedAllocator.~PagedAllocator)  templates/paged_allocator.h\n- free  (Users-ks_128-Documents-godot-src-core.templates.paged_allocator.PagedAllocator.free)  templates/paged_allocator.h\n- _reset  (Users-ks_128-Documents-godot-src-core.templates.paged_allocator.PagedAllocator._reset)  templates/paged_allocator.h"
+  ],
+  "truncated": false,
+  "wall_clock_s": 7.33,
+  "cost_$": 0.006998,
+  "cache_read_tokens": 2176,
+  "query": "Godot core 里按页批量分配固定大小对象、避免频繁 new/delete 的内存池类叫什么？",
+  "type": "code_retrieval",
+  "gold": [
+    "PagedAllocator"
+  ],
+  "arm": "kb+openspec",
+  "run": 0,
+  "qid": "q33",
+  "correct": 1
+}

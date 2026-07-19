@@ -1,0 +1,28 @@
+{
+  "answer": "`Rect2`",
+  "input_tokens": 237,
+  "output_tokens": 143,
+  "total_tokens": 2492,
+  "steps": 2,
+  "llm_calls": 2,
+  "tool_calls": [
+    "cmm_search"
+  ],
+  "tool_steps": 1,
+  "tool_texts": [
+    "- Rect2  (Users-ks_128-Documents-godot-src-core.math.rect2.Rect2.Rect2)  math/rect2.h\n- intersects  (Users-ks_128-Documents-godot-src-core.math.rect2.Rect2.intersects)  math/rect2.h\n- encloses  (Users-ks_128-Documents-godot-src-core.math.rect2.Rect2.encloses)  math/rect2.h\n- intersection  (Users-ks_128-Documents-godot-src-core.math.rect2.Rect2.intersection)  math/rect2.h\n- merge  (Users-ks_128-Documents-godot-src-core.math.rect2.Rect2.merge)  math/rect2.h"
+  ],
+  "truncated": false,
+  "wall_clock_s": 6.65,
+  "cost_$": 0.005816,
+  "cache_read_tokens": 2112,
+  "query": "二维矩形用哪个类？",
+  "type": "code_retrieval",
+  "gold": [
+    "Rect2"
+  ],
+  "arm": "kb+openspec",
+  "run": 0,
+  "qid": "q10",
+  "correct": 1
+}

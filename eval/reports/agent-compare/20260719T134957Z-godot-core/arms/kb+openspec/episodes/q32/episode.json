@@ -1,0 +1,32 @@
+{
+  "answer": "`SelfList`",
+  "input_tokens": 497,
+  "output_tokens": 300,
+  "total_tokens": 5789,
+  "steps": 4,
+  "llm_calls": 4,
+  "tool_calls": [
+    "cmm_search",
+    "read_file",
+    "cmm_search"
+  ],
+  "tool_steps": 3,
+  "tool_texts": [
+    "- List  (Users-ks_128-Documents-godot-src-core.templates.list.List.List)  templates/list.h\n- ~List  (Users-ks_128-Documents-godot-src-core.templates.list.List.~List)  templates/list.h\n- List  (Users-ks_128-Documents-godot-src-core.templates.self_list.SelfList.List.List)  templates/self_list.h\n- in_list  (Users-ks_128-Documents-godot-src-core.templates.self_list.SelfList.in_list)  templates/self_list.h\n- add_linked_property  (Users-ks_128-Documents-godot-src-core.object.class_db.ClassDB.add_linked_property)  object/class_db.cpp",
+    "(read error: [Errno 2] No such file or directory: 'templates/self_list.h')",
+    "- SelfList  (Users-ks_128-Documents-godot-src-core.templates.self_list.SelfList.SelfList)  templates/self_list.h\n- next  (Users-ks_128-Documents-godot-src-core.templates.self_list.SelfList.next)  templates/self_list.h\n- prev  (Users-ks_128-Documents-godot-src-core.templates.self_list.SelfList.prev)  templates/self_list.h\n- self  (Users-ks_128-Documents-godot-src-core.templates.self_list.SelfList.self)  templates/self_list.h\n- operator=  (Users-ks_128-Documents-godot-src-core.templates.self_list.SelfList.operator=)  templates/self_list.h"
+  ],
+  "truncated": false,
+  "wall_clock_s": 9.12,
+  "cost_$": 0.012480999999999999,
+  "cache_read_tokens": 4992,
+  "query": "Godot core 里把链表指针内嵌进节点自身（侵入式，不额外分配节点）的链表类叫什么？",
+  "type": "code_retrieval",
+  "gold": [
+    "SelfList"
+  ],
+  "arm": "kb+openspec",
+  "run": 0,
+  "qid": "q32",
+  "correct": 1
+}

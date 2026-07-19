@@ -1,0 +1,6 @@
+{"role": "user", "content": "三维向量用哪个类？"}
+{"role": "assistant", "content": [{"type": "thinking", "text": "用户问\"三维向量用哪个类？\"，这是在问 Godot 代码库中三维向量使用哪个类。\n\n这是一个简单的代码库问题，我应该使用语义搜索工具来查找相关的类。\n\n让我搜索三维向量相关的类。"}]}
+{"role": "assistant", "content": [{"type": "tool_use", "name": "cmm_search", "input": {"query": "三维向量 Vector3"}}]}
+{"role": "assistant", "content": [{"type": "thinking", "text": "搜索结果显示了 Vector3 类，这是 Godot 中用于三维向量的类。根据我的指令，一旦工具返回了相关符号就立刻用符号名作答，不要反复查。\n\n所以答案是：Vector3"}]}
+{"role": "assistant", "content": [{"type": "text", "text": "`Vector3`"}]}
+{"role": "user", "content": [{"type": "tool_result", "tool_use_id": null, "content": "- Vector3  (Users-ks_128-Documents-godot-src-core.math.vector3.Vector3)  math/vector3.h\n- rotate  (Users-ks_128-Documents-godot-src-core.math.vector3.Vector3.rotate)  math/vector3.cpp\n- rotated  (Users-ks_128-Documents-godot-src-core.math.vector3.Vector3.rotated)  math/vector3.cpp\n- snap  (Users-ks_128-Documents-godot-src-core.math.vector3.Vector3.snap)  math/vector3.cpp\n- snapped  (Users-ks_128-Documents-godot-src-core.math.vector3.Vector3.snapped)  math/vector3.cpp"}]}
