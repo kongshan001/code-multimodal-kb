@@ -18,7 +18,7 @@ from eval import ab_tools
 # summary 里展示的指标（顺序即矩阵列序）
 _METRIC_KEYS = [
     "accuracy", "mean_total_tokens", "mean_cache_read_tokens", "mean_llm_calls", "mean_tool_steps",
-    "mean_wall_clock_s", "mean_cost_$", "tool_diversity", "truncated_rate", "n_episodes",
+    "mean_wall_clock_s", "mean_cost_$", "tool_diversity", "truncated_rate", "no_tool_rate", "n_episodes",
 ]
 
 
@@ -26,6 +26,8 @@ def _aggregate(eps: list[dict]) -> dict:
     """单臂指标聚合。"""
     n = len(eps) or 1
     tot = [e["total_tokens"] for e in eps]
+    no_tool = [e for e in eps if e["tool_steps"] == 0]          # 没调任何工具就答（凭记忆）
+    with_tool = [e for e in eps if e["tool_steps"] > 0]         # 用了工具才答
     return {
         "accuracy": round(statistics.mean(e["correct"] for e in eps), 3),
         "mean_input_tokens": round(statistics.mean(e["input_tokens"] for e in eps), 1),
@@ -38,6 +40,10 @@ def _aggregate(eps: list[dict]) -> dict:
         "mean_cost_$": round(statistics.mean(e["cost_$"] or 0 for e in eps), 4),
         "tool_diversity": round(statistics.mean(len(set(e["tool_calls"])) for e in eps), 2),
         "truncated_rate": round(sum(1 for e in eps if e["truncated"]) / n, 3),
+        # 测量纯度：agent 有没有真用工具（KB 贡献只在 with_tool 里体现）
+        "no_tool_rate": round(len(no_tool) / n, 3),
+        "acc_with_tool": round(statistics.mean(e["correct"] for e in with_tool), 3) if with_tool else None,
+        "acc_no_tool": round(statistics.mean(e["correct"] for e in no_tool), 3) if no_tool else None,
         "n_episodes": len(eps),
     }
 
@@ -90,6 +96,7 @@ def _result_md(result: dict, aggregates: dict) -> str:
         ("mean_cost_$", "平均每题花多少钱（≈ token × 单价）"),
         ("tool_diversity", "平均用了几种不同工具（高了可能在乱试）"),
         ("truncated_rate", "多少题没在步数内答完（卡住了）。0 最好"),
+        ("no_tool_rate", "多少题 agent 根本没调工具就答了（凭记忆）。高了说明该臂准确率不是工具/KB 贡献的——测量纯度"),
         ("context_compression", "有 KB 比无 KB 省几倍 token（>1=KB 省；仅 no-kb+kb 都跑时给）"),
     ]
 
@@ -121,9 +128,9 @@ def _result_md(result: dict, aggregates: dict) -> str:
         "**答对（✓）怎么判**：终答里含 gold 符号或文件名就算对（broad 子串匹配，零 LLM judge）。",
         "**gold 是什么**：每题的标准答案——来自 codegraph 挖出的真实代码符号/文件，构造即正确（不是人拍脑袋写的）。",
         "",
-        "**某题被标截断（逐题表 `截断` 列 ⚠ / `truncated_rate` > 0）**：agent 跑满 backstop（**30 轮**，"
-        "防死循环的安全网）仍未自然给出答案 = **真卡住**。本跑采用 run-until-answer：**不 inject 猜测答案**，"
-        "那题的 `answer` 是占位（判分即错）。30 轮 backstop 远超正常收敛所需，所以截断率衡量的是 agent 真正卡死的比例，"
+        "**某题被标截断（逐题表 `截断` 列 ⚠ / `truncated_rate` > 0）**：agent 跑满 backstop（默认 **30 轮**，"
+        "no-kb 臂 **12 轮**，防死循环的安全网）仍未自然给出答案 = **真卡住**。本跑采用 run-until-answer：**不 inject 猜测答案**，"
+        "那题的 `answer` 是占位（判分即错）。backstop 远超正常收敛所需，所以截断率衡量的是 agent 真正卡死的比例，"
         "不是被步数上限人为截断。",
         "",
         "**`thinking` / 思考过程**：GLM-5.1 经这个端点不返独立 thinking block，所以思考 = agent 的推理文本（assistant 回答），"
@@ -159,6 +166,26 @@ def _result_md(result: dict, aggregates: dict) -> str:
         lines.append(f"- `{a}`: acc={ag['accuracy']} · tokens={ag['mean_total_tokens']} · "
                      f"llm_calls={ag['mean_llm_calls']} · steps={ag['mean_tool_steps']} · "
                      f"t={ag['mean_wall_clock_s']}s · tools={ag['tool_diversity']}")
+
+    # 测量纯度：agent 有没有真用工具——KB/skills 的贡献只在「用了工具」的题里体现
+    lines += ["", "## 工具使用 / 测量纯度（KB 到底帮没帮）", "",
+              "> `no_tool_rate` = 该臂多少题**没调任何工具**就答了（凭模型记忆）。这些题答对**不算工具/KB 的贡献**。",
+              "> 拆开看 `acc_with_tool`（用了工具的题的准确率）vs `acc_no_tool`（没用的）——前者才反映工具价值。",
+              "", "| 臂 | no_tool_rate | acc_with_tool | acc_no_tool | 解读 |",
+              "|---|---|---|---|---|"]
+    for a in arms:
+        ag = aggregates[a]
+        nt = ag["no_tool_rate"]
+        awt = ag.get("acc_with_tool")
+        ant = ag.get("acc_no_tool")
+        if nt >= 0.5:
+            note = f"{int(nt * 100)}% 题没用工具→准确率主要靠记忆，工具贡献有限"
+        elif nt > 0:
+            note = f"少数({int(nt * 100)}%)题没用工具"
+        else:
+            note = "每题都用了工具"
+        lines.append(f"| `{a}` | {nt} | {awt if awt is not None else '-'} | "
+                     f"{ant if ant is not None else '-'} | {note} |")
 
     lines += [
         "",
