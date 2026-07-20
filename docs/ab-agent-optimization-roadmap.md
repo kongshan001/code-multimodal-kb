@@ -21,7 +21,7 @@
 |---|---|---|
 | **测量纯度：no_tool_rate + acc split** | ✅ | 报告标"没调工具就答"的题——KB 贡献只在 acc_with_tool 里。`_aggregate` 加 3 指标 + result.md 专段 |
 | **B1 多 run n≥3 取均值** | ⬜ | 治"方差>臂间差"根本病（同题两次跑 acc 洗牌）。并行+降本后可负担。**最高优先** |
-| **B2 加难题集** | ⬜ | 现题太易（模型本就会）→ 测不出 KB/skills 价值。增 bug_fix / 冷门符号 |
+| **B2 加难题集** | ✅ | 加 8 道冷门内部类（CowData/LocalVector/SelfList/…），GLM 4.7 跑出 KB 分化（no-kb 0.784 vs kb 0.919） |
 | B3 报告标 n / 方差 / token 分项 | ⬜ | 矩阵列 input/output/cache 分项 + 标 n（多 run 后才有方差） |
 | 判分严格度 | ⬜ | broad 子串可能误中；可加 strict 或 LLM-judge 交叉校（但有 self-preference） |
 
