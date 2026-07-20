@@ -44,19 +44,59 @@ Windows：双击 `setup-bench.bat`（装 Python 依赖）→ `deploy.bat <代码
 
 ## 文档索引
 
-> **完整索引**：[docs/README.md](docs/README.md)（按用途分组 + 文档间关系图，单一入口）
+> 全仓库文档**单一入口**，按用途分组。每篇标明给谁看、什么时候看。
+
+### 🚀 快速上手
+
+| 文档 | 内容 |
+|---|---|
+| 本文件 | 项目简介 + clone 后 3 步上手 |
+| [bench.yaml.example](bench.yaml.example) | 配置模板（cp 为 bench.yaml，改模型/key/路径） |
+
+### 🏗️ 架构
+
+| 文档 | 内容 |
+|---|---|
+| [docs/architecture.md](docs/architecture.md) | **框架总览**：组件 / 数据流 / 记忆四层 / 设计决策 |
+| [docs/diagrams/](docs/diagrams/README.md) | **流程图** 4 张（总览 + agent loop + target 布局 + arms×tools） |
+
+### 📊 Benchmark 评测
 
 | 文档 | 内容 |
 |---|---|
 | [docs/benchmark-runbook.md](docs/benchmark-runbook.md) | **bench CLI 手册**：怎么跑 / goldgen 扩题 / 归档 / 读报告 |
 | [docs/ab-agent-internals.md](docs/ab-agent-internals.md) | **agent loop 源码拆解**：提示词 / 轮次 / token（含两 engine）← 外部评审 |
 | [docs/ab-agent-optimization-roadmap.md](docs/ab-agent-optimization-roadmap.md) | **优化路线图**：done / todo / 否决 |
-| [docs/architecture.md](docs/architecture.md) | **框架总览**：组件 / 数据流 / 记忆四层 / 设计决策 |
+| `eval/reports/agent-compare/*/analysis.md` | 每次跑的分析报告（结论 + 诚实边界 + 逐题分化） |
+
+### 🔧 运维
+
+| 文档 | 内容 |
+|---|---|
 | [docs/deployment-runbook.md](docs/deployment-runbook.md) | **部署/排错**：A 代码 / B 文档 / C 评测 / D 记忆 |
 | [docs/frontend-guide.md](docs/frontend-guide.md) | **前端使用说明**：起服务 / 视图详解 / CLI 对应 |
 | [docs/windows-compatibility.md](docs/windows-compatibility.md) | **Win 兼容**：cp936 编码坑 + 修复铁律 |
-| [docs/diagrams/](docs/diagrams/README.md) | **流程图**（总览 + agent loop + target 布局 + arms×tools） |
-| [CLAUDE.md](CLAUDE.md) | agent 纪律：OpenSpec 铁则 + 记忆四层归属判定 |
+
+### 📐 规格 & Skills
+
+| 位置 | 内容 |
+|---|---|
+| [openspec/specs/](openspec/specs/) | 6 个 capability spec |
+| [openspec/changes/archive/](openspec/changes/archive/) | 历史变更归档 |
+| [.claude/skills/bench/](.claude/skills/bench/SKILL.md) | bench 单一入口 skill（判断+路由） |
+| [CLAUDE.md](CLAUDE.md) | agent 纪律：OpenSpec 铁则 + 记忆四层归属 |
+
+### 文档间关系
+
+```
+README.md（本文件，上手 + 索引）
+  ├→ docs/benchmark-runbook.md（怎么跑）
+  │    └→ docs/ab-agent-internals.md（引擎怎么工作）
+  │         └→ docs/ab-agent-optimization-roadmap.md（还能怎么优化）
+  ├→ docs/architecture.md（全局架构）
+  │    └→ docs/diagrams/（可视化）
+  └→ docs/deployment-runbook.md（怎么部署）
+```
 
 ## OpenSpec 变更
 
