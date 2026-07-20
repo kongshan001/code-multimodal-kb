@@ -44,17 +44,18 @@ Windows：双击 `setup-bench.bat`（装 Python 依赖）→ `deploy.bat <代码
 
 ## 文档索引
 
+> **完整索引**：[docs/README.md](docs/README.md)（按用途分组 + 文档间关系图，单一入口）
+
 | 文档 | 内容 |
 |---|---|
+| [docs/benchmark-runbook.md](docs/benchmark-runbook.md) | **bench CLI 手册**：怎么跑 / goldgen 扩题 / 归档 / 读报告 |
+| [docs/ab-agent-internals.md](docs/ab-agent-internals.md) | **agent loop 源码拆解**：提示词 / 轮次 / token（含两 engine）← 外部评审 |
+| [docs/ab-agent-optimization-roadmap.md](docs/ab-agent-optimization-roadmap.md) | **优化路线图**：done / todo / 否决 |
 | [docs/architecture.md](docs/architecture.md) | **框架总览**：组件 / 数据流 / 记忆四层 / 设计决策 |
-| [docs/deployment-runbook.md](docs/deployment-runbook.md) | **部署/排错**：A 代码 / B 文档 / C 评测 / D 记忆 / E 离线 + hook 事故复盘 |
-| [docs/windows-compatibility.md](docs/windows-compatibility.md) | **Win 兼容**：cp936 编码坑（read_text/print/subprocess）+ 修复铁律 + 平台差异 |
-| [docs/benchmark-runbook.md](docs/benchmark-runbook.md) | **benchmark CLI**：`bench` 子命令 / goldgen 扩题 / 归档 / 读报告 / 复现 |
-| [docs/diagrams/](docs/diagrams/README.md) | **流程图**（fireworks-tech-graph）：系统架构 / A/B 流程 / goldgen 流程 |
-| [docs/frontend-guide.md](docs/frontend-guide.md) | **前端使用说明**：起服务 / 8 视图详解 / 典型工作流 / 排错 / CLI 对应 |
-| [web/](web/index.html) | **前端可视化**（Measurement Lab）：Dashboard / Run / Setup / Onboarding / Gold lab |
-| [eval/](eval/README.md) | **评测 harness**：指标 / gold / 可复现 lockfile / 工具注册表 |
-| [TODO.md](TODO.md) | **路线图**：已证明 / 进行中 / 待办 |
+| [docs/deployment-runbook.md](docs/deployment-runbook.md) | **部署/排错**：A 代码 / B 文档 / C 评测 / D 记忆 |
+| [docs/frontend-guide.md](docs/frontend-guide.md) | **前端使用说明**：起服务 / 视图详解 / CLI 对应 |
+| [docs/windows-compatibility.md](docs/windows-compatibility.md) | **Win 兼容**：cp936 编码坑 + 修复铁律 |
+| [docs/diagrams/](docs/diagrams/README.md) | **流程图**（总览 + agent loop + target 布局 + arms×tools） |
 | [CLAUDE.md](CLAUDE.md) | agent 纪律：OpenSpec 铁则 + 记忆四层归属判定 |
 
 ## OpenSpec 变更
