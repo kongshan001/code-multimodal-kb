@@ -51,3 +51,7 @@ vendor/codebase-memory-mcp
 
 # benchmark 报告（生成产物，默认不入库；正经 benchmark 跑完手动 git add 归档）
 eval/reports/
+
+# drawio-skill 安装产物（npx skills 本地安装）
+.agents/
+skills-lock.json
