@@ -138,6 +138,36 @@ class Handler(BaseHTTPRequestHandler):
                         except Exception:
                             pass
             return self._send_json(200, {"runs": runs})
+        if p.startswith("/api/agent-compare/"):
+            parts = p.split("/")
+            run_id = parts[3]
+            ac_dir = REPO / "eval" / "reports" / "agent-compare" / run_id
+            if not ac_dir.is_dir():
+                return self._send_json(404, {"error": "run not found"})
+            # /api/agent-compare/<run_id> → summary.json
+            # /api/agent-compare/<run_id>/questions → 逐题 × 逐臂结果
+            if len(parts) == 5 and parts[4] == "questions":
+                questions = {}
+                for arm_dir in sorted((ac_dir / "arms").iterdir()) if (ac_dir / "arms").is_dir() else []:
+                    arm = arm_dir.name
+                    for ef in sorted(arm_dir.glob("episodes/*/episode.json")):
+                        try:
+                            e = json.loads(ef.read_text(encoding='utf-8'))
+                            qid = e.get('qid', ef.parent.name)
+                            questions.setdefault(qid, {'query': e.get('query',''), 'type': e.get('type',''), 'gold': e.get('gold',[])})
+                            questions[qid][arm] = {
+                                'correct': e.get('correct'), 'answer': (e.get('answer','') or '')[:120],
+                                'tool_calls': e.get('tool_calls',[]), 'tool_steps': e.get('tool_steps',0),
+                                'llm_calls': e.get('llm_calls',0), 'total_tokens': e.get('total_tokens',0),
+                                'truncated': e.get('truncated',False),
+                            }
+                        except Exception:
+                            pass
+                return self._send_json(200, {"questions": questions})
+            sf = ac_dir / "summary.json"
+            if sf.is_file():
+                return self._send_json(200, json.loads(sf.read_text(encoding='utf-8')))
+            return self._send_json(404, {"error": "summary not found"})
         if p == "/api/health":
             return self._send_json(200, health())
         if p.startswith("/api/catalog"):
