@@ -1,155 +1,143 @@
-/* Measurement Lab · design tokens（抽自 mockup，与流程图 style 6 同品牌） */
+/* ═══ Measurement Lab · "Laboratory Ledger" design system ═══ */
+/* 参照：Edward Tufte 的 benchmark 讲义 + 实验室记录本                       */
+/* 设计记忆见 DESIGN.md — 改这个文件前先读                                   */
+
 :root{
-  --cream:#f8f6f3; --ink:#1a1814; --ink2:#5a544a; --rule:#d9d2c4;
-  --teal:#9dd4c7; --blue:#a8c5e6; --beige:#f4e4c1; --gray:#e8e6e3;
-  --accent:#c75b39; --good:#3f7d5f; --warn:#b07a1e; --bad:#b3462a;
+  --cream:#f8f6f3; --paper:#fffdf9; --ink:#1a1814; --ink2:#6b655a; --ink3:#9a948a;
+  --rule:#e0d9cb; --rule2:#cec7b8;
+  --accent:#c75b39; --accent2:#a8472a; --teal:#5a9e8e; --teal2:#3d7a6c;
+  --good:#3f7d5f; --warn:#b07a1e; --bad:#b3462a;
+  --gray:#ebe8e2;
 }
 *{box-sizing:border-box;margin:0;padding:0}
-html,body{background:var(--cream);color:var(--ink);
-  font-family:'IBM Plex Sans',-apple-system,sans-serif;font-size:15px;line-height:1.45;-webkit-font-smoothing:antialiased}
-a{color:var(--accent);text-decoration:none}
-
-/* layout */
-.app{display:grid;grid-template-columns:200px 1fr;min-height:100vh}
-.side{border-right:1.5px solid var(--ink);padding:28px 18px;background:#fff;position:sticky;top:0;height:100vh;overflow:auto}
-.side .logo{font-family:'Fraunces',serif;font-weight:800;font-size:20px;line-height:1;margin-bottom:4px}
-.side .logo em{font-style:italic;font-weight:400;color:var(--ink2)}
-.side .tag{font-size:10px;color:var(--ink2);font-family:'JetBrains Mono',monospace;letter-spacing:.5px;margin-bottom:28px}
-.nav-sec{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink2);margin:20px 0 8px;padding-left:12px}
-.nav a{display:block;padding:8px 12px;font-size:13px;color:var(--ink);border-left:2px solid transparent;cursor:pointer}
-.nav a:hover{background:var(--cream)}
-.nav a.active{border-left-color:var(--accent);font-weight:600;background:var(--cream)}
-.main{padding:40px 44px 80px;max-width:1100px}
-
-/* typography */
-h1{font-family:'Fraunces',serif;font-weight:800;font-size:38px;letter-spacing:-1px;line-height:1;margin-bottom:4px}
-h1 em{font-style:italic;font-weight:400;color:var(--ink2)}
-.lede{font-family:'Fraunces',serif;font-style:italic;font-size:16px;color:var(--ink2);margin-bottom:28px}
+html{scroll-behavior:smooth}
+body{background:var(--cream);color:var(--ink);
+  font-family:'IBM Plex Sans',-apple-system,sans-serif;font-size:14px;line-height:1.5;
+  -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+a{color:var(--accent);text-decoration:none;transition:color .15s}
+a:hover{color:var(--accent2)}
 .mono{font-family:'JetBrains Mono',monospace}
-.h{display:flex;align-items:baseline;gap:14px;margin:36px 0 14px}
-.h .n{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--accent);letter-spacing:1px}
-.h h2{font-family:'Fraunces',serif;font-weight:600;font-size:22px}
-.h .line{flex:1;height:1px;background:var(--rule)}
 
-/* hero metrics — card 化（深度 + 悬浮 + 顶部色条）*/
-.hero{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:32px}
-.hero .m{padding:22px 20px;background:#fff;border-radius:10px;border:1px solid var(--rule);
-  box-shadow:0 1px 3px rgba(26,24,20,.04);position:relative;overflow:hidden;
-  transition:transform .18s cubic-bezier(.4,0,.2,1),box-shadow .18s ease}
-.hero .m::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--accent);opacity:0;transition:opacity .18s ease}
-.hero .m:hover{transform:translateY(-3px);box-shadow:0 8px 20px rgba(26,24,20,.08)}
-.hero .m:hover::before{opacity:.7}
-.hero .lbl{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink2);margin-bottom:10px}
-.hero .num{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:32px;letter-spacing:-1px;line-height:1}
-.hero .num.acc{color:var(--accent)}
-.hero .ctx{font-size:11px;color:var(--ink2);margin-top:8px}
-.badge{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:9px;padding:2px 7px;border:1px solid var(--ink2);border-radius:10px;color:var(--ink2);margin-left:6px}
+/* ── top bar（水平导航，替代 sidebar）── */
+.topbar{position:sticky;top:0;z-index:100;display:flex;align-items:center;gap:0;
+  background:var(--paper);border-bottom:1.5px solid var(--ink);padding:0 32px;height:52px}
+.topbar .brand{font-family:'Fraunces',serif;font-weight:800;font-size:17px;letter-spacing:-.5px;
+  margin-right:auto;padding:0 0 0 0;white-space:nowrap}
+.topbar .brand em{font-style:italic;font-weight:400;color:var(--ink2)}
+.topbar .tag{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--ink3);
+  letter-spacing:.5px;margin-left:8px;margin-right:24px}
+.topbar nav{display:flex;gap:0}
+.topbar nav a{display:block;padding:0 14px;font-size:12px;color:var(--ink2);line-height:52px;
+  border-bottom:2px solid transparent;transition:all .15s;white-space:nowrap}
+.topbar nav a:hover{color:var(--ink);background:var(--cream)}
+.topbar nav a.active{color:var(--accent);border-bottom-color:var(--accent);font-weight:600}
 
-/* value grid */
-.vg{font-size:13px}
-.vg .row{display:grid;grid-template-columns:1.4fr repeat(3,.8fr) 2fr;gap:0}
-.vg .c{padding:10px;border-bottom:1px solid var(--rule)}
-.vg .hd{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--ink2);border-bottom:1.5px solid var(--ink)}
-.vg .dim{font-weight:500}
-.vg .dots{font-family:'JetBrains Mono',monospace;font-size:14px;letter-spacing:1px}
-.d3{color:var(--ink)} .d2{color:var(--ink2)} .d0{color:var(--rule)}
+/* ── main content ── */
+.main{max-width:1200px;margin:0 auto;padding:36px 32px 80px}
 
-/* bar chart */
-.bar-row{display:grid;grid-template-columns:90px 1fr 60px;align-items:center;gap:12px;margin-bottom:10px;font-size:12px}
-.bar-row .nm{font-family:'JetBrains Mono',monospace}
-.bar-row .tr{height:13px;background:var(--gray);position:relative}
-.bar-row .tr i{position:absolute;left:0;top:0;bottom:0;background:var(--ink)}
-.bar-row.kb .tr i{background:var(--teal)}
-.bar-row.cg .tr i{background:var(--accent)}
-.bar-row .v{font-family:'JetBrains Mono',monospace;text-align:right;color:var(--ink2);font-size:11px}
+/* ── typography ── */
+h1{font-family:'Fraunces',serif;font-weight:800;font-size:34px;letter-spacing:-1px;line-height:1.05}
+h1 em{font-style:italic;font-weight:400;color:var(--ink2)}
+.lede{font-family:'Fraunces',serif;font-style:italic;font-size:15px;color:var(--ink2);
+  margin-top:2px;margin-bottom:28px}
+.sec-h{display:flex;align-items:baseline;gap:10px;margin:36px 0 14px}
+.sec-h .n{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--accent);letter-spacing:1px}
+.sec-h h2{font-family:'Fraunces',serif;font-weight:600;font-size:18px}
+.sec-h .line{flex:1;height:1px;background:var(--rule)}
 
-/* table */
-table.t{width:100%;border-collapse:collapse;font-size:12px}
-.t th{text-align:left;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--ink2);padding:8px 10px;border-bottom:1.5px solid var(--ink);font-weight:500}
-.t td{padding:9px 10px;border-bottom:1px solid var(--rule);font-family:'JetBrains Mono',monospace}
-.t tr{cursor:pointer}
-.t tr:hover td{background:#fff}
-.t .sb{color:var(--accent)}
+/* ── metric strip（hero 指标，水平密集排列）── */
+.strip{display:grid;grid-template-columns:repeat(4,1fr);gap:0;
+  border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);margin-bottom:8px}
+.strip .cell{padding:16px 20px;border-right:1px solid var(--rule)}
+.strip .cell:last-child{border-right:none}
+.strip .lbl{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:1.5px;
+  text-transform:uppercase;color:var(--ink3);margin-bottom:6px}
+.strip .val{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:28px;
+  letter-spacing:-.5px;line-height:1}
+.strip .val.acc{color:var(--accent)}
+.strip .ctx{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--ink3);margin-top:4px}
 
-/* dep status */
-.dep .st{font-family:'JetBrains Mono',monospace;font-weight:500;font-size:12px}
-.dep .st.ok{color:var(--good)} .dep .st.miss{color:var(--bad)} .dep .st.warn{color:var(--warn)}
-.btn{font-family:'JetBrains Mono',monospace;font-size:11px;padding:6px 12px;border:1px solid var(--ink);background:#fff;cursor:pointer;border-radius:2px}
+/* ── arm matrix table（4 臂 × 指标，Tufte 式数据表）── */
+.matrix{width:100%;border-collapse:collapse;font-size:12px;margin-bottom:8px}
+.matrix th{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:1px;
+  text-transform:uppercase;color:var(--ink3);text-align:right;padding:6px 10px;
+  border-bottom:1.5px solid var(--ink);font-weight:500;white-space:nowrap}
+.matrix th:first-child{text-align:left}
+.matrix th.best{color:var(--accent)}
+.matrix td{font-family:'JetBrains Mono',monospace;font-size:13px;padding:8px 10px;
+  border-bottom:1px solid var(--rule);text-align:right;white-space:nowrap}
+.matrix td:first-child{text-align:left;font-size:10px;color:var(--ink2);
+  text-transform:uppercase;letter-spacing:.5px;font-weight:500}
+.matrix td.best{color:var(--accent);font-weight:700}
+.matrix .bar{display:inline-block;height:4px;background:var(--ink);vertical-align:middle;
+  margin-left:6px;border-radius:1px;opacity:.15}
+.matrix .bar.acc{background:var(--accent);opacity:.5}
+.matrix tr:hover td{background:var(--paper)}
+
+/* ── standard table ── */
+.tbl{width:100%;border-collapse:collapse;font-size:11px}
+.tbl th{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:1px;
+  text-transform:uppercase;color:var(--ink3);text-align:left;padding:6px 10px;
+  border-bottom:1.5px solid var(--ink);font-weight:500}
+.tbl td{font-family:'JetBrains Mono',monospace;padding:7px 10px;
+  border-bottom:1px solid var(--rule);font-size:11px}
+.tbl tr{cursor:pointer;transition:background .1s}
+.tbl tr:hover td{background:var(--paper)}
+.tbl .sb{color:var(--accent)}
+.tbl tbody tr:nth-child(even) td{background:rgba(248,246,243,.35)}
+
+/* ── forms / buttons ── */
+select,input[type=text]{font-family:'JetBrains Mono',monospace;font-size:11px;
+  padding:5px 10px;border:1px solid var(--rule2);background:var(--paper);
+  border-radius:3px;color:var(--ink);outline:none}
+select:focus,input:focus{border-color:var(--accent)}
+.btn{font-family:'JetBrains Mono',monospace;font-size:10px;padding:5px 12px;
+  border:1px solid var(--ink);background:var(--paper);cursor:pointer;border-radius:3px;
+  transition:all .15s}
+.btn:hover{background:var(--cream);transform:translateY(-1px)}
 .btn.fill{background:var(--accent);color:#fff;border-color:var(--accent)}
-.gate{display:flex;align-items:center;gap:14px;padding:14px 18px;border:1.5px solid var(--ink);background:#fff;margin-bottom:28px}
-.gate .dot{width:12px;height:12px;border-radius:50%;background:var(--warn);box-shadow:0 0 0 4px rgba(176,122,30,.15)}
-.gate.ok .dot{background:var(--good);box-shadow:0 0 0 4px rgba(63,125,95,.15)}
-.loading{font-family:'Fraunces',serif;font-style:italic;color:var(--ink2);padding:40px}
-.kv{font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.8}
-.kv b{color:var(--ink)} .kv span{color:var(--ink2)}
+.btn.fill:hover{background:var(--accent2)}
 
-/* tabs（能力目录分类页签）*/
-.ctabs{display:flex;gap:0;border-bottom:2px solid var(--ink);margin-bottom:20px;overflow-x:auto}
-.ctab{padding:10px 18px;font-size:13px;font-weight:500;cursor:pointer;border-bottom:3px solid transparent;
-  margin-bottom:-2px;white-space:nowrap;color:var(--ink2);transition:color .15s}
-.ctab:hover{color:var(--ink)}
-.ctab.active{color:var(--accent);border-bottom-color:var(--accent);font-weight:600}
-.ctab .badge{font-size:9px;font-family:'JetBrains Mono',monospace;margin-left:4px;color:var(--ink2)}
-.ctab.active .badge{color:var(--accent)}
+/* ── gate / status ── */
+.gate{display:flex;align-items:center;gap:12px;padding:12px 16px;
+  border:1px solid var(--ink);background:var(--paper);border-radius:4px;margin-bottom:20px}
+.gate .dot{width:10px;height:10px;border-radius:50%;background:var(--warn);
+  box-shadow:0 0 0 3px rgba(176,122,30,.12)}
+.gate.ok .dot{background:var(--good);box-shadow:0 0 0 3px rgba(63,125,95,.12)}
 
-/* ── polish: 过渡 + 深度 + 微交互 ── */
-.nav a,.btn,.t tr,.ctab,.t tr:hover td{transition:all .15s cubic-bezier(.4,0,.2,1)}
-.side{background:linear-gradient(180deg,#fff 0%,var(--cream) 100%)}
-.side::-webkit-scrollbar{width:4px}
-.side::-webkit-scrollbar-thumb{background:var(--rule);border-radius:2px}
-.side::-webkit-scrollbar-track{background:transparent}
-.main::-webkit-scrollbar{width:6px}
-.main::-webkit-scrollbar-thumb{background:var(--rule);border-radius:3px}
-
-/* table 行斑马纹 + 增强 hover */
-.t tbody tr:nth-child(even) td{background:rgba(248,246,243,.4)}
-.t tbody tr:hover td{background:#fff !important;box-shadow:inset 3px 0 0 var(--accent)}
-
-/* 按钮 hover */
-.btn:hover{background:var(--cream);border-color:var(--ink2);transform:translateY(-1px)}
-.btn.fill:hover{background:#b04a2f;transform:translateY(-1px);box-shadow:0 3px 8px rgba(199,91,57,.25)}
-
-/* gate 状态条增强 */
-.gate{border-radius:8px;transition:border-color .2s ease}
-
-/* 卡片入场动画 */
-@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-.hero .m{animation:fadeUp .35s ease backwards}
-.hero .m:nth-child(1){animation-delay:.05s}
-.hero .m:nth-child(2){animation-delay:.1s}
-.hero .m:nth-child(3){animation-delay:.15s}
-.hero .m:nth-child(4){animation-delay:.2s}
-
-/* compare 差值色 */
+/* ── compare diff ── */
 .delta-pos{color:var(--good);font-weight:600}
 .delta-neg{color:var(--bad);font-weight:600}
-.delta-zero{color:var(--ink2)}
+.delta-zero{color:var(--ink3)}
 
-/* ── agent-compare 矩阵卡片 ── */
-.arm-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:0 0 32px}
-.arm-card{padding:20px 18px;background:#fff;border-radius:10px;border:1px solid var(--rule);
-  box-shadow:0 1px 3px rgba(26,24,20,.04);position:relative;overflow:hidden;
-  transition:transform .18s cubic-bezier(.4,0,.2,1),box-shadow .18s ease}
-.arm-card:hover{transform:translateY(-3px);box-shadow:0 8px 20px rgba(26,24,20,.08)}
-.arm-card.best{border-color:var(--accent);box-shadow:0 2px 8px rgba(199,91,57,.1)}
-.arm-card.best::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--accent)}
-.arm-card .arm-name{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1px;
-  text-transform:uppercase;color:var(--ink2);margin-bottom:10px}
-.arm-card .arm-acc{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:32px;
-  letter-spacing:-1px;line-height:1;margin-bottom:8px}
-.arm-card.best .arm-acc{color:var(--accent)}
-.arm-card .arm-meta{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--ink2);line-height:1.6}
-.arm-card .arm-meta b{color:var(--ink);font-weight:500}
-.arm-card .arm-tag{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:8px;
-  padding:1px 5px;border-radius:3px;margin-top:6px;letter-spacing:.5px}
-.arm-card .arm-tag.kb{background:var(--teal);color:var(--ink)}
-.arm-card .arm-tag.nokb{background:var(--gray);color:var(--ink2)}
+/* ── misc ── */
+.loading{font-family:'Fraunces',serif;font-style:italic;color:var(--ink3);padding:40px 0}
+.kv{font-family:'JetBrains Mono',monospace;font-size:11px;line-height:1.9}
+.kv b{color:var(--ink)} .kv span{color:var(--ink2)}
+.badge{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:8px;
+  padding:1px 6px;border:1px solid var(--ink3);border-radius:8px;color:var(--ink3)}
+.note-sm{font-size:10px;color:var(--ink3)}
+.out-box{font-family:'JetBrains Mono',monospace;background:var(--paper);
+  border:1px solid var(--rule);padding:14px;font-size:10px;
+  white-space:pre-wrap;min-height:60px;color:var(--ink2);line-height:1.6;border-radius:3px;
+  max-height:400px;overflow-y:auto}
+.ctabs{display:flex;gap:0;border-bottom:2px solid var(--ink);margin-bottom:16px;overflow-x:auto}
+.ctab{padding:8px 14px;font-size:11px;font-weight:500;cursor:pointer;
+  border-bottom:3px solid transparent;margin-bottom:-2px;white-space:nowrap;
+  color:var(--ink2);transition:color .15s}
+.ctab:hover{color:var(--ink)}
+.ctab.active{color:var(--accent);border-bottom-color:var(--accent);font-weight:600}
 
-/* matrix 对比表 */
-.matrix-table{width:100%;border-collapse:collapse;font-size:12px;margin-top:8px}
-.matrix-table th{text-align:left;font-family:'JetBrains Mono',monospace;font-size:9px;
-  letter-spacing:1px;text-transform:uppercase;color:var(--ink2);padding:8px 10px;
-  border-bottom:1.5px solid var(--ink);font-weight:500}
-.matrix-table td{padding:9px 10px;border-bottom:1px solid var(--rule);
-  font-family:'JetBrains Mono',monospace}
-.matrix-table .arm-col{font-weight:600;color:var(--ink)}
+/* ── animations（克制，Tufte 讲义不弹跳）── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.main>*{animation:fadeUp .3s ease backwards}
+.main>*:nth-child(1){animation-delay:0s}
+.main>*:nth-child(2){animation-delay:.04s}
+.main>*:nth-child(3){animation-delay:.08s}
+.main>*:nth-child(4){animation-delay:.12s}
+.main>*:nth-child(5){animation-delay:.16s}
+
+/* scrollbar */
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-thumb{background:var(--rule2);border-radius:2px}
+::-webkit-scrollbar-track{background:transparent}
