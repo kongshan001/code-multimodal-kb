@@ -124,3 +124,32 @@ table.t{width:100%;border-collapse:collapse;font-size:12px}
 .delta-pos{color:var(--good);font-weight:600}
 .delta-neg{color:var(--bad);font-weight:600}
 .delta-zero{color:var(--ink2)}
+
+/* ── agent-compare 矩阵卡片 ── */
+.arm-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:0 0 32px}
+.arm-card{padding:20px 18px;background:#fff;border-radius:10px;border:1px solid var(--rule);
+  box-shadow:0 1px 3px rgba(26,24,20,.04);position:relative;overflow:hidden;
+  transition:transform .18s cubic-bezier(.4,0,.2,1),box-shadow .18s ease}
+.arm-card:hover{transform:translateY(-3px);box-shadow:0 8px 20px rgba(26,24,20,.08)}
+.arm-card.best{border-color:var(--accent);box-shadow:0 2px 8px rgba(199,91,57,.1)}
+.arm-card.best::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--accent)}
+.arm-card .arm-name{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1px;
+  text-transform:uppercase;color:var(--ink2);margin-bottom:10px}
+.arm-card .arm-acc{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:32px;
+  letter-spacing:-1px;line-height:1;margin-bottom:8px}
+.arm-card.best .arm-acc{color:var(--accent)}
+.arm-card .arm-meta{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--ink2);line-height:1.6}
+.arm-card .arm-meta b{color:var(--ink);font-weight:500}
+.arm-card .arm-tag{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:8px;
+  padding:1px 5px;border-radius:3px;margin-top:6px;letter-spacing:.5px}
+.arm-card .arm-tag.kb{background:var(--teal);color:var(--ink)}
+.arm-card .arm-tag.nokb{background:var(--gray);color:var(--ink2)}
+
+/* matrix 对比表 */
+.matrix-table{width:100%;border-collapse:collapse;font-size:12px;margin-top:8px}
+.matrix-table th{text-align:left;font-family:'JetBrains Mono',monospace;font-size:9px;
+  letter-spacing:1px;text-transform:uppercase;color:var(--ink2);padding:8px 10px;
+  border-bottom:1.5px solid var(--ink);font-weight:500}
+.matrix-table td{padding:9px 10px;border-bottom:1px solid var(--rule);
+  font-family:'JetBrains Mono',monospace}
+.matrix-table .arm-col{font-weight:600;color:var(--ink)}

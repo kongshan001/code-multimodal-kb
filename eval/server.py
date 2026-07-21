@@ -116,6 +116,28 @@ class Handler(BaseHTTPRequestHandler):
                 return self._send_json(404, {"error": "not found"})
             f = REPO / entry["path"]
             return self._send_json(200, json.loads(f.read_text(encoding='utf-8')))
+        if p == "/api/agent-compare":
+            ac_dir = REPO / "eval" / "reports" / "agent-compare"
+            runs = []
+            if ac_dir.is_dir():
+                for d in sorted(ac_dir.iterdir()):
+                    sf = d / "summary.json"
+                    if sf.is_file():
+                        try:
+                            s = json.loads(sf.read_text(encoding='utf-8'))
+                            runs.append({
+                                "run_id": d.name,
+                                "target": s.get("target", ""),
+                                "model": s.get("model", ""),
+                                "engine": s.get("engine", "sdk"),
+                                "n_questions": s.get("n_questions", 0),
+                                "smoke": s.get("smoke", False),
+                                "matrix": s.get("matrix", {}),
+                                "metric_keys": s.get("metric_keys", []),
+                            })
+                        except Exception:
+                            pass
+            return self._send_json(200, {"runs": runs})
         if p == "/api/health":
             return self._send_json(200, health())
         if p.startswith("/api/catalog"):

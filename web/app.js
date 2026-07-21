@@ -20,22 +20,54 @@ function fmt(n) { return typeof n === "number" ? (Math.abs(n) < 1 && n !== 0 ? n
 
 // ── views ──
 async function dashboard() {
-  const { reports } = await fetchJSON("/api/reports");
+  const [rep, ac] = await Promise.all([fetchJSON("/api/reports"), fetchJSON("/api/agent-compare")]);
+  const { reports } = rep;
   const code = latest(reports, "cmm.bm25") || latest(reports, "cmm.");
   const mem = latest(reports, "mempalace");
   const ab = latest(reports, "ab-value");
   const doc = latest(reports, "doc-quality");
-  const memHit = mem ? headline(mem) : "—";
+
+  // agent-compare 最新 run（非 smoke）
+  const acRuns = (ac.runs || []).filter(r => !r.smoke);
+  const lac = acRuns[acRuns.length - 1];
+  let acSection = "";
+  if (lac && lac.matrix) {
+    const arms = Object.keys(lac.matrix);
+    const bestAcc = Math.max(...arms.map(a => lac.matrix[a]?.accuracy || 0));
+    acSection = `
+      <div class="h"><span class="n">01</span><h2>最新 agent-compare</h2><span class="line"></span></div>
+      <p class="lede" style="font-size:12px;margin-bottom:16px">
+        ${lac.model || '?'} · engine=${lac.engine || 'sdk'} · ${lac.n_questions || '?'} 题 · ${lac.run_id || ''}</p>
+      <div class="arm-grid">
+        ${arms.map(a => {
+          const m = lac.matrix[a] || {};
+          const isBest = (m.accuracy || 0) === bestAcc && bestAcc > 0;
+          const hasKB = a.includes("kb") && !a.includes("no-kb");
+          return `<div class="arm-card ${isBest?'best':''}">
+            <div class="arm-name">${a}</div>
+            <div class="arm-acc">${m.accuracy != null ? m.accuracy : '—'}</div>
+            <div class="arm-meta">
+              tokens <b>${Math.round(m.mean_total_tokens || 0)}</b><br>
+              no_tool <b>${(m.no_tool_rate || 0).toFixed(2)}</b><br>
+              trunc <b>${(m.truncated_rate || 0).toFixed(2)}</b>
+            </div>
+            ${hasKB ? '<span class="arm-tag kb">cmm</span>' : '<span class="arm-tag nokb">grep</span>'}
+          </div>`;
+        }).join("")}
+      </div>`;
+  }
+
   view().innerHTML = `
     <h1>dashboard</h1>
     <p class="lede">知识库 / 记忆系统的体检台 — 不评感觉，评数字。</p>
     <section class="hero">
       <div class="m"><div class="lbl">代码检索 broad@5</div><div class="num">${fmt(headline(code))}</div><div class="ctx">${code ? code.subject : "—"}</div></div>
-      <div class="m"><div class="lbl">记忆召回 hit@5</div><div class="num">${fmt(memHit)}</div><div class="ctx">${mem ? mem.subject : "—"}</div></div>
+      <div class="m"><div class="lbl">记忆召回 hit@5</div><div class="num">${fmt(mem ? headline(mem) : "—")}</div><div class="ctx">${mem ? mem.subject : "—"}</div></div>
       <div class="m"><div class="lbl">A/B 压缩比</div><div class="num acc">${ab ? headline(ab) + "×" : "—"}</div><div class="ctx">${ab ? ab.subject : "—"}</div></div>
       <div class="m"><div class="lbl">答案 faithfulness</div><div class="num">${fmt(headline(doc))}<span class="badge">LLM-judged</span></div><div class="ctx">${doc ? doc.subject : "—"}</div></div>
     </section>
-    <div class="h"><span class="n">01</span><h2>归档 · 最近跑过</h2><span class="line"></span></div>
+    ${acSection}
+    <div class="h"><span class="n">${lac ? '02' : '01'}</span><h2>归档 · 最近跑过</h2><span class="line"></span></div>
     <table class="t"><tr><th>time</th><th>subject</th><th>variant</th><th>headline</th><th></th></tr>
     ${reports.slice().reverse().slice(0, 8).map(r => `<tr onclick="location.hash='#/report/${r.id}'">
       <td>${(r.readable_ts || r.ts || "").slice(5, 16)}</td>
