@@ -79,10 +79,13 @@ async function compare() {
     const a = await fetchJSON("/api/report/" + $("#cmpA").value);
     const b = await fetchJSON("/api/report/" + $("#cmpB").value);
     const keys = [...new Set([...Object.keys(a.aggregate || {}), ...Object.keys(b.aggregate || {})])].sort();
-    $("#cmpResult").innerHTML = `<table class="t"><tr><th>metric</th><th>left</th><th>right</th><th>delta</th></tr>
+    const aName = (a.subject || "").slice(0, 16), bName = (b.subject || "").slice(0, 16);
+    $("#cmpResult").innerHTML = `<table class="t"><tr><th>metric</th><th>${aName}</th><th>${bName}</th><th>delta</th></tr>
       ${keys.map(k => { const x = a.aggregate?.[k], y = b.aggregate?.[k];
-        const d = (typeof x === "number" && typeof y === "number") ? (y - x).toFixed(3) : "—";
-        return `<tr><td>${k}</td><td>${fmt(x)}</td><td>${fmt(y)}</td><td>${d}</td></tr>`; }).join("")}</table>`;
+        const d = (typeof x === "number" && typeof y === "number") ? (y - x).toFixed(3) : null;
+        const dn = parseFloat(d); const cls = d === null ? 'delta-zero' : dn > 0 ? 'delta-pos' : dn < 0 ? 'delta-neg' : 'delta-zero';
+        const sign = dn > 0 ? '+' : '';
+        return `<tr><td>${k}</td><td>${fmt(x)}</td><td>${fmt(y)}</td><td class="${cls}">${d === null ? '—' : sign + d}</td></tr>`; }).join("")}</table>`;
   };
 }
 
