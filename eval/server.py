@@ -168,6 +168,29 @@ class Handler(BaseHTTPRequestHandler):
             if sf.is_file():
                 return self._send_json(200, json.loads(sf.read_text(encoding='utf-8')))
             return self._send_json(404, {"error": "summary not found"})
+        if p.startswith("/api/agent-compare/") and "/episodes/" in p:
+            # /api/agent-compare/<run>/arms/<arm>/episodes/<qid>/session|thinking
+            segs = [urllib.parse.unquote(s) for s in p.split("/")]
+            # segs: ['', 'api', 'agent-compare', run_id, 'arms', arm, 'episodes', qid, type]
+            if len(segs) >= 9:
+                run_id, arm, qid, dtype = segs[3], segs[5], segs[7], segs[8]
+                ep_dir = REPO / "eval" / "reports" / "agent-compare" / run_id / "arms" / arm / "episodes" / qid
+                if dtype == "session":
+                    sf = ep_dir / "session.jsonl"
+                    if sf.is_file():
+                        lines = []
+                        for line in sf.read_text(encoding='utf-8').strip().split('\n'):
+                            if line.strip():
+                                try: lines.append(json.loads(line))
+                                except Exception: pass
+                        return self._send_json(200, {"session": lines})
+                    return self._send_json(404, {"error": "no session"})
+                if dtype == "thinking":
+                    tf = ep_dir / "thinking.md"
+                    if tf.is_file():
+                        return self._send_json(200, {"thinking": tf.read_text(encoding='utf-8')})
+                    return self._send_json(200, {"thinking": ""})
+            return self._send_json(404, {"error": "bad episode path"})
         if p == "/api/health":
             return self._send_json(200, health())
         if p.startswith("/api/catalog"):

@@ -128,6 +128,77 @@ select:focus,input:focus{border-color:var(--accent)}
 .ctab:hover{color:var(--ink)}
 .ctab.active{color:var(--accent);border-bottom-color:var(--accent);font-weight:600}
 
+/* ── target cards ── */
+.tgt-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin-top:20px}
+.tgt-card{display:block;padding:18px 20px;background:var(--paper);border:1px solid var(--rule);
+  border-radius:8px;text-decoration:none;color:var(--ink);transition:all .15s}
+.tgt-card:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 4px 12px rgba(26,24,20,.06)}
+.tgt-name{font-family:'Fraunces',serif;font-weight:600;font-size:18px;margin-bottom:4px}
+.tgt-lang{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--ink3);letter-spacing:.5px;margin-bottom:10px}
+.tgt-run{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--ink2)}
+.tgt-run b{color:var(--accent)}
+.tgt-date{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--ink3);margin-top:4px}
+
+/* ── breadcrumb ── */
+.crumb{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--ink3);margin-bottom:16px;letter-spacing:.5px}
+.crumb a{color:var(--accent)}
+.crumb .sep{margin:0 4px;color:var(--rule2)}
+.crumb span{color:var(--ink)}
+
+/* ── tabs ── */
+.tabs{display:flex;gap:0;border-bottom:1.5px solid var(--ink);margin-bottom:18px}
+.tab{padding:8px 16px;font-size:11px;font-weight:500;cursor:pointer;
+  border-bottom:2px solid transparent;margin-bottom:-1.5px;color:var(--ink2);transition:all .15s}
+.tab:hover{color:var(--ink)}
+.tab.active{color:var(--accent);border-bottom-color:var(--accent);font-weight:600}
+
+/* ── per-question table cells ── */
+.matrix .arm-h{text-align:center;font-size:8px}
+.tbl .cell-ok{cursor:pointer;text-align:center;font-weight:700;font-size:13px}
+.tbl .cell-ok:hover{background:var(--cream)!important}
+.tbl .cell-na{text-align:center;color:var(--ink3)}
+.tbl .row-diverge td{background:rgba(199,91,57,.04)!important}
+
+/* ── episode detail ── */
+.ep-hero{display:flex;align-items:center;gap:20px;padding:20px;background:var(--paper);
+  border:1px solid var(--rule);border-radius:8px;margin-bottom:12px}
+.ep-result{font-family:'Fraunces',serif;font-weight:800;font-size:22px;padding:6px 16px;border-radius:4px}
+.ep-ok{background:rgba(63,125,95,.1);color:var(--good)}
+.ep-fail{background:rgba(179,70,42,.1);color:var(--bad)}
+.ep-ans{flex:1;font-size:13px;color:var(--ink);line-height:1.5}
+.ep-meta{display:flex;flex-direction:column;gap:4px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--ink3);text-align:right}
+.ep-meta b{color:var(--ink)}
+.ep-gold{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--ink2);padding:10px 14px;
+  background:var(--gray);border-radius:4px;margin-bottom:20px}
+
+/* ── tool chain ── */
+.tool-chain{display:flex;align-items:center;gap:6px;flex-wrap:wrap;padding:14px 0}
+.tool-node{font-family:'JetBrains Mono',monospace;font-size:11px;padding:4px 10px;
+  background:var(--teal);color:var(--ink);border-radius:3px;font-weight:500}
+.tool-arrow{color:var(--ink3);font-size:14px}
+
+/* ── thinking ── */
+.think-box{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--ink2);
+  background:var(--paper);border:1px solid var(--rule);border-radius:4px;padding:14px;
+  white-space:pre-wrap;line-height:1.6;max-height:400px;overflow-y:auto}
+
+/* ── session conversation ── */
+.session{border:1px solid var(--rule);border-radius:6px;overflow:hidden}
+.turn{display:grid;grid-template-columns:70px 1fr;border-bottom:1px solid var(--rule)}
+.turn:last-child{border-bottom:none}
+.turn-role{font-family:'JetBrains Mono',monospace;font-size:9px;text-transform:uppercase;
+  letter-spacing:1px;padding:10px 8px;text-align:right;color:var(--ink3);border-right:1px solid var(--rule);
+  background:var(--cream)}
+.turn-user .turn-role{color:var(--accent)}
+.turn-asst .turn-role{color:var(--teal2)}
+.turn-body{padding:10px 14px;font-size:11px;line-height:1.5}
+.turn-text{color:var(--ink)}
+.turn-tool{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--teal2);margin:3px 0}
+.turn-result{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--ink3);
+  background:var(--cream);padding:4px 8px;border-radius:3px;margin:3px 0;line-height:1.4}
+.turn-think{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--ink3);
+  font-style:italic;margin:3px 0}
+
 /* ── animations（克制，Tufte 讲义不弹跳）── */
 @keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 .main>*{animation:fadeUp .3s ease backwards}
