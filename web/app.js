@@ -276,19 +276,27 @@ async function compare() {
 async function configView() {
   const c = await fetchJSON("/api/config");
   const presets = [
-    {name:"GLM 4.7", base_url:"https://open.bigmodel.cn/api/anthropic", model:"glm-4.7"},
-    {name:"GLM 5.1", base_url:"https://open.bigmodel.cn/api/anthropic", model:"glm-5.1"},
-    {name:"MiniMax M3", base_url:"https://api.minimaxi.com/anthropic", model:"MiniMax-M3[1m]"},
-    {name:"Claude", base_url:"https://api.anthropic.com", model:"claude-sonnet-4-6"},
+    {name:"GLM 4.7",   base_url:"https://open.bigmodel.cn/api/anthropic", model:"glm-4.7",        key_hint:"走 config.toml 或填 BigModel key"},
+    {name:"GLM 5.1",   base_url:"https://open.bigmodel.cn/api/anthropic", model:"glm-5.1",        key_hint:"同上"},
+    {name:"MiniMax M3", base_url:"https://api.minimaxi.com/anthropic",     model:"MiniMax-M3[1m]",  key_hint:"填 codingplan key (sk-cp-...)"},
+    {name:"Claude",    base_url:"https://api.anthropic.com",              model:"claude-sonnet-4-6", key_hint:"填 Anthropic API key (sk-ant-...)"},
   ];
   render(`<h1>config <em>· 模型配置</em></h1>
     <p class="lede">配置 LLM 端点。改完点"保存"即生效（写入 bench.yaml + 清缓存）。<br>
-    <span class="note-sm">所有 Anthropic 兼容端点均可。当前: ${esc(c.api_key_masked)} · ${esc(c.base_url)} · ${esc(c.model)}</span></p>
-
-    <div class="sec-h"><span class="n">A</span><h2>快捷预设</h2><span class="line"></span></div>
-    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px">
-      ${presets.map(p => `<button class="btn" onclick="cfgPreset('${p.base_url}','${p.model}')">${p.name}</button>`).join("")}
-    </div>
+    <span class="note-sm">所有 Anthropic 兼容端点均可。当前: ${esc(c.api_key_masked)} · ${esc(c.base_url)} · ${esc(c.model)}</span></p>`);
+  window._cfgPresets = presets;
+  $("#app .main").innerHTML += `
+    <div class="sec-h"><span class="n">A</span><h2>模型预设</h2><span class="line"></span></div>
+    <table class="tbl" style="margin-bottom:20px">
+      <tr><th>模型</th><th>base_url</th><th>model</th><th>api_key 说明</th><th></th></tr>
+      ${presets.map((p,i) => `<tr>
+        <td class="sb" style="font-size:11px">${p.name}</td>
+        <td class="mono" style="font-size:9px">${p.base_url}</td>
+        <td class="mono" style="font-size:9px">${p.model}</td>
+        <td class="note-sm">${p.key_hint}</td>
+        <td><button class="btn" style="font-size:9px;padding:3px 8px" onclick="cfgPreset(${i})">选用</button></td>
+      </tr>`).join("")}
+    </table>
 
     <div class="sec-h"><span class="n">B</span><h2>手动配置</h2><span class="line"></span></div>
     <div style="max-width:560px">
@@ -309,22 +317,28 @@ async function configView() {
     </div>
 
     <div class="sec-h"><span class="n">C</span><h2>跑 benchmark</h2><span class="line"></span></div>
+    <p class="note-sm" style="margin-bottom:14px">目标工程通过 bench skills 对接（终端 <code class="mono">bench dock</code> 或 Claude 对话）。这里只选已对接的 target + 配置。</p>
     <div style="max-width:560px">
       <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:14px">
-        <label class="mono" style="font-size:9px;color:var(--ink3)">target</label>
-        <select id="runTgt" class="mono" style="font-size:11px"></select>
-        <label class="mono" style="font-size:9px;color:var(--ink3);margin-left:8px">题数</label>
+        <label class="mono" style="font-size:9px;color:var(--ink3)">题数</label>
         <input id="runSubset" type="number" placeholder="全部" style="width:60px;font-size:11px" class="mono"/>
         <label class="mono" style="font-size:9px;color:var(--ink3);margin-left:8px">engine</label>
         <select id="runEngine" class="mono" style="font-size:11px"><option value="sdk">sdk</option><option value="raw">raw</option></select>
       </div>
       <button class="btn fill" onclick="cfgRun()">跑 agent-compare ▸</button>
+      <span class="note-sm" style="margin-left:8px">（target 从 URL 或默认 godot-core 取；新建 target 请用 bench skills）</span>
       <span id="runMsg" class="note-sm" style="margin-left:12px"></span>
       <div id="runOut" class="out-box" style="margin-top:12px;display:none"></div>
     </div>`);
 }
 
-window.cfgPreset = (url, model) => { $("#cfgUrl").value = url; $("#cfgModel").value = model; };
+window._cfgPresets = null;
+window.cfgPreset = (i) => {
+  const p = window._cfgPresets?.[i]; if (!p) return;
+  $("#cfgUrl").value = p.base_url;
+  $("#cfgModel").value = p.model;
+  $("#cfgMsg").innerHTML = `<span class="note-sm">已填入 ${p.name}，点"保存"生效</span>`;
+};
 window.cfgSave = async () => {
   const body = { base_url: $("#cfgUrl").value, model: $("#cfgModel").value };
   if ($("#cfgKey").value) body.api_key = $("#cfgKey").value;
@@ -337,9 +351,9 @@ window.cfgSave = async () => {
   } catch(e) { $("#cfgMsg").innerHTML = `<span style="color:var(--bad)">✗ ${e}</span>`; }
 };
 window.cfgRun = async () => {
-  const tgt = $("#runTgt")?.value || "godot-core";
   const subset = $("#runSubset")?.value;
   const engine = $("#runEngine")?.value || "sdk";
+  const tgt = "godot-core"; // 默认 target；新建 target 走 bench skills
   $("#runMsg").innerHTML = `<span style="color:var(--warn)">⏳ 跑中…（${tgt} · ${subset||'全'}题 · ${engine}，可能要几分钟～半小时）</span>`;
   $("#runOut").style.display = "block";
   $("#runOut").textContent = "running…";
@@ -353,11 +367,6 @@ window.cfgRun = async () => {
     $("#runOut").innerHTML = (o.stdout||"").slice(-2000) + (o.stderr ? "\n\n⚠ "+o.stderr.slice(-300) : "");
   } catch(e) { $("#runMsg").innerHTML = `<span style="color:var(--bad)">✗ ${e}</span>`; }
 };
-// 填充 target 下拉
-fetchJSON("/api/targets").then(d => {
-  const sel = $("#runTgt");
-  if (sel) sel.innerHTML = (d.targets||[]).map(t => `<option value="${t.id}">${t.id}</option>`).join("");
-}).catch(()=>{});
 
 // ── router ──
 async function router() {
