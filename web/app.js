@@ -353,19 +353,54 @@ window.cfgSave = async () => {
 window.cfgRun = async () => {
   const subset = $("#runSubset")?.value;
   const engine = $("#runEngine")?.value || "sdk";
-  const tgt = "godot-core"; // 默认 target；新建 target 走 bench skills
-  $("#runMsg").innerHTML = `<span style="color:var(--warn)">⏳ 跑中…（${tgt} · ${subset||'全'}题 · ${engine}，可能要几分钟～半小时）</span>`;
+  const tgt = "godot-core";
+  const btn = event?.target; if (btn) { btn.disabled = true; btn.textContent = "跑中…"; }
+  $("#runMsg").innerHTML = `<span style="color:var(--warn)">启动中…</span>`;
   $("#runOut").style.display = "block";
-  $("#runOut").textContent = "running…";
+  $("#runOut").textContent = "启动 benchmark…";
   try {
     const payload = {subject:"agent-compare", target:tgt, engine};
     if (subset) payload.subset = parseInt(subset);
     const r = await fetch("/api/run", {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(payload)});
     const o = await r.json();
-    const ok = o.rc === 0;
-    $("#runMsg").innerHTML = `<span style="color:${ok?'var(--good)':'var(--bad)'}">${ok?'✓':'✗'} exit ${o.rc}</span>`;
-    $("#runOut").innerHTML = (o.stdout||"").slice(-2000) + (o.stderr ? "\n\n⚠ "+o.stderr.slice(-300) : "");
-  } catch(e) { $("#runMsg").innerHTML = `<span style="color:var(--bad)">✗ ${e}</span>`; }
+    if (!o.async) { // 非 agent-compare（同步返回）
+      const ok = o.rc === 0;
+      $("#runMsg").innerHTML = `<span style="color:${ok?'var(--good)':'var(--bad)'}">${ok?'✓':'✗'} exit ${o.rc}</span>`;
+      $("#runOut").textContent = (o.stdout||"").slice(-2000);
+      if (btn) { btn.disabled = false; btn.textContent = "跑 agent-compare ▸"; }
+      return;
+    }
+    // 异步轮询
+    const jobId = o.job_id;
+    let lastCount = 0;
+    const poll = async () => {
+      try {
+        const s = await fetchJSON(`/api/run-status/${jobId}`);
+        if (s.lines.length > 0 && s.total_lines > lastCount) {
+          lastCount = s.total_lines;
+          $("#runOut").textContent = s.lines.join("\n");
+        }
+        if (s.done) {
+          const ok = s.rc === 0;
+          if (ok && s.run_id) {
+            $("#runMsg").innerHTML = `<span style="color:var(--good)">✓ 完成（exit 0）</span> · <a href="#/run/${s.run_id}" style="color:var(--accent)">查看结果 ▸</a>`;
+          } else {
+            $("#runMsg").innerHTML = `<span style="color:var(--bad)">✗ exit ${s.rc}</span>`;
+          }
+          if (btn) { btn.disabled = false; btn.textContent = "跑 agent-compare ▸"; }
+          return; // 停止轮询
+        }
+        // 还在跑，更新进度提示
+        const lastLine = s.lines[s.lines.length - 1] || "";
+        $("#runMsg").innerHTML = `<span style="color:var(--warn)">⏳ ${lastLine.slice(0,50)}…</span>`;
+      } catch(e) { /* 轮询失败，继续 */ }
+      setTimeout(poll, 3000); // 3 秒后再查
+    };
+    poll();
+  } catch(e) {
+    $("#runMsg").innerHTML = `<span style="color:var(--bad)">✗ ${e}</span>`;
+    if (btn) { btn.disabled = false; btn.textContent = "跑 agent-compare ▸"; }
+  }
 };
 
 // ── router ──

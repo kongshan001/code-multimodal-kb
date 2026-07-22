@@ -42,6 +42,10 @@ ARCHIVE = REPO / "eval" / "reports" / "archive"
 WEB = REPO / "web"
 CRED_CONFIG = Path.home() / ".cc-connect" / "config.toml"
 
+# 后台 benchmark 任务状态（job_id → status dict）
+_jobs: dict[str, dict] = {}
+_job_counter = [0]
+
 MIME = {".html": "text/html; charset=utf-8", ".css": "text/css; charset=utf-8",
         ".js": "application/javascript; charset=utf-8", ".png": "image/png",
         ".svg": "image/svg+xml", ".json": "application/json"}
@@ -191,6 +195,18 @@ class Handler(BaseHTTPRequestHandler):
                         return self._send_json(200, {"thinking": tf.read_text(encoding='utf-8')})
                     return self._send_json(200, {"thinking": ""})
             return self._send_json(404, {"error": "bad episode path"})
+        if p.startswith("/api/run-status/"):
+            job_id = p[len("/api/run-status/"):]
+            j = _jobs.get(job_id)
+            if not j:
+                return self._send_json(404, {"error": "job not found"})
+            # 只返回最后 15 行进度
+            return self._send_json(200, {
+                "running": j["running"], "done": j["done"], "rc": j["rc"],
+                "run_id": j.get("run_id"),
+                "lines": j["lines"][-15:],
+                "total_lines": len(j["lines"]),
+            })
         if p == "/api/config":
             c = config.llm()
             key = c.get("api_key") or os.environ.get("AB_API_KEY") or ""
@@ -276,12 +292,41 @@ class Handler(BaseHTTPRequestHandler):
                     args += ["--method", body["method"]]
                 if body.get("target"):
                     args += ["--target", body["target"]]
-                # agent-compare 额外参数
                 if subj == "agent-compare":
                     if body.get("subset"): args += ["--subset", str(body["subset"])]
                     if body.get("engine"): args += ["--engine", body["engine"]]
-                out = run_text(["python", "-m", "eval.cli", *args],
-                               timeout=1800 if subj == "agent-compare" else 600, cwd=str(REPO))
+                timeout = 1800 if subj == "agent-compare" else 600
+                # agent-compare 走后台线程 + 前端轮询；其它同步返回
+                if subj == "agent-compare":
+                    _job_counter[0] += 1
+                    job_id = f"job_{_job_counter[0]}"
+                    _jobs[job_id] = {"running": True, "done": False, "rc": None, "stdout": "", "stderr": "", "lines": []}
+                    def _bg_run():
+                        try:
+                            import subprocess as _sp
+                            proc = _sp.Popen(["python", "-m", "eval.cli", *args], cwd=str(REPO),
+                                             stdout=_sp.PIPE, stderr=_sp.STDOUT, text=True, encoding="utf-8", errors="replace")
+                            for line in proc.stdout:
+                                line = line.rstrip()
+                                _jobs[job_id]["lines"].append(line)
+                                if len(_jobs[job_id]["lines"]) > 200:
+                                    _jobs[job_id]["lines"] = _jobs[job_id]["lines"][-200:]
+                            proc.wait(timeout=timeout)
+                            _jobs[job_id]["rc"] = proc.returncode
+                        except Exception as e:
+                            _jobs[job_id]["rc"] = -1
+                            _jobs[job_id]["stderr"] = str(e)
+                        finally:
+                            _jobs[job_id]["running"] = False
+                            _jobs[job_id]["done"] = True
+                            # 从 stdout 末尾提取 run_id
+                            all_out = "\n".join(_jobs[job_id]["lines"])
+                            import re as _re
+                            m = _re.search(r"agent-compare/([0-9TZ]+-\S+)", all_out)
+                            if m: _jobs[job_id]["run_id"] = m.group(1)
+                    threading.Thread(target=_bg_run, daemon=True).start()
+                    return self._send_json(200, {"job_id": job_id, "async": True})
+                out = run_text(["python", "-m", "eval.cli", *args], timeout=timeout, cwd=str(REPO))
                 return self._send_json(200, {"rc": out.returncode, "stdout": out.stdout[-3000:], "stderr": out.stderr[-500:]})
             if u.path == "/api/goldgen":
                 seeds = body.get("seeds", [])
