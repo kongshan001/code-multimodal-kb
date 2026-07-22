@@ -329,7 +329,7 @@ async function configView() {
       <span class="note-sm" style="margin-left:8px">（target 从 URL 或默认 godot-core 取；新建 target 请用 bench skills）</span>
       <span id="runMsg" class="note-sm" style="margin-left:12px"></span>
       <div id="runOut" class="out-box" style="margin-top:12px;display:none"></div>
-    </div>`);
+    </div>`;
 }
 
 window._cfgPresets = null;
