@@ -14,7 +14,7 @@ function bar(val, max, isBest) {
 function render(html) {
   $("#app").innerHTML = `<div class="topbar">
     <div class="brand">measurement <em>lab</em></div><span class="tag">benchmark explorer</span>
-    <nav><a href="#/targets">Targets</a><a href="#/compare">Compare</a></nav>
+    <nav><a href="#/targets">Targets</a><a href="#/compare">Compare</a><a href="#/config">Config</a></nav>
   </div><div class="main">${html}</div>`;
 }
 
@@ -270,12 +270,65 @@ async function compare() {
   };
 }
 
+// ═══════════════════════════════════════════════════
+// CONFIG — 模型配置面板（base_url / api_key / model）
+// ═══════════════════════════════════════════════════
+async function configView() {
+  const c = await fetchJSON("/api/config");
+  const presets = [
+    {name:"GLM 4.7", base_url:"https://open.bigmodel.cn/api/anthropic", model:"glm-4.7"},
+    {name:"GLM 5.1", base_url:"https://open.bigmodel.cn/api/anthropic", model:"glm-5.1"},
+    {name:"MiniMax M3", base_url:"https://api.minimaxi.com/anthropic", model:"MiniMax-M3[1m]"},
+    {name:"Claude", base_url:"https://api.anthropic.com", model:"claude-sonnet-4-6"},
+  ];
+  render(`<h1>config <em>· 模型配置</em></h1>
+    <p class="lede">配置 LLM 端点。改完点"保存"即生效（写入 bench.yaml + 清缓存）。<br>
+    <span class="note-sm">所有 Anthropic 兼容端点均可。当前: ${esc(c.api_key_masked)} · ${esc(c.base_url)} · ${esc(c.model)}</span></p>
+
+    <div class="sec-h"><span class="n">A</span><h2>快捷预设</h2><span class="line"></span></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px">
+      ${presets.map(p => `<button class="btn" onclick="cfgPreset('${p.base_url}','${p.model}')">${p.name}</button>`).join("")}
+    </div>
+
+    <div class="sec-h"><span class="n">B</span><h2>手动配置</h2><span class="line"></span></div>
+    <div style="max-width:560px">
+      <div style="margin-bottom:14px">
+        <label class="mono" style="font-size:9px;color:var(--ink3);letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:4px">base_url</label>
+        <input id="cfgUrl" type="text" value="${esc(c.base_url)}" style="width:100%;font-size:12px" class="mono"/>
+      </div>
+      <div style="margin-bottom:14px">
+        <label class="mono" style="font-size:9px;color:var(--ink3);letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:4px">model</label>
+        <input id="cfgModel" type="text" value="${esc(c.model)}" style="width:100%;font-size:12px" class="mono"/>
+      </div>
+      <div style="margin-bottom:14px">
+        <label class="mono" style="font-size:9px;color:var(--ink3);letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:4px">api_key <span class="note-sm">（当前: ${esc(c.api_key_masked)}；留空不改）</span></label>
+        <input id="cfgKey" type="password" placeholder="输入新 key 或留空保持不变" style="width:100%;font-size:12px" class="mono"/>
+      </div>
+      <button class="btn fill" onclick="cfgSave()" style="margin-top:4px">保存 ▸</button>
+      <span id="cfgMsg" class="note-sm" style="margin-left:12px"></span>
+    </div>`);
+}
+
+window.cfgPreset = (url, model) => { $("#cfgUrl").value = url; $("#cfgModel").value = model; };
+window.cfgSave = async () => {
+  const body = { base_url: $("#cfgUrl").value, model: $("#cfgModel").value };
+  if ($("#cfgKey").value) body.api_key = $("#cfgKey").value;
+  $("#cfgMsg").textContent = "保存中…";
+  try {
+    const r = await fetch("/api/config", {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(body)});
+    const o = await r.json();
+    if (o.ok) { $("#cfgMsg").innerHTML = `<span style="color:var(--good)">✓ 已保存（${o.model}）</span>`; }
+    else { $("#cfgMsg").innerHTML = `<span style="color:var(--bad)">✗ ${o.error||'保存失败'}</span>`; }
+  } catch(e) { $("#cfgMsg").innerHTML = `<span style="color:var(--bad)">✗ ${e}</span>`; }
+};
+
 // ── router ──
 async function router() {
   const h = location.hash.slice(2) || "targets";
   const parts = h.split("/");
   try {
     if (parts[0] === "compare") await compare();
+    else if (parts[0] === "config") await configView();
     else if (parts[0] === "target" && parts[1]) await targetDetail(decodeURIComponent(parts[1]));
     else if (parts[0] === "run" && parts[1] && parts[2] && parts[3]) await episodeDetail(parts[1], parts[2], parts[3]);
     else if (parts[0] === "run" && parts[1]) await runDetail(parts[1]);

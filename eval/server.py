@@ -191,6 +191,17 @@ class Handler(BaseHTTPRequestHandler):
                         return self._send_json(200, {"thinking": tf.read_text(encoding='utf-8')})
                     return self._send_json(200, {"thinking": ""})
             return self._send_json(404, {"error": "bad episode path"})
+        if p == "/api/config":
+            c = config.llm()
+            key = c.get("api_key") or os.environ.get("AB_API_KEY") or ""
+            masked = (key[:8] + "…" + key[-4:]) if len(key) > 12 else (key or "未设置")
+            return self._send_json(200, {
+                "base_url": c.get("base_url", ""),
+                "model": c.get("model", ""),
+                "api_key_masked": masked,
+                "has_api_key": bool(key),
+                "price_models": list(c.get("prices", {}).keys()),
+            })
         if p == "/api/health":
             return self._send_json(200, health())
         if p.startswith("/api/catalog"):
@@ -243,6 +254,21 @@ class Handler(BaseHTTPRequestHandler):
         length = int(self.headers.get("Content-Length", 0))
         body = json.loads(self.rfile.read(length)) if length else {}
         try:
+            if u.path == "/api/config":
+                # POST /api/config → 更新 bench.yaml 的 llm 段（base_url / api_key / model）+ 清缓存
+                import yaml as _yaml
+                cfg_path = REPO / "bench.yaml"
+                data = {}
+                if cfg_path.is_file():
+                    data = _yaml.safe_load(cfg_path.read_text(encoding="utf-8")) or {}
+                data.setdefault("llm", {})
+                if body.get("base_url"): data["llm"]["base_url"] = body["base_url"]
+                if body.get("model"): data["llm"]["model"] = body["model"]
+                if body.get("api_key"): data["llm"]["api_key"] = body["api_key"]
+                cfg_path.write_text(_yaml.dump(data, allow_unicode=True, default_flow_style=False, sort_keys=False),
+                                    encoding="utf-8")
+                config.reload()
+                return self._send_json(200, {"ok": True, **config.llm()})
             if u.path == "/api/run":
                 subj = body.get("subject", "code")
                 args = ["run", subj]

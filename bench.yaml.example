@@ -3,28 +3,61 @@
 # 用法：复制为 bench.yaml 再改（bench.yaml 已 gitignore，不入库，各自本地改不冲突）：
 #   cp bench.yaml.example bench.yaml
 #
-# 缺失 bench.yaml 时用 eval/config.py 内置 _DEFAULTS（与本模板一致）兜底，bench 照跑（但无 api_key）。
+# 缺失 bench.yaml 时用 eval/config.py 内装 _DEFAULTS 兜底，bench 照跑（但无 api_key）。
 # 本文件就是本地唯一配置：api_key 也填这里（bench.yaml 不入库，不会泄密）。
 # 配置加载：_DEFAULTS → bench.yaml（深合并覆盖）。
+# 也可从前端配置面板修改（浏览器打开 bench web → Config 页）。
+
+# ═══════════════════════════════════════════════════════
+# LLM 模型配置（核心——切模型只改这三行）
+# ═══════════════════════════════════════════════════════
+#
+# 支持所有 **Anthropic 兼容端点**的模型。已验证：
+#
+# ┌─────────────┬───────────────────────────────────────────┬──────────────────┐
+# │ 模型        │ base_url                                  │ model            │
+# ├─────────────┼───────────────────────────────────────────┼──────────────────┤
+# │ GLM 4.7     │ https://open.bigmodel.cn/api/anthropic    │ glm-4.7          │
+# │ GLM 5.1     │ https://open.bigmodel.cn/api/anthropic    │ glm-5.1          │
+# │ GLM 5.2     │ https://open.bigmodel.cn/api/anthropic    │ glm-5.2          │
+# │ MiniMax M3  │ https://api.minimaxi.com/anthropic        │ MiniMax-M3[1m]   │
+# │ Claude      │ https://api.anthropic.com（或自建代理）    │ claude-sonnet-4  │
+# └─────────────┴───────────────────────────────────────────┴──────────────────┘
+#
+# api_key 优先级：bench.yaml(llm.api_key) > env AB_API_KEY > ~/.cc-connect/config.toml
+# GLM 的 key 可不填（走 config.toml 兜底）；MiniMax 等其它厂商须在 bench.yaml 填 key。
 
 llm:
-  api_key: your-glm-api-key-here     # GLM api key（open.bigmodel.cn）；或走 env AB_API_KEY / ~/.cc-connect/config.toml
-  base_url: https://open.bigmodel.cn/api/anthropic    # agent + judge 共用（anthropic 兼容端点，一把 key/一个端点）
-  model: glm-5.1                                       # 统一模型（agent + judge 都用这个）
+  api_key: your-api-key-here        # 你的 API key（bench.yaml 不入库，安全）；GLM 可删此行走 config.toml
+  base_url: https://open.bigmodel.cn/api/anthropic    # Anthropic 兼容端点（换模型改这里）
+  model: glm-4.7                                       # 模型 id（换模型改这里）
   prices:                                              # $/Mtoken（占位，勿当真实成本；未知模型 → cost null）
     glm-5.1: {in: 0.70, out: 0.70}
     glm-5.2: {in: 0.70, out: 0.70}
+    glm-4.7: {in: 0.70, out: 0.70}
+    MiniMax-M3[1m]: {in: 1.10, out: 1.10}
 
+# ═══════════════════════════════════════════════════════
+# Agent loop 参数
+# ═══════════════════════════════════════════════════════
 agent:
-  max_steps: 30          # run-until-answer backstop（防死循环；正常题自然收敛远在此之前）
-  skill_max_steps: 30    # 同上（skills 臂不再单独收紧）
+  max_steps: 30          # run-until-answer 的 backstop 默认（防死循环；正常题自然收敛远在此之前）
+  skill_max_steps: 30    # skills 臂 backstop（SOP 注入略费步，但通常仍 1-3 轮收敛）
+  max_steps_by_arm: {no-kb: 12}   # 分臂 backstop：易空转的臂调小（no-kb=grep 弱，卡死早停省 token）；其它臂走默认
+  parallel: 4                     # 同题多臂并发线程数（加速；0/1=串行；限流时调小）
   tool_result_cap: 2000  # tool_result 序列化截断（防 session.jsonl 膨胀）
   read_cap: 2000         # read_file 截断 chars（两臂公平）
 
+# ═══════════════════════════════════════════════════════
+# 前端服务
+# ═══════════════════════════════════════════════════════
 server:
   port: 8765             # bench web 前端端口
 
-timeouts:                # 子进程超时默认（秒）
+# ═══════════════════════════════════════════════════════
+# 子进程超时（秒）
+# ═══════════════════════════════════════════════════════
+timeouts:
   probe: 10
   tool: 30
   long: 120

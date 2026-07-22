@@ -66,6 +66,12 @@ def load() -> dict:
     return cfg
 
 
+def reload():
+    """清缓存——改完 bench.yaml 后调用，下次 load() 重读文件。"""
+    global _cached
+    _cached = None
+
+
 def llm() -> dict:
     return load()["llm"]
 
