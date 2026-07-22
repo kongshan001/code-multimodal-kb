@@ -272,14 +272,17 @@ class Handler(BaseHTTPRequestHandler):
             if u.path == "/api/run":
                 subj = body.get("subject", "code")
                 args = ["run", subj]
-                # 只有 code 接受 --method；其它 subject 的 argparse 不认
                 if subj == "code" and body.get("method"):
                     args += ["--method", body["method"]]
-                # --target 各 subject 接受，但默认值不同
                 if body.get("target"):
                     args += ["--target", body["target"]]
-                out = run_text(["python", "-m", "eval.cli", *args], timeout=600, cwd=str(REPO))
-                return self._send_json(200, {"rc": out.returncode, "stdout": out.stdout[-2000:], "stderr": out.stderr[-500:]})
+                # agent-compare 额外参数
+                if subj == "agent-compare":
+                    if body.get("subset"): args += ["--subset", str(body["subset"])]
+                    if body.get("engine"): args += ["--engine", body["engine"]]
+                out = run_text(["python", "-m", "eval.cli", *args],
+                               timeout=1800 if subj == "agent-compare" else 600, cwd=str(REPO))
+                return self._send_json(200, {"rc": out.returncode, "stdout": out.stdout[-3000:], "stderr": out.stderr[-500:]})
             if u.path == "/api/goldgen":
                 seeds = body.get("seeds", [])
                 args = ["goldgen", *seeds, "--target", body.get("target", "gen")]

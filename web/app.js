@@ -306,6 +306,21 @@ async function configView() {
       </div>
       <button class="btn fill" onclick="cfgSave()" style="margin-top:4px">保存 ▸</button>
       <span id="cfgMsg" class="note-sm" style="margin-left:12px"></span>
+    </div>
+
+    <div class="sec-h"><span class="n">C</span><h2>跑 benchmark</h2><span class="line"></span></div>
+    <div style="max-width:560px">
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:14px">
+        <label class="mono" style="font-size:9px;color:var(--ink3)">target</label>
+        <select id="runTgt" class="mono" style="font-size:11px"></select>
+        <label class="mono" style="font-size:9px;color:var(--ink3);margin-left:8px">题数</label>
+        <input id="runSubset" type="number" placeholder="全部" style="width:60px;font-size:11px" class="mono"/>
+        <label class="mono" style="font-size:9px;color:var(--ink3);margin-left:8px">engine</label>
+        <select id="runEngine" class="mono" style="font-size:11px"><option value="sdk">sdk</option><option value="raw">raw</option></select>
+      </div>
+      <button class="btn fill" onclick="cfgRun()">跑 agent-compare ▸</button>
+      <span id="runMsg" class="note-sm" style="margin-left:12px"></span>
+      <div id="runOut" class="out-box" style="margin-top:12px;display:none"></div>
     </div>`);
 }
 
@@ -321,6 +336,28 @@ window.cfgSave = async () => {
     else { $("#cfgMsg").innerHTML = `<span style="color:var(--bad)">✗ ${o.error||'保存失败'}</span>`; }
   } catch(e) { $("#cfgMsg").innerHTML = `<span style="color:var(--bad)">✗ ${e}</span>`; }
 };
+window.cfgRun = async () => {
+  const tgt = $("#runTgt")?.value || "godot-core";
+  const subset = $("#runSubset")?.value;
+  const engine = $("#runEngine")?.value || "sdk";
+  $("#runMsg").innerHTML = `<span style="color:var(--warn)">⏳ 跑中…（${tgt} · ${subset||'全'}题 · ${engine}，可能要几分钟～半小时）</span>`;
+  $("#runOut").style.display = "block";
+  $("#runOut").textContent = "running…";
+  try {
+    const payload = {subject:"agent-compare", target:tgt, engine};
+    if (subset) payload.subset = parseInt(subset);
+    const r = await fetch("/api/run", {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(payload)});
+    const o = await r.json();
+    const ok = o.rc === 0;
+    $("#runMsg").innerHTML = `<span style="color:${ok?'var(--good)':'var(--bad)'}">${ok?'✓':'✗'} exit ${o.rc}</span>`;
+    $("#runOut").innerHTML = (o.stdout||"").slice(-2000) + (o.stderr ? "\n\n⚠ "+o.stderr.slice(-300) : "");
+  } catch(e) { $("#runMsg").innerHTML = `<span style="color:var(--bad)">✗ ${e}</span>`; }
+};
+// 填充 target 下拉
+fetchJSON("/api/targets").then(d => {
+  const sel = $("#runTgt");
+  if (sel) sel.innerHTML = (d.targets||[]).map(t => `<option value="${t.id}">${t.id}</option>`).join("");
+}).catch(()=>{});
 
 // ── router ──
 async function router() {
