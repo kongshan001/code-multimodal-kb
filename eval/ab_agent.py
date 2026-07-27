@@ -26,6 +26,15 @@ BASE_SYS_PROMPT = (
     "**收敛纪律**：一旦工具返回了相关符号就立刻用符号名作答，不要反复查。查到即答。"
 )
 
+# no-kb 臂专属约束。工具层已隔离 cmm/codegraph/graphify（arm_mcp_server 只注册该臂工具），
+# 但 query 诱导（engineer-demo-memory 题目问「cmm 的 search_code 接口」、godot-cross notes
+# 写「→ cmm 代码定位」）下，模型可能在回答/thinking 里幻觉「用了 KB」。此句让 prompt 与
+# no-kb「无 KB」的既有设计语义一致——补漏，非引入新语义。
+_NO_KB_GUARD = (
+    "\n**工具边界**：你没有知识库/语义检索工具（如 cmm、codegraph、graphify 等），"
+    "只能用提供的工具。不要在回答中假装或提及使用任何外部知识库。"
+)
+
 
 def _system_prompt(arm: str, target: dict | None = None) -> str:
     """基底 prompt + 目标信息 + 注入的 skill SOP 文本。"""
@@ -36,6 +45,8 @@ def _system_prompt(arm: str, target: dict | None = None) -> str:
         ctx = f"（目标代码库：{lang or '未知'}。{notes}）" if (lang or notes) else ""
         if ctx:
             parts.append("\n" + ctx)
+    if arm == "no-kb":
+        parts.append(_NO_KB_GUARD)
     for s in ab_tools.arm_skills(arm):
         content = ab_tools.load_skill_content(s)
         if content:
