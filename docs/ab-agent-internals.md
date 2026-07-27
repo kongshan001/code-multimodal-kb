@@ -1,7 +1,8 @@
 # ab_agent 内部机制（agent loop / 提示词 / 轮次 / token 计算）
 
 > 供外部人员评审 `eval/ab_agent.py` 的 agent loop 合理性。源码为准（本文引用行号对应 `eval/ab_agent.py`
-> + `eval/ab_tools.py` 当前版本）。写于 2026-07-18。
+> + `eval/ab_tools.py` 当前版本）。写于 2026-07-18；2026-07-27 更新 §2（加 `_NO_KB_GUARD`，源码 +11 行，
+> §3 起行号较 2026-07-18 版偏移 +11，未全量同步，以源码为准）。
 >
 > 一句话：`ab_agent` 给一道题跑一个 **带工具的 agent**（不是单次问答），测它能不能用 grep/cmm/读文件
 > 找到 gold 符号。有两个等价 engine（`sdk` 默认 / `raw` 对照），同策略、同 trace 契约。
@@ -44,26 +45,39 @@
 
 ---
 
-## 2. 提示词怎么拼（`_system_prompt`，:30-43）
+## 2. 提示词怎么拼（`_system_prompt`，:39-54）
 
-模型每轮的 **system 消息**由 `_system_prompt(arm, target)` 拼，三段：
+模型每轮的 **system 消息**由 `_system_prompt(arm, target)` 拼，按臂勾选四类片段：
 
 ```python
-parts = [BASE_SYS_PROMPT]                              # ① 基底纪律（:23-27，固定）
+parts = [BASE_SYS_PROMPT]                              # ① 基底纪律（:23-27，所有臂固定）
 if target: parts.append(f"（目标代码库：{lang}。{notes}）")   # ② 目标上下文（target.json）
-for s in arm_skills(arm): parts.append(skill SOP)     # ③ skill SOP（仅 skills 臂）
+if arm == "no-kb": parts.append(_NO_KB_GUARD)         # ③ no-kb 守卫（仅 no-kb，:33-36）
+for s in arm_skills(arm): parts.append(skill SOP)     # ④ skill SOP（仅 skills 臂）
 ```
 
-- **① BASE_SYS_PROMPT**（固定）：「你是代码定位助手…用**符号名**作答…**收敛纪律：查到即答，不要反复查**」。
-- **② 目标上下文**：`target.json` 的 `language` + `notes`，如「（目标代码库：C++。Godot 4.7 core/, 13504 节点…）」。
-- **③ skill SOP**（`ab_tools.arm_skills(arm)`）：**仅 `kb+superpowers` / `kb+openspec`** 追加。把
-  `eval/arms/skills_bundled/{superpowers,openspec}.md` 整篇原文塞进去（前缀「# 注入的工程纪律」）。
+### 2.1 提示词片段清单（「我们提供了哪些提示词」）
 
-→ 各臂 system prompt 体积不同（这是 `cache_read` 差异的根源）：
+| # | 片段 | 原文（摘要） | 注入条件 |
+|---|---|---|---|
+| ① | `BASE_SYS_PROMPT`（:23-27） | 「你是代码定位助手…用**符号名**作答…**收敛纪律：查到即答，不要反复查**」 | **所有臂**，固定 |
+| ② | 目标上下文 | 「（目标代码库：`{language}`。`{notes}`）」 | target 有 `language`/`notes` 时（取自 `target.json`） |
+| ③ | `_NO_KB_GUARD`（:33-36） | 「**工具边界**：你没有知识库/语义检索工具（如 cmm、codegraph、graphify 等），只能用提供的工具。不要在回答中假装或提及使用任何外部知识库。」 | **仅 `no-kb` 臂** |
+| ④ | skill SOP | `eval/arms/skills_bundled/{superpowers,openspec}.md` 整篇原文（前缀「# 注入的工程纪律」） | **仅 `kb+superpowers` / `kb+openspec`** |
+
+> **③ `_NO_KB_GUARD` 的存在动机**：工具层已隔离 cmm/codegraph/graphify（`arm_mcp_server` 只注册该臂
+> 工具），但 **query 诱导**——`engineer-demo-memory` 题目直接问「cmm 的 search_code 接口」、
+> `godot-cross` notes 写「→ cmm 代码定位」——会让模型在回答/thinking 里幻觉「用了 KB」。守卫句让 prompt
+> 与 no-kb「无 KB」的既有设计语义一致（补漏，非引入新语义）。**仅 no-kb 注入**；kb / skills 臂不注入。
+
+### 2.2 各臂 system_prompt 构成
+
+各臂 prompt 体积不同（这是 `cache_read` 差异的根源）：
 
 | 臂 | system_prompt 构成 | 约大小 |
 |---|---|---|
-| `no-kb` / `kb` | ① + ② | ~150 token |
+| `no-kb` | ① + ② + ③（守卫） | ~180 token |
+| `kb` | ① + ② | ~150 token |
 | `kb+superpowers` | ① + ② + superpowers.md(27行) | ~+500 token |
 | `kb+openspec` | ① + ② + openspec.md(22行) | ~+400 token |
 
@@ -272,7 +286,7 @@ messages 重发，input 随历史增长。）
 | 入口 / engine 分发 | `ab_agent.run_episode` (:311) |
 | sdk loop | `_run_episode_async` (:150) + `_consume` (:111) |
 | raw loop | `run_episode_raw` (:245) + `_create_with_retry` (:209) |
-| system_prompt 拼装 | `_system_prompt` (:30) + `BASE_SYS_PROMPT` (:23) |
+| system_prompt 拼装 | `_system_prompt` (:39) + `BASE_SYS_PROMPT` (:23) + `_NO_KB_GUARD` (:33，仅 no-kb) |
 | 消息块解析 | `_extract_assistant` (:54, sdk) / `_serialize_turn` (:228, raw) |
 | 工具注册 / skills 注入 | `ab_tools.ARMS` / `arm_skills` / `load_skill_content` |
 | 工具 → MCP（sdk） | `ab_tools.mcp_tool` / `arm_mcp_server` / `arm_allowed_tools` |
