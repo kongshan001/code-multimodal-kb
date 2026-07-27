@@ -35,6 +35,24 @@ _NO_KB_GUARD = (
     "只能用提供的工具。不要在回答中假装或提及使用任何外部知识库。"
 )
 
+# kb 系臂（kb / kb+superpowers / kb+openspec，均含 cmm_search）的运作模式引导，与 no-kb 守卫对称：
+# 告诉模型 cmm 是语义检索、优先用它、换种说法也能命中。让 kb 臂「用语义检索定位」的运作模式在
+# prompt 层显式化（工具 schema description 已说明 cmm 用途，此句强化使用策略——构造自然语言 query）。
+_KB_GUIDE = (
+    "\n**工具用法**：你有代码知识库的语义检索工具（cmm_search）。定位代码时优先用它检索"
+    "相关符号/函数/类（按语义匹配，换种说法也能找到），再用 read_file 看实现细节，"
+    "然后用符号名作答。"
+)
+
+# 各 agent-compare 臂 → 运作模式引导（每臂显式声明其工具边界与期望用法，引导模型按期望运作）。
+# baseline/doc/codegraph（旧 ab-agent 臂，非 4 臂对照焦点）不注入，保原行为。
+_ARM_GUIDE = {
+    "no-kb":          _NO_KB_GUARD,
+    "kb":             _KB_GUIDE,
+    "kb+superpowers": _KB_GUIDE,
+    "kb+openspec":    _KB_GUIDE,
+}
+
 
 def _system_prompt(arm: str, target: dict | None = None) -> str:
     """基底 prompt + 目标信息 + 注入的 skill SOP 文本。"""
@@ -45,8 +63,9 @@ def _system_prompt(arm: str, target: dict | None = None) -> str:
         ctx = f"（目标代码库：{lang or '未知'}。{notes}）" if (lang or notes) else ""
         if ctx:
             parts.append("\n" + ctx)
-    if arm == "no-kb":
-        parts.append(_NO_KB_GUARD)
+    guide = _ARM_GUIDE.get(arm)
+    if guide:
+        parts.append(guide)
     for s in ab_tools.arm_skills(arm):
         content = ab_tools.load_skill_content(s)
         if content:
